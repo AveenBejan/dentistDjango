@@ -38,8 +38,8 @@
             <p><span>Website</span> <a href="#">www.Econoartstech.com</a></p>
           </div>
         </div>
-        {% if name %}
-           <center><h3>Thank - {{name}}</h3>
+        {% if form %}
+           <center><h3>Thank - {{ form }}</h3>
               <p>We received your email and will respond shortly .... </p>
               </center><br/><br/>
         {%else %}
@@ -49,7 +49,7 @@
 
 
 
-            <form action="{% url 'contact' %}" method="POST">
+            <form action="" method="POST">
               {% csrf_token  %}
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Your Name" name="name">

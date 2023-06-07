@@ -1,0 +1,14 @@
+#def contact(request):
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        #send email to manager
+        send_mail(subject,message,email,['aabduljabar@swedoaid.org']
+          )
+        return render(request, 'contact.html',{'name':name})
+    else:
+        return render(request, 'contact.html')
