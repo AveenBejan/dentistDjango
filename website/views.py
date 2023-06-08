@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm
+from .models import Appointment
 
 
 def home(request):
@@ -43,13 +44,17 @@ def appointment(request):
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             address = form.cleaned_data['address']
-            date = form.cleaned_data['Date']
-            time = form.cleaned_data['Time']
+            date = form.cleaned_data['date']
             phone = form.cleaned_data['phone']
-            send_mail(name, email, address, date, time, name, phone, ['aabduljabar@swedoaid.org'])
             form.save()
-            return render(request, 'appointmentt.html', {'form': form})
+            send_mail(name, email, address, ['aabduljabar@swedoaid.org'])
+            return render(request, 'appointment.html', {'form': form})
     else:
         form = AppointmentForm()
-        return render(request, 'home.html')
 
+        return render(request, 'appointment.html')
+
+
+def all_appo(request):
+    appointments = Appointment.objects.all().order_by('-id')
+    return render(request, 'all_appo.html', {'appointments': appointments})

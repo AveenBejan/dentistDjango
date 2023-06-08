@@ -27,13 +27,12 @@ class ContactForm(ModelForm):
 class AppointmentForm(ModelForm):
     class Meta:
         model = Appointment
-        fields = ('name', 'email', 'address', 'date', 'time', 'phone')
+        fields = ('name', 'email', 'address', 'date', 'phone')
         labels = {
             'name': '',
             'email': '',
             'address': '',
             'date': '',
-            'time': '',
             'phone': '',
 
         }
@@ -42,6 +41,5 @@ class AppointmentForm(ModelForm):
             'email': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
             'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Address'}),
             'date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Date'}),
-            'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Time'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
         }
