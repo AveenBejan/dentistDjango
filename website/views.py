@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ContactForm, AppointmentForm
-from .models import Appointment
+from .forms import ContactForm, AppointmentForm,DentistDetailsForm
+from .models import Appointment,DentistDetails
 
 
 def home(request):
@@ -48,7 +48,8 @@ def appointment(request):
             phone = form.cleaned_data['phone']
             form.save()
             send_mail(name, email, address, ['aabduljabar@swedoaid.org'])
-            return render(request, 'appointment.html', {'form': form})
+            appointments = Appointment.objects.all()
+            return render(request, 'appointment.html', {'form': form,'appointments':appointments})
     else:
         form = AppointmentForm()
 
@@ -58,3 +59,78 @@ def appointment(request):
 def all_appo(request):
     appointments = Appointment.objects.all().order_by('-id')
     return render(request, 'all_appo.html', {'appointments': appointments})
+
+
+def dentist_details(request, id):
+    if request.method ==  'POST':
+        form = DentistDetailsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('all-details')
+    else:
+
+        form = DentistDetailsForm(request.POST)
+        appointments = Appointment.objects.all().order_by('-id')
+        return render(request,'dentist_details.html',{'form':form,'appointments': appointments})
+
+
+def all_details(request):
+    appointments = DentistDetails.objects.all().order_by('-id')
+    return render(request, 'all_details.html', {'appointments': appointments})
+
+
+def update(request, id):
+    pi = DentistDetails.objects.get(pk=id)
+    form = DentistDetailsForm(request.POST or None,  instance=pi)
+    if form.is_valid():
+        form.save()
+        return redirect('all-details')
+    return render(request,'update.html',{'form':form,'pi':pi})
+
+
+def delete_details(request, id):
+    venue = DentistDetails.objects.get(pk=id)
+    venue.delete()
+    return redirect('all-details')
+
+
+def search_details(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        venues = DentistDetails.objects.filter(idappointment__name__icontains=searched)
+        appointments = Appointment.objects.all()
+        return render(request, 'search_details.html', {'searched': searched, 'venues': venues, 'appointments': appointments})
+    else:
+        return render(request, 'search_details.html', {})
+
+
+def search_appo(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        venues = Appointment.objects.filter(name__icontains=searched)
+        appointments = Appointment.objects.all()
+        return render(request, 'search_appo.html', {'searched': searched, 'venues': venues, 'appointments': appointments})
+    else:
+        return render(request, 'search_appo.html', {})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

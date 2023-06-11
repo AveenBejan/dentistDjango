@@ -19,10 +19,23 @@
         </div>
     </div>
 </section>
-
+<br/>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand"></a>
+{%if user.is_authenticated%}
+        <form class="form-inline" method="POST" action="{% url 'search-appo' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="search" placeholder="Search For Appointment Name" aria-label="Search"
+                   name="searched">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+{% endif %}
+    </nav>
 <section class="ftco-section contact-section ftco-degree-bg">
+
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
+
             <div class="col-md-12 mb-4">
                 <h1 class="h2" align="center">Appointment Information</h1>
                 <br/>
@@ -32,21 +45,28 @@
                     <tr>
                         <th scope="col">id</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Birthday</th>
                         <th scope="col">Address</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Date</th>
+                        <th scope="col" colspan="2">Other</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for appointment in appointments %}
                     <tr>
-                        <th scope="row">{{appointment.id}}</th>
+                        <td scope="row">{{appointment.id}}</td>
                         <td> {{appointment.name}}</td>
+                        <td> {{appointment.gender}}</td>
+                        <td> {{appointment.birthday}}</td>
                         <td> {{appointment.address}}</td>
                         <td>{{appointment.email}}</td>
                         <td>{{appointment.phone}}</td>
                         <td>{{appointment.date}}</td>
+                        <td><a href="{% url 'home' %}" style="display: inline;"><span  class="btn btn-outline-primary">Add Appointment</span></a></td>
+                        <td><a href="{% url 'dentist-details' appointment.id %}" style="display: inline;"><span class="btn btn-outline-primary">Add Patient</span></a></td>
                     </tr>
                     {% endfor %}
                     </tbody>

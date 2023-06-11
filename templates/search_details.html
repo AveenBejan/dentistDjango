@@ -1,0 +1,79 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="home-slider owl-carousel">
+    <div class="slider-item bread-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});"
+         data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container" data-scrollax-parent="true">
+            <div class="row slider-text align-items-end">
+                <div class="col-md-7 col-sm-12 ftco-animate mb-5">
+                    <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span
+                            class="mr-2"><a href="index.html"></a></span> <span></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12">
+                <h1 class="h2" align="center">Patient Information</h1>
+                <br/>
+{% if searched and venues %}
+  <h2>Search Results:{{ searched }}</h2>
+
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Patient Gender</th>
+                        <th scope="col">Patient Birthday</th>
+                        <th scope="col">Patient Diagnosis</th>
+                        <th scope="col">Medicine Name</th>
+                        <th scope="col">Medicine Time</th>
+                        <th scope="col">Medicine Period</th>
+                        <th scope="col">Medicine T-Food</th>
+                        <th scope="col">Medicine Time-NO</th>
+                        <th scope="col" colspan="">Add Patient</th>
+                        <th scope="col" colspan="">Update</th>
+                        <th scope="col" colspan="">Delete</th>
+                    </tr>
+                    </thead>
+                     <tbody>
+
+                    {% for venue in venues %}
+                     <tr>
+                      <th scope="row">{{venue.idappointment}}</th>
+                      <td> {{venue.idappointment.gender}}</td>
+                      <td> {{venue.idappointment.birthday}}</td>
+                      <td> {{venue.details}}</td>
+                      <td> {{venue.medicine_name}}</td>
+                      <td> {{venue.medicine_time}}</td>
+                      <td> {{venue.medicine_period}}</td>
+                      <td>{{venue.medicine_tfood}}</td>
+                      <td>{{venue.medicine_no}}</td>
+                      <td><a href="{% url 'dentist-details' venue.id %}" style="display: inline;"><span class="btn btn-outline-primary">Add</span></a></td>
+                      <td><a href="{% url 'update' venue.id %}" style="display: inline;"><span class="btn btn-outline-warning">Update</span></a></td>
+                      <td><a href="{% url 'delete-details'  venue.id  %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                     </tr>
+                    {% endfor %}
+                     </tbody>
+                </table>
+{% else %}
+  <p>No search results found.</p>
+{% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

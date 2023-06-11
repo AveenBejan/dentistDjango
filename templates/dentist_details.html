@@ -1,0 +1,118 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<section class="home-slider owl-carousel">
+	<div class="slider-item" style="background-image: url({% static 'website/images/St2.png'  %}); height: 200px; " >
+	</div>
+</section>
+
+
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+	<section class="ftco-intro">
+		<div class="container">
+			<div class="row slider-text align-items-center" data-scrollax-parent="true">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-10 color-3 p-3">
+							<h2 style="color: #fff; text-align: center;">Add Patient Diagnostic</h2>
+							<br/>
+							{%if user.is_authenticated%}
+							<form action="" novalidate class="appointment-form" method="POST">
+								{% csrf_token %}
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group">
+											<select name="idappointment" class="form-control">
+												<option value="">Select Name</option>
+												{% for appointment in appointments %}
+												<option  value="{{ appointment.id }}">{{ appointment.name }}</option>
+												{% endfor %}
+											</select>
+
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+
+											<input type="text" class="form-control" name="details"
+												   placeholder="Patient Diagnosis">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group">
+
+											<input type="text" class="form-control"
+												   placeholder="Medicine Name" name="medicine_name">
+										</div>
+									</div>
+
+									<div class="col-sm-4">
+										<div class="form-group">
+
+											<select class="form-control" name="medicine_time">
+												<option value="">Medicine Time</option>
+												<option value="Morning">Morning</option>
+												<option value="Evening">Evening</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group">
+											<select class="form-control" name="medicine_period">
+												<option value="">Medicine Period</option>
+												<option value="Day">Day</option>
+												<option value="Week">Week</option>
+												<option value="Month">Month</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											<select class="form-control" name="medicine_tfood">
+												<option value="">Medicine T-Food</option>
+												<option value="Before Eat">Before Eat</option>
+												<option value="After Eat">After Eat</option>
+												<option value="Before Sleep">Before Sleep</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+
+											<select class="form-control" name="medicine_no">
+												<option value="" selected disabled>Medicine Time-NO</option>
+												<option value="1*1">1*1</option>
+												<option value="1*2">1*2</option>
+												<option value="1*3">1*3</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+                                <br/>
+								<div class="form-group">
+									<input type="submit" value="Make an Appointment" class="btn btn-primary">
+								</div>
+								<br/>
+
+							</form>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			/
+		</div>
+	</section>
+
+<br/><br/><br/>
+{% endblock %}
+<script type="text/javascript">
+    createEditableSelect(document.forms[0].myText);
+</script>

@@ -1,6 +1,13 @@
 {% extends 'base.html'  %}
 {% load static %}
-{% block title %} Contact Page{% endblock %}
+{% block title %} Contact Page
+<style>
+  .disabled-paragraph {
+    color: gray;
+    pointer-events: none;
+  }
+</style>
+{% endblock %}
 {% block content %}
 
 
@@ -23,8 +30,15 @@
     <div class="row d-flex mb-5 contact-info">
       <div class="col-md-12 mb-4">
         <h2 class="h4">Appointment Information</h2>
+        <fieldset disabled >Full Name : {{ form.name }}</fieldset>
+        <fieldset disabled>Gender: {{ form.gender }}</fieldset>
+        <fieldset disabled>Birthday : {{ form.birthday }}</fieldset>
+        <fieldset disabled>Email : {{ form.email }}</fieldset>
+        <fieldset disabled>Address : {{ form.address }}</fieldset>
+        <fieldset disabled>Appointment Date : {{ form.date }}</fieldset>
+        <fieldset disabled>Phone Number : {{ form.phone }}</fieldset>
 
-        <h1>{{ form }}</h1>
+
       </div>
     </div>
   </div>

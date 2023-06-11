@@ -7756,19 +7756,19 @@ h1, h2, h3, h4, h5,
       font-size: 14px;
       padding-right: 20px !important; }
       .ftco-intro .appointment-form .form-group input option, .ftco-intro .appointment-form .form-group select option {
-        color: #fff; }
+        color: #000; }
       .ftco-intro .appointment-form .form-group input::-webkit-input-placeholder, .ftco-intro .appointment-form .form-group select::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
-        color: #fff !important; }
+        color: #000; !important; }
       .ftco-intro .appointment-form .form-group input::-moz-placeholder, .ftco-intro .appointment-form .form-group select::-moz-placeholder {
         /* Firefox 19+ */
-        color: #fff !important; }
+        color: #000; !important; }
       .ftco-intro .appointment-form .form-group input:-ms-input-placeholder, .ftco-intro .appointment-form .form-group select:-ms-input-placeholder {
         /* IE 10+ */
-        color: #fff !important; }
+        color: #000; !important; }
       .ftco-intro .appointment-form .form-group input:-moz-placeholder, .ftco-intro .appointment-form .form-group select:-moz-placeholder {
         /* Firefox 18- */
-        color: #fff !important; }
+        color: #000; !important; }
     .ftco-intro .appointment-form .form-group .btn-primary {
       -webkit-border-radius: 0;
       -moz-border-radius: 0;
