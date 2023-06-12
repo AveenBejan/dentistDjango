@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-_ufsej!t40n@64mak(7)w(d%&3(gx2(+yg9oel&r5i0gyhqu#*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,7 +76,7 @@ DATABASES = {
       'NAME': 'dentest',
       'USER': 'root',
       'PASSWORD': 'qwer1234',
-      'HOST': ' ',
+      'HOST': 'localhost',
       'PORT': '3306 ',
        'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
@@ -120,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
