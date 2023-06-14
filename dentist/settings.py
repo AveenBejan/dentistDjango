@@ -77,7 +77,7 @@ DATABASES = {
       'USER': 'root',
       'PASSWORD': 'qwer1234',
       'HOST': 'localhost',
-      'PORT': '3306 ',
+      'PORT': '3306',
        'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
         },
@@ -117,7 +117,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# https://docs.djangoproject.com/en/4.2/howto/static-files/CD
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
