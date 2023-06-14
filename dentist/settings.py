@@ -75,10 +75,10 @@ WSGI_APPLICATION = 'dentist.wsgi.application'
 DATABASES = {
      'default': {
       'ENGINE': 'django.db.backends.mysql',
-      'NAME': 'dentest',
-      'USER': 'root',
-      'PASSWORD': 'qwer1234',
-      'HOST': 'localhost',
+      'NAME': 'heroku_a5387083ec0b23e',
+      'USER': 'b1dea4fd29e8ea',
+      'PASSWORD': '8101a3e2@',
+      'HOST': 'us-cdbr-east-06.cleardb.net',
       'PORT': '3306',
        'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
