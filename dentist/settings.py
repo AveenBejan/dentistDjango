@@ -78,7 +78,7 @@ DATABASES = {
       'NAME': 'heroku_a5387083ec0b23e',
       'Username': 'root',
       'Password': '1234',
-      'HOST': 'us-cdbr-east-06.cleardb.net',
+      'HOST': 'localhost',
       'PORT': '3306',
        'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
