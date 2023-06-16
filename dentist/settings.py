@@ -71,21 +71,11 @@ WSGI_APPLICATION = 'dentist.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
-     'default': {
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': 'heroku_a5387083ec0b23e',
-      'Username': 'root',
-      'Password': '1234',
-      'HOST': 'localhost',
-      'PORT': '3306',
-       'OPTIONS': {
-            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
-        },
-    }
+    'default': dj_database_url.config(
+        default='mysql://b1dea4fd29e8ea:8011b4a014313a6@us-cdbr-east-06.cleardb.net:3306/heroku_a5387083ec0b23e?reconnect=true'
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
