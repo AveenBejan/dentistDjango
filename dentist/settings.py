@@ -71,6 +71,7 @@ WSGI_APPLICATION = 'dentist.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
 DATABASES = {
     'default': dj_database_url.config(
         default='mysql://b1dea4fd29e8ea:8011b4a014313a6@us-cdbr-east-06.cleardb.net:3306/heroku_a5387083ec0b23e'
