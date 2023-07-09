@@ -42,12 +42,31 @@
               <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
               <li class="nav-item"><a href="{% url 'services' %}" class="nav-link">Services</a></li>
               <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+               <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                  Reception
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                  <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                </div>
+              </li>
+               <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                  Oral_Surgery
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'oral-reception' %}">Oral Surgery Info</a>
+                  <a class="dropdown-item" href="{% url 'all-oral-surgery' %}">All Oral Surgery Info</a>
+                    <a class="dropdown-item" href="{% url 'orthodontics' %}">orthodontic</a>
+                </div>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                   Patients
                 </a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="{% url 'appointment' %}">Patients</a>
+                  <a class="dropdown-item" href="{% url 'appointment1' %}">Patients</a>
 
 
                   <a class="dropdown-item" href="{% url 'all-details' %}">All Patient Details</a>
@@ -61,7 +80,7 @@
                   Appointment
                 </a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="{% url 'appointment' %}">Appointment</a>
+                  <a class="dropdown-item" href="{% url 'appointment1' %}">Appointment</a>
 
                   <a class="dropdown-item" href="{% url 'all-appo' %}">Appointment Details.</a>
                   <a class="dropdown-item" href="{% url 'all-appo' %}">Search Appointment Details.</a>
@@ -95,7 +114,7 @@
 {% endblock %}
 {% block content %}
 {% endblock %}
-
+<!--
 <br/>
     <footer class="ftco-footer ftco-bg-dark ftco-section">
       <div class="container">
@@ -151,13 +170,13 @@
         <div class="row">
           <div class="col-md-12 text-center">
 
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <p> Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.
   Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="icon-heart" aria-hidden="true"></i> by <a href="https://econoartstech.com" target="_blank">Econoartstech</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+ Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.</p>
           </div>
         </div>
       </div>
-    </footer>
+    </footer>-->
 
 
 

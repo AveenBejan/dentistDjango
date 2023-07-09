@@ -1,0 +1,64 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="home-slider owl-carousel">
+    <div class="slider-item bread-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});"
+         data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container" data-scrollax-parent="true">
+            <div class="row slider-text align-items-end">
+                <div class="col-md-7 col-sm-12 ftco-animate mb-5">
+                    <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span
+                            class="mr-2"><a href="index.html"></a></span> <span></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+     <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand"></a>
+{%if user.is_authenticated%}
+        <form class="form-inline" method="POST" action="{% url 'search-oral-surgery' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="search" placeholder="Search For Patient" aria-label="Search"
+                   name="searched">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+{% endif %}
+    </nav>
+
+        <div class="container">
+            <div class="col-md-12 mb-4">
+                <h1 class="h2" align="center">Patient Appointment</h1>
+                <br/>
+
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Patient Phone</th>
+                        <th scope="col" colspan="">Oral Surgery</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for reception in receptions %}
+                    <tr>
+                        <th scope="row">{{reception.id}}</th>
+                        <th scope="row">{{reception.name}}</th>
+                        <td> {{reception.phone}}</td>
+                        <td><a href="{% url 'add-oral-surgery'  reception.id %}" style="display: inline;"><span class="btn btn-outline-primary">Add New </span></a></td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+{% endblock %}

@@ -50,3 +50,165 @@
 
 
                         {%if user.is_authenticated%}{%endif%}
+
+
+
+DATABASES = {
+
+    'default': dj_database_url.config(
+
+        default='mysql://ra3088zq3xlw0y1h:j3sxqn9j5qidrgnh@eanl4i1omny740jw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/cnjogdf58wagvdjv',
+        engine='django.db.backends.mysql'
+
+
+    )
+}
+
+
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <h1 class="h2" align="center">All Oral Surgery Information</h1>
+            <br/>
+
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Patient #</th>
+                    <th scope="col">Patient Name</th>
+                    <th scope="col">Tooth Extraction</th>
+                    <th scope="col">RX</th>
+                    <th scope="col">Material Type</th>
+                    <th scope="col">Thickness Of Rich</th>
+                    <th scope="col">Size of Implant</th>
+                    <th scope="col">Direction</th>
+                    <th scope="col">Tooth Number</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">{{form.initial.id}}</th>
+                    <td> {{form.initial.idReception}}</td>
+                    <td> {{form.initial.idReception.name}}</td>
+                    <td> {{form.initial.tooth}}</td>
+                    <td> {{form.initial.RX}}</td>
+                    <td> {{form.initial.material_type}}</td>
+                    <td> {{form.initial.thickness_rich}}</td>
+                    <td>{{form.initial.size}}</td>
+                    <td>{{form.initial.size_direction}}</td>
+                    <td>{{form.initial.size_number}}</td>
+
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="col-8">
+
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>ID</td>
+                    <td><input type="text" name="id" value="{{form.initial.id}}"></td>
+                </tr>
+                <tr>
+                    <td>idReception</td>
+                    <td><input type="text" name="idReception" value="{{form.initial.idReception}}"></td>
+                </tr>
+                <tr>
+                    <td>RX</td>
+                    <td><input type="text" name="RX" value="{{form.initial.RX}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="tooth" value="{{form.initial.tooth}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="material_type" value="{{form.initial.material_type}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="thickness_rich" value="{{form.initial.thickness_rich}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="size" value="{{form.initial.size}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="size_direction" value="{{form.initial.size_direction}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="size_number" value="{{form.initial.size_number}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="second_visit" value="{{form.initial.second_visit}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="third_visit" value="{{form.initial.third_visit}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="fourth_visit" value="{{form.initial.fourth_visit}}"></td>
+                </tr>
+                <tr>
+                    <td>tooth</td>
+                    <td><input type="text" name="fifth_visit" value="{{form.initial.fifth_visit}}"></td>
+                </tr>
+
+            </table>
+
+
+            <input type="submit" value="Update" class="btn btn-info">
+
+        </form>
+    </div>
+</div>
+
+
+
+
+class OralSurgeryForm(forms.ModelForm):
+    TOOTH_CHOICES = [('Yes', 'Yes'), ('No', 'No')]
+    RX_CHOICES = [('AUG', 'AUG'), ('AUG1', 'AUG1')]
+    MATERIAL_TYPE_CHOICES = [('Platin', 'Platin'), ('Other', 'Other')]
+    THICKNESS_RICH_CHOICES = [('Thin', 'Thin'), ('Thick', 'Thick')]
+    SIZE_CHOICES = [('3*10', '3*10'), ('4*10', '4*10'), ('5*10', '5*10'), ('6*10', '6*10'), ('7*10', '7*10')]
+    SIZE_DIRECTION_CHOICES = [('left', 'left'), ('Right', 'Right'), ('Upper', 'Upper'), ('Lower', 'Lower')]
+    SIZE_NUMBER_CHOICES = [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')]
+    SECOND_VISIT_CHOICES = [('Removal of Sucher', 'Removal of Sucher')]
+    THIRD_VISIT_CHOICES = [('Gingival Formal', 'Gingival Formal')]
+    FOURTH_VISIT_CHOICES = [('Abutment', 'Abutment')]
+    FIFTH_VISIT_CHOICES = [('Zergon', 'Zergon'), ('Ceramic', 'Ceramic')]
+
+    idReception = forms.Select(attrs={'class': 'form-control'})
+    tooth = forms.ChoiceField(label='Yes/No', choices=TOOTH_CHOICES)
+    RX = forms.ChoiceField(label='RX', choices=RX_CHOICES)
+    material_type = forms.ChoiceField(label='material_type', choices=MATERIAL_TYPE_CHOICES)
+    thickness_rich = forms.ChoiceField(label='thickness_rich', choices=THICKNESS_RICH_CHOICES)
+    size = forms.ChoiceField(label='size', choices=SIZE_CHOICES)
+    size_direction = forms.ChoiceField(label='size_direction', choices=SIZE_DIRECTION_CHOICES)
+    size_number = forms.ChoiceField(label='size_number', choices=SIZE_NUMBER_CHOICES)
+    second_visit = forms.ChoiceField(label='second_visit', choices=SECOND_VISIT_CHOICES)
+    third_visit = forms.ChoiceField(label='third_visit', choices=THIRD_VISIT_CHOICES)
+    fourth_visit = forms.ChoiceField(label='fourth_visit', choices=FOURTH_VISIT_CHOICES)
+    fifth_visit = forms.ChoiceField(label='fifth_visit', choices=FIFTH_VISIT_CHOICES)
+
+    class Meta:
+        model = OralSurgery
+        fields = ('idReception', 'tooth', 'RX', 'material_type', 'thickness_rich', 'size', 'size_direction', 'size_number', 'second_visit', 'third_visit', 'fourth_visit', 'fifth_visit')

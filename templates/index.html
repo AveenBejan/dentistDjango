@@ -1,0 +1,328 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="home-slider owl-carousel">
+    <div class="slider-item bread-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});"
+         data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container" data-scrollax-parent="true">
+            <div class="row slider-text align-items-end">
+                <div class="col-md-7 col-sm-12 ftco-animate mb-5">
+                    <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span
+                            class="mr-2"><a href="index.html"></a></span> <span></span></p>
+                    <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">Appointment</h1>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12 mb-4">
+                <h2 class="text-center alert alert-info">Oral - Surgery </h2>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+
+                <h5>Oral - Surgery Information </h5>
+<script>
+        $(document).ready(function()
+        {
+           $('.form-check-input').click(function()
+           {
+              var text="";
+              $('.form-check-input:checked').each(function()
+              {
+                 text+=$(this).val()+',';
+              });
+              $('.chktext').val(text);
+
+           });
+           $('#but1').click(function()
+           {
+              alert("Record saved successfully")
+           });
+        });
+                </script>
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                <script type="text/javascript">
+
+function show1(){
+  document.getElementById('div1').style.display ='none';
+  document.getElementById('div2').style.display = 'block';
+}
+function show2(){
+  document.getElementById('div1').style.display = 'block';
+  document.getElementById('div2').style.display ='none';
+}
+
+
+
+
+                </script>
+
+                {%if user.is_authenticated%}
+                <p>{{form.initial.idReception.name}}</p>
+                <form action="" novalidate class="row row-cols-lg-auto g-3 align-items-center" method="POST">
+                    {% csrf_token %}
+
+                    <div class="col-12">
+                        <div class="alert alert-secondary" role="alert">
+                            <div class="form-check">
+                                <input type="text" name="idReception" value="{{ form.initial.idReception }}" class="form-control">
+                                <label class="form-check-label" style="font-size: 22px;">Tooth Extraction</label>
+                                <input type="radio" value="Yes" name="tooth" onclick="show2();">
+                                <label class="form-check-label">Yes</label>
+                                <input type="radio" value="No" name="tooth" onclick="show1();">
+                                <label class="form-check-label">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div id="div1" class="hide" style="display: none;">
+                            <div class="alert alert-secondary" role="alert">
+                                <label class="form-check-label" style="font-size: 22px;">RX</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" name="RX" value="Panadol">
+                                    <label class="form-check-label">Panadol</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" name="RX" value="AUG">
+                                    <label class="form-check-label">AUG</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" name="RX" value="AUG1">
+                                    <label class="form-check-label">AUG1</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" name="RX" value="AUG2">
+                                    <label class="form-check-label">AUG2</label>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div id="div2" class="hide" style="display: none;">
+                            <div class="alert alert-secondary" id="dd" role="alert"
+                                 style="font-size: 23px; text-align: left; padding-top: 10px;  padding-bottom: 10px;">
+                                First
+                                Visit
+                                <div class="alert alert-secondary" role="alert">
+                                    <div class="col-12">
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label" style="font-size: 22px;">Meterial
+                                                Type</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="material_type"
+                                                       value="Platin">
+                                                <label class="form-check-label">Platin</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="material_type"
+                                                       value="Titanium">
+                                                <label class="form-check-label">Titanium</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-secondary" role="alert">
+
+                                        <label class="form-check-label" style="font-size: 22px;">Thickness Of
+                                            Rich</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="thickness_rich"
+                                                   value="Thin">
+                                            <label class="form-check-label">Thin</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="thickness_rich"
+                                                   value="Thick">
+                                            <label class="form-check-label">Thick</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <label class="form-check-label" style="font-size: 22px;">Size of Implant</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size" value="3*10">
+                                            <label class="form-check-label">3*10</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size" value="4*10">
+                                            <label class="form-check-label">4*10</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size" value="3.5*10">
+                                            <label class="form-check-label">3.5*10</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size" value="4.5*10">
+                                            <label class="form-check-label">4.5*10</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <label class="form-check-label" style="font-size: 22px;">Direction</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_direction"
+                                                   value="Left">
+                                            <label class="form-check-label">Left</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_direction"
+                                                   value="Right">
+                                            <label class="form-check-label">Right</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_direction"
+                                                   value="Upper">
+                                            <label class="form-check-label">Upper</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_direction"
+                                                   value="Lower">
+                                            <label class="form-check-label">Lower</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <label class="form-check-label" style="font-size: 22px;">Tooth Number</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="1">
+                                            <label class="form-check-label">1</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="2">
+                                            <label class="form-check-label">2</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="3">
+                                            <label class="form-check-label">3</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="4">
+                                            <label class="form-check-label">4</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="5">
+                                            <label class="form-check-label">5</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="6">
+                                            <label class="form-check-label">6</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="7">
+                                            <label class="form-check-label">7</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="size_number"
+                                                   value="8">
+                                            <label class="form-check-label">8</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+
+                                    <div class="alert alert-secondary" role="alert">
+                                        <label class="form-check-label" style="font-size: 22px;">RX</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="RX" value="Panadol">
+                                            <label class="form-check-label">Panadol</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="RX" value="AUG">
+                                            <label class="form-check-label">AUG</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="RX" value="AUG1">
+                                            <label class="form-check-label">AUG1</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="RX" value="AUG2">
+                                            <label class="form-check-label">AUG2</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-12">
+                        <div class="alert alert-secondary" role="alert" align="center">
+                            <input type="submit" id="but1" value="Apply Oral Surgery" class="btn btn-info">
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+                <div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">RX</h5>
+          <p class="card-text">
+              <input type="submit" name="RX" class="chktext" style="display:inline">
+          </p>
+           <br/>
+          <br/>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Instructions</h5>
+          <p class="card-text"><ul>
+          <li>السوائل الباردة&nbsp;&nbsp;&nbsp;,كمادات باردة (ثلج)</li>
+          <li>عدم استخدام السوائل الساخنة&nbsp;&nbsp;&nbsp; مضمضة ماء+ملح بعد 12 ساعة</li>
+          <li>عدم التدخين لمدة 24 ساعة </li>
+
+      </ul></p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

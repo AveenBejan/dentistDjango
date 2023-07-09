@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>orthodontic page</h1>
+<form method="POST">
+    {% csrf_token %}
+        <div>
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    </div>
+    <div>
+        {{ form.name.label_tag }}
+        {{ form.yes_no_field }}
+    </div>
+    <div>
+        {{ form.name.label_tag }}
+        {{ form.material_field }}
+    </div>
+    <div>
+        {{ form.name.label_tag }}
+        {{ form.width_field }}
+    </div>
+    <input type="submit" value="Apply">
+</form>
+
+
+</body>
+</html>
