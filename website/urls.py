@@ -8,7 +8,7 @@ urlpatterns = [
     path('about.html', views.about, name='about'),
     path('services.html', views.services, name='services'),
     path('doctors.html', views.doctors, name='doctors'),
-    path('reception.html', views.reception, name='reception'),
+    path('exo_reception.html', views.reception, name='reception'),
     path('all_reception.html', views.all_reception, name='all-reception'),
     path('oral_reception.html', views.oral_reception, name='oral-reception'),
     path('delete_reception/<int:id>', views.delete_reception, name='delete-reception'),
@@ -20,6 +20,15 @@ urlpatterns = [
     path('delete_orla_surgery/<int:id>', views.delete_orla_surgery, name='delete-orla-surgery'),
     path('all_oral_surgery.html', views.all_oral_surgery, name='all-oral-surgery'),
     path('orthodontic.html', views.orthodontics, name='orthodontics'),
+
+    path('exo/<int:id>',views.exo, name='exo'),
+    path('exo/exo_reception.html',views.exo_reception, name='exo-reception'),
+    path('exo/all_exo.html',views.all_exo, name='all-exo'),
+
+
+    path('medicine/<int:id>',views.medicine, name='medicine'),
+    path('exo/all_medicine.html',views.all_medicine, name='all-medicine'),
+    path('print_medicine/<int:id>',views.print_medicine, name='print-medicine'),
 
 
     path('search_appo', views.search_appo, name='search-appo'),

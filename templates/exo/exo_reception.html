@@ -48,11 +48,12 @@
                         <th scope="col">Gender</th>
                         <th scope="col">Date of Birth</th>
                         <th scope="col" colspan="">Update</th>
+                        <th scope="col" colspan="">Medicine</th>
                         <th scope="col" colspan="">Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for appointment in appointments %}
+                    {% for appointment in appointments  %}
                     <tr>
                         <th scope="row">{{appointment.id}}</th>
                         <th scope="row">{{appointment.name}}</th>
@@ -60,8 +61,10 @@
                         <th scope="row">{{appointment.gender}}</th>
                         <th scope="row">{{appointment.date_of_birth}}</th>
 
-                        <td><a href="{% url 'update-reception' appointment.id %}" style="display: inline;"><span class="btn btn-outline-warning">Update</span></a></td>
-                        <td><a href="{% url 'delete-reception'  appointment.id  %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                        <td><a href="{% url 'exo' appointment.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Exo</span></a></td>
+                        <td><a href="{% url 'medicine' appointment.id %}" style="display: inline;"><span class="btn btn-outline-warning">Medicine</span></a></td>
+
+                        <td><a href="" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
 
                     </tr>
                     {% endfor %}

@@ -1,6 +1,73 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics
+from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin
+
+
+class MedicinForm(forms.ModelForm):
+    class Meta:
+        model = Medicin
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth', 'antibiotic', 'analogous', 'mouthwash')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'antibiotic': '',
+            'analogous': '',
+            'mouthwash': '',
+
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'antibiotic': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'antibiotic'}),
+            'analogous': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'analogous'}),
+            'mouthwash': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'mouthwash'}),
+
+
+        }
+
+
+class ExoForm(forms.ModelForm):
+    class Meta:
+        model = Exo
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'note', 'exoby', 'simpleexo', 'complcated')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'note': '',
+            'exoby': '',
+            'simpleexo': '',
+            'complcated': '',
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),
+            'simpleexo': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'simpleexo'}),
+            'complcated': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
+
+        }
 
 
 class OralSurgeryForm(forms.ModelForm):
@@ -41,14 +108,18 @@ class OralSurgeryForm(forms.ModelForm):
 class ReceptionForm(forms.ModelForm):
     class Meta:
         model = Reception
-        fields = ('name','phone')
+        fields = ('name','phone','gender','date_of_birth')
         labels = {
             'name': '',
             'phone': '',
+            'gender': '',
+            'date_of_birth': '',
         }
         widgets = {
-            'Name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
-            'Phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'gender': forms.Select(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
         }
 
 

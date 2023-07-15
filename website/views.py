@@ -1,9 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
+from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm
-from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics
-
+from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,MedicinForm
+from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin
+import pdfkit
+from django.template.loader import render_to_string
+from wkhtmltopdf.views import PDFTemplateView
 
 
 def home(request):
@@ -121,7 +124,7 @@ def reception(request):
         if form.is_valid():
             form.save()
             appointments = Reception.objects.all().order_by('-id')
-            return render(request, 'reception.html', {'form': form, 'appointments': appointments})
+            return render(request, 'exo/exo_reception.html', {'form': form, 'appointments': appointments})
     else:
         form = ReceptionForm()
         return render(request, 'home.html')
@@ -212,3 +215,123 @@ def orthodontics(request):
         form = OrthodonticsForm()
     return render(request, 'orthodontic.html', {'form': form})
 
+
+def exo_reception(request):
+    appointments =Reception.objects.all().order_by('-id')
+    return render(request, 'exo/exo_reception.html', {'appointments': appointments})
+
+
+def exo(request, id):
+    if request.method == 'POST':
+        form = ExoForm(request.POST)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            reception = Reception.objects.get(id=id)
+            oral_surgery.name = reception.name  # Set the name from Reception model
+            oral_surgery.phone = reception.phone  # Set the name from Reception model
+            oral_surgery.gender = reception.gender  # Set the gender from Reception model
+            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.save()
+            return redirect('all-exo')
+    else:
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth
+        }
+        form = ExoForm(initial=initial_data)  # Prepopulate the form with initial data
+
+    appointments = Reception.objects.all().order_by('-id')
+    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'id': id})
+
+
+def add_linebreaks(values, n):
+    value_list = values.split(', ')
+    new_values = [',  '.join(value_list[i:i+n]) for i in range(0, len(value_list), n)]
+    for i in range(1, len(new_values)):
+        new_values[i] = '- ' + new_values[i]
+    return '<br>'.join(new_values)
+
+
+
+
+
+
+def all_exo(request):
+    appointments =Exo.objects.all().order_by('-id')
+
+    for appointment in appointments:
+        appointment.ur = appointment.ur.replace("'", "")
+        appointment.ul = appointment.ul.replace("'", "")
+        appointment.lr = appointment.lr.replace("'", "")
+        appointment.ll = appointment.ll.replace("'", "")
+        appointment.exoby = appointment.exoby.replace("'", "")
+        appointment.simpleexo = appointment.simpleexo.replace("'", "")
+        appointment.complcated = appointment.complcated.replace("'", "")
+    return render(request, 'exo/all_exo.html', {'appointments': appointments})
+
+
+def medicine(request,id):
+    if request.method == 'POST':
+        form = MedicinForm(request.POST)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            reception = Reception.objects.get(id=id)
+            oral_surgery.name = reception.name  # Set the name from Reception model
+            oral_surgery.phone = reception.phone  # Set the name from Reception model
+            oral_surgery.gender = reception.gender  # Set the gender from Reception model
+            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.save()
+            return redirect('all-medicine')
+    else:
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth
+        }
+        form = MedicinForm(initial=initial_data)  # Prepopulate the form with initial data
+
+    appointments = Reception.objects.all().order_by('-id')
+    return render(request, 'exo/medicine.html', {'form': form, 'appointments': appointments, 'id': id})
+
+
+def all_medicine(request):
+    appointments = Medicin.objects.all().order_by('-id')
+
+    for appointment in appointments:
+        appointment.antibiotic = appointment.antibiotic.replace("'", "")
+        appointment.analogous = appointment.analogous.replace("'", "")
+        appointment.mouthwash = appointment.mouthwash.replace("'", "")
+        # Add line breaks for specific fields
+        appointment.antibiotic = add_linebreaks(appointment.antibiotic, 4)
+        appointment.analogous = add_linebreaks(appointment.analogous, 4)
+        appointment.mouthwash = add_linebreaks(appointment.mouthwash, 4)
+
+    return render(request, 'exo/all_medicine.html', {'appointments': appointments})
+
+
+def print_medicine(request, id):
+    appointment = get_object_or_404(Medicin, id=id)
+    # Modify appointment fields
+    appointment.antibiotic = appointment.antibiotic.replace("'", "")
+    appointment.analogous = appointment.analogous.replace("'", "")
+    appointment.mouthwash = appointment.mouthwash.replace("'", "")
+    # Add line breaks for specific fields
+    appointment.antibiotic = add_linebreaks(appointment.antibiotic, 4)
+    appointment.analogous = add_linebreaks(appointment.analogous, 4)
+    appointment.mouthwash = add_linebreaks(appointment.mouthwash, 4)
+
+    # Pass the appointment data to the template
+    context = {
+        'appointment': appointment,
+    }
+
+    return render(request, 'exo/print_medicine.html', context)

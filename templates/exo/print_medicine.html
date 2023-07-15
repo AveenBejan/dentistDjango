@@ -1,0 +1,58 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+<br/>
+<br/><br/>
+
+<p align="center" style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">نوژدار
+    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا ددانا<br/>B.D.S/M.SC.Ortho</br>
+<br/>عطلة العيادة الخميس والجمعة </p>
+<hr width="190%" size="2" color="#5FA1E8" />
+
+
+        <h4 style="font-size:16px; font-weight:bold" align="left">
+        &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{appointment.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <label dir="ltr">Date: {{appointment.regdate}}</label>
+
+        <br/>&nbsp;&nbsp;<label>Date :</label>{{appointment.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <label dir="ltr">Gender: {{appointment.gender}}</label>&nbsp;</h4>
+<div class="col-8">
+ <div class="card-body">
+    <table class="table table-hover">
+        <thead class="table-info">
+        <tr>
+            <th><label>#</label></th>
+            <th align="center"><label>Analogous </label></th>
+            <th align="center"><label>Antibiotic</label></th>
+            <th align="center"><label>Mouth Wish</label></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="count" align="center" width="20">{{appointment.id}}</td>
+            <td>
+                <div>- {{appointment.analogous|slice:"1:-1"|safe }}</div>
+            </td>
+            <td>
+                <div>- {{ appointment.antibiotic|slice:"1:-1"|safe }}</div>
+            </td>
+            <td>
+                <div>- {{appointment.mouthwash|slice:"1:-1"|safe }}</div>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+ </div>
+
+
+    <footer id="footer">
+        <hr width="190%" size="2" color="#5FA1E8"/>
+        <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
+            التمنيات بالشفاء العاجل</h4>
+    </footer>
+
+
+
+    {% endblock %}
