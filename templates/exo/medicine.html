@@ -2,9 +2,23 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-<br/>
-<br/><br/>
 
+<section class="home-slider owl-carousel">
+    <div class="slider-item bread-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});"
+         data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container" data-scrollax-parent="true">
+            <div class="row slider-text align-items-end">
+                <div class="col-md-7 col-sm-12 ftco-animate mb-5">
+                    <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span
+                            class="mr-2"><a href="index.html"></a></span> <span></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<br/>
 <div class="container">
     <div class="col-12">
         <table class="table table-hover">
@@ -16,24 +30,37 @@
                 <th scope="col">Phone Number</th>
                 <th scope="col">Gender</th>
                 <th scope="col">Date of Birth</th>
+                <th scope="col">Antibiotic</th>
+                <th scope="col">Analogous</th>
+                <th scope="col">Mouthwash</th>
+                <th scope="col">Drags</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <th scope="row">{{ form.initial.idReception }}</th>
-                <th scope="row">{{ form.initial.name }}</th>
-                <th scope="row">{{ form.initial.phone }}</th>
+
+                <td scope="row">{{ form.initial.idReception }}</td>
+                <td scope="row">{{ form.initial.name }}</td>
+                <td scope="row">{{ form.initial.phone }}</td>
                 <td scope="row">{{ form.initial.gender }}</td>
-                <th scope="row">{{ form.initial.date_of_birth }}</th>
+                <td scope="row">{{ form.initial.date_of_birth }}</td>
+                <td scope="row">{{ medicine.antibiotic |slice:"1:-1"|safe }}</td>
+                <td scope="row">{{ medicine.analogous|slice:"1:-1"|safe }}</td>
+                <td scope="row">{{ medicine.mouthwash|slice:"1:-1"|safe }}</td>
+                <td>{% if medicine %}
+                <a href="{% url 'print-medicine' medicine.id %}" style="display: inline;" class="btn btn-outline-info">Print Drags</a>
+                    {% endif %}</td>
+
 
             </tr>
             </tbody>
         </table>
+
     </div>
 </div>
 <br/>
 
-    <form method="POST" novalidate>
+    <form method="POST" novalidate action="">
     {% csrf_token %}
     <input type="hidden" name="idReception" value="{{ form.initial.idReception }}" class="form-control">
     <input type="hidden" name="name" value="{{ form.initial.name }}" class="form-control">
@@ -349,7 +376,8 @@
         </div>
 
         <div class="card-footer text-center">
-            <input type="submit" value="Add New Exo" class="btn btn-primary">
+            <input type="submit" value="Add New Drags" class="btn btn-primary">
         </div>
     </form>
+
 {% endblock %}

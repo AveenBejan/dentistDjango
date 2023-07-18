@@ -3,6 +3,8 @@ from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin
 
 
+
+
 class MedicinForm(forms.ModelForm):
     class Meta:
         model = Medicin
@@ -34,9 +36,11 @@ class MedicinForm(forms.ModelForm):
 
 
 class ExoForm(forms.ModelForm):
+    exo_images = forms.ImageField(widget=forms.ClearableFileInput)
+
     class Meta:
         model = Exo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'note', 'exoby', 'simpleexo', 'complcated')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -51,6 +55,7 @@ class ExoForm(forms.ModelForm):
             'exoby': '',
             'simpleexo': '',
             'complcated': '',
+
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
@@ -66,6 +71,8 @@ class ExoForm(forms.ModelForm):
             'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),
             'simpleexo': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'simpleexo'}),
             'complcated': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
+
+
 
         }
 

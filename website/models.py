@@ -30,7 +30,8 @@ class Exo(models.Model):
     exoby = models.CharField('Name', max_length=120, blank=True)
     simpleexo = models.CharField('Name', max_length=120, blank=True)
     complcated = models.CharField('Name', max_length=120, blank=True)
-    regdate = models.DateTimeField('Regdate', default=timezone.now(), editable=False)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='images/%Y/%m/%d/')
 
     def __str__(self):
         return self.name

@@ -24,11 +24,15 @@ urlpatterns = [
     path('exo/<int:id>',views.exo, name='exo'),
     path('exo/exo_reception.html',views.exo_reception, name='exo-reception'),
     path('exo/all_exo.html',views.all_exo, name='all-exo'),
+    path('search_exo', views.search_exo, name='search-exo'),
+    path('delete_exo/<int:id>', views.delete_exo, name='delete-exo'),
 
 
     path('medicine/<int:id>',views.medicine, name='medicine'),
     path('exo/all_medicine.html',views.all_medicine, name='all-medicine'),
     path('print_medicine/<int:id>',views.print_medicine, name='print-medicine'),
+    path('print_medicine1/<int:id>',views.print_medicine1, name='print-medicine1'),
+
 
 
     path('search_appo', views.search_appo, name='search-appo'),

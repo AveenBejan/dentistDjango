@@ -246,7 +246,15 @@ def exo(request, id):
         form = ExoForm(initial=initial_data)  # Prepopulate the form with initial data
 
     appointments = Reception.objects.all().order_by('-id')
-    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'id': id})
+    try:
+        exoo = Exo.objects.get(idReception=id)
+    except Exo.DoesNotExist:
+        exoo = None
+    try:
+        medicine = Medicin.objects.get(idReception=id)
+    except Medicin.DoesNotExist:
+        medicine = None
+    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'medicine': medicine, 'exoo': exoo, 'id': id})
 
 
 def add_linebreaks(values, n):
@@ -255,10 +263,6 @@ def add_linebreaks(values, n):
     for i in range(1, len(new_values)):
         new_values[i] = '- ' + new_values[i]
     return '<br>'.join(new_values)
-
-
-
-
 
 
 def all_exo(request):
@@ -300,7 +304,6 @@ def medicine(request,id):
         form = MedicinForm(initial=initial_data)  # Prepopulate the form with initial data
 
     appointments = Reception.objects.all().order_by('-id')
-    return render(request, 'exo/medicine.html', {'form': form, 'appointments': appointments, 'id': id})
 
 
 def all_medicine(request):
@@ -335,3 +338,38 @@ def print_medicine(request, id):
     }
 
     return render(request, 'exo/print_medicine.html', context)
+
+
+def print_medicine1(request, id):
+    appointment = get_object_or_404(Medicin, id=id)
+    # Modify appointment fields
+    appointment.antibiotic = appointment.antibiotic.replace("'", "")
+    appointment.analogous = appointment.analogous.replace("'", "")
+    appointment.mouthwash = appointment.mouthwash.replace("'", "")
+    # Add line breaks for specific fields
+    appointment.antibiotic = add_linebreaks(appointment.antibiotic, 4)
+    appointment.analogous = add_linebreaks(appointment.analogous, 4)
+    appointment.mouthwash = add_linebreaks(appointment.mouthwash, 4)
+
+    # Pass the appointment data to the template
+    context = {
+        'appointment': appointment,
+    }
+
+    return render(request, 'exo/print_medicine1.html', context)
+
+
+def search_exo(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(name__icontains=searched)
+        receptions = Reception.objects.all()
+        return render(request, 'exo/search_exo.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'exo/search_exo.html', {})
+
+
+def delete_exo(request, id):
+    orals = Exo.objects.get(pk=id)
+    orals.delete()
+    return redirect('all-oral-surgery')

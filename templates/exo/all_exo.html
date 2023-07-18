@@ -42,6 +42,7 @@
                 <th scope="col">Exo by Surgery</th>
                 <th scope="col">Simple Exo</th>
                 <th scope="col">Complicated</th>
+                <th scope="col">Exo Photo</th>
                 <th colspan="2">Other</th>
 
             </tr>
@@ -62,8 +63,11 @@
                 <td scope="row">{{appointment.exoby|slice:"1:-1"}}</td>
                 <td scope="row">{{appointment.simpleexo|slice:"1:-1"}}</td>
                 <td scope="row">{{appointment.complcated |slice:"1:-1"}}</td>
-                <td><a href="" style="display: inline;"><span
-                        class="btn btn-outline-warning">Edit</span></a></td>
+                <td>
+                    {% if appointment.exo_image  %}
+                      <img src="{{ appointment.exo_image.url }}" width="50">
+                    {% endif %}</td>
+                <td><a href="" style="display: inline;"><span class="btn btn-outline-warning">Edit</span></a></td>
                 <td><a href="" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a>
                 </td>
 
