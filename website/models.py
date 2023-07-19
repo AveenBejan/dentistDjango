@@ -10,10 +10,23 @@ class Reception(models.Model):
     phone = models.CharField('phone',max_length=120)
     gender = models.CharField('Gender',max_length=20)
     date_of_birth = models.DateField()
-    regdate = models.DateTimeField('Regdate',default=timezone.now(),editable=False)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
 
     def __str__(self):
         return self.name
+
+
+class Drug(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    name = models.CharField(max_length=200)
+    doze = models.CharField(max_length=200)
+    type = models.CharField(max_length=200)
+    times = models.CharField(max_length=200)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
+
+
+class Medicine1(models.Model):
+    name_medicine = models.CharField(max_length=120)
 
 
 class Exo(models.Model):
@@ -31,10 +44,18 @@ class Exo(models.Model):
     simpleexo = models.CharField('Name', max_length=120, blank=True)
     complcated = models.CharField('Name', max_length=120, blank=True)
     regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
-    exo_images = models.ImageField(null=True, blank=True,upload_to='images/%Y/%m/%d/')
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
 
     def __str__(self):
         return self.name
+
+
+class Photo(models.Model):
+    exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/%Y/%m/%d/')
+
+    def __str__(self):
+        return str(self.id)
 
 
 class Medicin(models.Model):
@@ -46,7 +67,7 @@ class Medicin(models.Model):
     antibiotic = models.CharField('antibiotic',max_length=120, blank=True)
     analogous = models.CharField('analogous', max_length=120, blank=True)
     mouthwash = models.CharField('mouthwash', max_length=120, blank=True)
-    regdate = models.DateTimeField('Regdate', default=timezone.now(), editable=False)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
 
     def __str__(self):
         return self.idReception

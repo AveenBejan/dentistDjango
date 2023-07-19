@@ -25,6 +25,8 @@ urlpatterns = [
     path('exo/exo_reception.html',views.exo_reception, name='exo-reception'),
     path('exo/all_exo.html',views.all_exo, name='all-exo'),
     path('search_exo', views.search_exo, name='search-exo'),
+    path('search_exo1', views.search_exo1, name='search-exo1'),
+    path('exo/exo_reception1.html',views.exo_reception1, name='exo-reception1'),
     path('delete_exo/<int:id>', views.delete_exo, name='delete-exo'),
 
 
@@ -33,6 +35,7 @@ urlpatterns = [
     path('print_medicine/<int:id>',views.print_medicine, name='print-medicine'),
     path('print_medicine1/<int:id>',views.print_medicine1, name='print-medicine1'),
 
+    path('drugs',views.drugs, name='drugs'),
 
 
     path('search_appo', views.search_appo, name='search-appo'),

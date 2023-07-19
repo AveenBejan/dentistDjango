@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,MedicinForm
-from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin
+from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm, MedicinForm,PhotoForm,DrugForm
+from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,Photo,Drug,Medicine1
 import pdfkit
 from django.template.loader import render_to_string
 from wkhtmltopdf.views import PDFTemplateView
@@ -221,9 +221,14 @@ def exo_reception(request):
     return render(request, 'exo/exo_reception.html', {'appointments': appointments})
 
 
+def exo_reception1(request):
+    appointments =Reception.objects.all().order_by('-id')
+    return render(request, 'exo/exo_reception1.html', {'appointments': appointments})
+
+
 def exo(request, id):
     if request.method == 'POST':
-        form = ExoForm(request.POST)
+        form = ExoForm(request.POST, request.FILES)
         if form.is_valid():
             oral_surgery = form.save(commit=False)
             oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
@@ -233,7 +238,15 @@ def exo(request, id):
             oral_surgery.gender = reception.gender  # Set the gender from Reception model
             oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
             oral_surgery.save()
-            return redirect('all-exo')
+            photos = request.FILES.getlist('exo_images')
+
+            exo_instance = form.save(commit=False)
+            exo_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(exo_instance=exo_instance, image=photo)
+
+            return redirect('exo', id=id)
     else:
         reception = Reception.objects.get(id=id)
         initial_data = {
@@ -246,15 +259,27 @@ def exo(request, id):
         form = ExoForm(initial=initial_data)  # Prepopulate the form with initial data
 
     appointments = Reception.objects.all().order_by('-id')
+
     try:
         exoo = Exo.objects.get(idReception=id)
+        photos = exoo.photo_set.all()
     except Exo.DoesNotExist:
         exoo = None
+        photos = None
     try:
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'medicine': medicine, 'exoo': exoo, 'id': id})
+        # Replace commas in Exo model fields
+    if exoo:
+        exoo.ur = exoo.ur.replace("'", "")
+        exoo.ul = exoo.ul.replace("'", "")
+        exoo.lr = exoo.lr.replace("'", "")
+        exoo.ll = exoo.ll.replace("'", "")
+        exoo.exoby = exoo.exoby.replace("'", "")
+        exoo.simpleexo = exoo.simpleexo.replace("'", "")
+        exoo.complcated = exoo.complcated.replace("'", "")
+    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'medicine': medicine, 'exoo': exoo, 'id': id,'photos': photos})
 
 
 def add_linebreaks(values, n):
@@ -279,21 +304,22 @@ def all_exo(request):
     return render(request, 'exo/all_exo.html', {'appointments': appointments})
 
 
-def medicine(request,id):
+def medicine(request, id):
     if request.method == 'POST':
         form = MedicinForm(request.POST)
         if form.is_valid():
             oral_surgery = form.save(commit=False)
-            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            oral_surgery.idReception_id = id
             reception = Reception.objects.get(id=id)
-            oral_surgery.name = reception.name  # Set the name from Reception model
-            oral_surgery.phone = reception.phone  # Set the name from Reception model
-            oral_surgery.gender = reception.gender  # Set the gender from Reception model
-            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.save()
-            return redirect('all-medicine')
+
+            return redirect('medicine', id=id)
     else:
-        reception = Reception.objects.get(id=id)
+        reception = get_object_or_404(Reception, id=id)
         initial_data = {
             'idReception': id,
             'name': reception.name,
@@ -301,9 +327,26 @@ def medicine(request,id):
             'gender': reception.gender,
             'date_of_birth': reception.date_of_birth
         }
-        form = MedicinForm(initial=initial_data)  # Prepopulate the form with initial data
+        form = MedicinForm(initial=initial_data)
 
     appointments = Reception.objects.all().order_by('-id')
+    try:
+        medicine = Medicin.objects.filter(idReception=id).first()
+    except Medicin.DoesNotExist:
+        medicine = None
+        # Replace commas in Exo model fields
+    if medicine:
+        medicine.antibiotic = medicine.antibiotic.replace("'", "")
+        medicine.analogous = medicine.analogous.replace("'", "")
+        medicine.mouthwash = medicine.mouthwash.replace("'", "")
+        # Add line breaks for specific fields
+        medicine.antibiotic = add_linebreaks(medicine.antibiotic, 4)
+        medicine.analogous = add_linebreaks(medicine.analogous, 4)
+        medicine.mouthwash = add_linebreaks(medicine.mouthwash, 4)
+
+
+    return render(request, 'exo/medicine.html',
+                  {'form': form, 'appointments': appointments, 'medicine': medicine, 'id': id})
 
 
 def all_medicine(request):
@@ -369,7 +412,42 @@ def search_exo(request):
         return render(request, 'exo/search_exo.html', {})
 
 
+def search_exo1(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(name__icontains=searched)
+        receptions = Reception.objects.all()
+        return render(request, 'exo/search_exo1.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'exo/search_exo1.html', {})
+
+
 def delete_exo(request, id):
     orals = Exo.objects.get(pk=id)
     orals.delete()
     return redirect('all-oral-surgery')
+
+
+def drugs(request):
+    if request.method == 'POST':
+        form = DrugForm(request.POST)
+        if form.is_valid():
+            drugs = form.save()
+
+            # Combine values from multiple fields into a single field
+            combined_value = f"{drugs.name} - {drugs.doze} - {drugs.type} - {drugs.times}"
+
+            # Populate the Medicine1 model with the combined value
+            medicine1 = Medicine1.objects.create(name_medicine=combined_value)
+            medicine1.save()
+
+            return redirect('drugs')  # Redirect to a success page or another view
+    else:
+        form = DrugForm()
+
+    # Retrieve all Medicine1 objects
+    medicine1_objects = Medicine1.objects.all()
+
+    return render(request, 'drugs/drugs.html', {'form': form, 'medicine1_objects': medicine1_objects})
+
+

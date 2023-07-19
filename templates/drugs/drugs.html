@@ -1,0 +1,34 @@
+<!-- drugs.html -->
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% if drugs %}
+    <h2>Drug List</h2>
+    <ul>
+        {% for drug in drugs %}
+            <li>{{ drug.name_drugs }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if selected_drug %}
+        <h2>Selected Drug Information</h2>
+        <p>Name: {{ selected_drug.name_drugs }}</p>
+        <p>Corresponding Medicine: {{ selected_drug.medicine.name_medicine }}</p>
+    {% endif %}
+{% else %}
+    <p>No drugs available.</p>
+{% endif %}
+<br/><br/>
+{% if medicine1_objects %}
+    <h2>Medicine1 Information</h2>
+    <ul>
+        {% for medicine1_object in medicine1_objects %}
+            <li>{{ medicine1_object.name_medicine }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No Medicine1 information available.</p>
+{% endif %}

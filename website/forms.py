@@ -1,8 +1,28 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin
+from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug
 
 
+class DrugForm(forms.ModelForm):
+    class Meta:
+        model = Drug
+        fields = ['idReception','name','doze','type','times']
+        labels = {
+            'idReception': '',
+            'name': '',
+            'doze': '',
+            'type': '',
+            'times': '',
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'doze': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doze'}),
+            'type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'type'}),
+            'times': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'times'}),
+
+        }
 
 
 class MedicinForm(forms.ModelForm):
@@ -31,12 +51,11 @@ class MedicinForm(forms.ModelForm):
             'analogous': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'analogous'}),
             'mouthwash': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'mouthwash'}),
 
-
         }
 
 
 class ExoForm(forms.ModelForm):
-    exo_images = forms.ImageField(widget=forms.ClearableFileInput)
+    exo_images = forms.FileInput()
 
     class Meta:
         model = Exo
@@ -72,9 +91,13 @@ class ExoForm(forms.ModelForm):
             'simpleexo': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'simpleexo'}),
             'complcated': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
 
-
-
         }
+
+
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['image']
 
 
 class OralSurgeryForm(forms.ModelForm):

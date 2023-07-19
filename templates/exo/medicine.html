@@ -44,9 +44,9 @@
                 <td scope="row">{{ form.initial.phone }}</td>
                 <td scope="row">{{ form.initial.gender }}</td>
                 <td scope="row">{{ form.initial.date_of_birth }}</td>
-                <td scope="row">{{ medicine.antibiotic |slice:"1:-1"|safe }}</td>
-                <td scope="row">{{ medicine.analogous|slice:"1:-1"|safe }}</td>
-                <td scope="row">{{ medicine.mouthwash|slice:"1:-1"|safe }}</td>
+                <td scope="row">- {{ medicine.antibiotic |slice:"1:-1"|safe }}</td>
+                <td scope="row">- {{ medicine.analogous|slice:"1:-1"|safe }}</td>
+                <td scope="row">- {{ medicine.mouthwash|slice:"1:-1"|safe }}</td>
                 <td>{% if medicine %}
                 <a href="{% url 'print-medicine' medicine.id %}" style="display: inline;" class="btn btn-outline-info">Print Drags</a>
                     {% endif %}</td>
@@ -82,22 +82,11 @@
                             <input type="checkbox" name="analogous" class="form-check-input" value="Tab"><label class="form-check-label">Tab</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="Syrup"><label class="form-check-label">Syrup</label>
+                            <input type="checkbox" name="analogous" class="form-check-input" value="250 mg" ><label class="form-check-label">100 mg</label>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="250" ><label class="form-check-label">250</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="500"><label class="form-check-label">500</label>
-                        </div>
+
                         <div class="form-check form-check-inline">
                             <input type="checkbox" name="analogous" class="form-check-input" value="1*1"><label class="form-check-label">1*1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="1*2"><label class="form-check-label">1*2</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="1*3"><label class="form-check-label">1*3</label>
                         </div>
                         <br/>
                         <hr>
@@ -111,36 +100,10 @@
                             <input type="checkbox" name="analogous" class="form-check-input" value="Syrup"><label class="form-check-label">Syrup</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="250" ><label class="form-check-label">250</label>
+                            <input type="checkbox" name="analogous" class="form-check-input" value="400 mg" ><label class="form-check-label">400 mg</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="500"><label class="form-check-label">500</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="1*1"><label class="form-check-label">1*1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="1*2"><label class="form-check-label">1*2</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="1*3"><label class="form-check-label">1*3</label>
-                        </div>
-                        <br/>
-                        <hr>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="Ibuprofen 400m"><label class="form-check-label">Ibuprofen 400m</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="Tab"><label class="form-check-label">Tab</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="Syrup"><label class="form-check-label">Syrup</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="250" ><label class="form-check-label">250</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" name="analogous" class="form-check-input" value="500"><label class="form-check-label">500</label>
+                            <input type="checkbox" name="analogous" class="form-check-input" value="600 mg"><label class="form-check-label">600 mg</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input type="checkbox" name="analogous" class="form-check-input" value="1*1"><label class="form-check-label">1*1</label>
@@ -189,7 +152,30 @@
                             <input type="checkbox" name="analogous" class="form-check-input" value="Syrup"><label class="form-check-label">Syrup</label>
                         </div>
                         <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="250" ><label class="form-check-label">250</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="500"><label class="form-check-label">500</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="1*1"><label class="form-check-label">1*1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="1*2"><label class="form-check-label">1*2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="1*3"><label class="form-check-label">1*3</label>
+                        </div>
+                        <br/>
+                        <hr>
+                        <div class="form-check form-check-inline">
                             <input type="checkbox" name="analogous" class="form-check-input" value="Ointment"><br/><label class="form-check-label">Ointment</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="Tab"><label class="form-check-label">Tab</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" name="analogous" class="form-check-input" value="Syrup"><label class="form-check-label">Syrup</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input type="checkbox" name="analogous" class="form-check-input" value="250" ><label class="form-check-label">250</label>
@@ -227,7 +213,7 @@
                             <input type="checkbox" name="antibiotic" class="form-check-input" value="Syrup"><label class="form-check-label">Syrup</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="checkbox" name="antibiotic" class="form-check-input" value="250" ><label class="form-check-label">250</label>
+                            <input type="checkbox" name="antibiotic" class="form-check-input" value="625-1000mg" ><label class="form-check-label">625-1000mg</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input type="checkbox" name="antibiotic" class="form-check-input" value="500"><label class="form-check-label">500</label>
