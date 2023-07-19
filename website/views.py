@@ -4,9 +4,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm, MedicinForm,PhotoForm,DrugForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,Photo,Drug,Medicine1
-import pdfkit
-from django.template.loader import render_to_string
-from wkhtmltopdf.views import PDFTemplateView
+
 
 
 def home(request):
