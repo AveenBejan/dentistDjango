@@ -1,4 +1,4 @@
-asgiref==3.6.0
+pip listasgiref==3.6.0
 distlib==0.3.6
 dj-database-url==2.0.0
 Django==4.2
@@ -16,4 +16,5 @@ sqlparse==0.4.3
 typing_extensions==4.6.3
 tzdata==2023.3
 virtualenv==20.21.0
+Pillow==10.0.0
 
