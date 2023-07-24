@@ -229,47 +229,261 @@ class OralSurgeryForm(forms.ModelForm):
 
 
 1111111111111111111111111111
-def exo(request, id):
-    if request.method == 'POST':
-        form = ExoForm(request.POST, request.FILES)
-        if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
-            reception = Reception.objects.get(id=id)
-            oral_surgery.name = reception.name  # Set the name from Reception model
-            oral_surgery.phone = reception.phone  # Set the name from Reception model
-            oral_surgery.gender = reception.gender  # Set the gender from Reception model
-            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
-            oral_surgery.save()
+<html lang="en">
+<head>
+    <title>{% block title %}Dental Clinic {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            # Get the list of uploaded files
-            files = request.FILES.getlist('exo_image')
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
 
-            # Loop through each uploaded file
-            for file in files:
-                exo_image = Exo(exo_image=file)
-                exo_image.save()
+    <link rel="stylesheet" href="{% static 'website/css/open-iconic-bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap1.min.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/animate.css'%}">
 
-            return redirect('exo', id=id)
-    else:
-        reception = Reception.objects.get(id=id)
-        initial_data = {
-            'idReception': id,
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
-        }
-        form = ExoForm(initial=initial_data)  # Prepopulate the form with initial data
+    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/owl.theme.default.min.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css'%}">
 
-    appointments = Reception.objects.all().order_by('-id')
-    try:
-        exoo = Exo.objects.get(idReception=id)
-    except Exo.DoesNotExist:
-        exoo = None
-    try:
-        medicine = Medicin.objects.get(idReception=id)
-    except Medicin.DoesNotExist:
-        medicine = None
-    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'medicine': medicine, 'exoo': exoo, 'id': id})
+    <link rel="stylesheet" href="{% static 'website/css/aos.css'%}">
+
+    <link rel="stylesheet" href="{% static 'website/css/ionicons.min.css'%}">
+
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap-datepicker.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/jquery.timepicker.css'%}">
+
+
+    <link rel="stylesheet" href="{% static 'website/css/flaticon.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/icomoon.css'%}">
+    <link rel="stylesheet" href="{% static 'website/css/style.css'%}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">Cosmolight <span>Dental_Center</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{% url 'services' %}" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        Reception
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        Examination
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'exo-reception1' %}">Drags Info</a>
+                        <!--<a class="dropdown-item" href="{% url 'drugs' %}">Add Drags</a>-->
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        Oral_Surgery
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'exo-reception' %}">Reception Info</a>
+                        <a class="dropdown-item" href="{% url 'all-exo' %}">Exo All Info</a>
+
+
+                        <!--<a class="dropdown-item" href="{% url 'oral-reception' %}">Oral Surgery Info</a>
+                        <a class="dropdown-item" href="{% url 'all-oral-surgery' %}">All Oral Surgery Info</a>
+                          <a class="dropdown-item" href="{% url 'orthodontics' %}">orthodontic</a>-->
+                    </div>
+                </li>
+                <!--<li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Patients
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'appointment1' %}">Patients</a>
+
+
+                    <a class="dropdown-item" href="{% url 'all-details' %}">All Patient Details</a>
+                    <a class="dropdown-item" href="{% url 'all-details' %}">Search Patient Details.</a>
+
+
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Appointment
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'appointment1' %}">Appointment</a>
+
+                    <a class="dropdown-item" href="{% url 'all-appo' %}">Appointment Details.</a>
+                    <a class="dropdown-item" href="{% url 'all-appo' %}">Search Appointment Details.</a>
+
+
+
+                  </div>
+                </li>-->
+                <li class="nav-item dropdown">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">Accounts</a>
+                    <div class="dropdown-menu">
+                        {% if user.is_authenticated %}
+                        {% if user.is_admin %}
+                        <a class="dropdown-item" href="{% url 'signup' %}">SignOut</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
+                        {% endif %}
+                        {% else %}
+                        <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                        {% endif %}
+                    </div>
+
+            </li>
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+<!-- END nav -->
+
+{% block body %}
+
+{% endblock %}
+{% block content %}
+{% endblock %}
+<!--
+<br/>
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-3">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Cosmolight Dental_Center.</h2>
+              <p>Our Dental Team is Ready to Help You.</p>
+            </div>
+            <ul class="ftco-footer-social list-unstyled float-md-left float-lft ">
+              <li class="ftco-animate"><a href="https://twitter.com/home"><span class="icon-twitter"></span></a></li>
+              <li class="ftco-animate"><a href="https://facebook.com/106622855727373"><span class="icon-facebook"></span></a></li>
+              <li class="ftco-animate"><a href="https://www.youtube.com/channel/UCx-dDgpEznfvCMMEHoEHm-A"><span class="icon-youtube"></span></a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-2">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Quick Links</h2>
+              <ul class="list-unstyled">
+                <li><a href="{% url 'about' %}" class="py-2 d-block">About</a></li>
+                <li><a href="{% url 'services' %}" class="py-2 d-block">Features</a></li>
+                <li><a href="{% url 'doctors' %}" class="py-2 d-block">Projects</a></li>
+                <li><a href="{% url 'contact' %}" class="py-2 d-block">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Social Links</h2>
+              <ul class="list-unstyled">
+                <li><a href="https://twitter.com/home"><span class="icon-twitter"></span> Twitter</a></li>
+                <li><a href="https://facebook.com/106622855727373"><span class="icon-facebook"></span>Facebook</a></li>
+                <li><a href="https://www.youtube.com/channel/UCx-dDgpEznfvCMMEHoEHm-A"><span
+                        class="icon-youtube"></span>Youtube</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Office</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">750 222 33 66</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">econoarts@econoartstech.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p> Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="icon-heart" aria-hidden="true"></i> by <a href="https://econoartstech.com" target="_blank">Econoartstech</a>
+ Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.</p>
+          </div>
+        </div>
+      </div>
+    </footer>-->
+
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00"/>
+    </svg>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalRequest" tabindex="-1" role="dialog" aria-labelledby="modalRequestLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'website/js/jquery.min.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{% static 'website/js/popper.min.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'website/js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.stellar.min.js' %}"></script>
+<script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'website/js/aos.js' %}"></script>
+<script src="{% static 'website/js/jquery.animateNumber.min.js' %}"></script>
+<script src="{% static 'website/js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'website/js/jquery.timepicker.min.js' %}"></script>
+<script src="{% static 'website/js/scrollax.min.js' %}"></script>
+
+<script src="{% static 'website/js/google-map.js' %}"></script>
+<script src="{% static 'website/js/main.js' %}"></script>
+
+</body>
+</html>
 1111111111111111111111111111111111111

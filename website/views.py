@@ -6,9 +6,12 @@ from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,Photo,Drug,Medicine1
 
 
-
 def home(request):
     return render(request, 'home.html')
+
+
+def home1(request):
+    return render(request, 'home1.html')
 
 
 def contact(request):

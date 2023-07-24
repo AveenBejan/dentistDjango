@@ -8,7 +8,7 @@
         <div class="container">
           <div class="row slider-text align-items-center" data-scrollax-parent="true">
             <div class="col-md-6 col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-              <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">We Will Take Care Of Your Teeth</h1>
+
               <p class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"></p>
 				<br/>
 
@@ -21,33 +21,7 @@
         <div class="container">
           <div class="row slider-text align-items-center" data-scrollax-parent="true">
             <div class="col-md-6 col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-              <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Your New Smile.</h1>
-              <p class="mb-4"></p>
-				<br/>
 
-            </div>
-          </div>
-        </div>
-      </div>
-		      <div class="slider-item" style="background-image: url({% static 'website/images/bg_2.jpg' %});">
-        <div class="overlay"></div>
-        <div class="container">
-          <div class="row slider-text align-items-center" data-scrollax-parent="true">
-            <div class="col-md-6 col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-              <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Fast & Effective Teeth with Whitening System.</h1>
-              <p class="mb-4"></p>
-				<br/>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="slider-item" style="background-image: url({% static 'website/images/St1.png' %});">
-        <div class="overlay"></div>
-        <div class="container">
-          <div class="row slider-text align-items-center" data-scrollax-parent="true">
-            <div class="col-md-6 col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-              <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Your smile says a lot about the way you feel.</h1>
               <p class="mb-4"></p>
 				<br/>
 
@@ -60,31 +34,12 @@
 <section class="ftco-intro">
 	<div class="container">
 		<div class="row no-gutters">
-			<div class="col-md-3 color-2 p-4">
-				<h3 class="mb-4">Opening Hours</h3>
-				<p class="openinghours d-flex">
-					<span>Saturday</span>
-					<span>16:00 - 21:00</span>
-				</p>
-				<p class="openinghours d-flex">
-					<span>Sunday-Tuesday</span>
-					<span>16:00 - 21:00</span>
-				</p>
-				<p class="openinghours d-flex">
-					<span>Wednesday</span>
-					<span>18:00 - 20:00</span>
-				</p>
-				<p class="openinghours d-flex">
-					<span>Tuesday - Friday</span>
-					<span>Clinic Holiday</span>
-				</p>
-			</div>
 			{% if form %}
 			<h3>Thank - {{ form }}</h3>
 			<p>We received your email and will respond shortly .... </p>
 			{% else %}
-			<div class="col-md-8 color-3 p-4">
-				<h3 class="mb-2">Make an Appointment</h3>
+			<div class="col-md-10 color-3 p-4">
+				<h3 class="mb-2">Make an Reservation</h3>
 				<form action="{% url 'reception' %}" class="appointment-form" method="POST">
 					{% csrf_token %}
 					<div class="row">
@@ -115,7 +70,7 @@
 						</div>
 						<div class="col-sm-5">
 							<div class="form-group">
-								<div class="icon">Date of Birthday<span></span></div>
+								<div class="icon"></div>
 
 								<input type="date" name="date_of_birth" class="form-control" placeholder="Date of Birthday">
 							</div>
@@ -132,8 +87,8 @@
 		</div>
 	</div>
 </section>
+<!--
 
-  
     <section class="ftco-section ftco-services">
       <div class="container">
       	<div class="row justify-content-center mb-5 pb-5">
@@ -152,7 +107,7 @@
                 <h3 class="heading">Teeth Whitening</h3>
                 <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
               </div>
-            </div>      
+            </div>
           </div>
           <div class="col-md-3 d-flex align-self-stretch ftco-animate">
             <div class="media block-6 services d-block text-center">
@@ -163,7 +118,7 @@
                 <h3 class="heading">Teeth Cleaning</h3>
                 <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
               </div>
-            </div>    
+            </div>
           </div>
           <div class="col-md-3 d-flex align-self-stretch ftco-animate">
             <div class="media block-6 services d-block text-center">
@@ -174,7 +129,7 @@
                 <h3 class="heading">Quality Brackets</h3>
                 <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
               </div>
-            </div>      
+            </div>
           </div>
           <div class="col-md-3 d-flex align-self-stretch ftco-animate">
             <div class="media block-6 services d-block text-center">
@@ -185,7 +140,7 @@
                 <h3 class="heading">Modern Anesthetic</h3>
                 <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
               </div>
-            </div>      
+            </div>
           </div>
         </div>
       </div>
@@ -471,7 +426,7 @@
         </div>
       </div>
     </section>
-		
+
 <br/>
 		<section class="ftco-gallery">
     	<div class="container-wrap">
@@ -517,5 +472,5 @@
                       referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
-
+-->
 {% endblock %}
