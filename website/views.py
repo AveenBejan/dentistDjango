@@ -125,7 +125,7 @@ def reception(request):
         if form.is_valid():
             form.save()
             appointments = Reception.objects.all().order_by('-id')
-            return render(request, 'exo/exo_reception.html', {'form': form, 'appointments': appointments})
+            return render(request, 'home.html', {'form': form, 'appointments': appointments})
     else:
         form = ReceptionForm()
         return render(request, 'home.html')

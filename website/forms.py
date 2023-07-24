@@ -138,18 +138,22 @@ class OralSurgeryForm(forms.ModelForm):
 class ReceptionForm(forms.ModelForm):
     class Meta:
         model = Reception
-        fields = ('name','phone','gender','date_of_birth')
+        fields = ('name','phone','gender','date_of_birth','doctor_name','time')
         labels = {
             'name': '',
             'phone': '',
             'gender': '',
             'date_of_birth': '',
+            'doctor_name': '',
+            'time': '',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
-            'gender': forms.Select(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'doctor_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
+            'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'time'}),
         }
 
 
