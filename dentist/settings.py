@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website',
     'widget_tweaks',
+    'accounts',
+
 
 
 ]
@@ -84,6 +86,7 @@ DATABASES = {
 
     )
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -146,3 +149,5 @@ django_heroku.settings(locals())
 
 LOGOUT_REDIRECT_URL='home'
 LOGIN_REDIRECT_URL ='home'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'

@@ -8,10 +8,10 @@ from django.utils import timezone
 class Reception(models.Model):
     name = models.CharField('Name',max_length=120)
     phone = models.CharField('phone',max_length=120)
-    gender = models.CharField('Gender',max_length=200)
+    gender = models.CharField('Gender',max_length=20)
     date_of_birth = models.DateField()
     doctor_name = models.CharField('doctor_name',max_length=200, null=True)
-    time = models.CharField(null=True,max_length=20)
+    time = models.CharField(null=True,max_length=200)
     regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
 
     def __str__(self):
