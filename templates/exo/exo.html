@@ -6,31 +6,14 @@
 {% block title %} Contact Page{% endblock %}
 {% block content %}
 
-
-
-<section class="home-slider owl-carousel">
-    <div class="slider-item bread-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});"
-         data-stellar-background-ratio="0.5">
-        <div class="overlay"></div>
-        <div class="container" data-scrollax-parent="true">
-            <div class="row slider-text align-items-end">
-                <div class="col-md-7 col-sm-12 ftco-animate mb-5">
-                    <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span
-                            class="mr-2"><a href="index.html"></a></span> <span></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</section>
 <br/>
-<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #e7f1ff; align-content: center; color: white; border-radius: 10px">
+<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="text-align: justify;">
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="text-align: justify; background-color:#a7e2fa; color:#000">
                         Patient Information
                     </button>
                 </h2>
@@ -38,7 +21,7 @@
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <table class="table table-hover">
-                            <thead class="table-primary">
+                            <thead style="background-color:#73ccf0; color:#fff;">
                             <tr>
 
                                 <th scope="col">#</th>
@@ -46,6 +29,8 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Date of Birth</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Time</th>
                                 <th scope="col">Upper Right</th>
                                 <th scope="col">Upper Left</th>
                                 <th scope="col">Lower Right</th>
@@ -64,6 +49,8 @@
                                 <td scope="row">{{ form.initial.phone }}</td>
                                 <td scope="row">{{ form.initial.gender }}</td>
                                 <td scope="row">{{ form.initial.date_of_birth }}</td>
+                                <td scope="row">{{appointment.doctor_name}}</td>
+                                <td scope="row">{{appointment.time}}</td>
                                 <td scope="row">{{ exo.ur|slice:"1:-1" }}</td>
                                 <td scope="row">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td scope="row">{{exoo.lr|slice:"1:-1"}}</td>
@@ -86,7 +73,7 @@
                         <button class="accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
-                                aria-controls="collapseTwo">
+                                aria-controls="collapseTwo"style="text-align: justify; background-color:#a7e2fa; color:#000">
                             Exo Direction
                         </button>
                     </h2>
@@ -445,7 +432,7 @@
                             <button class="accordion-button collapsed" type="button"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    aria-controls="collapseThree"style="text-align: justify; background-color:#a7e2fa; color:#000">
                                 Drags Information
                             </button>
                         </h2>

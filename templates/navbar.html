@@ -1,0 +1,110 @@
+<nav class="navbar navbar-expand-lg"  style="background-color: #73ccf0;">
+    <div class="container" >
+        <a class="navbar-brand" href="{% url 'home' %}" style="color: #ffffff;">Cosmolight <span>Dental_Center</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav" >
+            <ul class="navbar-nav ml-auto" >
+                <li class="nav-item active" ><a href="{% url 'home' %}" class="nav-link" style="color: #ffffff;">Home</a></li>
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false" style="color: #ffffff;">Accounts</a>
+                     <div class="dropdown-menu">
+                         {% if user.is_authenticated %}
+                           {% if user.role == 'admin' %}
+                            <a class="dropdown-item" href="{% url 'signup' %}">SignOut</a>
+                           {% endif %}
+                         <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
+                         {% else %}
+                         <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                         {% endif %}
+                     </div>
+
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'about' %}" class="nav-link"  style="color: #ffffff;">About</a></li>
+                <li class="nav-item"><a href="{% url 'services' %}" class="nav-link" style="color: #ffffff;">Services</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link" style="color: #ffffff;">Contact</a></li>
+                {% endif %}
+                {% if user.role == 'admin' or user.role == 'user' %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false" style="color: #ffffff;">
+                        Reception
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                    </div>
+
+                </li>
+                {% endif %}
+                {% if user.role == 'admin' or user.role == 'doctor' %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false" style="color: #ffffff;">
+                        Examination
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'exo-reception1' %}">Drags Info</a>
+                        <!--<a class="dropdown-item" href="{% url 'drugs' %}">Add Drags</a>-->
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false" style="color: #ffffff;">
+                        Oral_Surgery
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'exo-reception' %}">Reception Info</a>
+                        <a class="dropdown-item" href="{% url 'all-exo' %}">Exo All Info</a>
+
+
+                        <!--<a class="dropdown-item" href="{% url 'oral-reception' %}">Oral Surgery Info</a>
+                        <a class="dropdown-item" href="{% url 'all-oral-surgery' %}">All Oral Surgery Info</a>
+                          <a class="dropdown-item" href="{% url 'orthodontics' %}">orthodontic</a>-->
+                    </div>
+                </li>
+                <!--<li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Patients
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'appointment1' %}">Patients</a>
+
+
+                    <a class="dropdown-item" href="{% url 'all-details' %}">All Patient Details</a>
+                    <a class="dropdown-item" href="{% url 'all-details' %}">Search Patient Details.</a>
+
+
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Appointment
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'appointment1' %}">Appointment</a>
+
+                    <a class="dropdown-item" href="{% url 'all-appo' %}">Appointment Details.</a>
+                    <a class="dropdown-item" href="{% url 'all-appo' %}">Search Appointment Details.</a>
+
+
+
+                  </div>
+                </li>-->
+                {% endif %}
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+<!-- END nav -->

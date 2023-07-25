@@ -53,6 +53,7 @@
                 <td scope="row">{{appointment.phone}}</td>
                 <td scope="row">{{appointment.gender}}</td>
                 <td scope="row">{{appointment.date_of_birth}}</td>
+
                 <td scope="row"  class="line-breaks">- {{ appointment.antibiotic|slice:"1:-1"|safe }}</td>
                 <td scope="row"  class="line-breaks">- {{appointment.analogous|slice:"1:-1"|safe }}</td>
                 <td scope="row"   class="line-breaks">- {{appointment.mouthwash|slice:"1:-1"|safe }}</td>
