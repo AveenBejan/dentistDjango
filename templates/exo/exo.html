@@ -35,6 +35,7 @@
                                 <th scope="col">Upper Left</th>
                                 <th scope="col">Lower Right</th>
                                 <th scope="col">Lower Left</th>
+                                <th scope="col">Price</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Exo by Surgery</th>
                                 <th scope="col">Simple Exo</th>
@@ -49,12 +50,13 @@
                                 <td scope="row">{{ form.initial.phone }}</td>
                                 <td scope="row">{{ form.initial.gender }}</td>
                                 <td scope="row">{{ form.initial.date_of_birth }}</td>
-                                <td scope="row">{{appointment.doctor_name}}</td>
-                                <td scope="row">{{appointment.time}}</td>
-                                <td scope="row">{{ exo.ur|slice:"1:-1" }}</td>
+                                <td scope="row">{{form.initial.doctor_name}}</td>
+                                <td scope="row">{{form.initial.time}}</td>
+                                <td scope="row">{{exoo.ur|slice:"1:-1" }}</td>
                                 <td scope="row">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td scope="row">{{exoo.lr|slice:"1:-1"}}</td>
                                 <td scope="row">{{exoo.ll|slice:"1:-1"}}</td>
+                                <td scope="row">{{exoo.price}}</td>
                                 <td scope="row">{{exoo.note}}</td>
                                 <td scope="row">{{exoo.exoby|slice:"1:-1"}}</td>
                                 <td scope="row">{{exoo.simpleexo|slice:"1:-1"}}</td>
@@ -74,7 +76,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"style="text-align: justify; background-color:#a7e2fa; color:#000">
-                            Exo Direction
+                            Extracted Tooth Number
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse"
@@ -102,8 +104,7 @@
 
                                         <br/>
                                         <div class="card-header">
-                                            <h4 style="font-size: 22px; text-align:center;">Exo
-                                                Direction</h4>
+                                            <h4 style="font-size: 22px; text-align:center;">Extracted Tooth Number</h4>
                                         </div>
                                         <br/>
                                         <div class="row">
@@ -383,6 +384,11 @@
                                                     Notes</h4>
                                             </div>
                                             <div class="card-body">
+                                                <div class="form-control">
+                                                    <input type="text" name="price" value=""
+                                                           class="form-control"
+                                                           placeholder="Price:">
+                                                </div>
                                                 <div class="form-control">
                                                     <input type="text" name="note" value=""
                                                            class="form-control"

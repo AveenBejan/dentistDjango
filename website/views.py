@@ -2,8 +2,9 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm, MedicinForm,PhotoForm,DrugForm
-from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,Photo,Drug,Medicine1
+from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm, MedicinForm,PhotoForm,DrugForm,CrownForm
+from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,Photo,Drug,Medicine1,Crown
+from django.db.models import Q
 
 
 def home(request):
@@ -345,7 +346,6 @@ def medicine(request, id):
         medicine.analogous = add_linebreaks(medicine.analogous, 4)
         medicine.mouthwash = add_linebreaks(medicine.mouthwash, 4)
 
-
     return render(request, 'exo/medicine.html',
                   {'form': form, 'appointments': appointments, 'medicine': medicine, 'id': id})
 
@@ -406,7 +406,7 @@ def print_medicine1(request, id):
 def search_exo(request):
     if request.method == 'POST':
         searched = request.POST.get('searched')
-        orals = Reception.objects.filter(name__icontains=searched)
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
         receptions = Reception.objects.all()
         return render(request, 'exo/search_exo.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
     else:
@@ -416,7 +416,7 @@ def search_exo(request):
 def search_exo1(request):
     if request.method == 'POST':
         searched = request.POST.get('searched')
-        orals = Reception.objects.filter(name__icontains=searched)
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
         receptions = Reception.objects.all()
         return render(request, 'exo/search_exo1.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
     else:
@@ -452,3 +452,63 @@ def drugs(request):
     return render(request, 'drugs/drugs.html', {'form': form, 'medicine1_objects': medicine1_objects})
 
 
+def crown_reception(request):
+    appointments =Reception.objects.all().order_by('-id')
+    return render(request, 'conservation/crown/crown_reception.html', {'appointments': appointments})
+
+
+def search_crown(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception.objects.all()
+        return render(request, 'conservation/crown/search_crown.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'conservation/crown/search_crown.html', {})
+
+
+def crown(request, id):
+    if request.method == 'POST':
+        form = CrownForm(request.POST, request.FILES)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            reception = Reception.objects.get(id=id)
+            oral_surgery.name = reception.name  # Set the name from Reception model
+            oral_surgery.phone = reception.phone  # Set the name from Reception model
+            oral_surgery.gender = reception.gender  # Set the gender from Reception model
+            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.save()
+            photos = request.FILES.getlist('exo_images')
+
+            crown_instance = form.save(commit=False)
+            crown_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(crown_instance=crown_instance, image=photo)
+
+            return redirect('crown', id=id)
+    else:
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth
+        }
+        form = CrownForm(initial=initial_data)  # Prepopulate the form with initial data
+
+    appointments = Reception.objects.all().order_by('-id')
+
+    try:
+        crownn = Crown.objects.get(idReception=id)
+        photos = crownn.photo_set.all()
+    except Crown.DoesNotExist:
+        crownn = None
+        photos = None
+    try:
+        medicine = Medicin.objects.get(idReception=id)
+    except Medicin.DoesNotExist:
+        medicine = None
+    return render(request, 'conservation/crown/crown.html', {'form': form, 'appointments': appointments, 'medicine': medicine, 'crownn': crownn, 'id': id,'photos': photos})

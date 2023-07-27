@@ -38,6 +38,10 @@ urlpatterns = [
     path('drugs',views.drugs, name='drugs'),
 
 
+    path('conservation/crown/crown_reception.html',views.crown_reception, name='crown-reception'),
+    path('search_crown', views.search_crown, name='search-crown'),
+    path('crown/<int:id>',views.crown, name='crown'),
+
     path('search_appo', views.search_appo, name='search-appo'),
     path('appointment1.html', views.appointment1, name='appointment1'),
     path('all_appo.html', views.all_appo, name='all-appo'),

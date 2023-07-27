@@ -1,0 +1,191 @@
+
+{% extends 'base.html'  %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Contact Page{% endblock %}
+
+{% block content %}
+
+<br/>
+<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+    <div class="col-12">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="text-align: justify; background-color:#a7e2fa; color:#000">
+                        Patient Information
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">No of Unite</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Crown Photo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td scope="row">{{ form.initial.idReception }}</td>
+                                <td scope="row">{{ form.initial.name }}</td>
+                                <td scope="row">{{ form.initial.phone }}</td>
+                                <td scope="row">{{ form.initial.gender }}</td>
+                                <td scope="row">{{ form.initial.date_of_birth }}</td>
+                                <td scope="row">{{form.initial.doctor_name}}</td>
+                                <td scope="row">{{form.initial.time}}</td>
+                                <td scope="row" align="center">{{crownn.shade}}</td>
+                                <td scope="row" align="center">{{crownn.no_unite}}</td>
+                                <td scope="row" align="center">{{crownn.color}}</td>
+                                <td scope="row" align="center">{{crownn.no_prepare}}</td>
+                                <td scope="row" align="center">{{crownn.price}}</td>
+                                <td scope="row" align="center">{{crownn.note}}</td>
+
+                                <td>{% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo"style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            Crown & Bridge Section
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <form method="POST" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception }}"
+                                       class="form-control">
+                                <input type="hidden" name="name" value="{{ form.initial.name }}"
+                                       class="form-control">
+                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                                       class="form-control">
+                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                                       class="form-control">
+                                <input type="hidden" name="date_of_birth"
+                                       value="{{ form.initial.date_of_birth }}"
+                                       class="form-control">
+
+                              <div class="container">
+                                <div class="col-6">
+                                  <br/>
+                                  <div class="card-header">
+                                    <h4 style="font-size: 22px; text-align:center;">Crown & Bridge</h4>
+                                  </div>
+                                  <br/>
+                                      <div class="card-header">
+                                        Crown & Bridge
+                                      </div>
+                                      <div class="card">
+                                        <div class="card-body">
+
+                                          <div class="form-group">
+                                              <label >Shade</label>
+                                            <select name="shade" class="form-select">
+                                              <option selected>Chose from here</option>
+                                              <option value="VITA Shade">VITA</option>
+                                              <option value="A-D Shade">A-D Shade</option>
+                                              <option value="Bleach Shade">Bleach Shade</option>
+                                              <option value="Tetric N-Ceram(16) Shade">Tetric N-Ceram(16) Shade</option>
+                                              <option value="Tetric N-Flow(10) Shade">Tetric N-Ceram(10) Shade</option>
+                                            </select>
+
+
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="text" class="form-control" name="no_unite"  placeholder="No of Unite:">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="text" class="form-control" name="color" placeholder="Color">
+
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="text" class="form-control" name="no_prepare" placeholder="No of Prepared Teeth">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="text" name="price" value="" class="form-control" placeholder="Price:">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="text" name="note" value="" class="form-control" placeholder="Notes:">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="file" name="exo_images" class="form-control" multiple>
+                                          </div>
+
+
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                   <div class="col-6">
+                                    <div class="card-footer text-center">
+                                      <input type="submit" value="Add New Crown"
+                                             class="btn btn-primary">
+                                    </div>
+                                   </div>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="false"
+                                    aria-controls="collapseThree"style="text-align: justify; background-color:#a7e2fa; color:#000">
+                                Drags Information
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse"
+                             aria-labelledby="headingThree"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <a href="{% url 'medicine' id=id %}" class="btn btn-outline-info">Go to
+                                    Medicine</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Display existing images if available
+{% if exoo and exoo.exo_image %}
+  <h2>Existing Images</h2>
+  {% for image in exoo.exo_image.all %}
+    <img src="{{ image.url }}" alt="Image">
+  {% endfor %}
+{% endif %} -->
+
+{% endblock %}

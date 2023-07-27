@@ -18,6 +18,22 @@ class Reception(models.Model):
         return self.name
 
 
+class Crown(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    name = models.CharField('Name',max_length=120)
+    phone = models.CharField('Phone', max_length=120)
+    gender = models.CharField('Gender', max_length=20)
+    date_of_birth = models.CharField('Gender', max_length=20)
+    shade = models.CharField('shade', max_length=120, blank=True)
+    no_unite = models.CharField('no_unite',max_length=120, blank=True)
+    color = models.CharField('color', max_length=120, blank=True)
+    no_prepare = models.CharField('no_prepare', max_length=120, blank=True)
+    price = models.DecimalField('price',max_digits=6,decimal_places=2,null=True)
+    note = models.CharField('note', max_length=120, blank=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+
+
 class Drug(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=200)
@@ -41,6 +57,7 @@ class Exo(models.Model):
     ul = models.CharField('Name', max_length=120, blank=True)
     lr = models.CharField('Name', max_length=120, blank=True)
     ll = models.CharField('Name', max_length=120, blank=True)
+    price = models.DecimalField('price',max_digits=6,decimal_places=2,null=True)
     note = models.CharField('Name', max_length=120, blank=True)
     exoby = models.CharField('Name', max_length=120, blank=True)
     simpleexo = models.CharField('Name', max_length=120, blank=True)
@@ -53,7 +70,8 @@ class Exo(models.Model):
 
 
 class Photo(models.Model):
-    exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE)
+    exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE,null=True)
+    crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE,null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     def __str__(self):
