@@ -1,0 +1,40 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+<br/>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form method="post" novalidate action="">
+                {% csrf_token %}
+
+                <input type="text" name="name_medicine" placeholder="Drags Name">&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-info">submit</button>
+                <br/><br/>
+
+            </form>
+        </div>
+    </div>
+    <br/>
+    <table class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Drags Name</th>
+            <th scope="col">Other</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td scope="row">{{appointment.id}}</td>
+            <td scope="row">{{appointment.name_medicine}}</td>
+            <td><a href="{% url 'delete-medicine1' appointment.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

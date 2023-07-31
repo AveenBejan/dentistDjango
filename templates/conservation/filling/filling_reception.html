@@ -1,0 +1,56 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+  <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand"></a>
+{%if user.is_authenticated%}
+        <form class="form-inline" method="POST" action="{% url 'search-filling' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-4" type="search" placeholder="Search For Patient" aria-label="Search"
+                   name="searched">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+{% endif %}
+    </nav>
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12 mb-4">
+                <h1 class="h2" align="center">Patient Appointment</h1>
+                <br/>
+                <table class="table table-hover">
+                    <thead style="background-color:#73ccf0; color:#fff;">
+                    <tr>
+
+                      <th scope="col">#</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Doctor Name</th>
+                        <th scope="col">Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for appointment in appointments  %}
+                    <tr>
+                        <td scope="row">{{appointment.id}}</td>
+                        <td scope="row">{{appointment.name}}</td>
+                        <td scope="row">{{appointment.phone}}</td>
+                        <td scope="row">{{appointment.gender}}</td>
+                        <td scope="row">{{appointment.date_of_birth}}</td>
+                        <td scope="row">{{appointment.doctor_name}}</td>
+                        <td scope="row">{{appointment.time}}</td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

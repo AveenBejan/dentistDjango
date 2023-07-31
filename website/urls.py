@@ -34,13 +34,25 @@ urlpatterns = [
     path('exo/all_medicine.html',views.all_medicine, name='all-medicine'),
     path('print_medicine/<int:id>',views.print_medicine, name='print-medicine'),
     path('print_medicine1/<int:id>',views.print_medicine1, name='print-medicine1'),
+    path('drugs/medicine1.html', views.medicine1, name='medicine1'),
+    path('delete-medicine1/<int:id>', views.delete_medicine1, name='delete-medicine1'),
 
-    path('drugs',views.drugs, name='drugs'),
+    path('drugs/<int:id>/', views.drugs, name='drugs'),
+    path('print_drugs/<int:id>', views.print_drugs, name='print-drugs'),
+
 
 
     path('conservation/crown/crown_reception.html',views.crown_reception, name='crown-reception'),
     path('search_crown', views.search_crown, name='search-crown'),
     path('crown/<int:id>',views.crown, name='crown'),
+
+    path('conservation/veneer/veneer_reception.html', views.veneer_reception, name='veneer-reception'),
+    path('search_veneer', views.search_veneer, name='search-veneer'),
+    path('veneer/<int:id>', views.veneer, name='veneer'),
+
+    path('filling/<int:id>', views.filling, name='filling'),
+    path('filling/filling_reception.html', views.filling_reception, name='filling-reception'),
+    path('search_filling', views.search_filling, name='search-filling'),
 
     path('search_appo', views.search_appo, name='search-appo'),
     path('appointment1.html', views.appointment1, name='appointment1'),

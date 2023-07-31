@@ -37,6 +37,7 @@
                         <td> {{oral.date_of_birth}}</td>
                         <td><a href="{% url 'exo' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Exo</span></a></td>
                         <td><a href="{% url 'medicine' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Medicine</span></a></td>
+                        <td><a href="{% url 'drugs' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Drugs</span></a></td>
 
                     </tr>
                     {% endfor %}

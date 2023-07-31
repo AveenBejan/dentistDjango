@@ -29,17 +29,15 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Date of Birth</th>
-                                <th scope="col">Doctor Name</th>
-                                <th scope="col">Time</th>
+                                <th scope="col">Filling Type</th>
+                                <th scope="col">Filling Place</th>
                                 <th scope="col">Upper Right</th>
                                 <th scope="col">Upper Left</th>
                                 <th scope="col">Lower Right</th>
                                 <th scope="col">Lower Left</th>
                                 <th scope="col">Price</th>
+                                 <th scope="col">Total Price</th>
                                 <th scope="col">Notes</th>
-                                <th scope="col">Exo by Surgery</th>
-                                <th scope="col">Simple Exo</th>
-                                <th scope="col">Complicated</th>
                                 <th scope="col">Exo Photo</th>
                             </tr>
                             </thead>
@@ -50,17 +48,15 @@
                                 <td scope="row">{{ form.initial.phone }}</td>
                                 <td scope="row">{{ form.initial.gender }}</td>
                                 <td scope="row">{{ form.initial.date_of_birth }}</td>
-                                <td scope="row">{{form.initial.doctor_name}}</td>
-                                <td scope="row">{{form.initial.time}}</td>
-                                <td scope="row">{{exoo.ur|slice:"1:-1" }}</td>
-                                <td scope="row">{{exoo.ul|slice:"1:-1"}}</td>
-                                <td scope="row">{{exoo.lr|slice:"1:-1"}}</td>
-                                <td scope="row">{{exoo.ll|slice:"1:-1"}}</td>
-                                <td scope="row">{{exoo.price}}</td>
-                                <td scope="row">{{exoo.note}}</td>
-                                <td scope="row">{{exoo.exoby|slice:"1:-1"}}</td>
-                                <td scope="row">{{exoo.simpleexo|slice:"1:-1"}}</td>
-                                <td scope="row">{{exoo.complcated |slice:"1:-1"}}</td>
+                                <td scope="row">{{fillingg.filling_type}}</td>
+                                <td scope="row">{{fillingg.filling_place|slice:"1:-1"}}</td>
+                                <td scope="row">{{fillingg.ur|slice:"1:-1" }}</td>
+                                <td scope="row">{{fillingg.ul|slice:"1:-1"}}</td>
+                                <td scope="row">{{fillingg.lr|slice:"1:-1"}}</td>
+                                <td scope="row">{{fillingg.ll|slice:"1:-1"}}</td>
+                                <td scope="row">{{formatted_price}}</td>
+                                <td scope="row">{{formatted_total_price}}</td>
+                                <td scope="row">{{fillingg.note}}</td>
                                 <td>{% for photo in photos %}
                                     <img src="{{ photo.image.url }}" alt="Photo" width="100">
                                     {% endfor %}
@@ -76,7 +72,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"style="text-align: justify; background-color:#a7e2fa; color:#000">
-                            Extracted Tooth Number
+                            Filling Section
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse"
@@ -97,15 +93,22 @@
                                 <input type="hidden" name="date_of_birth"
                                        value="{{ form.initial.date_of_birth }}"
                                        class="form-control">
-
+                                <div class="col-2" style="float: right; margin-top: 28px;">
+                                    <div class="card-header" align="right">
+                                        <a href="{% url 'medicine' id=id %}" class="btn btn-outline-info d-flex align-items-center">&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs</a>
+                                    </div>
+                                </div>
                                 <div class="container">
 
-                                    <div class="col-12">
+                                    <div class="col-8">
 
                                         <br/>
                                         <div class="card-header">
-                                            <h4 style="font-size: 22px; text-align:center;">Extracted Tooth Number</h4>
+                                            <h4 style="font-size: 22px; text-align:center;">Filling</h4>
+
                                         </div>
+
                                         <br/>
                                         <div class="row">
 
@@ -116,7 +119,7 @@
                                                 <div class="card">
                                                     <div class="card-body">
 
-                                                        <div class="form-check form-check-inline">
+                                                           <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
@@ -250,7 +253,7 @@
                                                 </div>
                                                 <div class="card">
                                                     <div class="card-body">
-                                                        <div class="form-check form-check-inline">
+                                                       <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
@@ -379,49 +382,101 @@
                                         </div>
                                         <br/>
                                         <div class="card text-left">
-                                            <div class="card-header">
-                                                <h4 style="font-size: 22px; text-align:center;">Exo
-                                                    Notes</h4>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label style="font-weight:bold">Filling Type</label>
+                                                    <select name="filling_type" class="form-select">
+                                                        <option selected>Chose from here</option>
+                                                        <option value="Amalgam">Amalgam</option>
+                                                        <option value="Compisit">Compisit</option>
+                                                        <option value="Glass cement">Glass cement</option>
+                                                        <option value="Temporary filing">Temporary filing</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="form-control">
-                                                    <input type="text" name="price" value=""
-                                                           class="form-control"
-                                                           placeholder="Price:">
-                                                </div>
-                                                <div class="form-control">
-                                                    <input type="text" name="note" value=""
-                                                           class="form-control"
-                                                           placeholder="Notes:">
-                                                </div>
-                                                <div class="form-control">
-                                                    <input type="file" name="exo_images"
-                                                           class="form-control"
-                                                           multiple>
-                                                </div>
-                                                <br/>
-                                                <div class="form-check form-check-inline">
+                                            <br/>
+                                           <div class="row">
+                                               <div class="col">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Place : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+
                                                     <input type="checkbox" class="form-check-input"
-                                                           name="exoby"
-                                                           value="Exo by Surgery">
-                                                    <label class="form-check-label">Exo by
-                                                        Surgery</label>
+                                                           name="filling_place"
+                                                           value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input type="checkbox" class="form-check-input"
-                                                           name="simpleexo"
-                                                           value="Simple Exo">
-                                                    <label class="form-check-label">Simple Exo</label>
+                                                           name="filling_place"
+                                                           value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input type="checkbox" class="form-check-input"
-                                                           name="complcated"
-                                                           value="Complicated">
-                                                    <label class="form-check-label">Complicated</label>
+                                                           name="filling_place"
+                                                           value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
                                                 </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           name="filling_place"
+                                                           value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                                   <br/>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           name="filling_place"
+                                                           value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           name="filling_place"
+                                                           value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           name="filling_place"
+                                                           value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="row">
+                                                   <div class="col">
+
+                                                           <input type="text" name="no_prepare" value=""
+                                                                  class="form-control"
+                                                                  placeholder="Total Teeth Prepare:">
+                                                       </div>
+                                                   <div class="col">
+
+                                                       <input type="text" name="price" value=""
+                                                              class="form-control"
+                                                              placeholder="Price:">
+                                                   </div>
+                                               </div>
+                                               <br/>
+                                               <br/>
+
+                                               <div class="row">
+                                                   <div class="col">
+                                                       <input type="file" name="exo_images"
+                                                              class="form-control"
+                                                              multiple>
+                                                   </div>
+                                                   <div class="col">
+                                                       <input type="text" name="note" value=""
+                                                              class="form-control"
+                                                              placeholder="Notes:">
+                                                   </div>
+                                               </div>
                                             </div>
                                             <div class="card-footer text-center">
-                                                <input type="submit" value="Add New Exo"
+                                                <input type="submit" value="Add New Filling"
                                                        class="btn btn-primary">
                                             </div>
 
@@ -430,25 +485,6 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree"style="text-align: justify; background-color:#a7e2fa; color:#000">
-                                Drags Information
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse"
-                             aria-labelledby="headingThree"
-                             data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <a href="{% url 'medicine' id=id %}" class="btn btn-outline-info">Go to
-                                    Medicine</a>
-                            </div>
                         </div>
                     </div>
                 </div>

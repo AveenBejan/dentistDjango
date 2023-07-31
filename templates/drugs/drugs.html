@@ -1,34 +1,151 @@
-<!-- drugs.html -->
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
 
-{% if drugs %}
-    <h2>Drug List</h2>
-    <ul>
-        {% for drug in drugs %}
-            <li>{{ drug.name_drugs }}</li>
-        {% endfor %}
-    </ul>
+{% extends 'base.html'  %}
+{% load static %}
+{% load widget_tweaks %}
 
-    {% if selected_drug %}
-        <h2>Selected Drug Information</h2>
-        <p>Name: {{ selected_drug.name_drugs }}</p>
-        <p>Corresponding Medicine: {{ selected_drug.medicine.name_medicine }}</p>
-    {% endif %}
-{% else %}
-    <p>No drugs available.</p>
-{% endif %}
-<br/><br/>
-{% if medicine1_objects %}
-    <h2>Medicine1 Information</h2>
-    <ul>
-        {% for medicine1_object in medicine1_objects %}
-            <li>{{ medicine1_object.name_medicine }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No Medicine1 information available.</p>
-{% endif %}
+{% block title %} Contact Page{% endblock %}
+
+{% block content %}
+
+<br/>
+
+<<br/>
+<div class="container">
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead style="background-color:#73ccf0; color:#fff;">
+            <tr>
+
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Drugs Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Doze</th>
+                <th scope="col">Times</th>
+                <th scope="col">Other</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td scope="row">{{ form.initial.idReception }}</td>
+                <td scope="row">{{ form.initial.name }}</td>
+                <td scope="row">{{ form.initial.phone }}</td>
+                <td scope="row">{{ form.initial.gender }}</td>
+                <td scope="row">{{ form.initial.date_of_birth }}</td>
+                <td scope="row" align="center">{{medicine.name_medicine}}</td>
+                <td scope="row" align="center">{{medicine.type}}</td>
+                <td scope="row" align="center">{{medicine.doze}}</td>
+                <td scope="row" align="center">{{medicine.times}}</td>
+                  <td>{% if medicine %}
+                <a href="{% url 'print-drugs' medicine.id %}" style="display: inline;" class="btn btn-outline-info">Print Drags</a>
+                    {% endif %}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container" align="center" id="form-container">
+    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline">
+        {% csrf_token %}
+        <input type="hidden" name="idReception"
+               value="{{ form.initial.idReception }}"
+               class="form-control">
+        <input type="hidden" name="name" value="{{ form.initial.name }}"
+               class="form-control">
+        <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+               class="form-control">
+        <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+               class="form-control">
+        <input type="hidden" name="date_of_birth"
+               value="{{ form.initial.date_of_birth }}"
+               class="form-control">
+
+
+        <div class="col-12">
+            <br/>
+            <div class="card-header">
+                <h4 style="font-size: 22px; text-align:center;">Drugs Info</h4>
+            </div>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <select name="name_medicine" class="form-select">
+                                <option selected disabled>Select Medicine</option>
+                                {% for choice in form.name_medicine.field.queryset %}
+                                <option value="{{ choice.pk }}">{{ choice.name_medicine }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-select" name="type">
+                                <option selected disabled>Select Type</option>
+                                <option value="mg">mg</option>
+                                <option value="g">g</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-select" name="doze" placeholder="Doze">
+
+                        </div>
+                        <div class="col">
+                            <select class="form-select" name="times">
+                                <option selected disabled>Select Times</option>
+                                <option value="1*1">1*1</option>
+                                <option value="1*2">1*2</option>
+                                <option value="1*3">1*3</option>
+                                <option value="1*4">1*4</option>
+                                <option value="1*5">1*5</option>
+                                <option value="1*6">1*6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </div>
+        </div>
+
+    </form>
+    <button type="button" id="add-drug-btn" class="btn btn-success mt-3">Add Drug</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  const formContainer = $('#form-container');
+  const addDrugBtn = $('#add-drug-btn');
+
+  // Function to create a new form group
+  function createFormGroup(index) {
+    return `
+      <div class="form-group">
+        <label for="idReception_${index}">ID Reception:</label>
+        <input type="text" name="idReception" id="idReception_${index}" value="{{ form.initial.idReception }}" class="form-control">
+        <!-- Add other form fields here -->
+      </div>
+      <button type="button" class="btn btn-danger remove-drug-btn">Remove</button>
+    `;
+  }
+
+  // Function to handle the "Add Drug" button click
+  addDrugBtn.click(function() {
+    const formGroupIndex = formContainer.children().length;
+    const formGroup = $(createFormGroup(formGroupIndex));
+    formContainer.append(formGroup);
+  });
+
+  // Function to handle the "Remove" button click
+  formContainer.on('click', '.remove-drug-btn', function() {
+    $(this).parent().remove();
+  });
+});
+</script>
+{% endblock %}

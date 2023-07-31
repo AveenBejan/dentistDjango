@@ -35,7 +35,7 @@
                                 <th scope="col">Color</th>
                                 <th scope="col">No of Pre.Unite</th>
                                 <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
+                                <th scope="col">Total Price</th>total_price
                                 <th scope="col">Notes</th>
                                 <th scope="col">Crown Photo</th>
                             </tr>
@@ -47,13 +47,13 @@
                                 <td text-align="center" scope="row">{{ form.initial.phone }}</td>
                                 <td text-align="center" scope="row">{{ form.initial.gender }}</td>
                                 <td text-align="center" scope="row">{{ form.initial.date_of_birth }}</td>
-                                <td text-align="center" scope="row" align="center">{{crownn.shade}}</td>
-                                <td text-align="center" scope="row" align="center">{{crownn.no_unite}}</td>
-                                <td text-align="center" scope="row" align="center">{{crownn.color}}</td>
-                                <td text-align="center" scope="row" align="center">{{crownn.no_prepare}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneerr.shade}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneerr.no_unite}}</td>
+                                <td text-align="center"  scope="row" align="center">{{veneerr.color}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneerr.no_prepare}}</td>
                                 <td text-align="center" scope="row" align="center">{{formatted_price}}</td>
                                 <td text-align="center" scope="row" align="center"> {{ formatted_total_price }}</td>
-                                <td text-align="center" scope="row" align="center">{{crownn.note}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneerr.note}}</td>
 
                                 <td>{% for photo in photos %}
                                     <img src="{{ photo.image.url }}" alt="Photo" width="100">
@@ -70,7 +70,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"style="text-align: justify; background-color:#a7e2fa; color:#000">
-                            Crown & Bridge Section
+                            Veneer Section
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse"
@@ -96,11 +96,11 @@
                                 <div class="col-6">
                                   <br/>
                                   <div class="card-header">
-                                    <h4 style="font-size: 22px; text-align:center;">Crown & Bridge</h4>
+                                    <h4 style="font-size: 22px; text-align:center;">Veneer</h4>
                                   </div>
                                   <br/>
                                       <div class="card-header">
-                                        Crown & Bridge
+                                        Veneer
                                       </div>
                                       <div class="card">
                                         <div class="card-body">
@@ -131,7 +131,6 @@
                                           <div class="form-group">
                                             <input type="text" name="price" value="" class="form-control" placeholder="Price:">
                                           </div>
-
                                           <div class="form-group">
                                             <input type="text" name="note" value="" class="form-control" placeholder="Notes:">
                                           </div>

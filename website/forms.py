@@ -1,27 +1,45 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug, Crown
+from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
+    Crown,Medicine1,Veneer,Filling
+
+
+class Medicine1Form(forms.ModelForm):
+    class Meta:
+        model = Medicine1
+        fields = ['name_medicine']
+        labels = {
+            'name_medicine': '',}
+        widgets = {
+            'name_medicine': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),}
 
 
 class DrugForm(forms.ModelForm):
+    name_medicine = forms.ModelChoiceField(queryset=Medicine1.objects.all())
+
     class Meta:
         model = Drug
-        fields = ['idReception','name','doze','type','times']
+        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'doze', 'type', 'times','name_medicine']
         labels = {
             'idReception': '',
             'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
             'doze': '',
             'type': '',
             'times': '',
-
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
             'doze': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doze'}),
-            'type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'type'}),
-            'times': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'times'}),
-
+            'type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'type'}),
+            'times': forms.Select(attrs={'class': 'form-control', 'placeholder': 'times'}),
+            'name_medicine': forms.Select(attrs={'class': 'form-control', 'placeholder': 'name_medicine'})
         }
 
 
@@ -50,6 +68,49 @@ class MedicinForm(forms.ModelForm):
             'antibiotic': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'antibiotic'}),
             'analogous': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'analogous'}),
             'mouthwash': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'mouthwash'}),
+
+        }
+
+
+class FillingForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+
+    class Meta:
+        model = Filling
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','filling_type','filling_place',
+                  'ur', 'ul', 'lr', 'll',  'no_prepare', 'price', 'note','exo_images')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'filling_type': '',
+            'filling_place': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'no_prepare': '',
+            'price': '',
+            'note': '',
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'filling_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
+            'filling_place': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
 
         }
 
@@ -101,6 +162,42 @@ class CrownForm(forms.ModelForm):
 
     class Meta:
         model = Crown
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'note', 'exo_images')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'shade': '',
+            'no_unite': '',
+            'color': '',
+            'no_prepare': '',
+            'price': '',
+            'note': '',
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'shade': forms.Select(attrs={'class': 'form-control', 'placeholder': 'shade'}),
+            'no_unite': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_unite'}),
+            'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
+            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+
+        }
+
+
+class VeneerForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+
+    class Meta:
+        model = Veneer
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'note', 'exo_images')
         labels = {
             'idReception': '',

@@ -1,7 +1,8 @@
 from django import template
+from django.contrib.humanize.templatetags.humanize import intcomma
 
 register = template.Library()
-
+register.filter(intcomma)
 
 @register.filter
 def remove_quotes(value):

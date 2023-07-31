@@ -22,7 +22,7 @@
                         <th scope="col">Phone Number</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Date of Birth</th>
-                        <th scope="col" colspan="">Add Crown</th>
+                        <th scope="col" colspan="">Add Exo</th>
                         <th scope="col" colspan="">Medicine</th>
 
                     </tr>
@@ -35,8 +35,9 @@
                         <td> {{oral.phone}}</td>
                         <td> {{oral.gender}}</td>
                         <td> {{oral.date_of_birth}}</td>
-                        <td><a href="{% url 'crown' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Crown</span></a></td>
+                        <td><a href="{% url 'filling' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Filling</span></a></td>
                         <td><a href="{% url 'medicine' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Medicine</span></a></td>
+                        <!--<td><a href="{% url 'drugs' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Drugs</span></a></td>-->
 
                     </tr>
                     {% endfor %}
