@@ -44,6 +44,10 @@ class ReceptionForm(forms.ModelForm):
         }
 
 
+class SearchForm(forms.Form):
+    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor")
+
+
 class Medicine1Form(forms.ModelForm):
     class Meta:
         model = Medicine1

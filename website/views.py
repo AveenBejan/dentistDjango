@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
-    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm
+    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors
 from django.db.models import Q
@@ -179,6 +179,18 @@ def reception(request):
     appointments = Reception.objects.all().order_by('-id')
     return render(request, 'home.html', {'form': form, 'appointments': appointments})
 
+
+def search_doctor(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            selected_doctor = form.cleaned_data['doctor']
+            receptions = Reception.objects.filter(doctor=selected_doctor)
+            return render(request, 'doctors/search_doctor.html', {'receptions': receptions, 'form': form})
+    else:
+        form = SearchForm()
+
+    return render(request, 'doctors/search_doctor.html', {'form': form})
 
 def all_reception(request):
     appointments = Reception.objects.all().order_by('-id')

@@ -23,6 +23,7 @@ urlpatterns = [
     path('orthodontic.html', views.orthodontics, name='orthodontics'),
     path('doctors/doctor.html', views.doctor, name='doctor'),
     path('delete-doctor/<int:id>', views.delete_doctor, name='delete-doctor'),
+    path('search_doctor', views.search_doctor, name='search-doctor'),
 
 
     path('exo/<int:id>',views.exo, name='exo'),
