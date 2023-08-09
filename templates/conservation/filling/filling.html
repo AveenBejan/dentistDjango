@@ -9,6 +9,12 @@
 <br/>
 <div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
+                <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add Filling Information</li>
+            </ol>
+        </nav>
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -35,10 +41,12 @@
                                 <th scope="col">Upper Left</th>
                                 <th scope="col">Lower Right</th>
                                 <th scope="col">Lower Left</th>
+                                <th scope="col">No of Pre.Unite</th>
                                 <th scope="col">Price</th>
                                  <th scope="col">Total Price</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Exo Photo</th>
+                                <th scope="col" colspan="2">Other</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -54,13 +62,20 @@
                                 <td scope="row">{{fillingg.ul|slice:"1:-1"}}</td>
                                 <td scope="row">{{fillingg.lr|slice:"1:-1"}}</td>
                                 <td scope="row">{{fillingg.ll|slice:"1:-1"}}</td>
+                                <td scope="row">{{fillingg.no_prepare}}</td>
                                 <td scope="row">{{formatted_price}}</td>
                                 <td scope="row">{{formatted_total_price}}</td>
                                 <td scope="row">{{fillingg.note}}</td>
                                 <td>{% for photo in photos %}
                                     <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove_photo_filling' photo.id %}">Remove</a>
                                     {% endfor %}
                                 </td>
+                                {% if fillingg %}
+                                <td><a href="{% url 'filling_edit' fillingg.id %}" style="display: inline;"><span
+                                        class="btn btn-outline-warning">Edit</span></a></td>
+                                <td scope="row" ><a href="{% url 'delete-filling'  fillingg.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
@@ -79,7 +94,7 @@
                          aria-labelledby="headingTwo"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" novalidate enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
@@ -95,7 +110,8 @@
                                        class="form-control">
                                 <div class="col-2" style="float: right; margin-top: 28px;">
                                     <div class="card-header" align="right">
-                                        <a href="{% url 'medicine' id=id %}" class="btn btn-outline-info d-flex align-items-center">&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'drugs' id=id %}"
+                                           class="btn btn-outline-info d-flex align-items-center">&nbsp;&nbsp;&nbsp;
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs</a>
                                     </div>
                                 </div>
@@ -385,8 +401,8 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <label style="font-weight:bold">Filling Type</label>
-                                                    <select name="filling_type" class="form-select">
-                                                        <option selected>Chose from here</option>
+                                                    <select name="filling_type" class="form-select" required>
+                                                        <option value="">Chose from here</option>
                                                         <option value="Amalgam">Amalgam</option>
                                                         <option value="Compisit">Compisit</option>
                                                         <option value="Glass cement">Glass cement</option>
@@ -450,13 +466,13 @@
 
                                                            <input type="text" name="no_prepare" value=""
                                                                   class="form-control"
-                                                                  placeholder="Total Teeth Prepare:">
+                                                                  placeholder="Total Teeth Prepare:" required>
                                                        </div>
                                                    <div class="col">
 
                                                        <input type="text" name="price" value=""
                                                               class="form-control"
-                                                              placeholder="Price:">
+                                                              placeholder="Price:" required>
                                                    </div>
                                                </div>
                                                <br/>
@@ -493,12 +509,5 @@
     </div>
 </div>
 
-<!-- Display existing images if available
-{% if exoo and exoo.exo_image %}
-  <h2>Existing Images</h2>
-  {% for image in exoo.exo_image.all %}
-    <img src="{{ image.url }}" alt="Image">
-  {% endfor %}
-{% endif %} -->
 
 {% endblock %}

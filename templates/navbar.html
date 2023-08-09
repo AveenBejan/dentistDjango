@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg"  style="background-color: #73ccf0;">
     <div class="container" >
         <a class="navbar-brand" href="{% url 'home' %}" style="color: #ffffff;">Cosmolight <span>Dental_Center</span></a>
@@ -23,12 +24,12 @@
                          {% endif %}
                      </div>
 
-                </li>
+                </li><!--
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a href="{% url 'about' %}" class="nav-link"  style="color: #ffffff;">About</a></li>
                 <li class="nav-item"><a href="{% url 'services' %}" class="nav-link" style="color: #ffffff;">Services</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link" style="color: #ffffff;">Contact</a></li>
-                {% endif %}
+                {% endif %}-->
                 {% if user.role == 'admin' or user.role == 'user' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
@@ -37,11 +38,8 @@
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
+                        <a class="dropdown-item" href="{% url 'doctor' %}">Add Doctors</a>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
-                    </div>
-
                 </li>
                 {% endif %}
                 {% if user.role == 'admin' or user.role == 'doctor' %}
@@ -51,8 +49,8 @@
                         Examination
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'exo-reception1' %}">Drags Info</a>
-                        <a class="dropdown-item" href="{% url 'medicine1' %}">Add New Drags</a>
+                        <a class="dropdown-item" href="{% url 'exo-reception1' %}">Examination Info.</a>
+                        <a class="dropdown-item" href="{% url 'medicine1' %}">Add New Drugs</a>
                         <!--<a class="dropdown-item" href="">Add Drags</a>-->
                     </div>
                 </li>
@@ -63,8 +61,7 @@
                         Oral_Surgery
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'exo-reception' %}">Reception Info</a>
-                        <a class="dropdown-item" href="{% url 'all-exo' %}">Exo All Info</a>
+                        <a class="dropdown-item" href="{% url 'exo-reception' %}">Exo</a>
 
 
                         <!--<a class="dropdown-item" href="{% url 'oral-reception' %}">Oral Surgery Info</a>
@@ -89,6 +86,11 @@
                           <a class="dropdown-item" href="{% url 'orthodontics' %}">orthodontic</a>-->
                     </div>
                 </li>
+                 <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" role="button"
+                        style="color: #ffffff;">
+                        My Appointments
+                    </a></li>
                 <!--<li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                     Patients

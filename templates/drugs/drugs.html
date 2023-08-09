@@ -1,17 +1,74 @@
 
-{% extends 'base.html'  %}
+<!DOCTYPE html>
+
 {% load static %}
-{% load widget_tweaks %}
 
-{% block title %} Contact Page{% endblock %}
-
+<html lang="en">
+<head>
+    <title>{% block title %}Dental Clinic {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.css' %}">
+</head>
+<body>
+{% block body %}
+{% include 'navbar.html' %}
+{% endblock %}
 {% block content %}
-
 <br/>
 
-<<br/>
+<!--
+<script type="text/javascript">
+function addRows(){
+	var table = document.getElementById('emptbl');
+	var rowCount = table.rows.length;
+	var cellCount = table.rows[0].cells.length;
+	var row = table.insertRow(rowCount);
+	for(var i =0; i <= cellCount; i++){
+		var cell = 'cell'+i;
+		cell = row.insertCell(i);
+		var copycel = document.getElementById('col'+i).innerHTML;
+		cell.innerHTML=copycel;
+		if(i == 3){
+			var radioinput = document.getElementById('col3').getElementsByTagName('input');
+			for(var j = 0; j <= radioinput.length; j++) {
+				if(radioinput[j].type == 'radio') {
+					var rownum = rowCount;
+					radioinput[j].name = 'gender['+rownum+']';
+				}
+			}
+		}
+	}
+}
+function deleteRows(){
+	var table = document.getElementById('emptbl');
+	var rowCount = table.rows.length;
+	if(rowCount > '2'){
+		var row = table.deleteRow(rowCount-1);
+		rowCount--;
+	}
+	else{
+		alert('There should be atleast one row');
+	}
+}
+                                <td><input type="button" value="Add Row" onclick="addRows()"/></td>
+                                <td><input type="button" value="Delete Row" onclick="deleteRows()"/></td>
+</script>-->
 <div class="container">
-    <div class="col-12">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Drugs</li>
+        </ol>
+    </nav>
+        <div class="d-flex bd-highlight mb-3">
+            <div class="p-2 bd-highlight">{{ form.initial.idReception }}</div>
+            <div class="p-2 bd-highlight">{{ form.initial.name }}</div>
+            <div class="p-2 bd-highlight">{{ form.initial.phone }}</div>
+            <div class="p-2 bd-highlight">{{ form.initial.gender }}</div>
+            <div class="p-2 bd-highlight">{{ form.initial.date_of_birth }}</div>
+        </div>
         <table class="table table-hover">
             <thead style="background-color:#73ccf0; color:#fff;">
             <tr>
@@ -22,33 +79,41 @@
                 <th scope="col">Gender</th>
                 <th scope="col">Date of Birth</th>
                 <th scope="col">Drugs Name</th>
-                <th scope="col">Type</th>
                 <th scope="col">Doze</th>
+                <th scope="col">Type</th>
                 <th scope="col">Times</th>
-                <th scope="col">Other</th>
+                <th scope="col"  colspan="2" style="text-align:center;">Other</th>
             </tr>
             </thead>
             <tbody>
+            {% for medicin in medicines %}
             <tr>
-                <td scope="row">{{ form.initial.idReception }}</td>
-                <td scope="row">{{ form.initial.name }}</td>
-                <td scope="row">{{ form.initial.phone }}</td>
-                <td scope="row">{{ form.initial.gender }}</td>
-                <td scope="row">{{ form.initial.date_of_birth }}</td>
-                <td scope="row" align="center">{{medicine.name_medicine}}</td>
-                <td scope="row" align="center">{{medicine.type}}</td>
-                <td scope="row" align="center">{{medicine.doze}}</td>
-                <td scope="row" align="center">{{medicine.times}}</td>
-                  <td>{% if medicine %}
-                <a href="{% url 'print-drugs' medicine.id %}" style="display: inline;" class="btn btn-outline-info">Print Drags</a>
-                    {% endif %}</td>
+                <td scope="row">{{ medicin.id }}</td>
+                <td scope="row">{{ medicin.name }}</td>
+                <td scope="row">{{ medicin.phone }}</td>
+                <td scope="row">{{ medicin.gender }}</td>
+                <td scope="row">{{ medicin.date_of_birth }}</td>
+                <td scope="row" align="center">{{ medicin.name_medicine }}</td>
+                <td scope="row" align="center">{{ medicin.doze }}</td>
+                <td scope="row" align="center">{{ medicin.type }}</td>
+                <td scope="row" align="center">{{ medicin.times }}</td>
+                <td>
+                    {% if medicin.id %}
+                    <a href="{% url 'print-drugs'  medicin.idReception_id  %}" style="display: inline;" class="btn btn-outline-info">Print
+                        Drugs</a>
+                    {% endif %}
+                </td>
+                <td scope="row" ><a href="{% url 'delete-drugs'  medicin.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+<br/>
 <div class="container" align="center" id="form-container">
-    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline">
+
+    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form">
         {% csrf_token %}
         <input type="hidden" name="idReception"
                value="{{ form.initial.idReception }}"
@@ -62,90 +127,55 @@
         <input type="hidden" name="date_of_birth"
                value="{{ form.initial.date_of_birth }}"
                class="form-control">
-
-
-        <div class="col-12">
-            <br/>
-            <div class="card-header">
-                <h4 style="font-size: 22px; text-align:center;">Drugs Info</h4>
+        <div class="row">
+            <div class="col-10">
+                <div class="form-row">
+                    <div class="col">
+                        <label for="{{ form.name_medicine.id_for_label }}" ></label>{{ form.name_medicine }}</div>
+                    <div class="col">{{ form.doze }}</div>
+                    <div class="col"> {{ form.type }}</div>
+                    <div class="col">{{ form.times }}</div>
+                </div>
             </div>
-            <div class="card">
-                <div class="card-body">
+            {{ formset.management_form }}
+            {% for form in formset %}
+            <div class="col-10">
+                <div class="form-row">
+                    <div class="col">
+                        <label for="{{ form.name_medicine.id_for_label }}"></label>{{ form.name_medicine }}</div>
+                    <div class="col">{{ form.doze }}</div>
+                    <div class="col">{{ form.type }}</div>
+                    <div class="col">{{ form.times }}</div>
+                </div>
+            </div>
+            {% endfor %}
 
-                    <div class="row">
-                        <div class="col">
-                            <select name="name_medicine" class="form-select">
-                                <option selected disabled>Select Medicine</option>
-                                {% for choice in form.name_medicine.field.queryset %}
-                                <option value="{{ choice.pk }}">{{ choice.name_medicine }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-select" name="type">
-                                <option selected disabled>Select Type</option>
-                                <option value="mg">mg</option>
-                                <option value="g">g</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-select" name="doze" placeholder="Doze">
-
-                        </div>
-                        <div class="col">
-                            <select class="form-select" name="times">
-                                <option selected disabled>Select Times</option>
-                                <option value="1*1">1*1</option>
-                                <option value="1*2">1*2</option>
-                                <option value="1*3">1*3</option>
-                                <option value="1*4">1*4</option>
-                                <option value="1*5">1*5</option>
-                                <option value="1*6">1*6</option>
-                            </select>
-                        </div>
+            <div class="col-10">
+                <div class="form-row">
+                    <div class="col">
+                          <br/>
+                        <button type="submit" class="btn btn-info">Add Drugs</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-6">
-            <div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary mt-3">Submit</button>
-            </div>
-        </div>
-
     </form>
-    <button type="button" id="add-drug-btn" class="btn btn-success mt-3">Add Drug</button>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-  const formContainer = $('#form-container');
-  const addDrugBtn = $('#add-drug-btn');
+<script src="{% static 'website/js/jquery.min.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{% static 'website/js/popper.min.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'website/js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'website/js/jquery.stellar.min.js' %}"></script>
+<script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
 
-  // Function to create a new form group
-  function createFormGroup(index) {
-    return `
-      <div class="form-group">
-        <label for="idReception_${index}">ID Reception:</label>
-        <input type="text" name="idReception" id="idReception_${index}" value="{{ form.initial.idReception }}" class="form-control">
-        <!-- Add other form fields here -->
-      </div>
-      <button type="button" class="btn btn-danger remove-drug-btn">Remove</button>
-    `;
-  }
+<script src="{% static 'website/js/aos.js' %}"></script>
+<script src="{% static 'website/js/jquery.animateNumber.min.js' %}"></script>
 
-  // Function to handle the "Add Drug" button click
-  addDrugBtn.click(function() {
-    const formGroupIndex = formContainer.children().length;
-    const formGroup = $(createFormGroup(formGroupIndex));
-    formContainer.append(formGroup);
-  });
+<script src="{% static 'website/js/scrollax.min.js' %}"></script>
 
-  // Function to handle the "Remove" button click
-  formContainer.on('click', '.remove-drug-btn', function() {
-    $(this).parent().remove();
-  });
-});
-</script>
+
+<script src="{% static 'website/js/main.js' %}"></script>
 {% endblock %}

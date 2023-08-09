@@ -5,12 +5,18 @@
 <br/>
 <br/>
 <div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Drugs</li>
+        </ol>
+    </nav>
     <div class="row">
-        <div class="col-6">
+        <div class="col-4">
             <form method="post" novalidate action="">
                 {% csrf_token %}
 
-                <input type="text" name="name_medicine" placeholder="Drags Name">&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-info">submit</button>
+                <input type="text" name="name_medicine" placeholder="Drugs Name">&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-info">submit</button>
                 <br/><br/>
 
             </form>
@@ -21,7 +27,7 @@
     <thead style="background-color:#73ccf0; color:#fff;">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Drags Name</th>
+            <th scope="col">Drugs Name</th>
             <th scope="col">Other</th>
         </tr>
     </thead>

@@ -5,54 +5,61 @@
 
 
 <div class="container">
-  <div class="row justify-content-center">
-            <div class="col-md-12">
-                {% if searched and orals %}
-                <!--<h2>Search Results:{{ searched }}</h2>-->
-                <br/>
-                <h1 class="h2" align="center">Patient Information</h1>
-                <br/>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            {% if searched and orals %}
+            <!--<h2>Search Results:{{ searched }}</h2>-->
+            <br/>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Crown</li>
+                </ol>
+            </nav>
+            <br/>
 
 
-                <table class="table table-hover">
-                    <thead style="background-color:#73ccf0; color:#fff;">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Full Name</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Date of Birth</th>
-                        <th scope="col" colspan="">Add Crown</th>
-                        <th scope="col" colspan="">Medicine</th>
+            <table class="table table-hover">
+                <thead style="background-color:#73ccf0; color:#fff;">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col" colspan="">Add Crown</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for oral in orals %}
-                    <tr>
-                        <td scope="row">{{oral.id}}</td>
-                        <td> {{oral.name}}</td>
-                        <td> {{oral.phone}}</td>
-                        <td> {{oral.gender}}</td>
-                        <td> {{oral.date_of_birth}}</td>
-                        <td><a href="{% url 'crown' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Crown</span></a></td>
-                        <td><a href="{% url 'medicine' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Medicine</span></a></td>
 
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <br/>
-                {% else %}
-                <div class="alert alert-danger" role="alert">
-                    No Patient Record found.
-                </div>
-                {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for oral in orals %}
+                <tr>
+                    <td scope="row">{{oral.id}}</td>
+                    <td> {{oral.name}}</td>
+                    <td> {{oral.phone}}</td>
+                    <td> {{oral.gender}}</td>
+                    <td> {{oral.date_of_birth}}</td>
+                    <td><a href="{% url 'crown' oral.id %}" style="display: inline;"><span
+                            class="btn btn-outline-warning">Add Crown</span></a></td>
+                   <!-- <td><a href="{% url 'drugs' oral.id %}" style="display: inline;"><span
+                            class="btn btn-outline-danger">Medicine</span></a></td>-->
 
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <br/>
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+                No Patient Record found.
             </div>
-  </div>
-</div>
+            {% endif %}
 
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

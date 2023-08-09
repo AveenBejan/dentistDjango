@@ -13,20 +13,23 @@
 
 
         <h4 style="font-size:16px; font-weight:bold" align="left">
-        &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{appointment.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{drugs.0.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <label dir="ltr">Date: {{appointment.regdate}}</label>
+        <label dir="ltr">Date: {{drugs.0.regdate}}</label>
 
-        <br/>&nbsp;&nbsp;<label>Date :</label>{{appointment.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         <label dir="ltr">Gender: {{appointment.gender}}</label>&nbsp;</h4>
+        <br/>&nbsp;&nbsp;<label>Date :</label>{{drugs.0.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <label dir="ltr">Gender: {{drugs.0.gender}}</label>&nbsp;</h4>
 <div class="col-8">
  <div class="card-body">
 
      <h3 STYLE="color:red;">RX</h3>
-     <h4>- {{appointment.name_medicine}}</h4>
-     <h4>- {{ appointment.type}}</h4>
-     <h4>- {{appointment.doze }}</h4>
-     <h4>- {{appointment.times }}</h4>
+    {% for drug in drugs %}
+
+     <h3><p>&nbsp;- &nbsp;{{ drug.name_medicine }}&nbsp;&nbsp;{{ drug.type }} &nbsp;&nbsp;{{ drug.doze }} &nbsp;&nbsp;{{ drug.times }}</p></h3>
+
+    {% endfor %}
+
+
 
 
 

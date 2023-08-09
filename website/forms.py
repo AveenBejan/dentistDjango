@@ -1,7 +1,47 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling
+    Crown,Medicine1,Veneer,Filling,Doctors
+from django.forms import formset_factory
+
+
+class DoctorsForm(forms.ModelForm):
+    class Meta:
+        model = Doctors
+        fields = ( 'doctor_name', 'phone', 'gender')
+        labels = {
+            'doctor_name': '',
+            'phone': '',
+            'gender': '',
+
+        }
+        widgets = {
+            'doctor_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+        }
+
+
+class ReceptionForm(forms.ModelForm):
+    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor", to_field_name='doctor_name')
+    class Meta:
+        model = Reception
+        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor', 'time')
+        labels = {
+            'name': 'Full Name',
+            'phone': 'Phone Number',
+            'gender': 'Gender',
+            'date_of_birth': 'Date of Birth',
+            'doctor': '',
+            'time': 'Time',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
+            'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
+        }
 
 
 class Medicine1Form(forms.ModelForm):
@@ -15,32 +55,55 @@ class Medicine1Form(forms.ModelForm):
 
 
 class DrugForm(forms.ModelForm):
-    name_medicine = forms.ModelChoiceField(queryset=Medicine1.objects.all())
+    name_medicine = forms.ModelChoiceField(queryset=Medicine1.objects.all(),widget=forms.Select(attrs=
+                                           {'class': 'form-control'}), empty_label='Select Medicine')
+
+    TYPE_CHOICES = [
+        ('', 'Select Type'),
+        ('mg', 'mg'),
+        ('g', 'g'),
+    ]
+    TIMES_CHOICES = [
+        ('', 'Select Times'),
+        ('1*1', '1*1'),
+        ('1*2', '1*2'),
+        ('1*3', '1*3'),
+        ('1*4', '1*4'),
+        ('1*5', '1*5'),
+        ('1*6', '1*6'),
+    ]
+
+    type = forms.ChoiceField(choices=TYPE_CHOICES, initial='', widget=forms.Select(attrs={'class': 'form-control'}))
+    times = forms.ChoiceField(choices=TIMES_CHOICES, initial='',
+                              widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Drug
-        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'doze', 'type', 'times','name_medicine']
+        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times']
         labels = {
             'idReception': '',
             'name': '',
             'phone': '',
             'gender': '',
             'date_of_birth': '',
+            'name_medicine': '',
             'doze': '',
             'type': '',
             'times': '',
         }
         widgets = {
-            'idReception': forms.Select(attrs={'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
-            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
-            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'idReception': forms.Select(attrs={'class': 'form-control', 'style': 'display: none;'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name', 'type': 'hidden'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone', 'type': 'hidden'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender', 'type': 'hidden'}),
+            'date_of_birth': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'date_of_birth', 'type': 'hidden'}),
+            'name_medicine': forms.Select(attrs={'class': 'form-control', 'placeholder': 'name_medicine'}),
             'doze': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doze'}),
-            'type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'type'}),
-            'times': forms.Select(attrs={'class': 'form-control', 'placeholder': 'times'}),
-            'name_medicine': forms.Select(attrs={'class': 'form-control', 'placeholder': 'name_medicine'})
         }
+
+
+DrugFormSet = formset_factory(DrugForm, extra=5)  # Set `extra` to the number of forms you want to display initially.
 
 
 class MedicinForm(forms.ModelForm):
@@ -120,7 +183,7 @@ class ExoForm(forms.ModelForm):
 
     class Meta:
         model = Exo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll','price', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll','no_prepare', 'price', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -131,6 +194,7 @@ class ExoForm(forms.ModelForm):
             'ul': '',
             'lr': '',
             'll': '',
+            'no_prepare': '',
             'price': '',
             'note': '',
             'exoby': '',
@@ -148,6 +212,7 @@ class ExoForm(forms.ModelForm):
             'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
             'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),
@@ -270,26 +335,6 @@ class OralSurgeryForm(forms.ModelForm):
         }
 
 
-class ReceptionForm(forms.ModelForm):
-    class Meta:
-        model = Reception
-        fields = ('name','phone','gender','date_of_birth','doctor_name','time')
-        labels = {
-            'name': '',
-            'phone': '',
-            'gender': '',
-            'date_of_birth': '',
-            'doctor_name': '',
-            'time': '',
-        }
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
-            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
-            'doctor_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
-            'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'time'}),
-        }
 
 
 class DentistDetailsForm(forms.ModelForm):

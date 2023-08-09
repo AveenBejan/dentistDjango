@@ -3,28 +3,33 @@
 {% block title %} Contact Page{% endblock %}
 {% block content %}
 
-  <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand"></a>
-{%if user.is_authenticated%}
-        <form class="form-inline" method="POST" action="{% url 'search-veneer' %}">
-            {% csrf_token %}
-            <input class="form-control mr-sm-4" type="search" placeholder="Search For Patient" aria-label="Search"
-                   name="searched">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-{% endif %}
-    </nav>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand"></a>
+    {%if user.is_authenticated%}
+    <form class="form-inline" method="POST" action="{% url 'search-veneer' %}">
+        {% csrf_token %}
+        <input class="form-control mr-sm-4" type="search" placeholder="Search For Patient" aria-label="Search"
+               name="searched">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    {% endif %}
+</nav>
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Search For Veneer Patient</li>
+            </ol>
+        </nav>
         <div class="row d-flex mb-5 contact-info">
             <div class="col-md-12 mb-4">
-                <h1 class="h2" align="center">Patient Appointment</h1>
                 <br/>
                 <table class="table table-hover">
                     <thead style="background-color:#73ccf0; color:#fff;">
                     <tr>
 
-                      <th scope="col">#</th>
+                        <th scope="col">#</th>
                         <th scope="col">Full Name</th>
                         <th scope="col">Phone Number</th>
                         <th scope="col">Gender</th>
@@ -34,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for appointment in appointments  %}
+                    {% for appointment in appointments %}
                     <tr>
                         <td scope="row">{{appointment.id}}</td>
                         <td scope="row">{{appointment.name}}</td>

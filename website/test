@@ -487,3 +487,242 @@ class OralSurgeryForm(forms.ModelForm):
 </body>
 </html>
 1111111111111111111111111111111111111
+def drugs(request, id):
+    if request.method == 'POST':
+        form = DrugForm(request.POST)
+        if form.is_valid():
+            drugs = form.save(commit=False)
+            drugs.idReception_id = id
+            reception = Reception.objects.get(id=id)
+            drugs.name = reception.name
+            drugs.phone = reception.phone
+            drugs.gender = reception.gender
+            drugs.date_of_birth = reception.date_of_birth
+            # Get the selected Medicine1 instance from the form
+            selected_medicine = form.cleaned_data['name_medicine']
+
+            # Get the name of the selected Medicine1 instance
+            if selected_medicine:
+                drugs.name_medicine = selected_medicine.name_medicine  # Set the name directly
+
+            # Save the Drug object to the database
+            drugs.save()
+            return redirect('drugs', id=id)
+    else:
+        reception = get_object_or_404(Reception, id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth
+        }
+        form = DrugForm(initial=initial_data)
+
+    appointments = Reception.objects.all().order_by('-id')
+    try:
+        medicine = Drug.objects.filter(idReception=id).first()
+    except Drug.DoesNotExist:
+        medicine = None
+    return render(request, 'drugs/drugs.html',{'form': form, 'appointments': appointments, 'medicine': medicine, 'id': id})
+    222222222222222222222222222222222222222 views.py for durgs
+    {% extends 'base.html'  %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Contact Page{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+function addRows(){
+	var table = document.getElementById('emptbl');
+	var rowCount = table.rows.length;
+	var cellCount = table.rows[0].cells.length;
+	var row = table.insertRow(rowCount);
+	for(var i =0; i <= cellCount; i++){
+		var cell = 'cell'+i;
+		cell = row.insertCell(i);
+		var copycel = document.getElementById('col'+i).innerHTML;
+		cell.innerHTML=copycel;
+		if(i == 3){
+			var radioinput = document.getElementById('col3').getElementsByTagName('input');
+			for(var j = 0; j <= radioinput.length; j++) {
+				if(radioinput[j].type == 'radio') {
+					var rownum = rowCount;
+					radioinput[j].name = 'gender['+rownum+']';
+				}
+			}
+		}
+	}
+}
+function deleteRows(){
+	var table = document.getElementById('emptbl');
+	var rowCount = table.rows.length;
+	if(rowCount > '2'){
+		var row = table.deleteRow(rowCount-1);
+		rowCount--;
+	}
+	else{
+		alert('There should be atleast one row');
+	}
+}
+
+</script>
+<br/>
+
+<br/>
+<div class="container">
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead style="background-color:#73ccf0; color:#fff;">
+            <tr>
+
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Drugs Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Doze</th>
+                <th scope="col">Times</th>
+                <th scope="col">Other</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td scope="row">{{ form.initial.idReception }}</td>
+                <td scope="row">{{ form.initial.name }}</td>
+                <td scope="row">{{ form.initial.phone }}</td>
+                <td scope="row">{{ form.initial.gender }}</td>
+                <td scope="row">{{ form.initial.date_of_birth }}</td>
+                <td scope="row" align="center">{{medicine.name_medicine}}</td>
+                <td scope="row" align="center">{{medicine.type}}</td>
+                <td scope="row" align="center">{{medicine.doze}}</td>
+                <td scope="row" align="center">{{medicine.times}}</td>
+                <td>{% if medicine %}
+                    <a href="{% url 'print-drugs' medicine.id %}" style="display: inline;" class="btn btn-outline-info">Print
+                        Drags</a>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container" align="center" id="form-container">
+
+    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form">
+        {% csrf_token %}
+        <input type="hidden" name="idReception"
+               value="{{ form.initial.idReception }}"
+               class="form-control">
+        <input type="hidden" name="name" value="{{ form.initial.name }}"
+               class="form-control">
+        <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+               class="form-control">
+        <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+               class="form-control">
+        <input type="hidden" name="date_of_birth"
+               value="{{ form.initial.date_of_birth }}"
+               class="form-control">
+        <div class="row">
+            <div class="col-12">
+                <table id="emptbl">
+                    <tr>
+                        <th>Select Medicine</th>
+                        <th>Select Type</th>
+                        <th>Doze</th>
+                        <th>times</th>
+                    </tr>
+                    <tr>
+                        <td id="col0"><select name="name_medicine" class="form-select">
+                            <option selected disabled>Select Medicine</option>
+                            {% for choice in form.name_medicine.field.queryset %}
+                            <option value="{{ choice.pk }}">{{ choice.name_medicine }}</option>
+                            {% endfor %}
+                        </select></td>
+                        <td id="col1"><select class="form-select" name="type">
+                            <option selected disabled>Select Type</option>
+                            <option value="mg">mg</option>
+                            <option value="g">g</option>
+                        </select></td>
+                        <td id="col2"><input type="text" class="form-select" name="doze" placeholder="Doze"></td>
+
+                        <td id="col3"><select class="form-select" name="times">
+                            <option selected disabled>Select Times</option>
+                            <option value="1*1">1*1</option>
+                            <option value="1*2">1*2</option>
+                            <option value="1*3">1*3</option>
+                            <option value="1*4">1*4</option>
+                            <option value="1*5">1*5</option>
+                            <option value="1*6">1*6</option>
+                        </select></td>
+                    </tr>
+                </table>
+                <br/>
+
+
+                <table>
+                    <tr>
+                        <td><input type="button" value="Add Row" onclick="addRows()"/></td>
+                        <td><input type="button" value="Delete Row" onclick="deleteRows()"/></td>
+                        <td><input type="submit" value="Submit"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+222222222222222222222222222222222222222222222222222 Drugs.html
+<div class="container" align="center" id="form-container">
+
+    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form">
+        {% csrf_token %}
+        <input type="hidden" name="idReception"
+               value="{{ form.initial.idReception }}"
+               class="form-control">
+        <input type="hidden" name="name" value="{{ form.initial.name }}"
+               class="form-control">
+        <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+               class="form-control">
+        <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+               class="form-control">
+        <input type="hidden" name="date_of_birth"
+               value="{{ form.initial.date_of_birth }}"
+               class="form-control">
+        <div class="row">
+            <div class="col-12">
+                 <div class="form-row">
+                     <div class="col"><select name="{{ form.name_medicine.name }}" class="form-select">
+                            <option selected disabled>Select Medicine</option>
+                            {% for choice in form.name_medicine.field.queryset %}
+                            <option value="{{ choice.pk }}">{{ choice.name_medicine }}</option>
+                            {% endfor %}
+                        </select></div>
+                     <div class="col"> {{ form.type }}</div>
+                     <div class="col">{{ form.doze }}</div>
+                     <div class="col">{{ form.times }}</div>
+                 </div>
+            </div>
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="col-12">
+                        <div class="form-row">
+                             <div class="col"><select name="{{ form.name_medicine.name }}" class="form-select">
+                            <option selected disabled>Select Medicine</option>
+                            {% for choice in form.name_medicine.field.queryset %}
+                            <option value="{{ choice.pk }}">{{ choice.name_medicine }}</option>
+                            {% endfor %}
+                        </select></div>
+                            <div class="col">{{ form.type }}</div>
+                            <div class="col">{{ form.doze }}</div>
+                            <div class="col">{{ form.times }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+           <button type="submit" class="btn btn-primary">Add Drugs</button>
+        </div>
+    </form>
+</div>

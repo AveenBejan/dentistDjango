@@ -5,12 +5,22 @@ from datetime import datetime
 from django.utils import timezone
 
 
+class Doctors(models.Model):
+    doctor_name = models.CharField('doctor_name',max_length=120)
+    phone = models.CharField('phone',max_length=120)
+    gender = models.CharField('Gender',max_length=20)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.doctor_name
+
+
 class Reception(models.Model):
     name = models.CharField('Name',max_length=120)
     phone = models.CharField('phone',max_length=120)
     gender = models.CharField('Gender',max_length=20)
     date_of_birth = models.DateField()
-    doctor_name = models.CharField('doctor_name',max_length=200, null=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=False)
     time = models.CharField(null=True,max_length=200)
     regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
 
@@ -28,8 +38,8 @@ class Filling(models.Model):
     filling_place = models.CharField('filling_place',max_length=120, blank=True,null=False)
     ur = models.CharField('ur', max_length=120, blank=True,null=True)
     ul = models.CharField('ul', max_length=120, blank=True,null=True)
-    lr = models.CharField('lr', max_length=120,null=True)
-    ll = models.CharField('ll', max_length=120,null=True)
+    lr = models.CharField('lr', max_length=120,null=True, blank=True)
+    ll = models.CharField('ll', max_length=120,null=True, blank=True)
     no_prepare = models.IntegerField('no_prepare',null=False)
     price = models.DecimalField('price',max_digits=8,decimal_places=2,null=False)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=False)
@@ -75,6 +85,9 @@ class Veneer(models.Model):
 class Medicine1(models.Model):
     name_medicine = models.CharField(max_length=120)
 
+    def __str__(self):
+        return self.name_medicine
+
 
 class Drug(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
@@ -90,7 +103,7 @@ class Drug(models.Model):
 
 
 class Exo(models.Model):
-    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
     name = models.CharField('Name',max_length=120,null=False)
     phone = models.CharField('Phone', max_length=120,null=False)
     gender = models.CharField('Gender', max_length=20,null=False)
@@ -99,7 +112,9 @@ class Exo(models.Model):
     ul = models.CharField('Name', max_length=120, blank=True,null=True)
     lr = models.CharField('Name', max_length=120, blank=True,null=True)
     ll = models.CharField('Name', max_length=120, blank=True,null=True)
-    price = models.DecimalField('price',max_digits=6,decimal_places=2,null=False)
+    no_prepare = models.IntegerField('no_prepare', blank=True,null=False)
+    price = models.DecimalField('price',max_digits=20,decimal_places=2,null=False)
+    total_price = models.DecimalField('total_price', max_digits=20, decimal_places=2,null=False)
     note = models.CharField('Name', max_length=120, blank=True,null=True)
     exoby = models.CharField('Name', max_length=120, blank=True,null=True)
     simpleexo = models.CharField('Name', max_length=120, blank=True,null=True)
