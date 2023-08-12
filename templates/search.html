@@ -1,0 +1,124 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<br/>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand"></a>
+    {%if user.is_authenticated%}
+    <form mepod="get" action="{% url 'search' %}" class="form-inline">
+        <input class="form-control mr-sm-4" type="search" aria-label="Search" name="query"
+               placeholder="Search for patient name" value="{{ query }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    {% endif %}
+</nav>
+<div class="container">
+    <div class="row row-cols-2">
+
+        {% for model_name, results in search_results %}
+
+        {% for result in results %}
+        <div class="col">
+            {% if model_name == 'Exo' %}
+            <h4>{{ model_name }} Results</h4>
+            <ul class="list-inline" style="width:250px;">
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Full Name:</span>&nbsp;&nbsp;  {{ result.name }} </li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Phone Number:</span>&nbsp;&nbsp; {{ result.phone }}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Gender:</span>&nbsp;&nbsp;{{ result.gender }}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Date of Birth:</span>&nbsp;&nbsp;{{ result.date_of_birth }}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Upper Right:</span>&nbsp;&nbsp;{{result.ur|slice:"1:-1" }}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Upper Left:</span>&nbsp;&nbsp;{{result.ul|slice:"1:-1"}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Lower Right:</span>&nbsp;&nbsp;{{result.lr|slice:"1:-1"}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Lower Left:</span>&nbsp;&nbsp;{{result.ll|slice:"1:-1"}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">No of Prepare Teep:</span>&nbsp;&nbsp;{{result.no_prepare}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Price:</span>&nbsp;&nbsp;{{result.price}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Total Price:</span>&nbsp;&nbsp;{{result.total_price}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Notes:</span>&nbsp;&nbsp;{{result.note}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Exo by Surgery:</span>&nbsp;&nbsp;{{result.exoby|slice:"1:-1"}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Simple Exo:</span>&nbsp;&nbsp;{{result.simpleexo|slice:"1:-1"}}</li>
+            <li class="list-inline-item"><span style="color:#000;font-weight:bold;">Complicated:</span>&nbsp;&nbsp;{{result.complcated |slice:"1:-1"}}</li>
+            {% endif %}
+            </ul>
+        </div>
+
+        <div class="col">
+            {% if model_name == 'Crown' %}
+            <h4>{{ model_name }} Results</h4>
+
+            <li >{{ result.idReception }}</li>
+            <li >{{ result.name }}</li>
+            <li >{{ result.phone }}</li>
+            <li >{{ result.gender }}</li>
+            <li >{{ result.date_of_birp }}</li>
+            <li  align="center">{{result.shade}}</li>
+            <li  align="center">{{result.no_unite}}</li>
+            <li  align="center">{{result.color}}</li>
+            <li  align="center">{{result.no_prepare}}</li>
+            <li  align="center">{{result.price}}</li>
+            <li  align="center"> {{result.total_price }}</li>
+            <li  align="center">{{result.note}}</li>
+
+            <li>{% for photo in photos %}
+                <img src="{{ photo.image.url }}" alt="Photo" widp="100">
+                <a href="{% url 'remove_photo_crown' photo.id %}">Remove</a>
+                {% endfor %}
+            </li>
+            {% endif %}
+        </div>
+
+        <div class="col-2">
+            {% if model_name == 'Filling' %}
+            <h4>{{ model_name }} Results</h4>
+
+            <li>{{ result.idReception }}</li>
+            <li>{{ result.name }}</li>
+            <li>{{ result.phone }}</li>
+            <li>{{ result.gender }}</li>
+            <li>{{ result.date_of_birp }}</li>
+            <li>{{result.filling_type}}</li>
+            <li>{{result.filling_place|slice:"1:-1"}}</li>
+            <li>{{result.ur|slice:"1:-1" }}</li>
+            <li>{{result.ul|slice:"1:-1"}}</li>
+            <li>{{result.lr|slice:"1:-1"}}</li>
+            <li>{{result.ll|slice:"1:-1"}}</li>
+            <li>{{result.no_prepare}}</li>
+            <li>{{result.price}}</li>
+            <li>{{result.total_price}}</li>
+            <li>{{result.note}}</li>
+            <li>{% for photo in photos %}
+                <img src="{{ photo.image.url }}" alt="Photo" widp="100">
+                <a href="{% url 'remove_photo_filling' photo.id %}">Remove</a>
+                {% endfor %}
+            </li>
+            {% endif %}
+        </div>
+
+        <div class="col-2">
+            {% if model_name == 'Veneer' %}
+            <h4>{{ model_name }} Results</h4>
+
+            <li >{{ result.idReception }}</li>
+            <li >{{ result.name }}</li>
+            <li >{{ result.phone }}</li>
+            <li >{{ result.gender }}</li>
+            <li >{{ result.date_of_birp }}</li>
+            <li  align="center">{{result.shade}}</li>
+            <li  align="center">{{result.no_unite}}</li>
+            <li  align="center">{{result.color}}</li>
+            <li  align="center">{{result.no_prepare}}</li>
+            <li  align="center">{{result.price}}</li>
+            <li  align="center"> {{ result.total_price }}</li>
+            <li  align="center">{{result.note}}</li>
+
+            <li>{% for photo in photos %}
+                <img src="{{ photo.image.url }}" alt="Photo" widp="100">
+                <a href="{% url 'remove_photo_veneer' photo.id %}">Remove</a>
+                {% endfor %}
+            </li>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

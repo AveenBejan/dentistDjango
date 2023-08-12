@@ -726,3 +726,208 @@ function deleteRows(){
         </div>
     </form>
 </div>
+1111111111111111111111111111111111111
+                  <h1>Search Results for "{{ query }}"</h1>
+                        {% for model_name, results in search_results %}
+                        <h2>{{ model_name }} Results</h2>
+
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Upper Right</th>
+                                <th scope="col">Upper Left</th>
+                                <th scope="col">Lower Right</th>
+                                <th scope="col">Lower Left</th>
+                                <th scope="col">No of Prepare Teeth</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Exo by Surgery</th>
+                                <th scope="col">Simple Exo</th>
+                                <th scope="col">Complicated</th>
+                                <th scope="col">Exo Photo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in results %}
+                            {% if model_name == 'Exo' %}
+                            <tr>
+                                <td text-align="center" scope="row">{{ result.idReception }}</td>
+                                <td text-align="center" scope="row">{{ result.name }}</td>
+                                <td text-align="center" scope="row">{{ result.phone }}</td>
+                                <td text-align="center" scope="row">{{ result.gender }}</td>
+                                <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
+                                <td text-align="center" scope="row">{{result.ur|slice:"1:-1" }}</td>
+                                <td text-align="center" scope="row">{{result.ul|slice:"1:-1"}}</td>
+                                <td text-align="center" scope="row">{{result.lr|slice:"1:-1"}}</td>
+                                <td text-align="center" scope="row">{{result.ll|slice:"1:-1"}}</td>
+                                <td text-align="center" scope="row">{{result.no_prepare}}</td>
+                                <td text-align="center" scope="row">{{result.price}}</td>
+                                <td text-align="center" scope="row">{{result.total_price}}</td>
+                                <td text-align="center" scope="row">{{result.note}}</td>
+                                <td text-align="center" scope="row">{{result.exoby|slice:"1:-1"}}</td>
+                                <td text-align="center" scope="row">{{result.simpleexo|slice:"1:-1"}}</td>
+                                <td text-align="center" scope="row">{{result.complcated |slice:"1:-1"}}</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h2>{{ model_name }} Results</h2>
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">No of Unite</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Crown Photo</th>
+                                <th scope="col" colspan="2" style="text-align:center;">Other</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in results %}
+                            {% if model_name == 'Crown' %}
+                            <tr>
+                                <td text-align="center" scope="row">{{ result.idReception }}</td>
+                                <td text-align="center" scope="row">{{ result.name }}</td>
+                                <td text-align="center" scope="row">{{ result.phone }}</td>
+                                <td text-align="center" scope="row">{{ result.gender }}</td>
+                                <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.shade}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.color}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.price}}</td>
+                                <td text-align="center" scope="row" align="center"> {{result.total_price }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.note}}</td>
+
+                                <td>{% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove_photo_crown' photo.id %}">Remove</a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h2>{{ model_name }} Results</h2>
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Filling Type</th>
+                                <th scope="col">Filling Place</th>
+                                <th scope="col">Upper Right</th>
+                                <th scope="col">Upper Left</th>
+                                <th scope="col">Lower Right</th>
+                                <th scope="col">Lower Left</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Exo Photo</th>
+                                <th scope="col" colspan="2">Other</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in results %}
+                            {% if model_name == 'Filling' %}
+                            <tr>
+                                <td scope="row">{{ result.idReception }}</td>
+                                <td scope="row">{{ result.name }}</td>
+                                <td scope="row">{{ result.phone }}</td>
+                                <td scope="row">{{ result.gender }}</td>
+                                <td scope="row">{{ result.date_of_birth }}</td>
+                                <td scope="row">{{result.filling_type}}</td>
+                                <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.ur|slice:"1:-1" }}</td>
+                                <td scope="row">{{result.ul|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.lr|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.ll|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.no_prepare}}</td>
+                                <td scope="row">{{result.price}}</td>
+                                <td scope="row">{{result.total_price}}</td>
+                                <td scope="row">{{result.note}}</td>
+                                <td>{% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove_photo_filling' photo.id %}">Remove</a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h2>{{ model_name }} Results</h2>
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">No of Unite</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Crown Photo</th>
+                                <th scope="col" colspan="2">Other</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in results %}
+                            {% if model_name == 'Veneer' %}
+                            <tr>
+                                <td text-align="center" scope="row">{{ result.idReception }}</td>
+                                <td text-align="center" scope="row">{{ result.name }}</td>
+                                <td text-align="center" scope="row">{{ result.phone }}</td>
+                                <td text-align="center" scope="row">{{ result.gender }}</td>
+                                <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.shade}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.color}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.price}}</td>
+                                <td text-align="center" scope="row" align="center"> {{ result.total_price }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.note}}</td>
+
+                                <td>{% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove_photo_veneer' photo.id %}">Remove</a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endfor %}

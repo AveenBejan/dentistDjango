@@ -13,6 +13,51 @@ from django.db import transaction
 from django.urls import reverse
 
 
+def search_view(request):
+    query = request.GET.get('query')  # Get the search query
+
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+
+    if query:
+        exos = Exo.objects.filter(name__icontains=query)
+        fillings = Filling.objects.filter(name__icontains=query)
+        crowns = Crown.objects.filter(name__icontains=query)
+        veneers = Veneer.objects.filter(name__icontains=query)
+
+
+    search_results = [
+        ('Exo', exos),
+        ('Filling', fillings),
+        ('Crown', crowns),
+        ('Veneer', veneers),
+    ]
+
+    context = {
+        'query': query,
+        'search_results': search_results,
+    }
+
+    return render(request, 'search.html', context)
+
+
+def report_view(request):
+    exos = Exo.objects.all()
+    crowns = Crown.objects.all()
+    fillings = Filling.objects.all()
+    veneers = Veneer.objects.all()
+
+    combined_data = zip(exos, crowns, fillings, veneers)
+
+    context = {
+        'combined_data': combined_data,
+    }
+
+    return render(request, 'report.html', context)
+
+
 def doctor(request):
     if request.method == 'POST':
         form = DoctorsForm(request.POST)

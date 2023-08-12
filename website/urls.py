@@ -83,6 +83,7 @@ urlpatterns = [
     path('delete_details/<int:id>', views.delete_details, name='delete-details'),
     path('search_details',views.search_details,name='search-details'),
 
-
+    path('report/', views.report_view, name='report'),
+    path('search/', views.search_view, name='search'),
 
 ]

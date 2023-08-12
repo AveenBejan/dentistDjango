@@ -87,26 +87,11 @@ function show2(){
                     <div class="col-12">
                         <div id="div1" class="hide" style="display: none;">
                             <div class="alert alert-secondary" role="alert">
-                                <label class="form-check-label" style="font-size: 22px;">RX</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="RX" value="Panadol">
-                                    <label class="form-check-label">Panadol</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="RX" value="AUG">
-                                    <label class="form-check-label">AUG</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="RX" value="AUG1">
-                                    <label class="form-check-label">AUG1</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="RX" value="AUG2">
-                                    <label class="form-check-label">AUG2</label>
-
-                                </div>
-
+                                    <div class="card-header" align="left">
+                                        <a href="{% url 'drugs' id=id %}"
+                                           class="btn btn-outline-info d-flex align-items-left">&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs</a>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -290,36 +275,6 @@ function show2(){
                     </div>
                 </form>
                 {% endif %}
-                <div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">RX</h5>
-          <p class="card-text">
-              <input type="submit" name="RX" class="chktext" style="display:inline">
-          </p>
-           <br/>
-          <br/>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Instructions</h5>
-          <p class="card-text"><ul>
-          <li>السوائل الباردة&nbsp;&nbsp;&nbsp;,كمادات باردة (ثلج)</li>
-          <li>عدم استخدام السوائل الساخنة&nbsp;&nbsp;&nbsp; مضمضة ماء+ملح بعد 12 ساعة</li>
-          <li>عدم التدخين لمدة 24 ساعة </li>
-
-      </ul></p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </div>
-</div>
             </div>
         </div>
     </div>
