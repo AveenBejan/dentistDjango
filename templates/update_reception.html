@@ -29,7 +29,30 @@
                 <h4 class="text-center alert alert-info">Update Information</h4>
                 <form method="POST" novalidate>
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.name }}
+                    {{ form.phone }}
+                    <select class="form-control" name="gender" required="required">
+                        <option value="">Gender</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                    </select>
+                    {{ form.date_of_birth }}
+                    {{ form.doctor }}
+                    {{ form.app_data }}
+                    <select class="form-control" name="days" required="required">
+                        <option value="">Days</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+
+
+                    </select>
+                    {{ form.time }}
+
 
                     <button type="submit" value="update" class="btn btn-success">Update</button>
                     <a href="{% url 'all-appo' %}" class="btn btn-success">back to home</a>

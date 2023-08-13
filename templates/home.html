@@ -33,14 +33,18 @@
 
 <section class="ftco-intro">
 	<div class="container">
+
 		<div class="row no-gutters">
+
 			<div class="col-10">
 
 			</div>
 
-
 			<div class="col-md-10 color-3 p-4">
 
+<div class="alert alert-warning" role="alert">
+  في حالة تغير الموعد بعد الحجز الكترونيأ يرجى الاتصال بهذا الرقم 964750000000+ لتغير الموعد
+</div>
 				<form  class="appointment-form" method="POST" action="">
 					{% csrf_token %}
 					<div class="row">
@@ -72,9 +76,8 @@
 
 						<div class="col-sm-5">
 							<div class="form-group">
-								<div class="icon"></div>
-
-								<input type="date" name="date_of_birth" class="form-control" required placeholder="Date of Birthday">
+								<div class="icon"><span style="margin-right: 100px;">Date of Birth</span></div>
+								<input type="date" name="date_of_birth" class="form-control" required >
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -85,6 +88,30 @@
                                 </div>
 
                             </div>
+						</div>
+							<div class="col-sm-5">
+							<div class="form-group">
+								<div class="icon"></div>
+                                  <div class="icon"><span style="margin-right: 80px;">Date of Appointment</span></div>
+								<input type="date" name="app_data" class="form-control" required>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="form-group">
+								<div class="icon"><span class="icon-user"></span></div>
+								<select class="form-control" name="days" required="required">
+									<option value="">Days</option>
+									<option value="Sunday">Sunday</option>
+									<option value="Monday">Monday</option>
+									<option value="Tuesday">Tuesday</option>
+									<option value="Wednesday">Wednesday</option>
+									<option value="Thursday">Thursday</option>
+									<option value="Friday">Friday</option>
+									<option value="Saturday">Saturday</option>
+
+
+								</select>
+							</div>
 						</div>
 						<div class="col-sm-5">
 							<div class="form-group">
@@ -104,6 +131,7 @@
 		</div>
 	</div>
 </section>
+
 <!--
 
     <section class="ftco-section ftco-services">
