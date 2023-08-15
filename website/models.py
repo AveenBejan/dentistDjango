@@ -128,11 +128,53 @@ class Exo(models.Model):
         return self.name
 
 
+class Implant(models.Model):
+    implant_name = models.CharField('implant_name',max_length=120)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.implant_name
+
+
+class OralSurgery(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
+    name = models.CharField('Name',max_length=120, blank=True,null=True)
+    phone = models.CharField('Phone', max_length=120, blank=True,null=True)
+    gender = models.CharField('Gender', max_length=20, blank=True,null=True)
+    date_of_birth = models.CharField('Gender', max_length=20, blank=True,null=True)
+    implant = models.ForeignKey(Implant, on_delete=models.CASCADE, blank=True,null=True)
+    diameter = models.CharField('Diameter',max_length=120, blank=True,null=True)
+    length = models.CharField('Length',max_length=120, blank=True,null=True)
+    no_Implant = models.CharField('No_Implant',max_length=120,blank=True)
+    ur = models.CharField('Name',max_length=120, blank=True,null=True)
+    ul = models.CharField('Name', max_length=120, blank=True,null=True)
+    lr = models.CharField('Name', max_length=120, blank=True,null=True)
+    ll = models.CharField('Name', max_length=120, blank=True,null=True)
+    shade = models.CharField('shade', max_length=120, blank=True,null=True)
+    no_unite = models.CharField('no_unite',max_length=120, blank=True,null=True)
+    color = models.CharField('color', max_length=120, blank=True,null=True)
+    no_prepare = models.IntegerField('no_prepare',  blank=True,null=True)
+    price = models.DecimalField('price',max_digits=8,decimal_places=2,null=True)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=2,null=True)
+    note = models.CharField('note', max_length=120, blank=True,null=True)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+    first_visit = models.DateField(blank=True,null=True)
+    second_visit = models.DateField(blank=True,null=True)
+    third_visit = models.DateField(blank=True,null=True)
+    fourth_visit = models.DateField(blank=True,null=True)
+    fifth_visit = models.DateField(blank=True,null=True)
+    regdate = models.DateTimeField('Regdate', default=datetime.now(), editable=False)
+
+    def __str__(self):
+        return self.idReception
+
+
 class Photo(models.Model):
     exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE,null=True)
     crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE,null=True)
     veneer_instance = models.ForeignKey(Veneer, on_delete=models.CASCADE, null=True)
     filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, null=True)
+    oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     def __str__(self):
@@ -149,25 +191,6 @@ class Medicin(models.Model):
     analogous = models.CharField('analogous', max_length=120, blank=True)
     mouthwash = models.CharField('mouthwash', max_length=120, blank=True)
     regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
-
-    def __str__(self):
-        return self.idReception
-
-
-class OralSurgery(models.Model):
-    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
-    tooth = models.CharField('tooth',max_length=120)
-    RX = models.CharField('RX',max_length=120,blank=True)
-    material_type = models.CharField('material_type',max_length=120,blank=True)
-    thickness_rich = models.CharField('thickness_rich', max_length=120,blank=True)
-    size = models.CharField('size',max_length=120,blank=True)
-    size_direction = models.CharField('size_direction', max_length=120, blank=True)
-    size_number = models.CharField('size_number', max_length=120, blank=True)
-    second_visit = models.CharField('second_visit', max_length=120,blank=True)
-    third_visit = models.CharField('third_visit', max_length=120,blank=True)
-    fourth_visit = models.CharField('fourth_visit', max_length=120,blank=True)
-    fifth_visit = models.CharField('fifth_visit', max_length=120,blank=True)
-    regdate = models.DateTimeField('Regdate', default=datetime.now(), editable=False)
 
     def __str__(self):
         return self.idReception

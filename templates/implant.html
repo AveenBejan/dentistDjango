@@ -1,0 +1,46 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+<br/>
+<br/>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Type Of Implant</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-4">
+            <form method="post" novalidate action="">
+                {% csrf_token %}
+
+                <input type="text" name="implant_name" placeholder="Type Of Implant Name">&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-info">submit</button>
+                <br/><br/>
+
+            </form>
+        </div>
+    </div>
+    <br/>
+    <table class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Type Of Implant Name</th>
+            <th scope="col">Other</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td scope="row">{{appointment.id}}</td>
+            <td scope="row">{{appointment.implant_name}}</td>
+            <td><a href="{% url 'delete-implant' appointment.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

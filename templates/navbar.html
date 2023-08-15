@@ -38,7 +38,7 @@
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
-                        <a class="dropdown-item" href="{% url 'doctor' %}">Add Doctors</a>
+
                     </div>
                 </li>
                 {% endif %}
@@ -50,7 +50,18 @@
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'exo-reception1' %}">Examination Info.</a>
+                        <!--<a class="dropdown-item" href="">Add Drags</a>-->
+                    </div>
+                </li>
+                   <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false" style="color: #ffffff;">
+                        ADDS
+                    </a>
+                    <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'medicine1' %}">Add New Drugs</a>
+                        <a class="dropdown-item" href="{% url 'implant' %}">Add New Type Of Implant</a>
+                         <a class="dropdown-item" href="{% url 'doctor' %}">Add Doctors</a>
                         <!--<a class="dropdown-item" href="">Add Drags</a>-->
                     </div>
                 </li>
@@ -62,7 +73,8 @@
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'exo-reception' %}">Exo</a>
-                        <a class="dropdown-item" href="{% url 'oral-reception' %}">Oral Surgery Info</a>
+                        <a class="dropdown-item" href="{% url 'oral-reception' %}">Implant</a>
+
                         <!--<a class="dropdown-item" href="{% url 'all-oral-surgery' %}">All Oral Surgery Info</a>
                           <a class="dropdown-item" href="{% url 'orthodontics' %}">orthodontic</a>-->
                     </div>

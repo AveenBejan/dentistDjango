@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant
 from django.forms import formset_factory
 
 
@@ -302,47 +302,77 @@ class VeneerForm(forms.ModelForm):
         }
 
 
-class PhotoForm(forms.ModelForm):
+class ImplantForm(forms.ModelForm):
     class Meta:
-        model = Photo
-        fields = ['image']
+        model = Implant
+        fields = ['implant_name']
+        labels = {
+            'implant_name': '',}
+        widgets = {
+            'implant_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'implant_name'}),}
 
 
 class OralSurgeryForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+    implant = forms.ModelChoiceField(queryset=Implant.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Implant",
+                                    to_field_name='implant_name')
+
     class Meta:
         model = OralSurgery
-        fields = ('idReception','tooth', 'RX', 'material_type', 'thickness_rich', 'size', 'size_direction', 'size_number', 'second_visit', 'third_visit', 'fourth_visit', 'fifth_visit')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','implant', 'diameter', 'length', 'no_Implant', 'ur', 'ul','lr', 'll','shade','no_unite',
+                  'color', 'no_prepare', 'price', 'note', 'exo_images', 'first_visit','second_visit','third_visit',
+                  'fourth_visit','fifth_visit')
         labels = {
             'idReception': '',
-            'tooth': '',
-            'RX': '',
-            'material_type': '',
-            'thickness_rich': '',
-            'size': '',
-            'size_direction': '',
-            'size_number': '',
-            'second_visit': '',
-            'third_visit': '',
-            'fourth_visit': '',
-            'fifth_visit': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'first_visit': '',
+            'implant': '',
+            'diameter': '',
+            'length': '',
+            'no_Implant': '',
+            'no_unite': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'shade': '',
+            'color': '',
+            'no_prepare': '',
+            'price': '',
+            'note': '',
 
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
-            'tooth': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Tooth Extraction'}),
-            'RX': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'size'}),
-            'material_type': forms.RadioSelect(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
-            'thickness_rich': forms.RadioSelect(attrs={'class': 'form-control', 'placeholder': 'thickness_rich'}),
-            'size': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'size'}),
-            'size_direction': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'size_direction'}),
-            'size_number': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'size_number'}),
-            'second_visit': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'second_visit'}),
-            'third_visit': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'third_visit'}),
-            'fourth_visit': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'fourth_visit'}),
-            'fifth_visit': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'fifth_visit'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'first_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'diameter': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'length': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'no_Implant': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_Implant'}),
+            'no_unite': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'size'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'shade': forms.Select(attrs={'class': 'form-control', 'placeholder': 'shade'}),
+            'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
+            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
         }
 
 
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['image']
 
 
 class DentistDetailsForm(forms.ModelForm):
