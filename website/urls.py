@@ -18,6 +18,7 @@ urlpatterns = [
     path('index.html', views.add_oral_surgery, name='add-oral-surgery'),
     path('search_oral', views.search_oral, name='search-oral'),
     path('oral_edit/<int:id>', views.oral_edit, name='oral-edit'),
+    path('oral_visit/<int:id>', views.oral_visit, name='oral-visit'),
     path('delete_oral/<int:id>', views.delete_oral, name='delete-oral'),
     path('all_oral_surgery.html', views.all_oral_surgery, name='all-oral-surgery'),
     path('remove_photo_oral/<int:photo_id>/', views.remove_photo_oral, name='remove-photo-oral'),

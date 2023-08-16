@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.forms import formset_factory
 from django.db import transaction
 from django.urls import reverse
+from datetime import date
 
 
 def search_view(request):
@@ -116,11 +117,6 @@ def delete_implant(request,id):
     appointments =  Implant.objects.get(pk=id)
     appointments.delete()
     return redirect('implant')
-
-
-
-
-
 
 
 def home(request):
@@ -264,6 +260,7 @@ def search_doctor(request):
 
     return render(request, 'doctors/search_doctor.html', {'form': form})
 
+
 def all_reception(request):
     appointments = Reception.objects.all().order_by('-id')
     return render(request, 'all_reception.html', {'appointments': appointments})
@@ -285,38 +282,24 @@ def update_reception(request, id):
 
 
 def add_oral_surgery(request, id):
-    # Step 1: Check if the request method is POST
     if request.method == 'POST':
-        # Step 2: Create an instance of the OralSurgeryForm with the submitted data
         form = OralSurgeryForm(request.POST, request.FILES)
-
-        # Step 3: Check if the form data is valid
         if form.is_valid():
-            # Step 4: Create a new OralSurgery instance from the form data
             oral_surgery = form.save(commit=False)
-
-            # Step 5: Set related fields using cleaned_data from the form
             implant_name = form.cleaned_data['implant']
             oral_surgery.implant = Implant.objects.get(implant_name=implant_name)
             oral_surgery.idReception_id = id
-
-            # Step 6: Calculate and set the total_price field
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
             total_price = no_prepare * price
             oral_surgery.total_price = total_price
-
-            # Step 7: Set additional fields from Reception model
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
             oral_surgery.phone = reception.phone
             oral_surgery.gender = reception.gender
             oral_surgery.date_of_birth = reception.date_of_birth
-
-            # Step 8: Save the oral_surgery instance
             oral_surgery.save()
 
-            # Step 9: Handle uploaded photos
             photos = request.FILES.getlist('exo_images')
             oral_surgery_instance = form.save(commit=False)
             oral_surgery_instance.save()
@@ -324,10 +307,8 @@ def add_oral_surgery(request, id):
             for photo in photos:
                 Photo.objects.create(oral_surgery_instance=oral_surgery_instance, image=photo)
 
-            # Step 10: Redirect to another view after successful submission
             return redirect('add-oral-surgery', id=id)
         else:
-            # Step 11: Form is not valid, prepopulate form and render it with errors
             reception = Reception.objects.get(id=id)
             initial_data = {
                 'idReception': id,
@@ -338,7 +319,6 @@ def add_oral_surgery(request, id):
             }
             form = OralSurgeryForm(initial=initial_data)
     else:
-        # Step 12: Handle GET request, prepopulate form and render it
         reception = Reception.objects.get(id=id)
         initial_data = {
             'idReception': id,
@@ -349,12 +329,15 @@ def add_oral_surgery(request, id):
         }
         form = OralSurgeryForm(initial=initial_data)
 
-    # Step 13: Retrieve appointments, oral_surgery, medicine, and photos for rendering
     appointments = Reception.objects.all().order_by('-id')
+    oralls = OralSurgery.objects.filter(idReception=id)
+    # Create a list to store photos for each OralSurgery instance
+    photos_list = []
+
     try:
-        orall = OralSurgery.objects.get(idReception=id)
+        orall = oralls.first()
         photos = orall.photo_set.all()
-    except OralSurgery.DoesNotExist:
+    except AttributeError:
         orall = None
         photos = None
 
@@ -363,8 +346,7 @@ def add_oral_surgery(request, id):
     except Medicin.DoesNotExist:
         medicine = None
 
-    # Step 14: Update fields in orall (if applicable)
-    if orall:
+    for orall in oralls:
         if orall.ur:
             orall.ur = orall.ur.replace("'", "")
         if orall.ul:
@@ -373,21 +355,27 @@ def add_oral_surgery(request, id):
             orall.lr = orall.lr.replace("'", "")
         if orall.ll:
             orall.ll = orall.ll.replace("'", "")
+        orall.total_price = orall.no_prepare * orall.price
+        orall.save()
+        # Retrieve photos associated with the current OralSurgery instance
+        photos = orall.photo_set.all()
 
-    # Step 15: Format total_price and price with commas as thousands separators
-    formatted_total_price = "{:,.2f}".format(orall.total_price) if orall else None
-    formatted_price = "{:,.2f}".format(orall.price) if orall else None
+        # Append the photos to the photos_list
+        photos_list.append(photos)
 
-    # Step 16: Render the template with the appropriate data
+    formatted_total_prices = ["{:,.2f}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
+    formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
+
     return render(request, 'index.html', {
         'form': form,
         'appointments': appointments,
         'medicine': medicine,
-        'orall': orall,
+        'oralls': oralls,
         'id': id,
         'photos': photos,
-        'formatted_total_price': formatted_total_price,
-        'formatted_price': formatted_price,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
     })
 
 
@@ -395,7 +383,8 @@ def remove_photo_oral(request, photo_id):
     photo = get_object_or_404(Photo, id=photo_id)
     oral_surgery_instance = photo.oral_surgery_instance
     photo.delete()
-    return redirect('add-oral-surgery', id=oral_surgery_instance.id)
+    return redirect('oral-edit', id=oral_surgery_instance.id)
+
 
 
 def delete_oral(request, id):
@@ -430,7 +419,7 @@ def search_oral(request):
 def oral_edit(request, id):
     pi = OralSurgery.objects.get(id=id)
     photos = Photo.objects.filter(oral_surgery_instance=pi)  # Fetch photos associated with the oral surgery instance
-
+    orall = None  # Initialize orall to None
     if request.method == 'POST':
         form = OralSurgeryForm(request.POST, instance=pi)
         if form.is_valid():
@@ -466,13 +455,54 @@ def oral_edit(request, id):
             orall = None
             photos = None
 
-    return render(request, 'update_oral_surgery.html', {'form': form, 'pi': pi, 'orall': orall,'photos': photos})
+    return render(request, 'update_oral_surgery.html', {'form': form, 'pi': pi, 'orall': orall, 'photos': photos})
+
+
+def oral_visit(request, id):
+    pi = OralSurgery.objects.get(id=id)
+    photos = Photo.objects.filter(oral_surgery_instance=pi)  # Fetch photos associated with the oral surgery instance
+    orall = None  # Initialize orall to None
+    if request.method == 'POST':
+        form = OralSurgeryForm(request.POST, instance=pi)
+        if form.is_valid():
+            # Calculate total_price
+            no_prepare = form.cleaned_data['no_prepare']
+            price = form.cleaned_data['price']
+            total_price = no_prepare * price
+
+            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
+            form.save()
+
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(oral_surgery_instance=pi, image=photo)
+
+            return redirect('add-oral-surgery', id=pi.idReception_id)
+    else:
+        form = OralSurgeryForm(instance=pi)
+        try:
+            orall = OralSurgery.objects.get(idReception=id)
+            photos = orall.photo_set.all()
+            # Sanitize field values in the instance
+            if orall.ur:
+                orall.ur = orall.ur.replace("'", "")
+            if orall.ul:
+                orall.ul = orall.ul.replace("'", "")
+            if orall.lr:
+                orall.lr = orall.lr.replace("'", "")
+            if orall.ll:
+                orall.ll = orall.ll.replace("'", "")
+        except OralSurgery.DoesNotExist:
+            orall = None
+            photos = None
+
+    return render(request, 'oral_visit.html', {'form': form, 'pi': pi, 'orall': orall,'photos': photos})
 
 
 def all_oral_surgery(request):
     orals = OralSurgery.objects.all().order_by('-id')
     return render(request, 'all_oral_surgery.html', {'orals': orals})
-
 
 
 def orthodontics(request):

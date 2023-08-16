@@ -62,42 +62,68 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for orall in oralls %}
                             <tr>
-                                <td text-align="center" scope="row">{{ form.initial.idReception }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.name }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.phone }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.gender }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.date_of_birth }}</td>
-                                <td text-align="center" scope="row">{{orall.first_visit}}</td>
-                                <td text-align="center" scope="row">{{orall.implant}}</td>
-                                <td text-align="center" scope="row">{{orall.diameter}}</td>
-                                <td text-align="center" scope="row">{{orall.length}}</td>
-                                <td text-align="center" scope="row">{{orall.no_Implant}}</td>
-                                <td text-align="center" scope="row">{{orall.ur|slice:"1:-1" }}</td>
-                                <td text-align="center" scope="row">{{orall.ul|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{orall.lr|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{orall.ll|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{orall.shade}}</td>
-                                <td text-align="center" scope="row">{{orall.no_unite}}</td>
-                                <td text-align="center" scope="row">{{orall.color}}</td>
-                                <td text-align="center" scope="row">{{orall.no_prepare}}</td>
-                                <td text-align="center" scope="row">{{formatted_price}}</td>
-                                <td text-align="center" scope="row">{{formatted_total_price}}</td>
-                                <td text-align="center" scope="row">{{orall.note}}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.id }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.name }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.phone }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.gender }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.date_of_birth }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.implant }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.diameter }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.length }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.no_Implant }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.ur|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.ul|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lr|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.ll|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.shade }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.no_unite }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.color }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.no_prepare }}</td>
+                                <td style="text-align: center;">
+                                    {% if orall.price is not None %}
+                                    {{ orall.price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center;">
+                                    {% if orall.total_price is not None %}
+                                    {{ orall.total_price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
 
-                                <td>{% for photo in photos %}
-                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                    <a href="{% url 'remove-photo-oral' photo.id %}">Remove</a>
+
+                                <td style="text-align: center;" scope="row">{{ orall.note }}</td>
+                                <td>
+                                    {% for photos in photos_list %}
+                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                      {% for photo in photos %}
+                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                        <a href="{% url 'remove-photo-oral' photo.id %}">Remove</a>
+                                      {% endfor %}
+                                     {% endif %}
                                     {% endfor %}
                                 </td>
-                                   {% if orall %}
-                                  <td><a href="{% url 'oral-edit' orall.id %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
-                                   <td scope="row" ><a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+
+                                {% if orall %}
+                                <!--<td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a></td>-->
+                                <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span
+                                        class="btn btn-warning">Edit</span></a>
+                                </td>
+                                <td scope="row"><a href="{% url 'delete-oral'  orall.id %}"
+                                                   style="display: inline;"><span
+                                        class="btn btn-outline-danger">Delete</span></a></td>
                                 {% endif %}
-
-
                             </tr>
+                            {% endfor %}
                             </tbody>
+
                         </table>
                     </div>
 
@@ -146,8 +172,8 @@
 
                                         <div class="card-header">
 
-                                            <h4 style="font-size: 22px; text-align:center;">     First
-                                            Visit</h4>
+                                            <h4 style="font-size: 22px; text-align:center;"> First
+                                                Visit</h4>
                                         </div>
                                         <br/>
                                         <div class="row">
@@ -434,12 +460,13 @@
                                                 <div class="form-row">
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="length" required
-                                                               placeholder="Length"  style="font-weight:bold;"
+                                                               placeholder="Length" style="font-weight:bold;"
                                                                value="">
                                                     </div>
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="diameter"
-                                                               placeholder="Diameter" required value="" style="font-weight:bold;">
+                                                               placeholder="Diameter" required value=""
+                                                               style="font-weight:bold;">
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
@@ -465,22 +492,25 @@
                                                 <div class="form-row">
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="no_unite"
-                                                               placeholder="No of Unite:" required  style="font-weight:bold;">
+                                                               placeholder="No of Unite:" required
+                                                               style="font-weight:bold;">
                                                     </div>
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="no_Implant"
-                                                               placeholder="No. Of Implant" value="" required  style="font-weight:bold;">
+                                                               placeholder="No. Of Implant" value="" required
+                                                               style="font-weight:bold;">
                                                     </div>
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="color"
-                                                               placeholder="Color" required  style="font-weight:bold;">
+                                                               placeholder="Color" required style="font-weight:bold;">
 
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="no_prepare"
-                                                               placeholder="No of Prepared Teeth" required  style="font-weight:bold;">
+                                                               placeholder="No of Prepared Teeth" required
+                                                               style="font-weight:bold;">
                                                     </div>
                                                     <div class="col">
                                                         <input type="text" name="price" value="" class="form-control"

@@ -343,6 +343,11 @@ class OralSurgeryForm(forms.ModelForm):
             'no_prepare': '',
             'price': '',
             'note': '',
+            'second_visit': '',
+            'third_visit': '',
+            'fourth_visit': '',
+            'fifth_visit': '',
+
 
         }
         widgets = {
@@ -364,8 +369,11 @@ class OralSurgeryForm(forms.ModelForm):
             'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
             'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
-
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'second_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'third_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'fourth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'fifth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
         }
 
 
