@@ -274,11 +274,11 @@ def delete_reception(request, id):
 
 def update_reception(request, id):
     pi = Reception.objects.get(pk=id)
-    form = ReceptionForm(request.POST or None,  instance=pi)
+    form = ReceptionForm(request.POST or None, instance=pi)
     if form.is_valid():
         form.save()
         return redirect('all-reception')
-    return render(request,'update_reception.html',{'form':form,'pi':pi})
+    return render(request, 'update_reception.html', {'form': form, 'pi': pi})
 
 
 def add_oral_surgery(request, id):
@@ -289,9 +289,9 @@ def add_oral_surgery(request, id):
             implant_name = form.cleaned_data['implant']
             oral_surgery.implant = Implant.objects.get(implant_name=implant_name)
             oral_surgery.idReception_id = id
-            no_prepare = form.cleaned_data['no_prepare']
+            no_unite = form.cleaned_data['no_unite']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = no_unite * price
             oral_surgery.total_price = total_price
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
@@ -355,7 +355,7 @@ def add_oral_surgery(request, id):
             orall.lr = orall.lr.replace("'", "")
         if orall.ll:
             orall.ll = orall.ll.replace("'", "")
-        orall.total_price = orall.no_prepare * orall.price
+        orall.total_price = orall.no_unite * orall.price
         orall.save()
         # Retrieve photos associated with the current OralSurgery instance
         photos = orall.photo_set.all()
@@ -424,9 +424,9 @@ def oral_edit(request, id):
         form = OralSurgeryForm(request.POST, instance=pi)
         if form.is_valid():
             # Calculate total_price
-            no_prepare = form.cleaned_data['no_prepare']
+            no_unite = form.cleaned_data['no_unite']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = no_unite * price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()
@@ -466,9 +466,9 @@ def oral_visit(request, id):
         form = OralSurgeryForm(request.POST, instance=pi)
         if form.is_valid():
             # Calculate total_price
-            no_prepare = form.cleaned_data['no_prepare']
+            no_unite = form.cleaned_data['no_unite']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = no_unite * price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()

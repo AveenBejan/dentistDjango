@@ -320,7 +320,7 @@ class OralSurgeryForm(forms.ModelForm):
     class Meta:
         model = OralSurgery
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','implant', 'diameter', 'length', 'no_Implant', 'ur', 'ul','lr', 'll','shade','no_unite',
-                  'color', 'no_prepare', 'price', 'note', 'exo_images', 'first_visit','second_visit','third_visit',
+                  'color', 'price', 'note', 'exo_images', 'first_visit','second_visit','third_visit',
                   'fourth_visit','fifth_visit')
         labels = {
             'idReception': '',
@@ -340,7 +340,6 @@ class OralSurgeryForm(forms.ModelForm):
             'll': '',
             'shade': '',
             'color': '',
-            'no_prepare': '',
             'price': '',
             'note': '',
             'second_visit': '',
@@ -367,7 +366,6 @@ class OralSurgeryForm(forms.ModelForm):
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
             'shade': forms.Select(attrs={'class': 'form-control', 'placeholder': 'shade'}),
             'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
-            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'second_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),

@@ -151,7 +151,7 @@ class OralSurgery(models.Model):
     lr = models.CharField('Name', max_length=120, blank=True,null=True)
     ll = models.CharField('Name', max_length=120, blank=True,null=True)
     shade = models.CharField('shade', max_length=120, blank=True,null=True)
-    no_unite = models.CharField('no_unite',max_length=120, blank=True,null=True)
+    no_unite = models.IntegerField('no_unite', blank=True,null=True)
     color = models.CharField('color', max_length=120, blank=True,null=True)
     no_prepare = models.IntegerField('no_prepare',  blank=True,null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=2,null=True)

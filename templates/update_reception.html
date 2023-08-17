@@ -4,30 +4,14 @@
 {% block content %}
 
 
-<section class="home-slider owl-carousel">
-    <div class="slider-item bread-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});"
-         data-stellar-background-ratio="0.5">
-        <div class="overlay"></div>
-        <div class="container" data-scrollax-parent="true">
-            <div class="row slider-text align-items-end">
-                <div class="col-md-7 col-sm-12 ftco-animate mb-5">
-                    <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span
-                            class="mr-2"><a href="index.html"></a></span> <span></span></p>
-                    <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">Appointment</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
             <div class="col-md-12 mb-4">
-                <h2 class="h4">Appointment Information</h2>
+                <h2 class="h4">Update Information for Patient </h2>
 
                 <h4 class="text-center alert alert-info">Update Information</h4>
-                <form method="POST" novalidate>
+                <form method="POST" id="updateForm">
                     {% csrf_token %}
                     {{ form.name }}
                     {{ form.phone }}
@@ -38,7 +22,8 @@
                     </select>
                     {{ form.date_of_birth }}
                     {{ form.doctor }}
-                    {{ form.app_data }}
+                    <input type="text" name="app_data" class="form-control appointment_date"
+									   placeholder="Date of Appointment" required>
                     <select class="form-control" name="days" required="required">
                         <option value="">Days</option>
                         <option value="Sunday">Sunday</option>
@@ -48,15 +33,39 @@
                         <option value="Thursday">Thursday</option>
                         <option value="Friday">Friday</option>
                         <option value="Saturday">Saturday</option>
-
-
                     </select>
-                    {{ form.time }}
+                    <input type="text" name="time" class="form-control appointment_time" required placeholder="Time"
+                           required>
 
 
-                    <button type="submit" value="update" class="btn btn-success">Update</button>
-                    <a href="{% url 'all-appo' %}" class="btn btn-success">back to home</a>
+                    <button type="submit" class="btn btn-success" onclick="validateAndShowAlert()">Update</button>
                 </form>
+
+                <script>
+    function validateAndShowAlert() {
+        var requiredFields = document.querySelectorAll('[required]');
+        var allFieldsFilled = true;
+
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            showAlert();
+        } else {
+            alert("Please fill out all required fields.");
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Are you sure you want to update?")) {
+            document.getElementById("updateForm").submit();
+        }
+    }
+</script>
 
             </div>
         </div>
