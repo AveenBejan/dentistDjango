@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <form method="POST" action="" enctype="multipart/form-data">
+                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="hidden" name="idReception"
                            value="{{ form.initial.idReception }}"
@@ -330,30 +330,55 @@
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
                                        name="exoby"
-                                       value="{{ form.initial.exoby }}">
+                                       value="Exo by Surgery">
                                 <label class="form-check-label">Exo by
                                     Surgery</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
                                        name="simpleexo"
-                                       value="{{ form.initial.simpleexo }}">
+                                       value="Simple Exo">
                                 <label class="form-check-label">Simple Exo</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
                                        name="complcated"
-                                       value="{{ form.initial.complcated }}">
+                                       value="Complicated">
                                 <label class="form-check-label">Complicated</label>
                             </div>
                         </div>
                         <br/>
                         <div class="form-group" style="text-align: center;">
-                            <button type="submit" value="update" class="btn btn-outline-primary">Update</button>
+                            <button type="submit" value="update" onclick="validateAndShowAlert()" class="btn btn-outline-primary">Update</button>
                         </div>
 
                     </div>
                 </form>
+                   <script>
+    function validateAndShowAlert() {
+        var requiredFields = document.querySelectorAll('[required]');
+        var allFieldsFilled = true;
+
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            showAlert();
+        } else {
+            alert("Please fill out all required fields.");
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Are you sure you want to update?")) {
+            document.getElementById("updateForm").submit();
+        }
+    }
+</script>
             </div>
         </div>
     </div>

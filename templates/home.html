@@ -91,31 +91,17 @@
 						</div>
 						<div class="col-sm-5">
 							<div class="form-group">
-								<div class="icon"><span class="ion-ios-calendar"></span></div>
-								<input type="text" name="app_data" class="form-control appointment_date"
-									   placeholder="Date of Appointment" required>
-								<div id="selectedDateInfo"></div>
+								<input type="text" name="app_data" id = "datepicker-3"
+									   placeholder="Date of Appointment" required class="form-control" >
 
 							</div>
 						</div>
-
 						<div class="col-sm-5">
 							<div class="form-group">
-								<div class="icon"><span class="icon-user"></span></div>
-								<select class="form-control" name="days" required="required">
-									<option value="">Days</option>
-									<option value="Sunday">Sunday</option>
-									<option value="Monday">Monday</option>
-									<option value="Tuesday">Tuesday</option>
-									<option value="Wednesday">Wednesday</option>
-									<option value="Thursday">Thursday</option>
-									<option value="Friday">Friday</option>
-									<option value="Saturday">Saturday</option>
-
-
-								</select>
+								<input type="text"  name="days" id = "datepicker-4" placeholder="Days" readonly class="form-control">
 							</div>
 						</div>
+
 						<div class="col-sm-5">
 							<div class="form-group">
 								<div class="icon"><span class="ion-ios-clock"></span></div>
@@ -521,40 +507,4 @@
             </div>
           </div>
 -->
-<<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-$(document).ready(function() {
-    $(".appointment_date").datepicker({
-        onSelect: function(dateText, inst) {
-            // Get the selected date and parse it to a Date object
-            var selectedDate = new Date(dateText);
-
-            // Array to store the names of days
-            var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-            // Array to store the names of months
-            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-            // Get the day index (0 for Sunday, 1 for Monday, etc.)
-            var dayIndex = selectedDate.getDay();
-
-            // Get the name of the day based on the index
-            var dayName = dayNames[dayIndex];
-
-            // Get the name of the month based on the index
-            var monthName = monthNames[selectedDate.getMonth()];
-
-            // Format the selected date in the desired format (e.g., "Wednesday September 8, 2021")
-            var formattedDate = dayName + " " + monthName + " " + selectedDate.getDate() + ", " + selectedDate.getFullYear();
-
-            // Update the content of the selectedDateInfo element
-            $("#selectedDateInfo").text("Selected date: " + formattedDate);
-        },
-        dateFormat: 'yy-mm-dd' // Set the desired date format here
-    });
-});
-</script>
-
-
 {% endblock %}

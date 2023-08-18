@@ -43,7 +43,7 @@ class ReceptionForm(forms.ModelForm):
             'gender': forms.Select(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'app_data': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
-            'days': forms.Select(attrs={'class': 'form-control'}),
+            'days': forms.TextInput(attrs={'class': 'form-control'}),
             'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
         }
 

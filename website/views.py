@@ -21,12 +21,14 @@ def search_view(request):
     fillings = Filling.objects.none()
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
 
     if query:
         exos = Exo.objects.filter(name__icontains=query)
         fillings = Filling.objects.filter(name__icontains=query)
         crowns = Crown.objects.filter(name__icontains=query)
         veneers = Veneer.objects.filter(name__icontains=query)
+        oralSurgery = OralSurgery.objects.filter(name__icontains=query)
 
     search_results = []
 
@@ -38,6 +40,8 @@ def search_view(request):
         search_results.append(('Crown', crowns))
     if veneers.exists():
         search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
 
     context = {
         'query': query,
@@ -239,6 +243,13 @@ def reception(request):
             instance = form.save(commit=False)
             doctor_name = form.cleaned_data['doctor']
             instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
+            # Get the app_data and days values from the POST data
+            app_data = request.POST.get('app_data')
+            days = request.POST.get('days')
+
+            # Save the app_data and days fields to the instance
+            instance.app_data = app_data
+            instance.days = days
             instance.save()
             return redirect('home')  # Redirect after successful form submission
     else:
@@ -534,23 +545,19 @@ def exo(request, id):
         form = ExoForm(request.POST, request.FILES)
         if form.is_valid():
             oral_surgery = form.save(commit=False)
-            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            oral_surgery.idReception_id = id
             no_prepare = form.cleaned_data['no_prepare']
-            # Assuming 'price' is also coming from the form, get its value as well
             price = form.cleaned_data['price']
-            # Calculate the total price
             total_price = no_prepare * price
-            # Set the 'total_price' field of the model instance
             oral_surgery.total_price = total_price
-            total_price = no_prepare * price
             reception = Reception.objects.get(id=id)
-            oral_surgery.name = reception.name  # Set the name from Reception model
-            oral_surgery.phone = reception.phone  # Set the name from Reception model
-            oral_surgery.gender = reception.gender  # Set the gender from Reception model
-            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.save()
-            photos = request.FILES.getlist('exo_images')
 
+            photos = request.FILES.getlist('exo_images')
             exo_instance = form.save(commit=False)
             exo_instance.save()
 
@@ -577,7 +584,7 @@ def exo(request, id):
             'gender': reception.gender,
             'date_of_birth': reception.date_of_birth
         }
-        form = ExoForm(initial=initial_data)  # Prepopulate the form with initial data
+        form = ExoForm(initial=initial_data)
 
     appointments = Reception.objects.all().order_by('-id')
     exooes = Exo.objects.filter(idReception=id)
@@ -590,11 +597,12 @@ def exo(request, id):
     except AttributeError:
         exoo = None
         photos = None
+
     try:
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-        # Replace commas in Exo model fields
+
     for exoo in exooes:
         if exoo.ur:
             exoo.ur = exoo.ur.replace("'", "")
@@ -610,16 +618,17 @@ def exo(request, id):
             exoo.simpleexo = exoo.simpleexo.replace("'", "")
         if exoo.complcated:
             exoo.complcated = exoo.complcated.replace("'", "")
-            exoo.total_price = exoo.no_prepare * exoo.price
-            exoo.save()
-            # Retrieve photos associated with the current OralSurgery instance
-            photos = exoo.photo_set.all()
+        exoo.total_price = exoo.no_prepare * exoo.price
+        exoo.save()
+        # Retrieve photos associated with the current OralSurgery instance
+        photos = exoo.photo_set.all()
 
-            # Append the photos to the photos_list
-            photos_list.append(photos)
-    # Calculate the formatted total_price with commas as thousands separators
+        # Append the photos to the photos_list
+        photos_list.append(photos)
+
     formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
     formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
     return render(request, 'exo/exo.html', {
         'form': form,
         'appointments': appointments,

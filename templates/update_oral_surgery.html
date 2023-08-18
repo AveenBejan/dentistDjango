@@ -28,7 +28,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <form method="POST" action="" enctype="multipart/form-data">
+                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="hidden" name="idReception"
                            value="{{ form.initial.idReception }}"
@@ -145,7 +145,7 @@
                                     <div class="col-12">
                                         <div class="alert alert-secondary" role="alert" align="center">
                                             <input type="submit" id="but1" value="Update Oral Surgery"
-                                                   class="btn btn-info">
+                                                   class="btn btn-info" onclick="validateAndShowAlert()">
                                         </div>
                                     </div>
                                 </div>
@@ -153,6 +153,31 @@
                         </div>
                     </div>
                 </form>
+                   <script>
+    function validateAndShowAlert() {
+        var requiredFields = document.querySelectorAll('[required]');
+        var allFieldsFilled = true;
+
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            showAlert();
+        } else {
+            alert("Please fill out all required fields.");
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Are you sure you want to update?")) {
+            document.getElementById("updateForm").submit();
+        }
+    }
+</script>
             </div>
         </div>
     </div>

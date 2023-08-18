@@ -1243,3 +1243,210 @@ function show2(){
         </div>
     </div>
 </section>
+88888888888888888888888888888888888888
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<br/>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand"></a>
+    {%if user.is_authenticated%}
+    <form method="get" action="{% url 'search' %}">
+        <input type="text" name="query" value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+    {% endif %}
+</nav>
+<h1>Search Results for "{{ query }}"</h1>
+
+<table class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Date of Birth</th>
+        <th scope="col">Upper Right</th>
+        <th scope="col">Upper Left</th>
+        <th scope="col">Lower Right</th>
+        <th scope="col">Lower Left</th>
+        <th scope="col">No of Prepare Teeth</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Notes</th>
+        <th scope="col">Exo by Surgery</th>
+        <th scope="col">Simple Exo</th>
+        <th scope="col">Complicated</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if results %}
+    {% for model_name, results in search_results %}
+    {% if model_name == 'Exo' %}
+    <h2>{{ model_name }} Results</h2>
+    {% for result in results %}
+    <tr>
+        <td text-align="center" scope="row">{{ result.id }}</td>
+        <td text-align="center" scope="row">{{ result.name }}</td>
+        <td text-align="center" scope="row">{{ result.phone }}</td>
+        <td text-align="center" scope="row">{{ result.gender }}</td>
+        <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
+        <td text-align="center" scope="row">{{result.ur|slice:"1:-1" }}</td>
+        <td text-align="center" scope="row">{{result.ul|slice:"1:-1"}}</td>
+        <td text-align="center" scope="row">{{result.lr|slice:"1:-1"}}</td>
+        <td text-align="center" scope="row">{{result.ll|slice:"1:-1"}}</td>
+        <td text-align="center" scope="row">{{result.no_prepare}}</td>
+        <td text-align="center" scope="row">{{result.price}}</td>
+        <td text-align="center" scope="row">{{result.total_price}}</td>
+        <td text-align="center" scope="row">{{result.note}}</td>
+        <td text-align="center" scope="row">{{result.exoby|slice:"1:-1"}}</td>
+        <td text-align="center" scope="row">{{result.simpleexo|slice:"1:-1"}}</td>
+        <td text-align="center" scope="row">{{result.complcated |slice:"1:-1"}}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h1>No {{ model_name }} results found.</h1>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    </tbody>
+</table>
+<br/>
+<table class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Date of Birth</th>
+        <th scope="col">Shade</th>
+        <th scope="col">No of Unite</th>
+        <th scope="col">Color</th>
+        <th scope="col">No of Pre.Unite</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for model_name, results in search_results %}
+    {% for result in results %}
+    {% if model_name == 'Crown' %}
+    <h2>{{ model_name }} Results</h2>
+    <tr>
+        <td scope="row">{{ result.id }}</td>
+        <td text-align="center" scope="row">{{ result.name }}</td>
+        <td text-align="center" scope="row">{{ result.phone }}</td>
+        <td text-align="center" scope="row">{{ result.gender }}</td>
+        <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
+        <td text-align="center" scope="row" align="center">{{result.shade}}</td>
+        <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
+        <td text-align="center" scope="row" align="center">{{result.color}}</td>
+        <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
+        <td text-align="center" scope="row" align="center">{{result.price}}</td>
+        <td text-align="center" scope="row" align="center"> {{result.total_price }}</td>
+        <td text-align="center" scope="row" align="center">{{result.note}}</td>
+
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+<br/>
+<table class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+    <tr>
+
+        <th scope="col">#</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Date of Birth</th>
+        <th scope="col">Filling Type</th>
+        <th scope="col">Filling Place</th>
+        <th scope="col">Upper Right</th>
+        <th scope="col">Upper Left</th>
+        <th scope="col">Lower Right</th>
+        <th scope="col">Lower Left</th>
+        <th scope="col">No of Pre.Unite</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for model_name, results in search_results %}
+    {% for result in results %}
+    {% if model_name == 'Filling' %}
+    <h2>{{ model_name }} Results</h2>
+    <tr>
+        <td scope="row">{{ result.id }}</td>
+        <td scope="row">{{ result.name }}</td>
+        <td scope="row">{{ result.phone }}</td>
+        <td scope="row">{{ result.gender }}</td>
+        <td scope="row">{{ result.date_of_birth }}</td>
+        <td scope="row">{{result.filling_type}}</td>
+        <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
+        <td scope="row">{{result.ur|slice:"1:-1" }}</td>
+        <td scope="row">{{result.ul|slice:"1:-1"}}</td>
+        <td scope="row">{{result.lr|slice:"1:-1"}}</td>
+        <td scope="row">{{result.ll|slice:"1:-1"}}</td>
+        <td scope="row">{{result.no_prepare}}</td>
+        <td scope="row">{{result.price}}</td>
+        <td scope="row">{{result.total_price}}</td>
+        <td scope="row">{{result.note}}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+<br/>
+<table class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+    <tr>
+
+        <th scope="col">#</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Date of Birth</th>
+        <th scope="col">Shade</th>
+        <th scope="col">No of Unite</th>
+        <th scope="col">Color</th>
+        <th scope="col">No of Pre.Unite</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for model_name, results in search_results %}
+    {% for result in results %}
+    {% if model_name == 'Veneer' %}
+    <h2>{{ model_name }} Results</h2>
+    <tr>
+        <td text-align="center" scope="row">{{ result.id}}</td>
+        <td text-align="center" scope="row">{{ result.name }}</td>
+        <td text-align="center" scope="row">{{ result.phone }}</td>
+        <td text-align="center" scope="row">{{ result.gender }}</td>
+        <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
+        <td text-align="center" scope="row" align="center">{{result.shade}}</td>
+        <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
+        <td text-align="center" scope="row" align="center">{{result.color}}</td>
+        <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
+        <td text-align="center" scope="row" align="center">{{result.price}}</td>
+        <td text-align="center" scope="row" align="center"> {{ result.total_price }}</td>
+        <td text-align="center" scope="row" align="center">{{result.note}}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
