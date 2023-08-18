@@ -558,6 +558,16 @@ def exo(request, id):
                 Photo.objects.create(exo_instance=exo_instance, image=photo)
 
             return redirect('exo', id=id)
+        else:
+            reception = Reception.objects.get(id=id)
+            initial_data = {
+                'idReception': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth
+            }
+            form = ExoForm(initial=initial_data)
     else:
         reception = Reception.objects.get(id=id)
         initial_data = {
@@ -570,11 +580,14 @@ def exo(request, id):
         form = ExoForm(initial=initial_data)  # Prepopulate the form with initial data
 
     appointments = Reception.objects.all().order_by('-id')
+    exooes = Exo.objects.filter(idReception=id)
+    # Create a list to store photos for each OralSurgery instance
+    photos_list = []
 
     try:
-        exoo = Exo.objects.get(idReception=id)
+        exoo = exooes.first()
         photos = exoo.photo_set.all()
-    except Exo.DoesNotExist:
+    except AttributeError:
         exoo = None
         photos = None
     try:
@@ -582,7 +595,7 @@ def exo(request, id):
     except Medicin.DoesNotExist:
         medicine = None
         # Replace commas in Exo model fields
-    if exoo:
+    for exoo in exooes:
         if exoo.ur:
             exoo.ur = exoo.ur.replace("'", "")
         if exoo.ul:
@@ -597,27 +610,42 @@ def exo(request, id):
             exoo.simpleexo = exoo.simpleexo.replace("'", "")
         if exoo.complcated:
             exoo.complcated = exoo.complcated.replace("'", "")
+            exoo.total_price = exoo.no_prepare * exoo.price
+            exoo.save()
+            # Retrieve photos associated with the current OralSurgery instance
+            photos = exoo.photo_set.all()
+
+            # Append the photos to the photos_list
+            photos_list.append(photos)
     # Calculate the formatted total_price with commas as thousands separators
-    formatted_total_price = "{:,.2f}".format(exoo.total_price) if exoo else None
-    formatted_price = "{:,.2f}".format(exoo.price) if exoo else None
-    return render(request, 'exo/exo.html', {'form': form, 'appointments': appointments, 'medicine': medicine,
-                                            'exoo': exoo, 'id': id,'photos': photos,
-                                            'formatted_total_price': formatted_total_price,'formatted_price': formatted_price})
+    formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+    formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+    return render(request, 'exo/exo.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'exooes': exooes,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
 
 
 def exo_edit(request, id):
     pi = Exo.objects.get(id=id)
-    photos = Photo.objects.filter(exo_instance=pi)  # Fetch photos associated with the exo instance
-
+    photos = Photo.objects.filter(exo_instance=pi)  # Fetch photos associated with the oral surgery instance
+    exoo = None  # Initialize orall to None
     if request.method == 'POST':
         form = ExoForm(request.POST, instance=pi)
         if form.is_valid():
+            # Calculate total_price
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
             total_price = no_prepare * price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
-
             form.save()
 
             # Update the associated photos
@@ -628,8 +656,29 @@ def exo_edit(request, id):
             return redirect('exo', id=pi.idReception_id)
     else:
         form = ExoForm(instance=pi)
+        try:
+            exoo = Exo.objects.get(idReception=id)
+            photos = exoo.photo_set.all()
+            # Sanitize field values in the instance
+            if exoo.ur:
+                exoo.ur = exoo.ur.replace("'", "")
+            if exoo.ul:
+                exoo.ul = exoo.ul.replace("'", "")
+            if exoo.lr:
+                exoo.lr = exoo.lr.replace("'", "")
+            if exoo.ll:
+                exoo.ll = exoo.ll.replace("'", "")
+            if exoo.exoby:
+                exoo.exoby = exoo.exoby.replace("'", "")
+            if exoo.simpleexo:
+                exoo.simpleexo = exoo.simpleexo.replace("'", "")
+            if exoo.complcated:
+                exoo.complcated = exoo.complcated.replace("'", "")
+        except Exo.DoesNotExist:
+            exoo = None
+            photos = None
 
-    return render(request, 'exo/exo_edit.html', {'form': form, 'pi': pi, 'photos': photos})
+    return render(request, 'exo/exo_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
 
 
 def remove_photo(request, photo_id):

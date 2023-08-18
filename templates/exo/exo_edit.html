@@ -308,19 +308,20 @@
                             <div class="form-control">
                                 <input type="text" name="no_prepare" value="{{ form.initial.no_prepare }}"
                                        class="form-control"
-                                       placeholder="No of Prepare Teeth:">
+                                       placeholder="No of Prepare Teeth:" required>
                             </div>
                             <div class="form-control">
                                 <input type="text" name="price" value="{{ form.initial.price }}"
                                        class="form-control"
-                                       placeholder="Price:">
+                                       placeholder="Price:"required>
                             </div>
                             <div class="form-control">
                                 <input type="text" name="note" value="{{ form.initial.note }}"
                                        class="form-control"
-                                       placeholder="Notes:">
+                                       placeholder="Notes:"required>
                             </div>
                             <div class="form-control">
+                                <label>Upload Photo</label>
                                 <input type="file" name="exo_images"
                                        class="form-control"
                                        multiple>
@@ -329,20 +330,20 @@
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
                                        name="exoby"
-                                       value="Exo by Surgery">
+                                       value="{{ form.initial.exoby }}">
                                 <label class="form-check-label">Exo by
                                     Surgery</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
                                        name="simpleexo"
-                                       value="Simple Exo">
+                                       value="{{ form.initial.simpleexo }}">
                                 <label class="form-check-label">Simple Exo</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
                                        name="complcated"
-                                       value="Complicated">
+                                       value="{{ form.initial.complcated }}">
                                 <label class="form-check-label">Complicated</label>
                             </div>
                         </div>

@@ -2,7 +2,8 @@
 {% load static %}
 {% block content %}
 <br/>
-<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+<div class="row"
+     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
         <div class="accordion" id="accordionExample">
             <nav aria-label="breadcrumb">
@@ -14,7 +15,8 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                            style="text-align: justify; background-color:#a7e2fa; color:#000">
                         Patient Information
                     </button>
                 </h2>
@@ -42,43 +44,62 @@
                                 <th scope="col">Simple Exo</th>
                                 <th scope="col">Complicated</th>
                                 <th scope="col">Exo Photo</th>
-                                <th scope="col"  colspan="2" style="text-align:center;">Other</th>
+                                <th scope="col" colspan="2" style="text-align:center;">Other</th>
                             </tr>
                             </thead>
                             <tbody>
+                            {% for exoo in exooes %}
                             <tr>
-                                <td text-align="center" scope="row">{{ form.initial.idReception }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.name }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.phone }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.gender }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.date_of_birth }}</td>
+                                <td text-align="center" scope="row">{{ exoo.idReception }}</td>
+                                <td text-align="center" scope="row">{{ exoo.name }}</td>
+                                <td text-align="center" scope="row">{{ exoo.phone }}</td>
+                                <td text-align="center" scope="row">{{ exoo.gender }}</td>
+                                <td text-align="center" scope="row">{{ exoo.date_of_birth }}</td>
                                 <td text-align="center" scope="row">{{exoo.ur|slice:"1:-1" }}</td>
                                 <td text-align="center" scope="row">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.lr|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.ll|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.no_prepare}}</td>
-                                <td text-align="center" scope="row">{{formatted_price}}</td>
-                                 <td text-align="center" scope="row">{{formatted_total_price}}</td>
+                                <td style="text-align: center;">
+                                    {% if exoo.price is not None %}
+                                    {{ exoo.price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center;">
+                                    {% if exoo.total_price is not None %}
+                                    {{ exoo.total_price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
                                 <td text-align="center" scope="row">{{exoo.note}}</td>
                                 <td text-align="center" scope="row">{{exoo.exoby|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.simpleexo|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.complcated |slice:"1:-1"}}</td>
-                                <td>{% for photo in photos %}
-                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                    <a href="{% url 'remove_photo' photo.id %}">Remove</a>
+                                <td>
+                                    {% for photos in photos_list %}
+                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                      {% for photo in photos %}
+                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                         <a href="{% url 'remove_photo' photo.id %}">Remove</a>
+                                      {% endfor %}
+                                     {% endif %}
                                     {% endfor %}
                                 </td>
+
                                 {% if exoo %}
-                                  <td><a href="{% url 'exo_edit' exoo.id %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
-                                   <td scope="row" ><a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                                <td><a href="{% url 'exo_edit' exoo.id   %}" style="display: inline;"><span
+                                        class="btn btn-warning">Edit</span></a></td>
+                                <td scope="row"><a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
+                                        class="btn btn-outline-danger">Delete</span></a></td>
                                 {% endif %}
-
-
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
-
 
 
                 </div>
@@ -87,7 +108,8 @@
                         <button class="accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
-                                aria-controls="collapseTwo"style="text-align: justify; background-color:#a7e2fa; color:#000">
+                                aria-controls="collapseTwo"
+                                style="text-align: justify; background-color:#a7e2fa; color:#000">
                             Add New Extracted
                         </button>
                     </h2>
@@ -402,23 +424,23 @@
                                                     Notes</h4>
                                             </div>
                                             <div class="card-body">
-                                                    <div class="form-row">
-                                                        <div class="col-md-3 mb-3">
-                                                            <input type="text" name="no_prepare"
-                                                                   class="form-control"
-                                                                   placeholder="Total Teeth Prepare:" required>
-                                                        </div>
-                                                        <div class="col-md-3 mb-3">
-                                                            <input type="text" name="price" id="price"
-                                                                   class="form-control"
-                                                                   placeholder="Price:" required>
-                                                        </div>
-                                                        <div class="col-md-3 mb-3">
-                                                            <input type="text" name="note" value=""
-                                                                   class="form-control"
-                                                                   placeholder="Notes:">
-                                                        </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="no_prepare"
+                                                               class="form-control"
+                                                               placeholder="Total Teeth Prepare:" required>
                                                     </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price" id="price"
+                                                               class="form-control"
+                                                               placeholder="Price:" required>
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="note" value=""
+                                                               class="form-control"
+                                                               placeholder="Notes:">
+                                                    </div>
+                                                </div>
 
                                                 <div class="row">
                                                     <div class="col">
@@ -446,7 +468,7 @@
                                                     </div>
                                                 </div>
                                                 <br/>
-                                                <div class="form-group"  style="text-align: center;">
+                                                <div class="form-group" style="text-align: center;">
                                                     <input type="submit" value="Add New Exo"
                                                            class="btn btn-outline-primary">
                                                 </div>
