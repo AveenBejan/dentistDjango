@@ -191,7 +191,7 @@ class ExoForm(forms.ModelForm):
 
     class Meta:
         model = Exo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll','no_prepare', 'price', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -202,7 +202,7 @@ class ExoForm(forms.ModelForm):
             'ul': '',
             'lr': '',
             'll': '',
-            'no_prepare': '',
+
             'price': '',
             'note': '',
             'exoby': '',
@@ -220,7 +220,7 @@ class ExoForm(forms.ModelForm):
             'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
             'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
-            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
+
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),

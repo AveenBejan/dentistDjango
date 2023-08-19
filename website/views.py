@@ -546,9 +546,9 @@ def exo(request, id):
         if form.is_valid():
             oral_surgery = form.save(commit=False)
             oral_surgery.idReception_id = id
-            no_prepare = form.cleaned_data['no_prepare']
+
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
             oral_surgery.total_price = total_price
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
@@ -618,7 +618,7 @@ def exo(request, id):
             exoo.simpleexo = exoo.simpleexo.replace("'", "")
         if exoo.complcated:
             exoo.complcated = exoo.complcated.replace("'", "")
-        exoo.total_price = exoo.no_prepare * exoo.price
+        exoo.total_price = exoo.price
         exoo.save()
         # Retrieve photos associated with the current OralSurgery instance
         photos = exoo.photo_set.all()

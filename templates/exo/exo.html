@@ -36,9 +36,7 @@
                                 <th scope="col">Upper Left</th>
                                 <th scope="col">Lower Right</th>
                                 <th scope="col">Lower Left</th>
-                                <th scope="col">No of Prepare Teeth</th>
                                 <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Exo by Surgery</th>
                                 <th scope="col">Simple Exo</th>
@@ -59,17 +57,9 @@
                                 <td text-align="center" scope="row">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.lr|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.ll|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{exoo.no_prepare}}</td>
                                 <td style="text-align: center;">
                                     {% if exoo.price is not None %}
                                     {{ exoo.price|floatformat:2 }}
-                                    {% else %}
-                                    None
-                                    {% endif %}
-                                </td>
-                                <td style="text-align: center;">
-                                    {% if exoo.total_price is not None %}
-                                    {{ exoo.total_price|floatformat:2 }}
                                     {% else %}
                                     None
                                     {% endif %}
@@ -425,11 +415,6 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-row">
-                                                    <div class="col-md-3 mb-3">
-                                                        <input type="text" name="no_prepare"
-                                                               class="form-control"
-                                                               placeholder="Total Teeth Prepare:" required>
-                                                    </div>
                                                     <div class="col-md-3 mb-3">
                                                         <input type="text" name="price" id="price"
                                                                class="form-control"
