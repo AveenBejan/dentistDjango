@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment
 from django.forms import formset_factory
 
 
@@ -19,6 +19,23 @@ class DoctorsForm(forms.ModelForm):
             'doctor_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+        }
+
+
+class GaveAppointmentForm(forms.ModelForm):
+    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor",to_field_name='doctor_name')
+    class Meta:
+        model = GaveAppointment
+        fields = ( 'doctor','days', 'time')
+        labels = {
+            'doctor': '',
+            'days': '',
+            'time': 'Time',
+
+        }
+        widgets = {
+            'days': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+            'time': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
         }
 
 

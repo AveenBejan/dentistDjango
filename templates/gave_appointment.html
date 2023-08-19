@@ -1,0 +1,260 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<br/>
+<div class="row"
+     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+    <div class="col-12">
+        <div class="accordion" id="accordionExample">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add  New Appointment</li>
+                </ol>
+            </nav>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                        Appointment Information
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Day Name</th>
+                                <th scope="col">Time </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td text-align="center" scope="row">{{ appointment.id }}</td>
+                                <td text-align="center" scope="row">{{ appointment.doctor }}</td>
+                                <td text-align="center" scope="row">{{ appointment.days|slice:"1:-1" }}</td>
+                                <td text-align="center" scope="row">{{ appointment.time|slice:"1:-1" }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo"
+                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            Add New Appointment
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="container">
+
+                                    <div class="col-10">
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card-header">
+                                                    Doctor Name
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        {{ form.doctor }}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Days
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Sunday">
+                                                            <label class="form-check-label">Sunday</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Monday">
+                                                            <label class="form-check-label">Monday</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Tuesday">
+                                                            <label class="form-check-label">Tuesday</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Wednesday">
+                                                            <label class="form-check-label">Wednesday</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Thursday">
+                                                            <label class="form-check-label">Thursday</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Friday">
+                                                            <label class="form-check-label">Friday</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="days"
+                                                                   value="Saturday">
+                                                            <label class="form-check-label">Saturday</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Times
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="4:00pm">
+                                                            <label class="form-check-label">4:00pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="4:30pm">
+                                                            <label class="form-check-label">4:30pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="5:00pm">
+                                                            <label class="form-check-label">5:00pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="5:30pm">
+                                                            <label class="form-check-label">5:30pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="6:00pm">
+                                                            <label class="form-check-label">6:00pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="6:30pm">
+                                                            <label class="form-check-label">6:30pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="7:00pm">
+                                                            <label class="form-check-label">7:00pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="7:30pm">
+                                                            <label class="form-check-label">7:30pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="8:00pm">
+                                                            <label class="form-check-label">8:00pm</label>
+                                                        </div>
+                                                         <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="8:30pm">
+                                                            <label class="form-check-label">8:30pm</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="time"
+                                                                   value="9:00pm">
+                                                            <label class="form-check-label">9:00pm</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         </div>
+<br/>
+                                        <div class="form-group" style="text-align: center;">
+                                            <input type="submit" value="Add New Appointment"
+                                                   class="btn btn-outline-primary">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Display existing images if available
+{% if exoo and exoo.exo_image %}
+  <h2>Existing Images</h2>
+  {% for image in exoo.exo_image.all %}
+    <img src="{{ image.url }}" alt="Image">
+  {% endfor %}
+{% endif %} -->
+
+{% endblock %}

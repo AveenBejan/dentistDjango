@@ -30,6 +30,13 @@ class Reception(models.Model):
         return self.name
 
 
+class GaveAppointment(models.Model):
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    days = models.CharField('Days',max_length=20,null=True)
+    time = models.CharField(null=True,max_length=200)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+
 class Filling(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
     name = models.CharField('Name',max_length=120,null=False)

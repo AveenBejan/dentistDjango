@@ -3,15 +3,41 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
-    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,ImplantForm
+    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,ImplantForm,GaveAppointmentForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.forms import formset_factory
 from django.db import transaction
 from django.urls import reverse
 from datetime import date
+
+
+def gave_appointment(request):
+    if request.method == 'POST':
+        form = GaveAppointmentForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            doctor_name = form.cleaned_data['doctor']
+            instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
+            instance.save()
+            return redirect('gave-appointment')  # Redirect after successful form submission
+    else:
+        form = GaveAppointmentForm()
+
+    appointments = GaveAppointment.objects.all().order_by('-id')
+
+    # Clean appointments data before rendering
+    cleaned_appointments = []
+    for appointment in appointments:
+        if appointment.days:
+            appointment.days = appointment.days.replace("'", "")
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+        cleaned_appointments.append(appointment)
+
+    return render(request, 'gave_appointment.html', {'form': form, 'appointments': cleaned_appointments})
 
 
 def search_view(request):
@@ -257,6 +283,8 @@ def reception(request):
 
     appointments = Reception.objects.all().order_by('-id')
     return render(request, 'home.html', {'form': form, 'appointments': appointments})
+
+
 
 
 def search_doctor(request):
