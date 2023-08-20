@@ -63,6 +63,19 @@ def gave_appointment(request, id):
     return render(request, 'gave_appointment.html', {'form': form, 'appointments': cleaned_appointments})
 
 
+def all_gave(request):
+    gaves = GaveAppointment.objects.all().order_by('-id')
+    # Clean appointments data before rendering
+    cleaned_gaves = []
+    for gave in gaves:
+        if gave.days:
+            gave.days = gave.days.replace("'", "")
+        if gave.time:
+            gave.time = gave.time.replace("'", "")
+        cleaned_gaves.append(gave)
+    return render(request, 'all_gave.html', {'gaves': gaves})
+
+
 def search_view(request):
     query = request.GET.get('query')  # Get the search query
 

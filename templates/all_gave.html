@@ -1,0 +1,77 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+
+    <section class="home-slider owl-carousel">
+      <div class="slider-item" style="background-image: url({% static 'website/images/St2.png'  %});">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row slider-text align-items-center" data-scrollax-parent="true">
+            <div class="col-md-6 col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+
+              <p class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"></p>
+				<br/>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row slider-text align-items-center" data-scrollax-parent="true">
+            <div class="col-md-6 col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+
+              <p class="mb-4"></p>
+				<br/>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="ftco-intro">
+ <div class="container">
+	 <div class="row">
+		 <div class="col-lg-10 color-11 p-4">
+             <h3 style="background-color:#f7bc0f; color:#fff; padding-top: 15px; padding-bottom: 15px; font-weight: bold; text-align: center;"> Booked Appointments</h3>
+			 <table class="table table-hover">
+
+				 <thead style="background-color:#05769b; color:#fff;">
+
+				 <tr>
+					 <th scope="col">#</th>
+                     <th scope="col">Full Name</th>
+                     <th scope="col">Phone Number</th>
+                     <th scope="col">Gender</th>
+                     <th scope="col">Date of Birth</th>
+					 <th scope="col">Dr.Name</th>
+					 <th scope="col">App.Date</th>
+					 <th scope="col">Day Name</th>
+					 <th scope="col">Time</th>
+				 </tr>
+				 </thead>
+				 <tbody>
+				 {% for gave in gaves %}
+				 <tr>
+					 <td scope="row">{{gave.id}}</td>
+                     <td> {{gave.name}}</td>
+                     <td> {{gave.phone}}</td>
+                     <td> {{gave.gender}}</td>
+                     <td> {{gave.date_of_birth}}</td>
+					 <td>{{gave.doctor}}</td>
+					 <td>{{gave.app_data}}</td>
+					 <td>{{gave.days}}</td>
+					 <td>{{gave.time|slice:"1:-1"}}</td>
+
+				 </tr>
+				 {% endfor %}
+				 </tbody>
+			 </table>
+		 </div>
+	 </div>
+ </div>
+</section>
+
+{% endblock %}
