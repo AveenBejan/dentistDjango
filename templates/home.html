@@ -32,93 +32,124 @@
     </section>
 
 <section class="ftco-intro">
-	<div class="container">
+ <div class="container">
+	 <div class="row">
+		 <div class="col-md-6 color-3 p-4">
+			 <div class="alert alert-warning" role="alert">في حالة تغير الموعد بعد الحجز الكترونيأ يرجى الاتصال بهذا
+				 الرقم 964750000000+ لتغير الموعد
+			 </div>
+			 <form class="appointment-form" method="POST" action="">
+				 {% csrf_token %}
+				 <div class="row">
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="icon-user"></span></div>
+							 <input type="text" class="form-control" name="name"
+									placeholder="Full Name" required>
+						 </div>
+					 </div>
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="icon-phone2"></span></div>
+							 <input type="text" class="form-control" name="phone" id="phone"
+									placeholder="Phone" required>
+						 </div>
+					 </div>
 
-		<div class="row no-gutters">
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="icon-user"></span></div>
+							 <select class="form-control" name="gender" required="required">
+								 <option value="">Gender</option>
+								 <option value="Female">Female</option>
+								 <option value="Male">Male</option>
+							 </select>
+						 </div>
+					 </div>
 
-			<div class="col-10">
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="ion-ios-calendar"></span></div>
+							 <input type="text" name="date_of_birth" class="form-control appointment_date"
+									placeholder="Date of Birth" required>
+						 </div>
+					 </div>
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="icon-user"></span></div>
+							 <div class="form-group">
+								 {{ form.doctor }}
+							 </div>
 
-			</div>
+						 </div>
+					 </div>
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <input type="text" name="app_data" id="datepicker-3"
+									placeholder="Date of Appointment" required class="form-control">
 
-			<div class="col-md-10 color-3 p-4">
+						 </div>
+					 </div>
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
+									class="form-control">
+						 </div>
+					 </div>
 
-<div class="alert alert-warning" role="alert">
-  في حالة تغير الموعد بعد الحجز الكترونيأ يرجى الاتصال بهذا الرقم 964750000000+ لتغير الموعد
-</div>
-				<form  class="appointment-form" method="POST" action="">
-					{% csrf_token %}
-					<div class="row">
-						<div class="col-sm-5">
-							<div class="form-group">
-								<div class="icon"><span class="icon-user"></span></div>
-								<input type="text" class="form-control" name="name"
-									   placeholder="Full Name" required>
-							</div>
-						</div>
-						<div class="col-sm-5">
-							<div class="form-group">
-								<div class="icon"><span class="icon-phone2"></span></div>
-								<input type="text" class="form-control" name="phone" id="phone"
-									   placeholder="Phone" required>
-							</div>
-						</div>
-
-						<div class="col-sm-5">
-							<div class="form-group">
-								<div class="icon"><span class="icon-user"></span></div>
-								<select class="form-control" name="gender" required="required">
-									<option value="">Gender</option>
-									<option value="Female">Female</option>
-									<option value="Male">Male</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="col-sm-5">
-							<div class="form-group">
-								<div class="icon"><span class="ion-ios-calendar"></span></div>
-								<input type="text" name="date_of_birth" class="form-control appointment_date" placeholder="Date of Birth" required >
-							</div>
-						</div>
-						<div class="col-sm-5">
-                            <div class="form-group">
-                                <div class="icon"><span class="icon-user"></span></div>
-                                <div class="form-group">
-                                    {{ form.doctor }}
-                                </div>
-
-                            </div>
-						</div>
-						<div class="col-sm-5">
-							<div class="form-group">
-								<input type="text" name="app_data" id = "datepicker-3"
-									   placeholder="Date of Appointment" required class="form-control" >
-
-							</div>
-						</div>
-						<div class="col-sm-5">
-							<div class="form-group">
-								<input type="text"  name="days" id = "datepicker-4" placeholder="Days" readonly class="form-control">
-							</div>
-						</div>
-
-						<div class="col-sm-5">
-							<div class="form-group">
-								<div class="icon"><span class="ion-ios-clock"></span></div>
-								<input type="text" name="time" class="form-control appointment_time" required placeholder="Time">
-							</div>
-						</div>
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="ion-ios-clock"></span></div>
+							 <input type="text" name="time" class="form-control appointment_time" required
+									placeholder="Time">
+						 </div>
+					 </div>
 
 
-						<div class="form-group">
-							<input type="submit" value="Make an Appointment" class="btn btn-outline-primary">
-						</div>
-					</div>
-				</form>
+					 <div class="form-group">
+						 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary">
+					 </div>
+				 </div>
+			 </form>
+		 </div>
 
-			</div>
-		</div>
-	</div>
+		 <div class="col-lg-6 color-11 p-4">
+			 <table class="table table-hover">
+<h3 style="background-color:#f7bc0f; color:#fff; padding-top: 15px; padding-bottom: 15px; font-weight: bold; text-align: center;"> Booked Appointments</h3>
+				 <thead style="background-color:#05769b; color:#fff;">
+
+				 <tr>
+					 <!--<th scope="col">#</th>
+                     <th scope="col">Full Name</th>
+                     <th scope="col">Phone Number</th>
+                     <th scope="col">Gender</th>
+                     <th scope="col">Date of Birth</th>-->
+					 <th scope="col">Dr.Name</th>
+					 <th scope="col">App.Date</th>
+					 <th scope="col">Day Name</th>
+					 <th scope="col">Time</th>
+				 </tr>
+				 </thead>
+				 <tbody>
+				 {% for appointment in appointments %}
+				 <tr>
+					 <!--<td scope="row">{{appointment.id}}</td>
+                     <td> {{appointment.name}}</td>
+                     <td> {{appointment.phone}}</td>
+                     <td> {{appointment.gender}}</td>
+                     <td> {{appointment.date_of_birth}}</td>-->
+					 <td>{{appointment.doctor}}</td>
+					 <td>{{appointment.app_data}}</td>
+					 <td>{{appointment.days}}</td>
+					 <td>{{appointment.time|slice:"1:-1"}}</td>
+
+				 </tr>
+				 {% endfor %}
+				 </tbody>
+			 </table>
+		 </div>
+	 </div>
+ </div>
 </section>
 
 <!--

@@ -14,17 +14,40 @@ from django.urls import reverse
 from datetime import date
 
 
-def gave_appointment(request):
+def gave_appointment(request, id):
     if request.method == 'POST':
         form = GaveAppointmentForm(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             doctor_name = form.cleaned_data['doctor']
             instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
+
+            app_data = request.POST.get('app_data')
+            days = request.POST.get('days')
+
+            reception = Reception.objects.get(id=id)
+
+            instance.idReception_id = id
+            instance.name = reception.name
+            instance.phone = reception.phone
+            instance.gender = reception.gender
+            instance.date_of_birth = reception.date_of_birth
+
+            instance.app_data = app_data
+            instance.days = days
             instance.save()
-            return redirect('gave-appointment')  # Redirect after successful form submission
+
+            return redirect('home')  # Redirect after successful form submission
     else:
-        form = GaveAppointmentForm()
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth
+        }
+        form = GaveAppointmentForm(initial=initial_data)
 
     appointments = GaveAppointment.objects.all().order_by('-id')
 
@@ -281,7 +304,15 @@ def reception(request):
     else:
         form = ReceptionForm()
 
-    appointments = Reception.objects.all().order_by('-id')
+    appointments = GaveAppointment.objects.all().order_by('-id')
+    # Clean appointments data before rendering
+    cleaned_appointments = []
+    for appointment in appointments:
+        if appointment.days:
+            appointment.days = appointment.days.replace("'", "")
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+        cleaned_appointments.append(appointment)
     return render(request, 'home.html', {'form': form, 'appointments': appointments})
 
 

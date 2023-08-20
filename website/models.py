@@ -31,9 +31,15 @@ class Reception(models.Model):
 
 
 class GaveAppointment(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=True)
+    name = models.CharField('Name',max_length=120,null=True)
+    phone = models.CharField('Phone', max_length=120,null=True)
+    gender = models.CharField('Gender', max_length=20,null=True)
+    date_of_birth = models.CharField('date_of_birth', max_length=20,null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
-    days = models.CharField('Days',max_length=20,null=True)
-    time = models.CharField(null=True,max_length=200)
+    app_data = models.DateField(null=True)
+    days = models.CharField('Days', max_length=20, null=True)
+    time = models.CharField(null=True, max_length=200)
     regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
 
 

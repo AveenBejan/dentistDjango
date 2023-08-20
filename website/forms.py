@@ -26,15 +26,25 @@ class GaveAppointmentForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor",to_field_name='doctor_name')
     class Meta:
         model = GaveAppointment
-        fields = ( 'doctor','days', 'time')
+        fields = ( 'name', 'phone', 'gender', 'date_of_birth','doctor','app_data','days', 'time')
         labels = {
+            'name': 'Full Name',
+            'phone': 'Phone Number',
+            'gender': 'Gender',
+            'date_of_birth': 'Date of Birth',
             'doctor': '',
+            'app_data':'',
             'days': '',
             'time': 'Time',
 
         }
         widgets = {
-            'days': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'app_data': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'days': forms.TextInput(attrs={'class': 'form-control'}),
             'time': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
         }
 
