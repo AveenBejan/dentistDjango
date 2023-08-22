@@ -68,15 +68,16 @@ class ReceptionForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'app_data': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'days': forms.TextInput(attrs={'class': 'form-control'}),
-            'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
+            'time': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
         }
 
 
 class SearchForm(forms.Form):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor")
+
 
 
 class Medicine1Form(forms.ModelForm):

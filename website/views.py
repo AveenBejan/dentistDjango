@@ -12,68 +12,7 @@ from django.forms import formset_factory
 from django.db import transaction
 from django.urls import reverse
 from datetime import date
-
-
-def gave_appointment(request, id):
-    if request.method == 'POST':
-        form = GaveAppointmentForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            doctor_name = form.cleaned_data['doctor']
-            instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
-
-            app_data = request.POST.get('app_data')
-            days = request.POST.get('days')
-
-            reception = Reception.objects.get(id=id)
-
-            instance.idReception_id = id
-            instance.name = reception.name
-            instance.phone = reception.phone
-            instance.gender = reception.gender
-            instance.date_of_birth = reception.date_of_birth
-
-            instance.app_data = app_data
-            instance.days = days
-            instance.save()
-
-            return redirect('home')  # Redirect after successful form submission
-    else:
-        reception = Reception.objects.get(id=id)
-        initial_data = {
-            'idReception': id,
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
-        }
-        form = GaveAppointmentForm(initial=initial_data)
-
-    appointments = GaveAppointment.objects.all().order_by('-id')
-
-    # Clean appointments data before rendering
-    cleaned_appointments = []
-    for appointment in appointments:
-        if appointment.days:
-            appointment.days = appointment.days.replace("'", "")
-        if appointment.time:
-            appointment.time = appointment.time.replace("'", "")
-        cleaned_appointments.append(appointment)
-
-    return render(request, 'gave_appointment.html', {'form': form, 'appointments': cleaned_appointments})
-
-
-def all_gave(request):
-    gaves = GaveAppointment.objects.all().order_by('-id')
-    # Clean appointments data before rendering
-    cleaned_gaves = []
-    for gave in gaves:
-        if gave.days:
-            gave.days = gave.days.replace("'", "")
-        if gave.time:
-            gave.time = gave.time.replace("'", "")
-        cleaned_gaves.append(gave)
-    return render(request, 'all_gave.html', {'gaves': gaves})
+from django.contrib import messages
 
 
 def search_view(request):
@@ -305,19 +244,26 @@ def reception(request):
             instance = form.save(commit=False)
             doctor_name = form.cleaned_data['doctor']
             instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
-            # Get the app_data and days values from the POST data
+
             app_data = request.POST.get('app_data')
             days = request.POST.get('days')
+            selected_times = request.POST.getlist('time')
 
-            # Save the app_data and days fields to the instance
+            # Check if the same combination of app_data, days, and time exists in the database
+            if Reception.objects.filter(app_data=app_data, days=days, time=selected_times).exists():
+                messages.error(request, 'This date, days, and time are already booked.<br/> You Can Choose another Date')
+                return redirect('home')
+
             instance.app_data = app_data
             instance.days = days
+            instance.time = selected_times  # Set the time value
             instance.save()
+
             return redirect('home')  # Redirect after successful form submission
     else:
         form = ReceptionForm()
 
-    appointments = GaveAppointment.objects.all().order_by('-id')
+    appointments = Reception.objects.all().order_by('-id')
     # Clean appointments data before rendering
     cleaned_appointments = []
     for appointment in appointments:
@@ -326,9 +272,8 @@ def reception(request):
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
         cleaned_appointments.append(appointment)
+
     return render(request, 'home.html', {'form': form, 'appointments': appointments})
-
-
 
 
 def search_doctor(request):
@@ -336,12 +281,21 @@ def search_doctor(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             selected_doctor = form.cleaned_data['doctor']
-            receptions = Reception.objects.filter(doctor=selected_doctor)
+            receptions = Reception.objects.filter(doctor=selected_doctor, app_data=date.today())
+            # Clean appointments data before rendering
+            cleaned_receptions = []
+            for reception in receptions:
+                if reception.days:
+                    reception.days = reception.days.replace("'", "")
+                if reception.time:
+                    reception.time = reception.time.replace("'", "")
+                cleaned_receptions.append(reception)
             return render(request, 'doctors/search_doctor.html', {'receptions': receptions, 'form': form})
     else:
         form = SearchForm()
+        receptions = Reception.objects.all().order_by('-id')
 
-    return render(request, 'doctors/search_doctor.html', {'form': form})
+    return render(request, 'doctors/search_doctor.html', {'form': form,'receptions': receptions})
 
 
 def all_reception(request):
@@ -363,6 +317,92 @@ def update_reception(request, id):
         return redirect('all-reception')
     return render(request, 'update_reception.html', {'form': form, 'pi': pi})
 
+
+def gave_appointment(request, id):
+    # Check if the request method is POST
+    if request.method == 'POST':
+        # Initialize the form with the submitted POST data
+        form = ReceptionForm(request.POST)
+        if form.is_valid():
+            # Create a new instance of Reception from the form data
+            instance = form.save(commit=False)
+
+            # Get the doctor's name from the form's cleaned data
+            doctor_name = form.cleaned_data['doctor']
+            selected_times = form.cleaned_data['time']
+
+            # Retrieve the corresponding Doctors instance from the database
+            instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
+
+            # Get the app_data, days, and time values from the POST data
+            app_data = request.POST.get('app_data')
+            days = request.POST.get('days')
+            time = request.POST.get('time')  # Make sure 'time' is available in the form data
+            # Check if the same combination of app_data, days, and time exists in the database
+            if Reception.objects.filter(app_data=app_data, days=days, time=selected_times).exists():
+                messages.error(request,
+                               'This date, days, and time are already booked.<br/> You Can Choose another Date')
+                return redirect('gave-appointment', id=id)
+
+            # Retrieve the existing Reception instance with the provided ID
+            existing_reception = Reception.objects.get(id=id)
+
+            # Set the instance fields using existing data and new values
+            instance.idReception_id = id
+            instance.name = existing_reception.name
+            instance.phone = existing_reception.phone
+            instance.gender = existing_reception.gender
+            instance.date_of_birth = existing_reception.date_of_birth
+            instance.app_data = app_data
+            instance.days = days
+            instance.time = selected_times
+
+            # Save the new instance to the database
+            instance.save()
+
+            # Redirect to 'home' after successful form submission
+            return redirect('home')
+    else:
+        # Retrieve the existing Reception instance with the provided ID
+        existing_reception = Reception.objects.get(id=id)
+
+        # Populate the form with initial data from the existing instance
+        initial_data = {
+            'idReception': id,
+            'name': existing_reception.name,
+            'phone': existing_reception.phone,
+            'gender': existing_reception.gender,
+            'date_of_birth': existing_reception.date_of_birth
+        }
+        form = ReceptionForm(initial=initial_data)
+
+    # Retrieve all Reception instances from the database
+    appointments = Reception.objects.all().order_by('-id')
+
+    # Clean appointments data before rendering
+    cleaned_appointments = []
+    for appointment in appointments:
+        if appointment.days:
+            appointment.days = appointment.days.replace("'", "")
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+        cleaned_appointments.append(appointment)
+
+    # Render the template with the form and appointments data
+    return render(request, 'gave_appointment.html', {'form': form, 'appointments': cleaned_appointments})
+
+
+def all_gave(request):
+    gaves = Reception.objects.all().order_by('-id')
+    # Clean appointments data before rendering
+    cleaned_gaves = []
+    for gave in gaves:
+        if gave.days:
+            gave.days = gave.days.replace("'", "")
+        if gave.time:
+            gave.time = gave.time.replace("'", "")
+        cleaned_gaves.append(gave)
+    return render(request, 'all_gave.html', {'gaves': gaves})
 
 def add_oral_surgery(request, id):
     if request.method == 'POST':

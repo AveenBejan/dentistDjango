@@ -52,7 +52,7 @@
                         <td scope="row">{{appointment.doctor}}</td>
                         <td scope="row">{{appointment.app_data}}</td>
                         <td scope="row">{{appointment.days}}</td>
-                        <td scope="row">{{appointment.time}}</td>
+                        <td scope="row">{{appointment.time|slice:"1:-1" }}</td>
 
                     </tr>
                     {% endfor %}

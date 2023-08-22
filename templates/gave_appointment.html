@@ -50,7 +50,24 @@
                         </table>
                     </div>
 
+                    {% if messages %}
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                            <use xlink:href="#exclamation-triangle-fill"/>
+                        </svg>
+                        <div>
 
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li
+                                        {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
@@ -75,11 +92,10 @@
                                        class="form-control">
                                 <input type="hidden" name="phone" value="{{ form.initial.phone }}"
                                        class="form-control">
-                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
-                                       class="form-control">
-                                <input type="hidden" name="date_of_birth"
-                                       value="{{ form.initial.date_of_birth }}"
-                                       class="form-control">
+                                 <input type="hidden" class="form-control" name="gender" required="required" value="{{ form.initial.gender }}">
+
+                                <input type="hidden" name="date_of_birth" class="form-control appointment_date" placeholder="Date of Birth" value="8/3/2023">
+
                                 <div class="container">
 
                                     <div class="col-10">
@@ -105,100 +121,51 @@
                                                    class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="card-header">
-                                            Times
+                                    <div class="col-sm-12">
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="4:00pm">
+                                            <label class="form-check-label">4:00pm</label>
                                         </div>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="4:00pm">
-                                                    <label class="form-check-label">4:00pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="4:30pm">
-                                                    <label class="form-check-label">4:30pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="5:00pm">
-                                                    <label class="form-check-label">5:00pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="5:30pm">
-                                                    <label class="form-check-label">5:30pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="6:00pm">
-                                                    <label class="form-check-label">6:00pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="6:30pm">
-                                                    <label class="form-check-label">6:30pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="7:00pm">
-                                                    <label class="form-check-label">7:00pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="7:30pm">
-                                                    <label class="form-check-label">7:30pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="8:00pm">
-                                                    <label class="form-check-label">8:00pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="8:30pm">
-                                                    <label class="form-check-label">8:30pm</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="time"
-                                                           value="9:00pm">
-                                                    <label class="form-check-label">9:00pm</label>
-                                                </div>
-                                            </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="4:30pm">
+                                            <label class="form-check-label">4:30pm</label>
                                         </div>
-                                        <br/>
-                                        <div class="form-group" style="text-align: center;">
-                                            <input type="submit" value="Add New Appointment"
-                                                   class="btn btn-outline-primary">
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="5:00pm">
+                                            <label class="form-check-label">5:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="5:30pm">
+                                            <label class="form-check-label">5:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="6:00pm">
+                                            <label class="form-check-label">6:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="6:30pm">
+                                            <label class="form-check-label">6:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="7:00pm">
+                                            <label class="form-check-label">7:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="7:30pm">
+                                            <label class="form-check-label">7:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="8:00pm">
+                                            <label class="form-check-label">8:00pm</label>
                                         </div>
                                     </div>
 
+                                    <br/>
+                                    <div class="form-group" style="text-align: center;">
+                                        <input type="submit" value="Add New Appointment"
+                                               class="btn btn-outline-primary">
+                                    </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
@@ -207,7 +174,6 @@
         </div>
     </div>
 </div>
-
 
 
 {% endblock %}

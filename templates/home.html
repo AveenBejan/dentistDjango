@@ -38,6 +38,24 @@
 			 <div class="alert alert-warning" role="alert">في حالة تغير الموعد بعد الحجز الكترونيأ يرجى الاتصال بهذا
 				 الرقم 964750000000+ لتغير الموعد
 			 </div>
+             {% if messages %}
+             <div class="alert alert-danger d-flex align-items-center" role="alert">
+                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                     <use xlink:href="#exclamation-triangle-fill"/>
+                 </svg>
+                 <div>
+
+                     <ul class="messages">
+                         {% for message in messages %}
+                         <li
+                                 {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                         </li>
+                         {% endfor %}
+                     </ul>
+
+                 </div>
+             </div>
+             {% endif %}
 			 <form class="appointment-form" method="POST" action="">
 				 {% csrf_token %}
 				 <div class="row">
@@ -87,21 +105,50 @@
 						 <div class="form-group">
 							 <input type="text" name="app_data" id="datepicker-3"
 									placeholder="Date of Appointment" required class="form-control">
-
 						 </div>
 					 </div>
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
-									class="form-control">
-						 </div>
-					 </div>
+					 <div class="form-group">
+								 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
+										class="form-control">
+							 </div>
+					 <div class="col-sm-12">
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input"  name="time" value="4:00pm" >
+								 <label class="form-check-label">4:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="4:30pm">
+								 <label class="form-check-label">4:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="5:00pm">
+								 <label class="form-check-label">5:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="5:30pm">
+								 <label class="form-check-label">5:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="6:00pm">
+								 <label class="form-check-label">6:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="6:30pm">
+								 <label class="form-check-label">6:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="7:00pm">
+								 <label class="form-check-label">7:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="7:30pm">
+								 <label class="form-check-label">7:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="8:00pm">
+								 <label class="form-check-label">8:00pm</label>
+							 </div>
 
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="ion-ios-clock"></span></div>
-							 <input type="text" name="time" class="form-control appointment_time" required
-									placeholder="Time">
 						 </div>
 					 </div>
 
@@ -109,7 +156,7 @@
 					 <div class="form-group">
 						 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary">
 					 </div>
-				 </div>
+
 			 </form>
 		 </div>
 

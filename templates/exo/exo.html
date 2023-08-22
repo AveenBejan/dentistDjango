@@ -20,6 +20,11 @@
                         Patient Information
                     </button>
                 </h2>
+
+<p>{{ form.initial.name }} &nbsp;&nbsp;
+{{ form.initial.phone }}&nbsp;&nbsp;
+{{ form.initial.gender }}&nbsp;&nbsp;
+</p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -42,7 +47,7 @@
                                 <th scope="col">Simple Exo</th>
                                 <th scope="col">Complicated</th>
                                 <th scope="col">Exo Photo</th>
-                                <th scope="col" colspan="2" style="text-align:center;">Other</th>
+                                <th scope="col" colspan="4" style="text-align:center;">Other</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -85,6 +90,10 @@
                                 <td scope="row"><a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
                                         class="btn btn-outline-danger">Delete</span></a></td>
                                 {% endif %}
+                                <td scope="row"><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
+                                        class="btn btn-outline-info">Add Drugs</span></a></td>
+                                <td scope="row"><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                        class="btn btn-outline-info">Gave-Appointment</span></a></td>
                             </tr>
                             {% endfor %}
                             </tbody>

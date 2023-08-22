@@ -9,7 +9,7 @@
     {% if user.role == 'admin' or user.role == 'doctor' %}
     <form class="form-inline" method="POST" action="">
         {% csrf_token %}
-        {{ form.doctor }}
+        {{ form.doctor }}<BR>
         &nbsp&nbsp&nbsp&nbsp<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     {% endif %}
@@ -37,6 +37,8 @@
                         <th scope="col">Gender</th>
                         <th scope="col">Date of Birth</th>
                         <th scope="col">Doctor Name</th>
+                        <th scope="col">Appointment Date</th>
+                        <th scope="col">Day Name</th>
                         <th scope="col">Time</th>
                     </tr>
                     </thead>
@@ -49,7 +51,9 @@
                         <td scope="row">{{reception.gender}}</td>
                         <td scope="row">{{reception.date_of_birth}}</td>
                         <td scope="row">{{ reception.doctor.doctor_name }}</td>
-                        <td scope="row">{{reception.time}}</td>
+                        <td scope="row">{{reception.app_data}}</td>
+                        <td scope="row">{{reception.days}}</td>
+                        <td scope="row">{{reception.time|slice:"1:-1" }}</td>
 
                     </tr>
                     {% empty %}
