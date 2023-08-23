@@ -13,29 +13,58 @@
                 <h4 class="text-center alert alert-info">Update Information</h4>
                 <form method="POST" id="updateForm">
                     {% csrf_token %}
-                    {{ form.name }}
-                    {{ form.phone }}
-                    <select class="form-control" name="gender" required="required">
-                        <option value="">Gender</option>
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                    </select>
-                    {{ form.date_of_birth }}
+					<p>{{ form.name}}</p>
+					<p>{{ form.phone }}</p>
+					<p>{{ form.date_of_birth }}</p>
+					<select class="form-control" name="gender" required="required">
+								 <option value="">Gender</option>
+								 <option value="Female">Female</option>
+								 <option value="Male">Male</option>
+							 </select>
+
+
                     {{ form.doctor }}
-                    <input type="text" name="app_data" class="form-control appointment_date"
-									   placeholder="Date of Appointment" required>
-                    <select class="form-control" name="days" required="required">
-                        <option value="">Days</option>
-                        <option value="Sunday">Sunday</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                        <option value="Saturday">Saturday</option>
-                    </select>
-                    <input type="text" name="time" class="form-control appointment_time" required placeholder="Time"
-                           required>
+                     <input type="text" name="app_data" id="datepicker-3"
+									placeholder="Date of Appointment" required class="form-control">
+                    <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
+										class="form-control">
+                    <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input"  name="time" value="4:00pm" >
+								 <label class="form-check-label">4:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="4:30pm">
+								 <label class="form-check-label">4:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="5:00pm">
+								 <label class="form-check-label">5:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="5:30pm">
+								 <label class="form-check-label">5:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="6:00pm">
+								 <label class="form-check-label">6:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="6:30pm">
+								 <label class="form-check-label">6:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="7:00pm">
+								 <label class="form-check-label">7:00pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="7:30pm">
+								 <label class="form-check-label">7:30pm</label>
+							 </div>
+							 <div class="form-check form-check-inline">
+								 <input type="checkbox" class="form-check-input" name="time" value="8:00pm">
+								 <label class="form-check-label">8:00pm</label>
+							 </div>
+
 
 
                     <button type="submit" class="btn btn-success" onclick="validateAndShowAlert()">Update</button>

@@ -251,15 +251,19 @@ def reception(request):
 
             # Check if the same combination of app_data, days, and time exists in the database
             if Reception.objects.filter(app_data=app_data, days=days, time=selected_times).exists():
-                messages.error(request, 'This date, days, and time are already booked.<br/> You Can Choose another Date')
+                messages.error(request, 'This date, days, and time are already booked.<br/> You Can Choose another Time')
                 return redirect('home')
 
             instance.app_data = app_data
             instance.days = days
             instance.time = selected_times  # Set the time value
             instance.save()
-
+            # Redirect to 'home' after successful form submission
+            messages.success(request, f'Appointment successfully booked for {app_data}, {days}, {selected_times}.')
+            # Redirect to 'home' after successful form submission
             return redirect('home')  # Redirect after successful form submission
+
+
     else:
         form = ReceptionForm()
 
@@ -283,17 +287,18 @@ def search_doctor(request):
             selected_doctor = form.cleaned_data['doctor']
             receptions = Reception.objects.filter(doctor=selected_doctor, app_data=date.today())
             # Clean appointments data before rendering
-            cleaned_receptions = []
-            for reception in receptions:
-                if reception.days:
-                    reception.days = reception.days.replace("'", "")
-                if reception.time:
-                    reception.time = reception.time.replace("'", "")
-                cleaned_receptions.append(reception)
+
             return render(request, 'doctors/search_doctor.html', {'receptions': receptions, 'form': form})
     else:
         form = SearchForm()
-        receptions = Reception.objects.all().order_by('-id')
+        receptions = Reception.objects.all().order_by('-app_data')
+        cleaned_receptions = []
+        for reception in receptions:
+            if reception.days:
+                reception.days = reception.days.replace("'", "")
+            if reception.time:
+                reception.time = reception.time.replace("'", "")
+            cleaned_receptions.append(reception)
 
     return render(request, 'doctors/search_doctor.html', {'form': form,'receptions': receptions})
 
@@ -340,8 +345,7 @@ def gave_appointment(request, id):
             time = request.POST.get('time')  # Make sure 'time' is available in the form data
             # Check if the same combination of app_data, days, and time exists in the database
             if Reception.objects.filter(app_data=app_data, days=days, time=selected_times).exists():
-                messages.error(request,
-                               'This date, days, and time are already booked.<br/> You Can Choose another Date')
+                messages.error(request, 'This date, days, and time are already booked. You can choose another Time.')
                 return redirect('gave-appointment', id=id)
 
             # Retrieve the existing Reception instance with the provided ID
@@ -359,9 +363,10 @@ def gave_appointment(request, id):
 
             # Save the new instance to the database
             instance.save()
-
             # Redirect to 'home' after successful form submission
-            return redirect('home')
+            messages.success(request, f'Appointment successfully booked for {app_data}, {days}, {selected_times}.')
+            # Redirect to 'home' after successful form submission
+            return redirect('gave-appointment', id=id)
     else:
         # Retrieve the existing Reception instance with the provided ID
         existing_reception = Reception.objects.get(id=id)
