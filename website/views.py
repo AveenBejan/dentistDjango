@@ -690,6 +690,7 @@ def exo(request, id):
                 'phone': reception.phone,
                 'gender': reception.gender,
                 'date_of_birth': reception.date_of_birth
+
             }
             form = ExoForm(initial=initial_data)
     else:

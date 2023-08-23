@@ -37,6 +37,10 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Date of Birth</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Appointment Date</th>
+                                <th scope="col">Day Name</th>
+                                <th scope="col">Time</th>
                                 <th scope="col">Upper Right</th>
                                 <th scope="col">Upper Left</th>
                                 <th scope="col">Lower Right</th>
@@ -58,6 +62,10 @@
                                 <td text-align="center" scope="row">{{ exoo.phone }}</td>
                                 <td text-align="center" scope="row">{{ exoo.gender }}</td>
                                 <td text-align="center" scope="row">{{ exoo.date_of_birth }}</td>
+                                <td text-align="center" scope="row">{{ exoo.idReception.doctor.doctor_name }}</td>
+                                <td text-align="center" scope="row">{{ exoo.idReception.app_data }}</td>
+                                <td text-align="center" scope="row">{{ exoo.idReception.days }}</td>
+                                <td text-align="center" scope="row">{{ exoo.idReception.time|slice:"1:-1" }}</td>
                                 <td text-align="center" scope="row">{{exoo.ur|slice:"1:-1" }}</td>
                                 <td text-align="center" scope="row">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td text-align="center" scope="row">{{exoo.lr|slice:"1:-1"}}</td>
