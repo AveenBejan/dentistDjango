@@ -21,6 +21,7 @@
                     <li class="breadcrumb-item active" aria-current="page">Add Implant</li>
                 </ol>
             </nav>
+
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -29,6 +30,10 @@
                         Patient Information
                     </button>
                 </h2>
+                <p>{{ form.initial.name }} &nbsp;&nbsp;
+{{ form.initial.phone }}&nbsp;&nbsp;
+{{ form.initial.gender }}&nbsp;&nbsp;
+</p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -41,6 +46,10 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Date of Birth</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Appointment Date</th>
+                                <th scope="col">Day Name</th>
+                                <th scope="col">Time</th>
                                 <th scope="col">First Visit</th>
                                 <th scope="col">Implant</th>
                                 <th scope="col">Diameter</th>
@@ -58,7 +67,7 @@
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Exo Photo</th>
-                                <th scope="col" colspan="2" style="text-align:center;">Other</th>
+                                <th scope="col" colspan="5" style="text-align:center;">Other</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -69,6 +78,10 @@
                                 <td style="text-align: center;" scope="row">{{ orall.phone }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.gender }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.date_of_birth }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.days }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.implant }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.diameter }}</td>
@@ -113,12 +126,10 @@
                                 {% if orall %}
                                 <!--<td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
                                         class="btn btn-warning">Add Visits</span></a></td>-->
-                                <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span
-                                        class="btn btn-warning">Edit</span></a>
-                                </td>
-                                <td scope="row"><a href="{% url 'delete-oral'  orall.id %}"
-                                                   style="display: inline;"><span
-                                        class="btn btn-outline-danger">Delete</span></a></td>
+                                <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
+                                <td ><a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>
+                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-outline-info">Gave-Appointment</span></a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -159,13 +170,13 @@
                                 <input type="hidden" name="date_of_birth"
                                        value="{{ form.initial.date_of_birth }}"
                                        class="form-control">
-                                <div class="col-2" style="float: right; margin-top: 28px;">
+                               <!-- <div class="col-2" style="float: right; margin-top: 28px;">
                                     <div class="card-header" align="right">
                                         <a href="{% url 'drugs' id=id %}"
                                            class="btn btn-outline-info d-flex align-items-center">&nbsp;&nbsp;&nbsp;
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs</a>
                                     </div>
-                                </div>
+                                </div>-->
 
                                 <div class="container">
                                     <div class="col-10">

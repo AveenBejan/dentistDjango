@@ -95,12 +95,12 @@
                                 {% if exoo %}
                                 <td><a href="{% url 'exo_edit' exoo.id   %}" style="display: inline;"><span
                                         class="btn btn-warning">Edit</span></a></td>
-                                <td scope="row"><a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
+                                <td><a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
                                         class="btn btn-outline-danger">Delete</span></a></td>
                                 {% endif %}
-                                <td scope="row"><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
+                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
                                         class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td scope="row"><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
                                         class="btn btn-outline-info">Gave-Appointment</span></a></td>
                             </tr>
                             {% endfor %}
@@ -138,7 +138,7 @@
                                 <input type="hidden" name="date_of_birth"
                                        value="{{ form.initial.date_of_birth }}"
                                        class="form-control">
-                                <div class="col-2" style="float: right; margin-top: 28px;">
+                               <!-- <div class="col-2" style="float: right; margin-top: 28px;">
                                     <div class="card-header" align="right">
                                         <a href="{% url 'drugs' id=id %}"
                                            class="btn btn-outline-info">&nbsp;&nbsp;&nbsp;
@@ -153,7 +153,7 @@
                                            class="btn btn-outline-info" >
                                            Gave-Appointment</a>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="container">
 
                                     <div class="col-10">

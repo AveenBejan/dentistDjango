@@ -25,6 +25,10 @@
                         Patient Information
                     </button>
                 </h2>
+                          <p>{{ form.initial.name }} &nbsp;&nbsp;
+{{ form.initial.phone }}&nbsp;&nbsp;
+{{ form.initial.gender }}&nbsp;&nbsp;
+</p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -37,6 +41,10 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Date of Birth</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Appointment Date</th>
+                                <th scope="col">Day Name</th>
+                                <th scope="col">Time</th>
                                 <th scope="col">Shade</th>
                                 <th scope="col">No of Unite</th>
                                 <th scope="col">Color</th>
@@ -45,35 +53,59 @@
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Crown Photo</th>
-                                <th scope="col" colspan="2">Other</th>
+                                <th scope="col" colspan="5">Other</th>
                             </tr>
                             </thead>
                             <tbody>
+                            {% for veneer in veneerr %}
                             <tr>
-                                <td text-align="center" scope="row">{{ form.initial.idReception }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.name }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.phone }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.gender }}</td>
-                                <td text-align="center" scope="row">{{ form.initial.date_of_birth }}</td>
-                                <td text-align="center" scope="row" align="center">{{veneerr.shade}}</td>
-                                <td text-align="center" scope="row" align="center">{{veneerr.no_unite}}</td>
-                                <td text-align="center" scope="row" align="center">{{veneerr.color}}</td>
-                                <td text-align="center" scope="row" align="center">{{veneerr.no_prepare}}</td>
-                                <td text-align="center" scope="row" align="center">{{formatted_price}}</td>
-                                <td text-align="center" scope="row" align="center"> {{ formatted_total_price }}</td>
-                                <td text-align="center" scope="row" align="center">{{veneerr.note}}</td>
-
-                                <td>{% for photo in photos %}
-                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                    <a href="{% url 'remove_photo_veneer' photo.id %}">Remove</a>
+                                <td text-align="center" scope="row">{{ veneer.idReception }}</td>
+                                <td text-align="center" scope="row">{{ veneer.name }}</td>
+                                <td text-align="center" scope="row">{{ veneer.phone }}</td>
+                                <td text-align="center" scope="row">{{ veneer.gender }}</td>
+                                <td text-align="center" scope="row">{{ veneer.date_of_birth }}</td>
+                                <td style="center" scope="row">{{ veneer.idReception.doctor.doctor_name }}</td>
+                                <td style="center" scope="row">{{ veneer.idReception.app_data }}</td>
+                                <td style="center" scope="row">{{ veneer.idReception.days }}</td>
+                                <td style="center" scope="row">{{ veneer.idReception.time|slice:"1:-1" }}</td>
+                                <td text-align="center" scope="row" align="center">{{veneer.shade}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneer.no_unite}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneer.color}}</td>
+                                <td text-align="center" scope="row" align="center">{{veneer.no_prepare}}</td>
+                                <td style="text-align: center;">
+                                    {% if veneer.price is not None %}
+                                    {{ veneer.price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center;">
+                                    {% if veneer.total_price is not None %}
+                                    {{ veneer.total_price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td text-align="center" scope="row" align="center">{{veneer.note}}</td>
+                                <td>
+                                    {% for photos in photos_list %}
+                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                      {% for photo in photos %}
+                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                        <a href="{% url 'remove-photo-oral' photo.id %}">Remove</a>
+                                      {% endfor %}
+                                     {% endif %}
                                     {% endfor %}
                                 </td>
-                                {% if veneerr %}
-                                <td><a href="{% url 'veneer_edit' veneerr.id %}" style="display: inline;"><span
+                                {% if veneer %}
+                                <td><a href="{% url 'veneer_edit' veneer.id %}" style="display: inline;"><span
                                         class="btn btn-outline-warning">Edit</span></a></td>
-                                <td scope="row" ><a href="{% url 'delete-veneer'  veneerr.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                                <td scope="row" ><a href="{% url 'delete-veneer'  veneer.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
+                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>
+                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-outline-info">Gave-Appointment</span></a></td>
                                 {% endif %}
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

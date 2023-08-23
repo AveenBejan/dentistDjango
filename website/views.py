@@ -409,6 +409,7 @@ def all_gave(request):
         cleaned_gaves.append(gave)
     return render(request, 'all_gave.html', {'gaves': gaves})
 
+
 def add_oral_surgery(request, id):
     if request.method == 'POST':
         form = OralSurgeryForm(request.POST, request.FILES)
@@ -1064,31 +1065,36 @@ def crown(request, id):
         form = CrownForm(request.POST, request.FILES)
         if form.is_valid():
             oral_surgery = form.save(commit=False)
-            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            oral_surgery.idReception_id = id
             no_prepare = form.cleaned_data['no_prepare']
-
-            # Assuming 'price' is also coming from the form, get its value as well
             price = form.cleaned_data['price']
-
-            # Calculate the total price
             total_price = no_prepare * price
-
-            # Set the 'total_price' field of the model instance
             oral_surgery.total_price = total_price
-
-            total_price = no_prepare * price
             reception = Reception.objects.get(id=id)
-            oral_surgery.name = reception.name  # Set the name from Reception model
-            oral_surgery.phone = reception.phone  # Set the name from Reception model
-            oral_surgery.gender = reception.gender  # Set the gender from Reception model
-            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.save()
+
             photos = request.FILES.getlist('exo_images')
             crown_instance = form.save(commit=False)
             crown_instance.save()
+
             for photo in photos:
                 Photo.objects.create(crown_instance=crown_instance, image=photo)
+
             return redirect('crown', id=id)
+        else:
+            reception = Reception.objects.get(id=id)
+            initial_data = {
+                'idReception': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth
+            }
+            form = CrownForm(initial=initial_data)
     else:
         reception = Reception.objects.get(id=id)
         initial_data = {
@@ -1098,24 +1104,42 @@ def crown(request, id):
             'gender': reception.gender,
             'date_of_birth': reception.date_of_birth
         }
-        form = CrownForm(initial=initial_data)  # Prepopulate the form with initial data
+        form = CrownForm(initial=initial_data)
+
     appointments = Reception.objects.all().order_by('-id')
+    crownn = Crown.objects.filter(idReception=id)
+    photos_list = []
 
     try:
-        crownn = Crown.objects.get(idReception=id)
-        photos = crownn.photo_set.all()
-    except Crown.DoesNotExist:
-        crownn = None
+        crown = crownn.first()
+        photos = crown.photo_set.all()
+    except AttributeError:
+        crown = None
         photos = None
+
     try:
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-    # Calculate the formatted total_price with commas as thousands separators
-    formatted_total_price = "{:,.2f}".format(crownn.total_price) if crownn else None
-    formatted_price = "{:,.2f}".format(crownn.price) if crownn else None
-    return render(request, 'conservation/crown/crown.html', {'form': form, 'appointments': appointments, 'medicine': medicine,
-                'crownn': crownn, 'id': id,'photos': photos, 'formatted_total_price': formatted_total_price,'formatted_price': formatted_price})
+
+    for crown in crownn:
+        photos = crown.photo_set.all()
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(crown.total_price) if crown.total_price is not None else None for crown in crownn]
+    formatted_prices = ["{:,.2f}".format(crown.price) if crown.price is not None else None for crown in crownn]
+
+    return render(request, 'conservation/crown/crown.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'crownn': crownn,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
 
 
 def crown_edit(request, id):
@@ -1185,31 +1209,36 @@ def veneer(request, id):
         form = VeneerForm(request.POST, request.FILES)
         if form.is_valid():
             oral_surgery = form.save(commit=False)
-            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
+            oral_surgery.idReception_id = id
             no_prepare = form.cleaned_data['no_prepare']
-
-            # Assuming 'price' is also coming from the form, get its value as well
             price = form.cleaned_data['price']
-
-            # Calculate the total price
             total_price = no_prepare * price
-
-            # Set the 'total_price' field of the model instance
             oral_surgery.total_price = total_price
-
-            total_price = no_prepare * price
             reception = Reception.objects.get(id=id)
-            oral_surgery.name = reception.name  # Set the name from Reception model
-            oral_surgery.phone = reception.phone  # Set the name from Reception model
-            oral_surgery.gender = reception.gender  # Set the gender from Reception model
-            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.save()
+
             photos = request.FILES.getlist('exo_images')
             veneer_instance = form.save(commit=False)
             veneer_instance.save()
+
             for photo in photos:
                 Photo.objects.create(veneer_instance=veneer_instance, image=photo)
+
             return redirect('veneer', id=id)
+        else:
+            reception = Reception.objects.get(id=id)
+            initial_data = {
+                'idReception': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth
+            }
+            form = VeneerForm(initial=initial_data)
     else:
         reception = Reception.objects.get(id=id)
         initial_data = {
@@ -1219,26 +1248,42 @@ def veneer(request, id):
             'gender': reception.gender,
             'date_of_birth': reception.date_of_birth
         }
-        form = VeneerForm(initial=initial_data)  # Prepopulate the form with initial data
+        form = VeneerForm(initial=initial_data)
+
     appointments = Reception.objects.all().order_by('-id')
+    veneerr = Veneer.objects.filter(idReception=id)
+    photos_list = []
 
     try:
-        veneerr = Veneer.objects.get(idReception=id)
-        photos = veneerr.photo_set.all()
-    except Veneer.DoesNotExist:
-        veneerr = None
+        veneer = veneerr.first()
+        photos = veneer.photo_set.all()
+    except AttributeError:
+        veneer = None
         photos = None
+
     try:
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-        # Calculate the formatted total_price with commas as thousands separators
-    formatted_total_price = "{:,.2f}".format(veneerr.total_price) if veneerr else None
-    formatted_price = "{:,.2f}".format(veneerr.price) if veneerr else None
 
-    return render(request, 'conservation/veneer/veneer.html',
-                  {'form': form, 'appointments': appointments, 'medicine': medicine, 'veneerr': veneerr, 'id': id,
-                   'photos': photos, 'formatted_total_price': formatted_total_price,'formatted_price':formatted_price})
+    for veneer in veneerr:
+        photos = veneer.photo_set.all()
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(veneer.total_price) if veneer.total_price is not None else None for veneer in veneerr]
+    formatted_prices = ["{:,.2f}".format(veneer.price) if veneer.price is not None else None for veneer in veneerr]
+
+    return render(request, 'conservation/veneer/veneer.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'veneerr': veneerr,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
 
 
 def veneer_edit(request, id):
@@ -1292,31 +1337,21 @@ def filling(request, id):
     if request.method == 'POST':
         form = FillingForm(request.POST, request.FILES)
         if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            oral_surgery.idReception_id = id  # Set the foreign key to the specified 'id'
-            no_prepare = form.cleaned_data['no_prepare']
-
-            # Assuming 'price' is also coming from the form, get its value as well
-            price = form.cleaned_data['price']
-
-            # Calculate the total price
-            total_price = no_prepare * price
-
-            # Set the 'total_price' field of the model instance
-            oral_surgery.total_price = total_price
-
-            total_price = no_prepare * price
-            reception = Reception.objects.get(id=id)
-            oral_surgery.name = reception.name  # Set the name from Reception model
-            oral_surgery.phone = reception.phone  # Set the name from Reception model
-            oral_surgery.gender = reception.gender  # Set the gender from Reception model
-            oral_surgery.date_of_birth = reception.date_of_birth  # Set the gender from Reception model
-            oral_surgery.save()
-            photos = request.FILES.getlist('exo_images')
-
             filling_instance = form.save(commit=False)
+            filling_instance.idReception_id = id
+            no_prepare = form.cleaned_data['no_prepare']
+            price = form.cleaned_data['price']
+            total_price = no_prepare * price
+            filling_instance.total_price = total_price
+
+            reception = Reception.objects.get(id=id)
+            filling_instance.name = reception.name
+            filling_instance.phone = reception.phone
+            filling_instance.gender = reception.gender
+            filling_instance.date_of_birth = reception.date_of_birth
             filling_instance.save()
 
+            photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(filling_instance=filling_instance, image=photo)
 
@@ -1330,36 +1365,52 @@ def filling(request, id):
             'gender': reception.gender,
             'date_of_birth': reception.date_of_birth
         }
-        form = FillingForm(initial=initial_data)  # Prepopulate the form with initial data
+        form = FillingForm(initial=initial_data)
 
     appointments = Reception.objects.all().order_by('-id')
+    fillingg = Filling.objects.filter(idReception=id)
+    photos_list = []
 
     try:
-        fillingg = Filling.objects.get(idReception=id)
-        photos = fillingg.photo_set.all()
-    except Filling.DoesNotExist:
-        fillingg = None
+        filling = fillingg.first()
+        photos = filling.photo_set.all()
+    except AttributeError:
+        filling = None
         photos = None
+
     try:
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-        # Replace commas in Exo model fields
-    if fillingg:
-        if fillingg.ur:
-            fillingg.ur = fillingg.ur.replace("'", "")
-        if fillingg.ul:
-            fillingg.ul = fillingg.ul.replace("'", "")
-        if fillingg.lr:
-            fillingg.lr = fillingg.lr.replace("'", "")
-        if fillingg.ll:
-            fillingg.ll = fillingg.ll.replace("'", "")
-    # Calculate the formatted total_price with commas as thousands separators
-    formatted_total_price = "{:,.2f}".format(fillingg.total_price) if fillingg else None
-    formatted_price = "{:,.2f}".format(fillingg.price) if fillingg else None
-    return render(request, 'conservation/filling/filling.html', {'form': form, 'appointments': appointments, 'medicine': medicine,
-                                            'fillingg': fillingg, 'id': id,'photos': photos,
-                                                                 'formatted_total_price':formatted_total_price,'formatted_price':formatted_price})
+
+    for fill in fillingg:
+        if fill.ur:
+            fill.ur = fill.ur.replace("'", "")
+        if fill.ul:
+            fill.ul = fill.ul.replace("'", "")
+        if fill.lr:
+            fill.lr = fill.lr.replace("'", "")
+        if fill.ll:
+            fill.ll = fill.ll.replace("'", "")
+
+        photos = fill.photo_set.all()
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(fill.total_price) if fill.total_price is not None else None for fill in
+                              fillingg]
+    formatted_prices = ["{:,.2f}".format(fill.price) if fill.price is not None else None for fill in fillingg]
+
+    return render(request, 'conservation/filling/filling.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'fillingg': fillingg,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
 
 
 def filling_reception(request):
