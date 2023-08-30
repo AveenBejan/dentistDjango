@@ -55,11 +55,33 @@
                         <td scope="row">{{reception.app_data}}</td>
                         <td scope="row">{{reception.days}}</td>
                         <td scope="row">{{reception.time|slice:"1:-1" }}</td>
-                        <td><a href="{% url 'exo' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Exo</span></a></td>
-                        <td><a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Implant</span></a></td>
-                        <td><a href="{% url 'crown' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Crown</span></a></td>
-                        <td><a href="{% url 'veneer' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Veneer</span></a></td>
-                        <td><a href="{% url 'filling' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Filling</span></a></td>
+                        <td>
+                            <li class="nav-item dropdown" style="color: #fff;">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" style="color: #000;">
+                                    Oral_Surgery
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="{% url 'exo' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Exo</span></a>
+                                    <br/>
+                                    <a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Implant</span></a>
+                                </div>
+                            </li>
+                        </td>
+                        <td>
+                            <li class="nav-item dropdown" style="color: #fff;">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" style="color: #000;">
+                                    Conservation
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="{% url 'crown' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Crown</span></a>
+                                    <br/>
+                                    <a href="{% url 'veneer' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Veneer</span></a>
+                                    <br/>
+                                    <a href="{% url 'filling' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Filling</span></a>
+                                </div>
+                            </li>
+                        </td>
+
 
                     </tr>
                     {% empty %}

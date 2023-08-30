@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
-    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,ImplantForm,GaveAppointmentForm
+    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,ImplantForm,GaveAppointmentForm,DebtsForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.forms import formset_factory
@@ -25,11 +25,11 @@ def search_view(request):
     oralSurgery = OralSurgery.objects.none()
 
     if query:
-        exos = Exo.objects.filter(name__icontains=query)
-        fillings = Filling.objects.filter(name__icontains=query)
-        crowns = Crown.objects.filter(name__icontains=query)
-        veneers = Veneer.objects.filter(name__icontains=query)
-        oralSurgery = OralSurgery.objects.filter(name__icontains=query)
+        exos = Exo.objects.filter(name=query)
+        fillings = Filling.objects.filter(name=query)
+        crowns = Crown.objects.filter(name=query)
+        veneers = Veneer.objects.filter(name=query)
+        oralSurgery = OralSurgery.objects.filter(name=query)
 
     search_results = []
 
@@ -52,19 +52,41 @@ def search_view(request):
     return render(request, 'search.html', context)
 
 
-def report_view(request):
-    exos = Exo.objects.all()
-    crowns = Crown.objects.all()
-    fillings = Filling.objects.all()
-    veneers = Veneer.objects.all()
+def search_debts(request):
+    query = request.GET.get('query')  # Get the search query
 
-    combined_data = zip(exos, crowns, fillings, veneers)
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+
+    if query:
+        exos = Exo.objects.filter(idReception_id =query)
+        fillings = Filling.objects.filter(idReception_id =query)
+        crowns = Crown.objects.filter(idReception_id =query)
+        veneers = Veneer.objects.filter(idReception_id =query)
+        oralSurgery = OralSurgery.objects.filter(idReception_id =query)
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
 
     context = {
-        'combined_data': combined_data,
+        'query': query,
+        'search_results': search_results,
     }
 
-    return render(request, 'report.html', context)
+    return render(request, 'finance/search_debts.html', context)
 
 
 def doctor(request):
@@ -285,8 +307,15 @@ def search_doctor(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             selected_doctor = form.cleaned_data['doctor']
-            receptions = Reception.objects.filter(doctor=selected_doctor, app_data=date.today())
+            receptions = Reception.objects.filter(doctor=selected_doctor).order_by('-app_data')
             # Clean appointments data before rendering
+            cleaned_receptions = []
+            for reception in receptions:
+                if reception.days:
+                    reception.days = reception.days.replace("'", "")
+                if reception.time:
+                    reception.time = reception.time.replace("'", "")
+                cleaned_receptions.append(reception)
 
             return render(request, 'doctors/search_doctor.html', {'receptions': receptions, 'form': form})
     else:
@@ -513,7 +542,6 @@ def remove_photo_oral(request, photo_id):
     oral_surgery_instance = photo.oral_surgery_instance
     photo.delete()
     return redirect('oral-edit', id=oral_surgery_instance.id)
-
 
 
 def delete_oral(request, id):
@@ -1467,8 +1495,60 @@ def delete_filling(request, id):
     # Redirect to the 'drugs' view with the same idReception
     return redirect('filling', id=idReception)
 
+
 def remove_photo_filling(request, photo_id):
     photo = get_object_or_404(Photo, id=photo_id)
     filling_instance = photo.filling_instance
     photo.delete()
     return redirect('filling_edit', id=filling_instance.id)
+
+
+def add_debt(request, id):
+    if request.method == 'POST':
+        form = DebtsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('add-debt')
+    else:
+        initial_values = {}
+
+        # Retrieve the records for different models using the given ID
+        try:
+            reception = Reception.objects.get(pk=id)
+            initial_values['idReception'] = reception
+        except Reception.DoesNotExist:
+            pass
+
+        try:
+            exo = Exo.objects.get(pk=id)
+            initial_values['idExo'] = exo
+        except Exo.DoesNotExist:
+            pass
+
+        try:
+            filling = Filling.objects.get(pk=id)
+            initial_values['idFilling'] = filling
+        except Filling.DoesNotExist:
+            pass
+
+        try:
+            crown = Crown.objects.get(pk=id)
+            initial_values['idCrown'] = crown
+        except Crown.DoesNotExist:
+            pass
+
+        try:
+            veneer = Veneer.objects.get(pk=id)
+            initial_values['idVeneer'] = veneer
+        except Veneer.DoesNotExist:
+            pass
+
+        try:
+            oral_surgery = OralSurgery.objects.get(pk=id)
+            initial_values['idOralSurgery'] = oral_surgery
+        except OralSurgery.DoesNotExist:
+            pass
+
+        form = DebtsForm(initial=initial_values)
+
+    return render(request, 'debts/add_debt.html', {'form': form})

@@ -252,3 +252,19 @@ class Orthodontics(models.Model):
     width_field = models.CharField(max_length=100)
 
 
+class Debts(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE)
+    idExo = models.ForeignKey(Exo, on_delete=models.CASCADE)
+    idFilling = models.ForeignKey(Filling, on_delete=models.CASCADE)
+    idCrown = models.ForeignKey(Crown, on_delete=models.CASCADE)
+    idVeneer = models.ForeignKey(Veneer, on_delete=models.CASCADE)
+    idOralSurgery = models.ForeignKey(OralSurgery, on_delete=models.CASCADE)
+    totalPrice = models.DecimalField('totalPrice', max_digits=20, decimal_places=2,null=True)
+    paid = models.DecimalField('paid', max_digits=20, decimal_places=2,null=True)
+    remaining = models.DecimalField('remaining', max_digits=20, decimal_places=2,null=True)
+    regDate = models.DateTimeField('RegDate', auto_now_add=True, editable=False)
+
+    def __str__(self):
+        return f"Debt for Reception: {self.idReception}, Remaining: {self.remaining}"
+
+

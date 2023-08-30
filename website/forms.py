@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts
 from django.forms import formset_factory
 
 
@@ -492,4 +492,32 @@ class OrthodonticsForm(forms.ModelForm):
     class Meta:
         model = Orthodontics
         fields = ('name', 'yes_no_field', 'material_field', 'width_field')
+
+
+class DebtsForm(forms.ModelForm):
+    class Meta:
+        model = Debts
+        fields = ('idReception', 'idExo', 'idFilling', 'idCrown', 'idVeneer', 'idOralSurgery', 'totalPrice', 'paid', 'remaining')
+        labels = {
+            'idReception': '',
+            'idExo': '',
+            'idFilling': '',
+            'idCrown': '',
+            'idVeneer': '',
+            'idOralSurgery': '',
+            'totalPrice': '',
+            'paid': '',
+            'remaining': '',
+        }
+        widgets = {
+            'idReception': forms.TextInput(attrs={'class': 'form-control'}),
+            'idExo': forms.TextInput(attrs={'class': 'form-control'}),
+            'idFilling': forms.TextInput(attrs={'class': 'form-control'}),
+            'idCrown': forms.TextInput(attrs={'class': 'form-control'}),
+            'idVeneer': forms.TextInput(attrs={'class': 'form-control'}),
+            'idOralSurgery': forms.TextInput(attrs={'class': 'form-control'}),
+            'totalPrice': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'totalPrice'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'remaining': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'remaining'}),
+        }
 
