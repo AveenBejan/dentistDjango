@@ -125,7 +125,7 @@
         <td>{{ result.exoby|slice:"1:-1" }}</td>
         <td>{{ result.simpleexo|slice:"1:-1" }}</td>
         <td>{{ result.complcated|slice:"1:-1" }}</td>
-        <td><a href="{% url 'add-debt' id=result.idReception_id %}" style="display: inline;"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td><a href="{% url 'exo_edit' result.id   %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
         {% elif model_name == 'Crown' %}
         <td scope="row">{{ result.id }}</td>
         <td text-align="center" scope="row">{{ result.name }}</td>
