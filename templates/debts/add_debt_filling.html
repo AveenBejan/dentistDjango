@@ -16,11 +16,11 @@
                 </nav>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="text" name="idReception" value="{{ exo_instance.idReception_id  }}" class="form-control">
-                    <input type="text" name="name" value="{{ exo_instance.name }}" class="form-control">
-                    <input type="text" name="phone" value="{{ exo_instance.phone }}" class="form-control">
-                    <input type="text" name="gender" value="{{ exo_instance.gender }}" class="form-control">
-                    <input type="text" name="date_of_birth" value="{{ exo_instance.date_of_birth }}"
+                    <input type="text" name="idReception" value="{{ crown_instance.idReception_id  }}" class="form-control">
+                    <input type="text" name="name" value="{{ filling_instance.name }}" class="form-control">
+                    <input type="text" name="phone" value="{{ filling_instance.phone }}" class="form-control">
+                    <input type="text" name="gender" value="{{ filling_instance.gender }}" class="form-control">
+                    <input type="text" name="date_of_birth" value="{{ filling_instance.date_of_birth }}"
                            class="form-control">
                     <div class="row">
 
@@ -31,7 +31,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-control">
-                                        <input type="text" id="paid" name="paid" value="{{ exo_instance.paid }}"
+                                        <input type="text" id="paid" name="paid" value="{{ filling_instance.paid }}"
                                                class="form-control"
                                                placeholder="Paid:" required>
                                     </div>

@@ -93,7 +93,17 @@ urlpatterns = [
     path('search/', views.search_view, name='search'),
 
     path('search_debts', views.search_debts, name='search-debts'),
+    path('print_exo_debt/<int:id>', views.print_exo_debt, name='print_exo_debt'),
+    path('print_crown_debt/<int:id>', views.print_crown_debt, name='print_crown_debt'),
+    path('print_filling_debt/<int:id>', views.print_filling_debt, name='print_filling_debt'),
+    path('print_veneer_debt/<int:id>', views.print_veneer_debt, name='print_veneer_debt'),
+    path('print_oral_debt/<int:id>', views.print_oral_debt, name='print_oral_debt'),
 
     path('add_debt/<int:id>', views.add_debt, name='add-debt'),
+    path('add_debt_crown/<int:id>', views.add_debt_crown, name='add-debt-crown'),
+    path('add_debt_filling/<int:id>', views.add_debt_filling, name='add-debt-filling'),
+    path('add_debt_veneer/<int:id>', views.add_debt_veneer, name='add-debt-veneer'),
+    path('add_debt_oral/<int:id>', views.add_debt_oral, name='add-debt-oral'),
+    path('all_debts', views.all_debts, name='all_debts'),
 
 ]

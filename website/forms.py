@@ -177,7 +177,7 @@ class FillingForm(forms.ModelForm):
     class Meta:
         model = Filling
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','filling_type','filling_place',
-                  'ur', 'ul', 'lr', 'll',  'no_prepare', 'price', 'note','exo_images')
+                  'ur', 'ul', 'lr', 'll',  'no_prepare', 'price','paid', 'note','exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -192,6 +192,7 @@ class FillingForm(forms.ModelForm):
             'll': '',
             'no_prepare': '',
             'price': '',
+            'paid': '',
             'note': '',
 
         }
@@ -209,6 +210,7 @@ class FillingForm(forms.ModelForm):
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
             'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
 
         }
@@ -219,7 +221,7 @@ class ExoForm(forms.ModelForm):
 
     class Meta:
         model = Exo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -232,6 +234,7 @@ class ExoForm(forms.ModelForm):
             'll': '',
 
             'price': '',
+            'paid': '',
             'note': '',
             'exoby': '',
             'simpleexo': '',
@@ -249,7 +252,8 @@ class ExoForm(forms.ModelForm):
             'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
 
-            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),
             'simpleexo': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'simpleexo'}),
@@ -263,7 +267,7 @@ class CrownForm(forms.ModelForm):
 
     class Meta:
         model = Crown
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'note', 'exo_images')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price',  'paid','note', 'exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -275,6 +279,7 @@ class CrownForm(forms.ModelForm):
             'color': '',
             'no_prepare': '',
             'price': '',
+            'paid': '',
             'note': '',
 
         }
@@ -289,6 +294,7 @@ class CrownForm(forms.ModelForm):
             'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
             'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
 
         }
@@ -299,7 +305,7 @@ class VeneerForm(forms.ModelForm):
 
     class Meta:
         model = Veneer
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'note', 'exo_images')
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'paid', 'note', 'exo_images')
         labels = {
             'idReception': '',
             'name': '',
@@ -311,6 +317,7 @@ class VeneerForm(forms.ModelForm):
             'color': '',
             'no_prepare': '',
             'price': '',
+            'paid': '',
             'note': '',
 
         }
@@ -325,6 +332,7 @@ class VeneerForm(forms.ModelForm):
             'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
             'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
 
         }
@@ -348,7 +356,7 @@ class OralSurgeryForm(forms.ModelForm):
     class Meta:
         model = OralSurgery
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','implant', 'diameter', 'length', 'no_Implant', 'ur', 'ul','lr', 'll','shade','no_unite',
-                  'color', 'price', 'note', 'exo_images', 'first_visit','second_visit','third_visit',
+                  'color', 'price', 'paid','note', 'exo_images', 'first_visit','second_visit','third_visit',
                   'fourth_visit','fifth_visit')
         labels = {
             'idReception': '',
@@ -369,6 +377,7 @@ class OralSurgeryForm(forms.ModelForm):
             'shade': '',
             'color': '',
             'price': '',
+            'paid': '',
             'note': '',
             'second_visit': '',
             'third_visit': '',
@@ -395,6 +404,7 @@ class OralSurgeryForm(forms.ModelForm):
             'shade': forms.Select(attrs={'class': 'form-control', 'placeholder': 'shade'}),
             'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'second_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'third_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),

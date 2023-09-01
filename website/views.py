@@ -13,6 +13,7 @@ from django.db import transaction
 from django.urls import reverse
 from datetime import date
 from django.contrib import messages
+from datetime import datetime
 
 
 def search_view(request):
@@ -62,11 +63,11 @@ def search_debts(request):
     oralSurgery = OralSurgery.objects.none()
 
     if query:
-        exos = Exo.objects.filter(idReception_id =query)
-        fillings = Filling.objects.filter(idReception_id =query)
-        crowns = Crown.objects.filter(idReception_id =query)
-        veneers = Veneer.objects.filter(idReception_id =query)
-        oralSurgery = OralSurgery.objects.filter(idReception_id =query)
+        exos = Exo.objects.filter(Q(name=query) | Q(phone=query))
+        fillings = Filling.objects.filter(Q(name=query) | Q(phone=query))
+        crowns = Crown.objects.filter(Q(name=query) | Q(phone=query))
+        veneers = Veneer.objects.filter(Q(name=query) | Q(phone=query))
+        oralSurgery = OralSurgery.objects.filter(Q(name=query) | Q(phone=query))
 
     search_results = []
 
@@ -87,6 +88,48 @@ def search_debts(request):
     }
 
     return render(request, 'finance/search_debts.html', context)
+
+
+def all_debts(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+
+    if start_date and end_date:
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+
+        exos = Exo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        fillings = Filling.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        crowns = Crown.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        veneers = Veneer.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'search_results': search_results,
+    }
+
+    return render(request, 'debts/all_debts.html', context)
 
 
 def doctor(request):
@@ -1412,6 +1455,10 @@ def filling(request, id):
         medicine = None
 
     for fill in fillingg:
+        if fill.filling_type:
+            fill.filling_type = fill.filling_type.replace("'", "")
+        if fill.filling_place:
+            fill.filling_place = fill.filling_place.replace("'", "")
         if fill.ur:
             fill.ur = fill.ur.replace("'", "")
         if fill.ul:
@@ -1504,51 +1551,155 @@ def remove_photo_filling(request, photo_id):
 
 
 def add_debt(request, id):
+    try:
+        exo_instance = Exo.objects.get(id=id)
+    except Exo.DoesNotExist:
+        return HttpResponse("Exo instance not found")
+
     if request.method == 'POST':
-        form = DebtsForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('add-debt')
+        paid = request.POST.get('paid')
+        exo_instance.paid = paid
+        exo_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        initial_values = {}
+        return render(request, 'debts/add_debt.html', {'id': id, 'exo_instance': exo_instance})
 
-        # Retrieve the records for different models using the given ID
-        try:
-            reception = Reception.objects.get(pk=id)
-            initial_values['idReception'] = reception
-        except Reception.DoesNotExist:
-            pass
 
-        try:
-            exo = Exo.objects.get(pk=id)
-            initial_values['idExo'] = exo
-        except Exo.DoesNotExist:
-            pass
+def print_exo_debt(request, id):
+    debts = Exo.objects.filter(idReception=id)
 
-        try:
-            filling = Filling.objects.get(pk=id)
-            initial_values['idFilling'] = filling
-        except Filling.DoesNotExist:
-            pass
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
 
-        try:
-            crown = Crown.objects.get(pk=id)
-            initial_values['idCrown'] = crown
-        except Crown.DoesNotExist:
-            pass
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
 
-        try:
-            veneer = Veneer.objects.get(pk=id)
-            initial_values['idVeneer'] = veneer
-        except Veneer.DoesNotExist:
-            pass
+    return render(request, 'debts/print_exo_debt.html', context)
 
-        try:
-            oral_surgery = OralSurgery.objects.get(pk=id)
-            initial_values['idOralSurgery'] = oral_surgery
-        except OralSurgery.DoesNotExist:
-            pass
 
-        form = DebtsForm(initial=initial_values)
+def add_debt_crown(request, id):
+    try:
+        crown_instance = Crown.objects.get(id=id)
+    except Crown.DoesNotExist:
+        return HttpResponse("Crown instance not found")
 
-    return render(request, 'debts/add_debt.html', {'form': form})
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        crown_instance.paid = paid
+        crown_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_crown.html', {'id': id, 'crown_instance': crown_instance})
+
+
+def print_crown_debt(request, id):
+    debts = Crown.objects.filter(idReception=id)
+
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
+
+    return render(request, 'debts/print_crown_debt.html', context)
+
+
+def add_debt_filling(request, id):
+    try:
+        filling_instance = Filling.objects.get(id=id)
+    except Filling.DoesNotExist:
+        return HttpResponse("Filling instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        filling_instance.paid = paid
+        filling_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_filling.html', {'id': id, 'filling_instance': filling_instance})
+
+
+def print_filling_debt(request, id):
+    debts = Filling.objects.filter(idReception=id)
+
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
+
+    return render(request, 'debts/print_filling_debt.html', context)
+
+
+def add_debt_veneer(request, id):
+    try:
+        veneer_instance = Veneer.objects.get(id=id)
+    except Veneer.DoesNotExist:
+        return HttpResponse("Veneer instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        veneer_instance.paid = paid
+        veneer_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_veneer.html', {'id': id, 'veneer_instance': veneer_instance})
+
+
+def print_veneer_debt(request, id):
+    debts = Veneer.objects.filter(idReception=id)
+
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
+
+    return render(request, 'debts/print_veneer_debt.html', context)
+
+
+def add_debt_oral(request, id):
+    try:
+        oral_surgery_instance = OralSurgery.objects.get(id=id)
+    except OralSurgery.DoesNotExist:
+        return HttpResponse("OralSurgery instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        oral_surgery_instance.paid = paid
+        oral_surgery_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_oral.html', {'id': id, 'oral_surgery_instance': oral_surgery_instance})
+
+
+def print_oral_debt(request, id):
+    debts = OralSurgery.objects.filter(idReception=id)
+
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
+
+    return render(request, 'debts/print_oral_debt.html', context)

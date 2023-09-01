@@ -5,6 +5,7 @@
 
 <html lang="en">
 <head>
+
     <title>{% block title %}Dental Clinic {% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,9 +36,8 @@
 <body>
 
 
-
-{% block body %}
-{% include 'navbar.html' %}
+{% block navbar %}
+   {% include 'navbar.html' %}
 {% endblock %}
 {% block content %}
 {% endblock %}

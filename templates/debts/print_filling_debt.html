@@ -1,0 +1,82 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block navbar %}
+
+{% endblock %}
+{% block content %}
+<br/>
+<br/><br/>
+
+<p align="center"
+   style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+    نوژدار
+    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>
+    <br/>عطلة العيادة الخميس والجمعة </p>
+<hr class="border border-primary border-3 opacity-40">
+<div class="container">
+    <div class="row">
+
+        <h1 style="text-align:center;">Payment Invoice</h1>
+        <div style="font-weight: bold;">
+            {% if debts %}
+            <p>
+                Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
+                Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
+                Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
+                Date of Birth: {{ debts.0.date_of_birth }}
+            </p>
+            {% endif %}
+        </div>
+        <table class="table table-hover">
+            <thead style="background-color:#555; color:#fff;">
+            <tr>
+
+                <th scope="col">#</th>
+              <th scope="col">#</th>
+              <th scope="col">Filling Type</th>
+              <th scope="col">Filling Place</th>
+              <th scope="col">Upper Right</th>
+              <th scope="col">Upper Left</th>
+              <th scope="col">Lower Right</th>
+              <th scope="col">Lower Left</th>
+              <th scope="col">No of Pre.Unite</th>
+              <th scope="col">Price</th>
+              <th scope="col">Total Price</th>
+              <th scope="col">Paid</th>
+                <th scope="col">Notes</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for debt in debts %}
+            <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
+                <td >{{ debt.id }}</td>
+              <td>{{ debt.idReception_id }}</td>
+              <td scope="row">{{debt.filling_type}}</td>
+              <td scope="row">{{debt.filling_place|slice:"1:-1"}}</td>
+              <td scope="row">{{debt.ur|slice:"1:-1" }}</td>
+              <td scope="row">{{debt.ul|slice:"1:-1"}}</td>
+              <td scope="row">{{debt.lr|slice:"1:-1"}}</td>
+              <td scope="row">{{debt.ll|slice:"1:-1"}}</td>
+              <td scope="row">{{debt.no_prepare}}</td>
+              <td>{{ debt.price }}</td>
+              <td>{{ debt.total_price }}</td>
+                <td >{{ debt.paid }}</td>
+                <td >{{ debt.note }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff;">Total Remaining: {{ total_remaining|floatformat:2 }}</span></td>
+
+    </div>
+</div>
+
+
+<footer id="footer">
+    <hr class="border border-primary border-3 opacity-40">
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
+        التمنيات بالشفاء العاجل</h4>
+</footer>
+
+
+{% endblock %}
