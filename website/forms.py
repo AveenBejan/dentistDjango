@@ -1,8 +1,73 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome
 from django.forms import formset_factory
+
+
+class OutcomeForm(forms.ModelForm):
+    class Meta:
+        model = Outcome
+        fields = ('invoice_num', 'invoice_date', 'type', 'description', 'price')
+        labels = {
+            'invoice_num': '',
+            'invoice_date': '',
+            'type': '',
+            'description': '',
+            'price': '',
+
+        }
+        widgets = {
+            'invoice_num': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'invoice_num'}),
+            'invoice_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'invoice_date'}),
+            'type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'type'}),
+            'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'description'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+        }
+
+
+class BasicInfoForm(forms.ModelForm):
+    class Meta:
+        model = BasicInfo
+        fields = ( 'fullname', 'gender', 'phoneNumber','address', 'type', 'startDay')
+        labels = {
+            'fullname': '',
+            'gender': '',
+            'phoneNumber': '',
+            'address': '',
+            'type': '',
+            'startDay': '',
+
+        }
+        widgets = {
+            'fullname': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'fullname'}),
+            'gender': forms.Select(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'phoneNumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phoneNumber'}),
+            'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'address'}),
+            'type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'type'}),
+            'startDay': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'startDay'}),
+        }
+
+
+class SalaryForm(forms.ModelForm):
+    class Meta:
+        model = Salary
+        fields = ('idBasicInfo', 'fullname', 'salaryPaid', 'days', 'month')
+        labels = {
+            'idBasicInfo': '',
+            'fullname': '',
+            'salaryPaid': '',
+            'days': '',
+            'month': '',
+        }
+        widgets = {
+            'idBasicInfo': forms.Select(attrs={'class': 'form-control'}),
+            'fullname': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'fullname'}),
+            'salaryPaid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'salaryPaid'}),
+            'days': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'days'}),
+            'month': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'days'}),
+
+        }
 
 
 class DoctorsForm(forms.ModelForm):

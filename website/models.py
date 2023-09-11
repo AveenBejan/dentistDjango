@@ -5,6 +5,38 @@ from datetime import datetime
 from django.utils import timezone
 
 
+class BasicInfo(models.Model):
+    fullname = models.CharField('fullname',max_length=120)
+    gender = models.CharField('Gender', max_length=20)
+    phoneNumber = models.CharField('phoneNumber',max_length=120)
+    address = models.CharField('address',max_length=120)
+    type = models.CharField('type',max_length=120)
+    startDay = models.DateField()
+    regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
+
+
+class Salary(models.Model):
+    idBasicInfo = models.ForeignKey(BasicInfo, on_delete=models.CASCADE, blank=True,null=True)
+    fullname = models.CharField('fullname',max_length=120)
+    salaryPaid = models.DecimalField('salaryPaid',max_digits=8,decimal_places=2,null=False)
+    days = models.IntegerField('days')
+    finalSalary = models.DecimalField('finalSalary',max_digits=8,decimal_places=2,null=False)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
+    month = models.CharField('Month',null=True,max_length=120)  # Add a month field
+
+    def __str__(self):
+        return self.fullname  # You can customize this based on your needs
+
+
+class Outcome(models.Model):
+    invoice_num = models.CharField('fullname',max_length=120)
+    invoice_date = models.DateField(null=True)
+    type = models.CharField('fullname',max_length=120)
+    description = models.CharField('fullname',max_length=120)
+    price = models.DecimalField('finalSalary',max_digits=8,decimal_places=2,null=False)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
+
+
 class Doctors(models.Model):
     doctor_name = models.CharField('doctor_name',max_length=120)
     phone = models.CharField('phone',max_length=120)

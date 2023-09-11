@@ -106,4 +106,16 @@ urlpatterns = [
     path('add_debt_oral/<int:id>', views.add_debt_oral, name='add-debt-oral'),
     path('all_debts', views.all_debts, name='all_debts'),
 
+    path('add_new_employ', views.add_new_employ, name='add-new-employ'),
+    path('delete_employ/<int:id>', views.delete_employ, name='delete-employ'),
+    path('add_salary/<int:id>', views.add_salary, name='add-salary'),
+
+    path('add_outcome', views.add_outcome, name='add-outcome'),
+    path('delete_outcome/<int:id>', views.delete_outcome, name='delete-outcome'),
+
+    path('all_total', views.all_total, name='all-total'),
+
+
+
+
 ]

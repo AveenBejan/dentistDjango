@@ -16,11 +16,11 @@
                 </nav>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="text" name="idReception" value="{{ crown_instance.idReception_id  }}" class="form-control">
-                    <input type="text" name="name" value="{{ crown_instance.name }}" class="form-control">
-                    <input type="text" name="phone" value="{{ crown_instance.phone }}" class="form-control">
-                    <input type="text" name="gender" value="{{ crown_instance.gender }}" class="form-control">
-                    <input type="text" name="date_of_birth" value="{{ crown_instance.date_of_birth }}"
+                    <input type="text" name="idReception" value="{{ crown_instance.idReception_id  }}" class="form-control" readonly>
+                    <input type="text" name="name" value="{{ crown_instance.name }}" class="form-control"readonly>
+                    <input type="text" name="phone" value="{{ crown_instance.phone }}" class="form-control" readonly>
+                    <input type="text" name="gender" value="{{ crown_instance.gender }}" class="form-control"  readonly>
+                    <input type="text" name="date_of_birth" value="{{ crown_instance.date_of_birth }}" readonly
                            class="form-control">
                     <div class="row">
 

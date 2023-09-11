@@ -1,0 +1,104 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<br/>
+<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+    <div class="col-8">
+        <div class="accordion" id="accordionExample">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add New Employees Information</li>
+                </ol>
+            </nav>
+            <div class="accordion-item">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo"
+                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            Add New Salary Month
+                        </button>
+                    </h2>
+                    {% if messages %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <input type="hidden" name="idBasicInfo"
+                                       class="form-control" value="{{ form.initial.idBasicInfo }}">
+                                <input type="text" name="fullname"
+                                       class="form-control" value="{{ form.initial.fullname }}" readonly>
+
+                                <input type="text" name="salaryPaid" placeholder="salaryPaid"
+                                       class="form-control"   value="" required>
+                                <input type="text" name="days" placeholder="days" value="30"
+                                       class="form-control" required>
+                                <div class="form-group">
+                                    <input type="text" name="{{ form.month.name }}"
+                                           class="form-control" value="{{ form.month.value }}"
+                                           placeholder="Enter the month (e.g., January)" readonly>
+                                </div>
+
+                                <br/>
+                                <div class="form-group" style="text-align: center;">
+                                    <input type="submit" value="Add New Employe"
+                                           class="btn btn-outline-primary">
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br/>
+        <table class="table table-hover">
+            <thead style="background-color:#73ccf0; color:#fff;">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+                <th scope="col">Employ Name</th>
+                <th scope="col"> salaryPaid</th>
+                <th scope="col">days</th>
+                <th scope="col">finalSalary</th>
+                <th scope="col">Month</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td scope="row">{{appointment.id}}</td>
+                <td scope="row">{{appointment.idBasicInfo_id}}</td>
+                <td scope="row">{{appointment.fullname}}</td>
+                <td scope="row">{{appointment.salaryPaid}}</td>
+                <td scope="row">{{appointment.days}}</td>
+                <td scope="row">{{appointment.finalSalary}}</td>
+                <td scope="row">{{appointment.month}}</td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

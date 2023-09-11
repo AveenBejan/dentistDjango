@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
-    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,ImplantForm,GaveAppointmentForm,DebtsForm
+    MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
+    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.forms import formset_factory
@@ -14,6 +15,88 @@ from django.urls import reverse
 from datetime import date
 from django.contrib import messages
 from datetime import datetime
+from django.forms import modelformset_factory
+from django.db.models import Sum
+
+
+def add_outcome(request):
+    if request.method == 'POST':
+        form = OutcomeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('add-outcome')  # Redirect to the same page after saving the form data
+    else:
+        form = OutcomeForm()
+    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+    appointments = Outcome.objects.all().order_by('-regdate')
+    return render(request, 'outcome/add_outcome.html', {'form': form, 'appointments': appointments})
+
+
+def delete_outcome(request,id):
+    appointments = Outcome.objects.get(pk=id)
+    appointments.delete()
+    return redirect('add-outcome')
+
+
+def add_new_employ(request):
+    if request.method == 'POST':
+        form = BasicInfoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('add-new-employ')  # Redirect to the same page after saving the form data
+    else:
+        form = BasicInfoForm()
+    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+    appointments = BasicInfo.objects.all().order_by('-regdate')
+    return render(request, 'employs/add_new_employ.html', {'form': form, 'appointments': appointments})
+
+
+def delete_employ(request,id):
+    appointments = BasicInfo.objects.get(pk=id)
+    appointments.delete()
+    return redirect('add-new-employ')
+
+
+def add_salary(request, id):
+    try:
+        basicinfo = BasicInfo.objects.get(id=id)
+    except BasicInfo.DoesNotExist:
+        return HttpResponse("BasicInfo with ID does not exist")
+
+    if request.method == 'POST':
+        form = SalaryForm(request.POST)
+        if form.is_valid():
+            # Check if a record for the same month already exists
+            month = form.cleaned_data['month']
+            existing_record = Salary.objects.filter(idBasicInfo=basicinfo, month=month).exists()
+
+            if existing_record:
+                # Display an alert message if a record for the same month exists
+                messages.error(request, f"You have already submitted salary for {month}.")
+            else:
+                salaryPaid = form.cleaned_data['salaryPaid']
+                days = form.cleaned_data['days']
+                finalSalary = salaryPaid * days
+
+                oral_surgery = form.save(commit=False)
+                oral_surgery.idBasicInfo = basicinfo
+                oral_surgery.finalSalary = finalSalary
+                oral_surgery.fullname = basicinfo.fullname
+                oral_surgery.month = month
+
+                oral_surgery.save()
+                return redirect('add-salary', id=id)
+    else:
+        initial_data = {
+            'idBasicInfo': id,
+            'fullname': basicinfo.fullname,
+            'month': date.today().strftime('%B')
+        }
+        form = SalaryForm(initial=initial_data)
+
+    appointments = Salary.objects.all().order_by('-id')
+
+    return render(request, 'employs/add_salary.html', {'form': form, 'appointments': appointments})
 
 
 def search_view(request):
@@ -130,6 +213,73 @@ def all_debts(request):
     }
 
     return render(request, 'debts/all_debts.html', context)
+
+
+def all_total(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+    outcomes = Outcome.objects.none()
+    salaries = Salary.objects.none()
+
+    if start_date and end_date:
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+
+        exos = Exo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        fillings = Filling.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        crowns = Crown.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        veneers = Veneer.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        outcomes = Outcome.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        salaries = Salary.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+
+        search_results.append(('OralSurgery', oralSurgery))
+    if outcomes.exists():
+        search_results.append(('Outcome', outcomes))
+    if salaries.exists():
+        search_results.append(('Salary', salaries))
+    total_exo = Exo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_filling = Filling.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_crown = Crown.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_salary = salaries.aggregate(total_final_salary=Sum('finalSalary'))['total_final_salary'] or 0
+    total_outcome = Outcome.objects.aggregate(total_price=Sum('price'))['total_price'] or 0
+    remaining = ((total_exo+total_filling+total_crown+total_veneer+total_oralSurgery)-(total_salary+total_outcome))
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'search_results': search_results,
+        'total_exo': total_exo,  # Add total_salary to the context
+        'total_filling': total_filling,  # Add total_salary to the context
+        'total_crown': total_crown,  # Add total_salary to the context
+        'total_veneer': total_veneer,  # Add total_salary to the context
+        'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
+        'total_salary': total_salary,  # Add total_salary to the context
+        'total_outcome': total_outcome,  # Add total_salary to the context
+        'remaining': remaining,  # Add total_salary to the context
+    }
+
+    return render(request, 'all_total.html', context)
 
 
 def doctor(request):

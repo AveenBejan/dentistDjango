@@ -16,8 +16,50 @@
   </form>
     {% endif %}
 </nav>
-<!--<h1>Search Results for "{{ query }}"</h1>-->
+<!--
+<div class="col-4">
+<h1>Search Results for "{{ query }}"</h1>
+{% if search_results %}
+{% for model_name, results in search_results %}
+{% if results %}
+<h2></h2>
+<table class="table table-hover">
+    <tbody>
+    {% for result in results %}
+    <tr style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}">
+        {% if model_name == 'Exo' %}
+        <th scope="col">{{ model_name }} Results :&nbsp; &nbsp; Total Price</th>
+        <td>{{ result.total_price }}</td>
+        {% elif model_name == 'Crown' %}
+        <th scope="col">{{ model_name }} Results :&nbsp; &nbsp;Total Price</th>
+        <td> {{result.total_price }}</td>
+         ... other crown-related fields ...
+        {% elif model_name == 'Filling' %}
+        <th scope="col">{{ model_name }} Results :&nbsp; &nbsp;Total Price</th>
+        <td>{{result.total_price}}</td>
+        {% elif model_name == 'Veneer' %}
+        <th scope="col">{{ model_name }} Results :&nbsp; &nbsp;Total Price</th>
+        <td> {{ result.total_price }}</td>
+        {% elif model_name == 'OralSurgery' %}
+        <th scope="col">{{ model_name }} Results :&nbsp; &nbsp;Total Price</th>
+        <td>{{ result.total_price }}</td>
+        {% endif %}
 
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No {{ model_name }} results found.</p>
+{% endif %}
+{% endfor %}
+{% else %}
+<p>No results found.</p>
+{% endif %}
+</div>
+-->
+
+<h1 style="text-align:center;">Details </h1>
 {% if search_results %}
 {% for model_name, results in search_results %}
 {% if results %}
@@ -43,6 +85,8 @@
         <th scope="col">Exo by Surgery</th>
         <th scope="col">Simple Exo</th>
         <th scope="col">Complicated</th>
+         <th scope="col">Add Debts</th>
+        <th scope="col">Print Invoice</th>
 
         {% elif model_name == 'Crown' %}
         <th scope="col">#</th>
@@ -59,6 +103,8 @@
         <th scope="col">Total Price</th>
         <th scope="col">Paid</th>
         <th scope="col">Notes</th>
+         <th scope="col">Add Debts</th>
+        <th scope="col">Print Invoice</th>
         {% elif model_name == 'Filling' %}
         <th scope="col">#</th>
         <th scope="col">#</th>
@@ -77,6 +123,8 @@
         <th scope="col">Total Price</th>
         <th scope="col">Paid</th>
         <th scope="col">Notes</th>
+         <th scope="col">Add Debts</th>
+        <th scope="col">Print Invoice</th>
         {% elif model_name == 'Veneer' %}
         <th scope="col">#</th>
         <th scope="col">#</th>
@@ -92,6 +140,8 @@
         <th scope="col">Total Price</th>
         <th scope="col">Paid</th>
         <th scope="col">Notes</th>
+         <th scope="col">Add Debts</th>
+        <th scope="col">Print Invoice</th>
         {% elif model_name == 'OralSurgery' %}
         <th scope="col">#</th>
         <th scope="col">#</th>
@@ -115,6 +165,8 @@
         <th scope="col">Total Price</th>
         <th scope="col">Paid</th>
         <th scope="col">Notes</th>
+         <th scope="col">Add Debts</th>
+        <th scope="col">Print Invoice</th>
         {% endif %}
         <!-- ... other header columns ... -->
     </tr>
@@ -125,10 +177,10 @@
         {% if model_name == 'Exo' %}
         <td>{{ result.id }}</td>
         <td>{{ result.idReception_id }}</td>
-        <td>{{ results.0.name }}</td>
-        <td>{{ results.0.gender }}</td>
-        <td>{{ results.0.phone }}</td>
-        <td>{{ results.0.date_of_birth }}</td>
+        <td>{{ result.name }}</td>
+        <td>{{ result.gender }}</td>
+        <td>{{ result.phone }}</td>
+        <td>{{ result.date_of_birth }}</td>
         <td>{{ result.ur|slice:"1:-1" }}</td>
         <td>{{ result.ul|slice:"1:-1" }}</td>
         <td>{{ result.lr|slice:"1:-1" }}</td>
@@ -140,13 +192,22 @@
         <td>{{ result.exoby|slice:"1:-1" }}</td>
         <td>{{ result.simpleexo|slice:"1:-1" }}</td>
         <td>{{ result.complcated|slice:"1:-1" }}</td>
+        <td><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span
+                class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td> {% if result.total_price == result.paid %}
+            <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
+
         {% elif model_name == 'Crown' %}
         <td scope="row">{{ result.id }}</td>
         <td>{{ result.idReception_id }}</td>
-        <td>{{ results.0.name }}</td>
-        <td>{{ results.0.gender }}</td>
-        <td>{{ results.0.phone }}</td>
-        <td>{{ results.0.date_of_birth }}</td>
+        <td>{{ result.name }}</td>
+        <td>{{ result.gender }}</td>
+        <td>{{ result.phone }}</td>
+        <td>{{ result.date_of_birth }}</td>
         <td text-align="center" scope="row" align="center">{{result.shade}}</td>
         <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
         <td text-align="center" scope="row" align="center">{{result.color}}</td>
@@ -155,14 +216,21 @@
         <td text-align="center" scope="row" align="center"> {{result.total_price }}</td>
         <td text-align="center" scope="row" align="center"> {{result.paid }}</td>
         <td text-align="center" scope="row" align="center">{{result.note}}</td>
+        <td><a href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td> {% if result.total_price == result.paid %}
+            <a href="{% url 'print_crown_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
         <!-- ... other crown-related fields ... -->
         {% elif model_name == 'Filling' %}
         <td scope="row">{{ result.id }}</td>
         <td>{{ result.idReception_id }}</td>
-        <td>{{ results.0.name }}</td>
-        <td>{{ results.0.gender }}</td>
-        <td>{{ results.0.phone }}</td>
-        <td>{{ results.0.date_of_birth }}</td>
+        <td>{{ result.name }}</td>
+        <td>{{ result.gender }}</td>
+        <td>{{ result.phone }}</td>
+        <td>{{ result.date_of_birth }}</td>
         <td scope="row">{{result.filling_type}}</td>
         <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
         <td scope="row">{{result.ur|slice:"1:-1" }}</td>
@@ -174,13 +242,20 @@
         <td scope="row">{{result.total_price}}</td>
         <td scope="row">{{result.paid}}</td>
         <td scope="row">{{result.note}}</td>
+         <td><a href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td> {% if result.total_price == result.paid %}
+            <a href="{% url 'print_filling_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
         {% elif model_name == 'Veneer' %}
         <td text-align="center" scope="row">{{ result.id}}</td>
         <td>{{ result.idReception_id }}</td>
-        <td>{{ results.0.name }}</td>
-        <td>{{ results.0.gender }}</td>
-        <td>{{ results.0.phone }}</td>
-        <td>{{ results.0.date_of_birth }}</td>
+        <td>{{ result.name }}</td>
+        <td>{{ result.gender }}</td>
+        <td>{{ result.phone }}</td>
+        <td>{{ result.date_of_birth }}</td>
         <td text-align="center" scope="row" align="center">{{result.shade}}</td>
         <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
         <td text-align="center" scope="row" align="center">{{result.color}}</td>
@@ -189,13 +264,20 @@
         <td text-align="center" scope="row" align="center"> {{ result.total_price }}</td>
         <td text-align="center" scope="row" align="center"> {{ result.paid }}</td>
         <td text-align="center" scope="row" align="center">{{result.note}}</td>
+          <td><a href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td> {% if result.total_price == result.paid %}
+            <a href="{% url 'print_veneer_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
         {% elif model_name == 'OralSurgery' %}
         <td style="text-align: center;" scope="row">{{ result.id }}</td>
         <td>{{ result.idReception_id }}</td>
-        <td>{{ results.0.name }}</td>
-        <td>{{ results.0.gender }}</td>
-        <td>{{ results.0.phone }}</td>
-        <td>{{ results.0.date_of_birth }}</td>
+        <td>{{ result.name }}</td>
+        <td>{{ result.gender }}</td>
+        <td>{{ result.phone }}</td>
+        <td>{{ result.date_of_birth }}</td>
         <td style="text-align: center;" scope="row">{{ result.first_visit }}</td>
         <td style="text-align: center;" scope="row">{{ result.implant }}</td>
         <td style="text-align: center;" scope="row">{{ result.diameter }}</td>
@@ -212,6 +294,14 @@
         <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
         <td text-align="center" scope="row" align="center"> {{ result.paid }}</td>
         <td text-align="center" scope="row" align="center">{{result.note}}</td>
+          <td><a href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        </td>
+        <td> {% if result.total_price == result.paid %}
+            <a href="{% url 'print_oral_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
         {% endif %}
         <!-- ... other fields ... -->
     </tr>
@@ -225,5 +315,8 @@
 {% else %}
 <p>No results found.</p>
 {% endif %}
+<br/><br/>
+
+
 
 {% endblock %}

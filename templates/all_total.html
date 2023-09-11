@@ -1,0 +1,328 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<br/>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand"></a>
+    {%if user.is_authenticated%}
+    <form method="get" action="{% url 'all-total' %}">
+    <label for="start_date">Start Date:</label>
+    <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
+
+    <label for="end_date">End Date:</label>
+    <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
+
+    <button type="submit">Search</button>
+  </form>
+    {% endif %}
+</nav>
+<br/>
+<div class="row">
+    <div class="col-12">
+        <div class="accordion-item">
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <h3>From: {{ start_date }} To {{ end_date }}</h3>
+                    <table class="table table-hover">
+                        <thead style="background-color:#73ccf0; color:#fff;">
+                        <tr>
+                            <th scope="row"> Exo Total Price</th>
+                            <th scope="row"> Filling Total Price</th>
+                            <th scope="row"> Crown Total Price</th>
+                            <th scope="row"> Veneer Total Price</th>
+                            <th scope="row"> OralSurgery Total Price</th>
+                            <th scope="row"> Salary Total Price</th>
+                            <th scope="row"> OutCome Total Price</th>
+                            <th scope="row"> Benefit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{total_exo}}</td>
+                            <td>{{total_filling}}</td>
+                            <td>{{total_crown}}</td>
+                            <td>{{total_veneer}}</td>
+                            <td>{{total_oralSurgery}}</td>
+                            <td>{{ total_salary }}</td>
+                            <td>{{total_outcome}}</td>
+                            <td>{{remaining}}</td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+<div class="row"
+     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+    <div class="col-12">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false"
+                            aria-controls="collapseTwo"
+                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                        All Details
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse"
+                     aria-labelledby="headingTwo"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {% if search_results %}
+                        {% for model_name, results in search_results %}
+                        {% if results %}
+                        <h2>{{ model_name }} Results</h2>
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+                                {% if model_name == 'Exo' %}
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Upper Right</th>
+                                <th scope="col">Upper Left</th>
+                                <th scope="col">Lower Right</th>
+                                <th scope="col">Lower Left</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Exo by Surgery</th>
+                                <th scope="col">Simple Exo</th>
+                                <th scope="col">Complicated</th>
+
+                                {% elif model_name == 'Crown' %}
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">No of Unite</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Notes</th>
+                                {% elif model_name == 'Filling' %}
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Filling Type</th>
+                                <th scope="col">Filling Place</th>
+                                <th scope="col">Upper Right</th>
+                                <th scope="col">Upper Left</th>
+                                <th scope="col">Lower Right</th>
+                                <th scope="col">Lower Left</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Notes</th>
+                                {% elif model_name == 'Veneer' %}
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">No of Unite</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">No of Pre.Unite</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Notes</th>
+                                {% elif model_name == 'OralSurgery' %}
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">First Visit</th>
+                                <th scope="col">Implant</th>
+                                <th scope="col">Diameter</th>
+                                <th scope="col">Length</th>
+                                <th scope="col">No Of Implant</th>
+                                <th scope="col">Upper Right</th>
+                                <th scope="col">Upper Left</th>
+                                <th scope="col">Lower Right</th>
+                                <th scope="col">Lower Left</th>
+                                <th scope="col">Shade</th>
+                                <th scope="col">No Of Uint</th>
+                                <th scope="col">color</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Notes</th>
+                                {% elif model_name == 'Salary' %}
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Employ Name</th>
+                                <th scope="col"> salaryPaid</th>
+                                <th scope="col">days</th>
+                                <th scope="col">finalSalary</th>
+                                <th scope="col">Month</th>
+                                {% elif model_name == 'Outcome' %}
+                                <th scope="col">#</th>
+                                <th scope="col">invoice_num</th>
+                                <th scope="col">invoice_date</th>
+                                <th scope="col">type</th>
+                                <th scope="col">description</th>
+                                <th scope="col">price</th>
+                                <th scope="col">Reg.Date</th>
+                                {% endif %}
+                                <!-- ... other header columns ... -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for result in results %}
+                            <tr>
+                                {% if model_name == 'Exo' %}
+                                <td>{{ result.id }}</td>
+                                <td>{{ result.idReception_id }}</td>
+                                <td>{{ result.name }}</td>
+                                <td>{{ result.gender }}</td>
+                                <td>{{ result.phone }}</td>
+                                <td>{{ result.date_of_birth }}</td>
+                                <td>{{ result.ur|slice:"1:-1" }}</td>
+                                <td>{{ result.ul|slice:"1:-1" }}</td>
+                                <td>{{ result.lr|slice:"1:-1" }}</td>
+                                <td>{{ result.ll|slice:"1:-1" }}</td>
+                                <td>{{ result.price }}</td>
+                                <td>{{ result.total_price }}</td>
+                                <td>{{ result.paid }}</td>
+                                <td>{{ result.note }}</td>
+                                <td>{{ result.exoby|slice:"1:-1" }}</td>
+                                <td>{{ result.simpleexo|slice:"1:-1" }}</td>
+                                <td>{{ result.complcated|slice:"1:-1" }}</td>
+                                {% elif model_name == 'Crown' %}
+                                <td scope="row">{{ result.id }}</td>
+                                <td>{{ result.idReception_id }}</td>
+                                <td>{{ result.name }}</td>
+                                <td>{{ result.gender }}</td>
+                                <td>{{ result.phone }}</td>
+                                <td>{{ result.date_of_birth }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.shade}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.color}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.price}}</td>
+                                <td text-align="center" scope="row" align="center"> {{result.total_price }}</td>
+                                <td text-align="center" scope="row" align="center"> {{result.paid }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.note}}</td>
+                                <!-- ... other crown-related fields ... -->
+                                {% elif model_name == 'Filling' %}
+                                <td scope="row">{{ result.id }}</td>
+                                <td>{{ result.idReception_id }}</td>
+                                <td>{{ result.name }}</td>
+                                <td>{{ result.gender }}</td>
+                                <td>{{ result.phone }}</td>
+                                <td>{{ result.date_of_birth }}</td>
+                                <td scope="row">{{result.filling_type}}</td>
+                                <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.ur|slice:"1:-1" }}</td>
+                                <td scope="row">{{result.ul|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.lr|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.ll|slice:"1:-1"}}</td>
+                                <td scope="row">{{result.no_prepare}}</td>
+                                <td scope="row">{{result.price}}</td>
+                                <td scope="row">{{result.total_price}}</td>
+                                <td scope="row">{{result.paid}}</td>
+                                <td scope="row">{{result.note}}</td>
+                                {% elif model_name == 'Veneer' %}
+                                <td text-align="center" scope="row">{{ result.id}}</td>
+                                <td>{{ result.idReception_id }}</td>
+                                <td>{{ result.name }}</td>
+                                <td>{{ result.gender }}</td>
+                                <td>{{ result.phone }}</td>
+                                <td>{{ result.date_of_birth }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.shade}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.color}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
+                                <td text-align="center" scope="row" align="center">{{result.price}}</td>
+                                <td text-align="center" scope="row" align="center"> {{ result.total_price }}</td>
+                                <td text-align="center" scope="row" align="center"> {{ result.paid }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.note}}</td>
+                                {% elif model_name == 'OralSurgery' %}
+                                <td style="text-align: center;" scope="row">{{ result.id }}</td>
+                                <td>{{ result.idReception_id }}</td>
+                                <td>{{ result.name }}</td>
+                                <td>{{ result.gender }}</td>
+                                <td>{{ result.phone }}</td>
+                                <td>{{ result.date_of_birth }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.first_visit }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.implant }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.diameter }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.length }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.no_Implant }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.ll|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.shade }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.no_unite }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.color }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.price }}</td>
+                                <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
+                                <td text-align="center" scope="row" align="center"> {{ result.paid }}</td>
+                                <td text-align="center" scope="row" align="center">{{result.note}}</td>
+                                {% elif model_name == 'Salary' %}
+                                <td scope="row">{{result.id}}</td>
+                                <td scope="row">{{result.idBasicInfo_id}}</td>
+                                <td scope="row">{{result.fullname}}</td>
+                                <td scope="row">{{result.salaryPaid}}</td>
+                                <td scope="row">{{result.days}}</td>
+                                <td scope="row">{{result.finalSalary}}</td>
+                                <td scope="row">{{result.month}}</td>
+                                {% elif model_name == 'Outcome' %}
+                                <td scope="row">{{result.id}}</td>
+                                <td scope="row">{{result.invoice_num}}</td>
+                                <td scope="row">{{result.invoice_date}}</td>
+                                <td scope="row">{{result.type}}</td>
+                                <td scope="row">{{result.description}}</td>
+                                <td scope="row">{{result.price}}</td>
+                                <td scope="row">{{result.regdate}}</td>
+                                {% endif %}
+                                <!-- ... other fields ... -->
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p>No {{ model_name }} results found.</p>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <p>No results found.</p>
+                        {% endif %}
+                        <br/><br/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

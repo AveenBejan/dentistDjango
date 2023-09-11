@@ -1450,3 +1450,35 @@ function show2(){
 
 
 {% endblock %}
+
+#path('all_salary/', views.all_salary, name='salary-submission'),
+#def all_salary(request):
+    #appointments = Salary.objects.all().order_by('-id')
+    #return render(request, 'employs/salary_submission.html', {'appointments': appointments})
+    <table class="table table-hover">
+            <thead style="background-color:#73ccf0; color:#fff;">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+                <th scope="col">Employ Name</th>
+                <th scope="col"> salaryPaid</th>
+                <th scope="col">days</th>
+                <th scope="col">finalSalary</th>
+                <th scope="col">Month</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td scope="row">{{appointment.id}}</td>
+                <td scope="row">{{appointment.idBasicInfo_id}}</td>
+                <td scope="row">{{appointment.fullname}}</td>
+                <td scope="row">{{appointment.salaryPaid}}</td>
+                <td scope="row">{{appointment.days}}</td>
+                <td scope="row">{{appointment.finalSalary}}</td>
+                <td scope="row">{{appointment.month}}</td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
