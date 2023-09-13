@@ -12,6 +12,7 @@ class BasicInfo(models.Model):
     address = models.CharField('address',max_length=120)
     type = models.CharField('type',max_length=120)
     startDay = models.DateField()
+    salaryPaid = models.DecimalField('salaryPaid', max_digits=8, decimal_places=2, null=True)
     regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
 
 

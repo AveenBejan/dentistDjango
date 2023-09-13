@@ -57,6 +57,7 @@
                  </div>
              </div>
              {% endif %}
+
 			 <form class="appointment-form" method="POST" action="">
 				 {% csrf_token %}
 				 <div class="row">
@@ -109,55 +110,89 @@
 						 </div>
 					 </div>
 					 <div class="form-group">
-								 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
-										class="form-control">
-							 </div>
+						 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
+								class="form-control">
+					 </div>
+
 					 <div class="col-sm-12">
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input"  name="time" value="4:00pm" >
-								 <label class="form-check-label">4:00pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="4:30pm">
-								 <label class="form-check-label">4:30pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="5:00pm">
-								 <label class="form-check-label">5:00pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="5:30pm">
-								 <label class="form-check-label">5:30pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="6:00pm">
-								 <label class="form-check-label">6:00pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="6:30pm">
-								 <label class="form-check-label">6:30pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="7:00pm">
-								 <label class="form-check-label">7:00pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="7:30pm">
-								 <label class="form-check-label">7:30pm</label>
-							 </div>
-							 <div class="form-check form-check-inline">
-								 <input type="checkbox" class="form-check-input" name="time" value="8:00pm">
-								 <label class="form-check-label">8:00pm</label>
-							 </div>
-
+						 <div class="form-check form-check-inline">
+							 <input type="checkbox" class="form-check-input" name="time" value="4:00pm"
+									onclick="handleCheckboxClick(this)">
+							 <label class="form-check-label">4:00pm</label>
 						 </div>
+
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="4:30pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">4:30pm</label>
 					 </div>
-
-
-					 <div class="form-group">
-						 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary">
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="5:00pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">5:00pm</label>
 					 </div>
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="5:30pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">5:30pm</label>
+					 </div>
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="6:00pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">6:00pm</label>
+					 </div>
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="6:30pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">6:30pm</label>
+					 </div>
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="7:00pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">7:00pm</label>
+					 </div>
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="7:30pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">7:30pm</label>
+					 </div>
+					 <div class="form-check form-check-inline">
+						 <input type="checkbox" class="form-check-input" name="time" value="8:00pm"
+								onclick="handleCheckboxClick(this)">
+						 <label class="form-check-label">8:00pm</label>
+					 </div>
+				 </div>
 
+<script>
+    // JavaScript function to handle checkbox click event
+    function handleCheckboxClick(checkbox) {
+        // Check if the user is logged in (you need to implement this logic)
+        var isLoggedIn = checkUserLoginStatus(); // Implement this function
+
+        if (!isLoggedIn) {
+            // If not logged in, allow only one checkbox to be checked
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i] !== checkbox) {
+                    checkboxes[i].checked = false; // Uncheck other checkboxes
+                }
+            }
+        }
+    }
+
+    // Implement a function to check user login status
+    function checkUserLoginStatus() {
+        // You need to implement this logic
+        // Return true if the user is logged in, false otherwise
+    }
+</script>
+
+
+
+				 <div class="form-group">
+					 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary">
+				 </div>
+				 </div>
 			 </form>
 		 </div>
 
@@ -199,7 +234,6 @@
 	 </div>
  </div>
 </section>
-
 <!--
 
     <section class="ftco-section ftco-services">

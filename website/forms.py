@@ -29,7 +29,7 @@ class OutcomeForm(forms.ModelForm):
 class BasicInfoForm(forms.ModelForm):
     class Meta:
         model = BasicInfo
-        fields = ( 'fullname', 'gender', 'phoneNumber','address', 'type', 'startDay')
+        fields = ( 'fullname', 'gender', 'phoneNumber','address', 'type', 'startDay','salaryPaid')
         labels = {
             'fullname': '',
             'gender': '',
@@ -37,6 +37,7 @@ class BasicInfoForm(forms.ModelForm):
             'address': '',
             'type': '',
             'startDay': '',
+            'salaryPaid': '',
 
         }
         widgets = {
@@ -46,6 +47,7 @@ class BasicInfoForm(forms.ModelForm):
             'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'address'}),
             'type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'type'}),
             'startDay': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'startDay'}),
+            'salaryPaid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'salaryPaid'}),
         }
 
 

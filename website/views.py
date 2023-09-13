@@ -1,5 +1,6 @@
+import re  # Add this line to import the 're' module
 from django.shortcuts import render,redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseBadRequest
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
@@ -14,7 +15,7 @@ from django.db import transaction
 from django.urls import reverse
 from datetime import date
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.forms import modelformset_factory
 from django.db.models import Sum
 
@@ -82,14 +83,15 @@ def add_salary(request, id):
                 oral_surgery.idBasicInfo = basicinfo
                 oral_surgery.finalSalary = finalSalary
                 oral_surgery.fullname = basicinfo.fullname
+                oral_surgery.salaryPaid = basicinfo.salaryPaid
                 oral_surgery.month = month
-
                 oral_surgery.save()
                 return redirect('add-salary', id=id)
     else:
         initial_data = {
             'idBasicInfo': id,
             'fullname': basicinfo.fullname,
+            'salaryPaid': basicinfo.salaryPaid,
             'month': date.today().strftime('%B')
         }
         form = SalaryForm(initial=initial_data)
@@ -97,6 +99,45 @@ def add_salary(request, id):
     appointments = Salary.objects.all().order_by('-id')
 
     return render(request, 'employs/add_salary.html', {'form': form, 'appointments': appointments})
+
+
+def check_and_create_salary(request):
+    if request.method == 'POST':
+        month = request.POST.get('month')
+        current_month = request.POST.get('current_month')  # Get the current month name
+
+        # Query the database to check if records exist for the selected month name
+        records_exist = Salary.objects.filter(month__icontains=month).exists()
+
+        if records_exist:
+            # Retrieve records for the selected month name (case-insensitive)
+            salary_records = Salary.objects.filter(month__icontains=month)
+        else:
+            salary_records = None
+
+        return render(request, 'employs/check_and_create.html', {
+            'records_exist': records_exist,
+            'selected_month_name': month,  # Pass the selected month name to the template
+            'salary_records': salary_records,
+        })
+
+    # Handle the GET request or other cases here
+
+    return render(request, 'employs/check_and_create.html')
+
+
+def create_records_for_next_month(request):
+    if request.method == 'POST':
+        current_month = request.POST.get('current_month')
+
+        # Perform the multi-insert logic for creating records for the next month
+        # You can use the 'current_month' variable to determine the next month
+
+        return HttpResponse('Records for the next month have been created successfully.')
+
+    # Handle the GET request or other cases here
+
+    return HttpResponseBadRequest('Invalid request method.')
 
 
 def search_view(request):

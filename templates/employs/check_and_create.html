@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check and Create Salary Records</title>
+</head>
+<body>
+    <h1>Check and Create Salary Records</h1>
+
+    <form method="POST" action="{% url 'check_and_create_salary' %}">
+        {% csrf_token %}
+
+        <label for="month">Select Date (YYYY-MM-DD):</label>
+        <input type="text" id="month" name="month" required>
+        <button type="submit">Check</button>
+    </form>
+
+    {% if records_exist %}
+    <h2>Records for {{ selected_month_name }}</h2>
+    <p>Records exist for the selected month.</p>
+
+    <!-- Display previous month's records if needed -->
+    <table>
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Salary</th>
+                <!-- Add other relevant columns -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in salary_records %}
+            <tr>
+                <td>{{ record.fullname }}</td>
+                <td>{{ record.salaryPaid }}</td>
+                <!-- Display other relevant data -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add a button or form to proceed with creating records for the next month -->
+    <form method="POST"  action="{% url 'create_records_for_next_month' %}">
+        {% csrf_token %}
+        <input type="text" name="month" value="{{ selected_month_name }}">
+        <button type="submit">Create Records for Next Month</button>
+    </form>
+
+    {% else %}
+    <p>No records found for the selected month.</p>
+    {% endif %}
+</body>
+</html>
+

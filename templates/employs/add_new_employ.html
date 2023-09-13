@@ -51,6 +51,8 @@
                                     <option value="bb">bb</option>
 
                                 </select>
+                                <input type="text" name="salaryPaid" placeholder="Basic Salary"
+                                       class="form-control"   value="" required>
                                 <input type="text" name="startDay" placeholder="startDay"
                                        class="form-control appointment_date">
 
@@ -79,6 +81,7 @@
                 <th scope="col">Address</th>
                 <th scope="col">Type</th>
                 <th scope="col">StartDay</th>
+                <th scope="col">Basic Salary</th>
                 <th scope="col">Reg.Date</th>
                 <th colspan="2" scope="col">Other</th>
             </tr>
@@ -93,6 +96,7 @@
                  <td scope="row">{{appointment.address}}</td>
                  <td scope="row">{{appointment.type}}</td>
                  <td scope="row">{{appointment.startDay}}</td>
+                <td scope="row">{{appointment.salaryPaid}}</td>
                 <td scope="row">{{appointment.regdate}}</td>
                 <td><a href="{% url 'delete-employ' appointment.id %}" style="display: inline;"><span
                          class="btn btn-outline-danger">Delete</span></a></td>
