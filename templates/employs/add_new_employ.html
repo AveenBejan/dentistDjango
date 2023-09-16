@@ -100,8 +100,6 @@
                 <td scope="row">{{appointment.regdate}}</td>
                 <td><a href="{% url 'delete-employ' appointment.id %}" style="display: inline;"><span
                          class="btn btn-outline-danger">Delete</span></a></td>
-                <td><a href="{% url 'add-salary' appointment.id %}" style="display: inline;"><span
-                         class="btn btn-outline-danger">Add Salary</span></a></td>
             </tr>
             {% endfor %}
             </tbody>

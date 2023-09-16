@@ -15,27 +15,22 @@
     {% endif %}
     {% endif %}
 </nav>
-
-<section class="ftco-section contact-section ftco-degree-bg">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Search For My Appointments</li>
-            </ol>
-        </nav>
-        <div class="row">
+<div class="container">
+  <div class="row justify-content-center">
             <div class="col-12">
                 <br/>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Search For My Appointments</li>
+                    </ol>
+                </nav>
                 <table class="table table-hover">
                     <thead style="background-color:#73ccf0; color:#fff;">
                     <tr>
-
                         <th scope="col">#</th>
                         <th scope="col">Full Name</th>
                         <th scope="col">Phone Number</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Date of Birth</th>
                         <th scope="col">Doctor Name</th>
                         <th scope="col">Appointment Date</th>
                         <th scope="col">Day Name</th>
@@ -49,35 +44,40 @@
                         <td scope="row">{{reception.id}}</td>
                         <td scope="row">{{reception.name}}</td>
                         <td scope="row">{{reception.phone}}</td>
-                        <td scope="row">{{reception.gender}}</td>
-                        <td scope="row">{{reception.date_of_birth}}</td>
                         <td scope="row">{{ reception.doctor.doctor_name }}</td>
                         <td scope="row">{{reception.app_data}}</td>
                         <td scope="row">{{reception.days}}</td>
                         <td scope="row">{{reception.time|slice:"1:-1" }}</td>
                         <td>
                             <li class="nav-item dropdown" style="color: #fff;">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" style="color: #000;">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                   aria-expanded="false" style="color: #000;">
                                     Oral_Surgery
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a href="{% url 'exo' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Exo</span></a>
+                                    <a href="{% url 'exo' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Exo</span></a>
                                     <br/>
-                                    <a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Implant</span></a>
+                                    <a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Implant</span></a>
                                 </div>
                             </li>
                         </td>
                         <td>
                             <li class="nav-item dropdown" style="color: #fff;">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" style="color: #000;">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                   aria-expanded="false" style="color: #000;">
                                     Conservation
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a href="{% url 'crown' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Crown</span></a>
+                                    <a href="{% url 'crown' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Crown</span></a>
                                     <br/>
-                                    <a href="{% url 'veneer' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Veneer</span></a>
+                                    <a href="{% url 'veneer' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Veneer</span></a>
                                     <br/>
-                                    <a href="{% url 'filling' reception.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Filling</span></a>
+                                    <a href="{% url 'filling' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Filling</span></a>
                                 </div>
                             </li>
                         </td>
@@ -90,8 +90,9 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
-    </div>
-</section>
+    </section>
+</div>
 
 {% endblock %}

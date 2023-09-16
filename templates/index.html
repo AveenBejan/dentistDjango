@@ -124,8 +124,8 @@
                                 </td>
 
                                 {% if orall %}
-                                <!--<td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">Add Visits</span></a></td>-->
+                                <td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a></td>
                                 <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
                                 <td ><a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
                                 <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>

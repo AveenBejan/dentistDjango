@@ -71,15 +71,13 @@
                                         <div class="form-row">
                                             <div class="col">
                                                 <span style="margin-right: 80px;">Date of First Visit</span>
-                                                <input type="date" class="form-control" name="first_visit" required
-                                                       placeholder="First Visit"
-                                                       value="{% if form.initial.first_visit %}{{ form.initial.first_visit }}{% else %}{{ current_date }}{% endif %}">
+                                                <input type="text" class="form-control" name="first_visit" required value="form.initial.first_visit">
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <span style="margin-right: 80px;">Date of Second Visit</span>
-                                                <input type="date" class="form-control" name="second_visit" required
+                                                <input type="date" class="form-control" name="second_visit"
                                                        placeholder="First Second"
                                                        value="">
                                             </div>
@@ -87,14 +85,14 @@
                                         <div class="form-row">
                                             <div class="col">
                                                 <span style="margin-right: 80px;">Date of Third Visit</span>
-                                                <input type="date" class="form-control" name="third_visit" required
+                                                <input type="date" class="form-control" name="third_visit"
                                                        placeholder="Third Visit" value="">
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <span style="margin-right: 80px;">Date of Fourth Visit</span>
-                                                <input type="date" class="form-control" name="fourth_visit" required
+                                                <input type="date" class="form-control" name="fourth_visit"
                                                        placeholder="Fourth Visit"
                                                        value="">
                                             </div>
@@ -102,7 +100,7 @@
                                         <div class="form-row">
                                             <div class="col">
                                                 <span style="margin-right: 80px;">Date of Fifth Visit MM/DD/YYYY</span>
-                                                <input type="date" class="form-control" name="fifth_visit" required
+                                                <input type="date" class="form-control" name="fifth_visit"
                                                        placeholder="Fifth Visit" value="">
                                             </div>
                                         </div>

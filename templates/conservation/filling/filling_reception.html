@@ -14,52 +14,54 @@
     </form>
     {% endif %}
 </nav>
-<section class="ftco-section contact-section ftco-degree-bg">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Search For Filling Patient</li>
-            </ol>
-        </nav>
-        <div class="row d-flex mb-5 contact-info">
-            <div class="col-md-12 mb-4">
-                <br/>
-                <table class="table table-hover">
-                    <thead style="background-color:#73ccf0; color:#fff;">
-                    <tr>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <br/>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Search For Filling Patient</li>
+                </ol>
+            </nav>
+            <div class="row d-flex mb-5 contact-info">
+                <div class="col-md-12 mb-4">
+                    <table class="table table-hover">
+                        <thead style="background-color:#73ccf0; color:#fff;">
+                        <tr>
 
-                        <th scope="col">#</th>
-                        <th scope="col">Full Name</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Date of Birth</th>
-                        <th scope="col">Doctor Name</th>
-                        <th scope="col">Date of Appointment</th>
-                        <th scope="col">Days</th>
-                        <th scope="col">Time</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for appointment in appointments %}
-                    <tr>
-                        <td scope="row">{{appointment.id}}</td>
-                        <td scope="row">{{appointment.name}}</td>
-                        <td scope="row">{{appointment.phone}}</td>
-                        <td scope="row">{{appointment.gender}}</td>
-                        <td scope="row">{{appointment.date_of_birth}}</td>
-                        <td scope="row">{{appointment.doctor}}</td>
-                        <td scope="row">{{appointment.app_data}}</td>
-                        <td scope="row">{{appointment.days}}</td>
-                        <td scope="row">{{appointment.time}}</td>
+                            <th scope="col">#</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Date of Birth</th>
+                            <th scope="col">Doctor Name</th>
+                            <th scope="col">Date of Appointment</th>
+                            <th scope="col">Days</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td scope="row">{{appointment.id}}</td>
+                            <td scope="row"><a href="{% url 'filling' appointment.id %}">{{appointment.name}}</a></td>
+                            <td scope="row">{{appointment.phone}}</td>
+                            <td scope="row">{{appointment.gender}}</td>
+                            <td scope="row">{{appointment.date_of_birth}}</td>
+                            <td scope="row">{{appointment.doctor}}</td>
+                            <td scope="row">{{appointment.app_data}}</td>
+                            <td scope="row">{{appointment.days}}</td>
+                            <td scope="row">{{appointment.time|slice:"1:-1" }}</td>
 
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
 {% endblock %}

@@ -52,6 +52,12 @@ def add_new_employ(request):
     return render(request, 'employs/add_new_employ.html', {'form': form, 'appointments': appointments})
 
 
+def salary_reception(request):
+
+    appointments = BasicInfo.objects.all().order_by('-regdate')
+    return render(request, 'employs/salary_reception.html', {'appointments': appointments})
+
+
 def delete_employ(request,id):
     appointments = BasicInfo.objects.get(pk=id)
     appointments.delete()
@@ -99,45 +105,6 @@ def add_salary(request, id):
     appointments = Salary.objects.all().order_by('-id')
 
     return render(request, 'employs/add_salary.html', {'form': form, 'appointments': appointments})
-
-
-def check_and_create_salary(request):
-    if request.method == 'POST':
-        month = request.POST.get('month')
-        current_month = request.POST.get('current_month')  # Get the current month name
-
-        # Query the database to check if records exist for the selected month name
-        records_exist = Salary.objects.filter(month__icontains=month).exists()
-
-        if records_exist:
-            # Retrieve records for the selected month name (case-insensitive)
-            salary_records = Salary.objects.filter(month__icontains=month)
-        else:
-            salary_records = None
-
-        return render(request, 'employs/check_and_create.html', {
-            'records_exist': records_exist,
-            'selected_month_name': month,  # Pass the selected month name to the template
-            'salary_records': salary_records,
-        })
-
-    # Handle the GET request or other cases here
-
-    return render(request, 'employs/check_and_create.html')
-
-
-def create_records_for_next_month(request):
-    if request.method == 'POST':
-        current_month = request.POST.get('current_month')
-
-        # Perform the multi-insert logic for creating records for the next month
-        # You can use the 'current_month' variable to determine the next month
-
-        return HttpResponse('Records for the next month have been created successfully.')
-
-    # Handle the GET request or other cases here
-
-    return HttpResponseBadRequest('Invalid request method.')
 
 
 def search_view(request):
@@ -794,6 +761,9 @@ def delete_oral(request, id):
 
 def oral_reception(request):
     appointments = Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
     return render(request, 'oral_reception.html', {'appointments': appointments})
 
 
@@ -912,6 +882,9 @@ def orthodontics(request):
 
 def exo_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
     return render(request, 'exo/exo_reception.html', {'appointments': appointments})
 
 
@@ -1309,6 +1282,9 @@ def print_drugs(request, id):
 
 def crown_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
     return render(request, 'conservation/crown/crown_reception.html', {'appointments': appointments})
 
 
@@ -1453,6 +1429,9 @@ def delete_crown(request, id):
 
 def veneer_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
     return render(request, 'conservation/veneer/veneer_reception.html', {'appointments': appointments})
 
 
@@ -1681,6 +1660,9 @@ def filling(request, id):
 
 def filling_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
     return render(request, 'conservation/filling/filling_reception.html', {'appointments': appointments})
 
 

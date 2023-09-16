@@ -1,6 +1,5 @@
 {% extends 'base.html'  %}
 {% load static %}
-{% block title %} Contact Page{% endblock %}
 {% block content %}
 
 <nav class="navbar navbar-light bg-light">
@@ -14,17 +13,18 @@
     </form>
     {% endif %}
 </nav>
-<section class="ftco-section contact-section ftco-degree-bg">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+<div class="container">
+  <div class="row justify-content-center">
+            <div class="col-12">
+                <br/>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Search For Veneer Patient</li>
             </ol>
         </nav>
         <div class="row d-flex mb-5 contact-info">
             <div class="col-md-12 mb-4">
-                <br/>
                 <table class="table table-hover">
                     <thead style="background-color:#73ccf0; color:#fff;">
                     <tr>
@@ -44,14 +44,14 @@
                     {% for appointment in appointments %}
                     <tr>
                         <td scope="row">{{appointment.id}}</td>
-                        <td scope="row">{{appointment.name}}</td>
+                        <td scope="row"><a href="{% url 'veneer' appointment.id %}">{{appointment.name}}</a></td>
                         <td scope="row">{{appointment.phone}}</td>
                         <td scope="row">{{appointment.gender}}</td>
                         <td scope="row">{{appointment.date_of_birth}}</td>
                         <td scope="row">{{appointment.doctor}}</td>
                         <td scope="row">{{appointment.app_data}}</td>
                         <td scope="row">{{appointment.days}}</td>
-                        <td scope="row">{{appointment.time}}</td>
+                        <td scope="row">{{appointment.time|slice:"1:-1" }}</td>
 
                     </tr>
                     {% endfor %}
@@ -60,6 +60,7 @@
             </div>
         </div>
     </div>
-</section>
+  </div>
+</div>
 
 {% endblock %}

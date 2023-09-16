@@ -109,8 +109,7 @@ urlpatterns = [
     path('add_new_employ', views.add_new_employ, name='add-new-employ'),
     path('delete_employ/<int:id>', views.delete_employ, name='delete-employ'),
     path('add_salary/<int:id>', views.add_salary, name='add-salary'),
-    path('check_and_create_salary/', views.check_and_create_salary, name='check_and_create_salary'),
-    path('create_records_for_next_month/', views.create_records_for_next_month, name='create_records_for_next_month'),
+    path('salary_reception', views.salary_reception, name='salary_reception'),
 
     path('add_outcome', views.add_outcome, name='add-outcome'),
     path('delete_outcome/<int:id>', views.delete_outcome, name='delete-outcome'),

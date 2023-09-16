@@ -1,0 +1,48 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<br/>
+<div class="row"
+     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+
+        <table class="table table-hover">
+            <thead style="background-color:#73ccf0; color:#fff;">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Employ Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Address</th>
+                <th scope="col">Type</th>
+                <th scope="col">StartDay</th>
+                <th scope="col">Basic Salary</th>
+                <th scope="col">Reg.Date</th>
+                <th colspan="2" scope="col">Other</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td scope="row">{{appointment.id}}</td>
+                <td scope="row">{{appointment.fullname}}</td>
+                <td scope="row">{{appointment.phoneNumber}}</td>
+                <td scope="row">{{appointment.gender}}</td>
+                 <td scope="row">{{appointment.address}}</td>
+                 <td scope="row">{{appointment.type}}</td>
+                 <td scope="row">{{appointment.startDay}}</td>
+                <td scope="row">{{appointment.salaryPaid}}</td>
+                <td scope="row">{{appointment.regdate}}</td>
+                {% if user.role == 'admin' or user.role == 'doctor' %}
+                <td><a href="{% url 'delete-employ' appointment.id %}" style="display: inline;"><span
+                         class="btn btn-outline-danger">Delete</span></a></td>
+                {% endif %}
+                <td><a href="{% url 'add-salary' appointment.id %}" style="display: inline;"><span
+                         class="btn btn-outline-danger">Add Salary</span></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

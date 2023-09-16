@@ -40,7 +40,7 @@
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
 
-                                <input type="hidden" name="idBasicInfo"
+                                <input type="text" name="idBasicInfo"
                                        class="form-control" value="{{ form.initial.idBasicInfo }}">
                                 <input type="text" name="fullname"
                                        class="form-control" value="{{ form.initial.fullname }}" readonly>
