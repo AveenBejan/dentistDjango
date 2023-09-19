@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
+                <form method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="hidden" name="idReception"
                            value="{{ form.initial.idReception }}"
@@ -344,36 +344,11 @@
                         </div>
                         <br/>
                         <div class="form-group" style="text-align: center;">
-                            <button type="submit" value="update" onclick="validateAndShowAlert()" class="btn btn-outline-primary">Update</button>
+                            <button type="submit" value="update" class="btn btn-outline-primary">Update</button>
                         </div>
 
                     </div>
                 </form>
-                   <script>
-    function validateAndShowAlert() {
-        var requiredFields = document.querySelectorAll('[required]');
-        var allFieldsFilled = true;
-
-        for (var i = 0; i < requiredFields.length; i++) {
-            if (!requiredFields[i].value) {
-                allFieldsFilled = false;
-                break;
-            }
-        }
-
-        if (allFieldsFilled) {
-            showAlert();
-        } else {
-            alert("Please fill out all required fields.");
-        }
-    }
-
-    function showAlert() {
-        if (confirm("Are you sure you want to update?")) {
-            document.getElementById("updateForm").submit();
-        }
-    }
-</script>
             </div>
         </div>
     </div>

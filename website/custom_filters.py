@@ -12,3 +12,4 @@ def remove_quotes(value):
 @register.filter
 def split_by_comma(value):
     return value.split(',')
+

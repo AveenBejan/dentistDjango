@@ -1,6 +1,6 @@
 import re  # Add this line to import the 're' module
 from django.shortcuts import render,redirect, get_object_or_404
-from django.http import HttpResponse,HttpResponseBadRequest
+from django.http import HttpResponse,HttpResponseBadRequest,HttpResponseForbidden
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
@@ -535,6 +535,12 @@ def search_doctor(request):
 
 def all_reception(request):
     appointments = Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.days:
+            appointment.days = appointment.days.replace("'", "")
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+
     return render(request, 'all_reception.html', {'appointments': appointments})
 
 
@@ -778,74 +784,43 @@ def search_oral(request):
 
 
 def oral_edit(request, id):
-    pi = OralSurgery.objects.get(id=id)
-    photos = Photo.objects.filter(oral_surgery_instance=pi)  # Fetch photos associated with the oral surgery instance
-    orall = None  # Initialize orall to None
+    orall = get_object_or_404(OralSurgery, id=id)
+
     if request.method == 'POST':
-        form = OralSurgeryForm(request.POST, instance=pi)
+        form = OralSurgeryForm(request.POST, instance=orall)
         if form.is_valid():
-            # Calculate total_price
-            no_unite = form.cleaned_data['no_unite']
-            price = form.cleaned_data['price']
-            total_price = no_unite * price
-
-            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()
-
-            # Update the associated photos
-            photos = request.FILES.getlist('exo_images')
-            for photo in photos:
-                Photo.objects.create(oral_surgery_instance=pi, image=photo)
-
-            return redirect('add-oral-surgery', id=pi.idReception_id)
+            return redirect('add-oral-surgery', id=orall.idReception_id)  # Redirect to a success view after saving
     else:
-        form = OralSurgeryForm(instance=pi)
-        try:
-            orall = OralSurgery.objects.get(idReception=id)
-            photos = orall.photo_set.all()
-            # Sanitize field values in the instance
-            if orall.ur:
-                orall.ur = orall.ur.replace("'", "")
-            if orall.ul:
-                orall.ul = orall.ul.replace("'", "")
-            if orall.lr:
-                orall.lr = orall.lr.replace("'", "")
-            if orall.ll:
-                orall.ll = orall.ll.replace("'", "")
-        except OralSurgery.DoesNotExist:
-            orall = None
-            photos = None
+        initial_data = {
+            'first_visit': orall.first_visit,
+            'second_visit': orall.second_visit,
+            'third_visit': orall.third_visit,
+            'fourth_visit': orall.fourth_visit,
+            'fifth_visit': orall.fifth_visit,
+            'ur': orall.ur[1:-1] if orall.ur else None,
+            'ul': orall.ul[1:-1] if orall.ul else None,
+            'lr': orall.lr[1:-1] if orall.lr else None,
+            'll': orall.ll[1:-1] if orall.ll else None,
+        }
 
-    return render(request, 'update_oral_surgery.html', {'form': form, 'pi': pi, 'orall': orall, 'photos': photos})
+    form = OralSurgeryForm(instance=orall, initial=initial_data)
+
+    return render(request, 'update_oral_surgery.html', {'form': form, 'orall': orall})
+
 
 
 def oral_visit(request, id):
-    pi = OralSurgery.objects.get(id=id)
-    photos = Photo.objects.filter(oral_surgery_instance=pi)  # Fetch photos associated with the oral surgery instance
-    orall = None  # Initialize orall to None
+    orall = get_object_or_404(OralSurgery, id=id)
+
     if request.method == 'POST':
-        form = OralSurgeryForm(request.POST, instance=pi)
+        form = OralSurgeryForm(request.POST, instance=orall)
         if form.is_valid():
-            # Calculate total_price
-            no_unite = form.cleaned_data['no_unite']
-            price = form.cleaned_data['price']
-            total_price = no_unite * price
-
-            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
-            form.save()
-
-            # Update the associated photos
-            photos = request.FILES.getlist('exo_images')
-            for photo in photos:
-                Photo.objects.create(oral_surgery_instance=pi, image=photo)
-
-            return redirect('add-oral-surgery', id=pi.idReception_id)
-    else:
-        form = OralSurgeryForm(instance=pi)
-        try:
-            orall = OralSurgery.objects.get(idReception=id)
-            photos = orall.photo_set.all()
-            # Sanitize field values in the instance
+            # Update the implant field based on the selected implant
+            implant_name = form.cleaned_data['implant']
+            implant = Implant.objects.get(implant_name=implant_name)
+            orall.implant = implant
+            # Replace single quotes in certain fields
             if orall.ur:
                 orall.ur = orall.ur.replace("'", "")
             if orall.ul:
@@ -854,11 +829,35 @@ def oral_visit(request, id):
                 orall.lr = orall.lr.replace("'", "")
             if orall.ll:
                 orall.ll = orall.ll.replace("'", "")
-        except OralSurgery.DoesNotExist:
-            orall = None
-            photos = None
 
-    return render(request, 'oral_visit.html', {'form': form, 'pi': pi, 'orall': orall,'photos': photos})
+            form.save()
+            return redirect('add-oral-surgery', id=orall.idReception_id)
+    else:
+        # Define a default value for first_visit when the request method is not POST
+        first_visit = orall.first_visit if orall.first_visit else date.today()
+        # Define a default value for second_visit when the request method is not POST
+        second_visit = orall.second_visit if orall.second_visit is not None else None
+        third_visit = orall.third_visit if orall.third_visit is not None else None
+        fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
+        fifth_visit = orall.fifth_visit if orall.fifth_visit is not None else None
+        # Remove first and last characters from certain fields
+        ur = orall.ur[1:-1] if orall.ur else None
+        ul = orall.ul[1:-1] if orall.ul else None
+        lr = orall.lr[1:-1] if orall.lr else None
+        ll = orall.ll[1:-1] if orall.ll else None
+
+        form = OralSurgeryForm(instance=orall, initial={
+            'second_visit': second_visit,
+            'third_visit': third_visit,
+            'fourth_visit': fourth_visit,
+            'fifth_visit': fifth_visit,
+            'ur': ur,
+            'ul': ul,
+            'lr': lr,
+            'll': ll,
+        })
+
+    return render(request, 'oral_visit.html', {'form': form, 'orall': orall, 'first_visit': first_visit})
 
 
 def all_oral_surgery(request):
@@ -1004,9 +1003,8 @@ def exo_edit(request, id):
         form = ExoForm(request.POST, instance=pi)
         if form.is_valid():
             # Calculate total_price
-            no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()

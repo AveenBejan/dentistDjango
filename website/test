@@ -1482,3 +1482,46 @@ function show2(){
             {% endfor %}
             </tbody>
         </table>
+
+
+
+def oral_visit(request, id):
+    pi = OralSurgery.objects.get(id=id)
+    photos = Photo.objects.filter(oral_surgery_instance=pi)  # Fetch photos associated with the oral surgery instance
+    orall = None  # Initialize orall to None
+    if request.method == 'POST':
+        form = OralSurgeryForm(request.POST, instance=pi)
+        if form.is_valid():
+            # Calculate total_price
+            no_unite = form.cleaned_data['no_unite']
+            price = form.cleaned_data['price']
+            total_price = no_unite * price
+
+            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
+            form.save()
+
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(oral_surgery_instance=pi, image=photo)
+
+            return redirect('add-oral-surgery', id=pi.idReception_id)
+    else:
+        form = OralSurgeryForm(instance=pi)
+        try:
+            orall = OralSurgery.objects.get(idReception=id)
+            photos = orall.photo_set.all()
+            # Sanitize field values in the instance
+            if orall.ur:
+                orall.ur = orall.ur.replace("'", "")
+            if orall.ul:
+                orall.ul = orall.ul.replace("'", "")
+            if orall.lr:
+                orall.lr = orall.lr.replace("'", "")
+            if orall.ll:
+                orall.ll = orall.ll.replace("'", "")
+        except OralSurgery.DoesNotExist:
+            orall = None
+            photos = None
+
+    return render(request, 'oral_visit.html', {'form': form, 'pi': pi, 'orall': orall,'photos': photos})

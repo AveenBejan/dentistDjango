@@ -50,7 +50,7 @@
                                 <th scope="col">Appointment Date</th>
                                 <th scope="col">Day Name</th>
                                 <th scope="col">Time</th>
-                                <th scope="col">First Visit</th>
+
                                 <th scope="col">Implant</th>
                                 <th scope="col">Diameter</th>
                                 <th scope="col">Length</th>
@@ -62,11 +62,15 @@
                                 <th scope="col">Shade</th>
                                 <th scope="col">No Of Uint</th>
                                 <th scope="col">color</th>
-
                                 <th scope="col">Price</th>
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Exo Photo</th>
+                                <th scope="col">First Visit</th>
+                                <th scope="col">Second Visit</th>
+                                <th scope="col">Third Visit</th>
+                                <th scope="col">Fourth Visit</th>
+                                <th scope="col">Fifth Visit</th>
                                 <th scope="col" colspan="5" style="text-align:center;">Other</th>
                             </tr>
                             </thead>
@@ -81,8 +85,7 @@
                                 <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.days }}</td>
-                                <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.time }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.implant }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.diameter }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.length }}</td>
@@ -122,6 +125,11 @@
                                      {% endif %}
                                     {% endfor %}
                                 </td>
+                                 <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
+                                 <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
+                                 <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
+                                 <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
+                                 <td style="text-align: center;" scope="row">{{ orall.fifth_visit }}</td>
 
                                 {% if orall %}
                                 <td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
@@ -468,6 +476,10 @@
                                                                required placeholder="First Visit" value="">
                                                     </div>
                                                 </div>
+                                                <input type="date" class="form-control" name="second_visit"  value="0000-00-00">
+                                                <input type="date" class="form-control" name="third_visit"  value="0000-00-00">
+                                                <input type="date" class="form-control" name="fourth_visit"  value="0000-00-00">
+                                                <input type="date" class="form-control" name="fifth_visit"  value="0000-00-00">
                                                 <div class="form-row">
                                                     <div class="col">
                                                         <input type="text" class="form-control" name="length" required

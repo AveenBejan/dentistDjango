@@ -1,22 +1,7 @@
-
-<!DOCTYPE html>
-
+{% extends 'base.html'  %}
 {% load static %}
-
-<html lang="en">
-<head>
-    <title>{% block title %}Dental Clinic {% endblock %}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.css' %}">
-</head>
-<body>
-{% block body %}
-{% include 'navbar.html' %}
-{% endblock %}
+{% block title %} Contact Page{% endblock %}
 {% block content %}
-<br/>
 
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
@@ -28,175 +13,110 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception"
-                           value="{{ form.initial.idReception }}"
-                           class="form-control">
-                    <input type="hidden" name="name" value="{{ form.initial.name }}"
-                           class="form-control">
-                    <input type="hidden" name="phone" value="{{ form.initial.phone }}"
-                           class="form-control">
-                    <input type="hidden" name="gender" value="{{ form.initial.gender }}"
-                           class="form-control">
-                    <input type="hidden" name="date_of_birth"
-                           value="{{ form.initial.date_of_birth }}"
-                           class="form-control">
-                    <input type="hidden"class="form-control" name="ur" value="{{ form.initial.ur}}">
-                         <input type="hidden" class="form-control" name="ul" value="{{ form.initial.ul}}">
-                       <input type="hidden" class="form-control" name="lr" value="{{ form.initial.lr}}">
-                     <input type="hidden" class="form-control" name="ll" value="{{ form.initial.ll}}">
-                    <div class="row">
-                        <div class="container">
-                                    <div class="col-12">
-
-                                        <div class="card-header">
-
-                                            <h4 style="font-size: 22px; text-align:center;">     First
-                                            Visit</h4>
-                                        </div>
-                                <div class="card">
-                                    <div class="card-body">
-                                       <div class="form-row">
-                                        <div class="col">
-                                            <span style="margin-right: 80px;">Date of First Visit</span>
-                                            <input type="date" class="form-control" name="first_visit" required
-                                                   placeholder="First Visit" value="{{ form.initial.first_visit }}">
-                                        </div>
-                                       </div>
-                                       <div class="form-row">
-                                        <div class="col">
-                                            <label>Length</label>
-                                            <input type="text" class="form-control" name="length" required
-                                                   placeholder="Length"
-                                                   value="{{ form.initial.length }}">
-                                        </div>
-                                       <div class="col">
-                                           <label>Diameter</label>
-                                            <input type="text" class="form-control" name="diameter"
-                                                   placeholder="Diameter" required value="{{ form.initial.diameter }}">
-                                        </div>
-                                       </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label>No of Implant</label>
-                                            <input type="text" class="form-control" name="no_Implant"
-                                                   placeholder="No. Of Implant" value="{{ form.initial.no_Implant }}"
-                                                   required>
-                                            </div>
-
-                                            <div class="col">
-<label>Shade</label>
-                                                <select name="shade" class="form-control" required="required">
-                                                    <option value="">Select Shade</option>
-                                                    <option value="VITA Shade">VITA</option>
-                                                    <option value="A-D Shade">A-D Shade</option>
-                                                    <option value="Bleach Shade">Bleach Shade</option>
-                                                    <option value="Tetric N-Ceram(16) Shade">Tetric N-Ceram(16)
-                                                        Shade
-                                                    </option>
-                                                    <option value="Tetric N-Flow(10) Shade">Tetric N-Ceram(10)
-                                                        Shade
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <label>Type Of Implant</label>
-                                                {{ form.implant }}
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label>No Of Unite</label>
-                                                <input type="text" class="form-control" name="no_unite"
-                                                       value="{{ form.initial.no_unite }}"
-                                                       placeholder="No of Unite:" required>
-                                            </div>
-                                            <div class="col">
-                                                <label>Color</label>
-                                                <input type="text" class="form-control" name="color"
-                                                       value="{{ form.initial.color }}"
-                                                       placeholder="Color" required>
-
-                                            </div>
-                                        </div>
-                                      <div class="form-row">
-                                            <div class="col">
-                                                <label>Price</label>
-                                            <input type="text" name="price" value="{{ form.initial.price }}"
-                                                   class="form-control"
-                                                   placeholder="Price:" required>
-                                        </div>
-
-                                         <div class="col">
-                                             <label>Notes</label>
-                                            <input type="text" name="note" value="{{ form.initial.note }}"
-                                                   class="form-control"
-                                                   placeholder="Notes:">
-                                        </div>
-                                            <div class="col">
-                                                <label>Upload Photo</label>
-                                                <input type="file" name="exo_images"
-                                                       class="form-control"
-                                                       multiple>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="alert alert-secondary" role="alert" align="center">
-                                            <input type="submit" id="but1" value="Update Oral Surgery"
-                                                   class="btn btn-info" onclick="validateAndShowAlert()">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <input type="hidden" name="idReception" value="{{ form.initial.idReception }}">
+                    <input type="hidden" name="name" value="{{ form.initial.name }}" readonly>
+                    <input type="hidden" name="phone" value="{{ form.initial.phone }}" readonly>
+                    <input type="hidden" name="gender" value="{{ form.initial.gender }}" readonly>
+                    <input type="hidden" name="date_of_birth" value="{{ form.initial.date_of_birth }}" readonly>
+                    <div class="form-group">
+                        <label>Implant:</label>
+                        {{ form.implant }}
                     </div>
+
+                    <div class="form-group">
+                        <label>Diameter:</label>
+                        <input type="text" name="diameter" value="{{ form.initial.diameter }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Length:</label>
+                        <input type="text" name="length" value="{{ form.initial.length }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>No. of Implant:</label>
+                        <input type="text" name="no_Implant" value="{{ form.initial.no_Implant }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upper Right:</label>
+                       <input type="text" name="ur" value="{% if form.initial.ur %}{{ form.initial.ur|slice:"1:"|slice:"-1" }}{% endif %}" class="form-control">
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label>Upper Left:</label>
+                        <input type="text" name="ul" value="{% if form.initial.ul %}{{ form.initial.ul|slice:"1:-1" }}{% endif %}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lower Right:</label>
+                        <input type="text" name="lr" value="{% if form.initial.lr %}{{ form.initial.lr|slice:"1:-1" }}{% endif %}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lower Left:</label>
+                      <input type="text" name="ll" value="{% if form.initial.ll %}{{ form.initial.ll|slice:"1:-1" }}{% endif %}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Shade:</label>
+                        <select name="shade" class="form-control" required="required">
+                            <option value="">Select Shade</option>
+                            <option value="VITA Shade">VITA</option>
+                            <option value="A-D Shade">A-D Shade</option>
+                            <option value="Bleach Shade">Bleach Shade</option>
+                            <option value="Tetric N-Ceram(16) Shade">Tetric N-Ceram(16) Shade</option>
+                            <option value="Tetric N-Flow(10) Shade">Tetric N-Ceram(10) Shade</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>No of Unite:</label>
+                        <input type="text" name="no_unite" value="{{ form.initial.no_unite }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color:</label>
+                        <input type="text" name="color" value="{{ form.initial.color }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price:</label>
+                        <input type="text" name="price" value="{{ form.initial.price }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paid:</label>
+                        <input type="text" name="paid" value="{{ form.initial.paid }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note:</label>
+                        <input type="text" name="note" value="{{ form.initial.note }}" class="form-control">
+                    </div>
+
+                    <input type="file" name="exo_images"
+                           class="form-control"
+                           multiple>
+                    <input type="text" name="first_visit" value="{{ form.initial.first_visit|date:" Y-m-d"  }}">
+                    <input type="hidden" name="second_visit" value="{{ form.initial.second_visit|date:" Y-m-d" }}" readonly>
+                    <input type="hidden" name="third_visit" value="{{ form.initial.third_visit|date:" Y-m-d" }}" readonly>
+                    <input type="hidden" name="fourth_visit" value="{{ form.initial.fourth_visit|date:" Y-m-d" }}" readonly>
+                    <input type="hidden" name="fifth_visit" value="{{ form.initial.fifth_visit|date:" Y-m-d" }}" readonly>
+
+
+                    <!-- Render form fields here -->
+                    <button type="submit">Save</button>
                 </form>
-                   <script>
-    function validateAndShowAlert() {
-        var requiredFields = document.querySelectorAll('[required]');
-        var allFieldsFilled = true;
 
-        for (var i = 0; i < requiredFields.length; i++) {
-            if (!requiredFields[i].value) {
-                allFieldsFilled = false;
-                break;
-            }
-        }
 
-        if (allFieldsFilled) {
-            showAlert();
-        } else {
-            alert("Please fill out all required fields.");
-        }
-    }
-
-    function showAlert() {
-        if (confirm("Are you sure you want to update?")) {
-            document.getElementById("updateForm").submit();
-        }
-    }
-</script>
             </div>
         </div>
     </div>
 </section>
-<script src="{% static 'website/js/jquery.min.js' %}"></script>
-<script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>
-<script src="{% static 'website/js/popper.min.js' %}"></script>
-<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'website/js/jquery.easing.1.3.js' %}"></script>
-<script src="{% static 'website/js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'website/js/jquery.stellar.min.js' %}"></script>
-<script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
-
-<script src="{% static 'website/js/aos.js' %}"></script>
-<script src="{% static 'website/js/jquery.animateNumber.min.js' %}"></script>
-
-<script src="{% static 'website/js/scrollax.min.js' %}"></script>
-
-
-<script src="{% static 'website/js/main.js' %}"></script>
 {% endblock %}
