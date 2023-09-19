@@ -10,7 +10,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Visits</li>
                     </ol>
                 </nav>
                 <form method="POST" enctype="multipart/form-data">
@@ -37,18 +37,22 @@
 
                     <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}" class="form-control"
                            multiple>
-<input type="text" name="first_visit" id="first_visit" value="{{ form.initial.first_visit|date:"Y-m-d" }}" readonly>
-<input type="date" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:"Y-m-d" }}{% else %}{{ date.today|date:"Y-m-d" }}{% endif %}">
-<input type="date" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %} value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}">
-<input type="date" name="fourth_visit" id="fourth_visit" {% if form.initial.fourth_visit %}readonly{% endif %} value="{% if form.initial.fourth_visit %}{{ form.initial.fourth_visit|date:"Y-m-d" }}{% endif %}">
-<input type="date" name="fifth_visit" id="fifth_visit" {% if form.initial.fifth_visit %}readonly{% endif %} value="{% if form.initial.fifth_visit %}{{ form.initial.fifth_visit|date:"Y-m-d" }}{% endif %}">
+                    <div class="col-6">
 
+                        <table>
+                            <td> <h6 style="font-weight: bold;">Frist Visit</h6><input type="text" name="first_visit" id="first_visit" value="{{ form.initial.first_visit|date:"Y-m-d" }}" readonly></td>
+                            <td><h6 style="font-weight: bold;">Second Visit</h6><input type="date" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %}
+       value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:"Y-m-d" }}{% else %}
+                        {{ date.today|date:"Y-m-d" }}{% endif %}"></td>
+                            <td><h6 style="font-weight: bold;">Third Visit</h6><input type="date" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %}
+       value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}"></td>
+                            <td><h6 style="font-weight: bold;">Fourth Visit</h6><input type="date" name="fourth_visit" id="fourth_visit" {% if form.initial.fourth_visit %}readonly{% endif %}
+       value="{% if form.initial.fourth_visit %}{{ form.initial.fourth_visit|date:"Y-m-d" }}{% endif %}"></td>
+                            <td><h6 style="font-weight: bold;">Fifth Visit</h6><input type="date" name="fifth_visit" id="fifth_visit" {% if form.initial.fifth_visit %}readonly{% endif %} value="{% if form.initial.fifth_visit %}{{ form.initial.fifth_visit|date:"Y-m-d" }}{% endif %}"></td>
+  <td><h6 style="font-weight: bold;">Add Visits</h6><input type="submit" value="Add Visits" class="btn btn-info"></td>
+                        </table>
 
-
-
-
-                    <!-- Render form fields here -->
-                    <button type="submit">Save</button>
+                    </div>
                 </form>
 
 
