@@ -1120,7 +1120,7 @@ def all_exo(request):
 def send_appointment_reminders(request):
     # Replace with your actual Twilio credentials
     account_sid = 'AC4fc2552605eaf126991299f892900b66'
-    auth_token = '0416c3c28f88fe8e6d7a0876db4bc367'
+    auth_token = 'e06e125722056090b1d11783a73e2c4f'
 
     # Initialize the Twilio client
     client = Client(account_sid, auth_token)
