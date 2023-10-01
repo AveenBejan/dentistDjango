@@ -85,7 +85,7 @@
                                 <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.days }}</td>
-                                <td style="center" scope="row">{{ orall.idReception.time }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.implant }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.diameter }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.length }}</td>

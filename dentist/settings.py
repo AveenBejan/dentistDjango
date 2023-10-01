@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'website',
     'widget_tweaks',
     'accounts',
+    'xhtml2pdf',
 
 
 

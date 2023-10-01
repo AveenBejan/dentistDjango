@@ -1,6 +1,5 @@
-import re  # Add this line to import the 're' module
+
 from django.shortcuts import render,redirect, get_object_or_404
-from django.http import HttpResponse,HttpResponseBadRequest,HttpResponseForbidden
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
@@ -10,14 +9,61 @@ from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodonti
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome
 from django.db.models import Q
 from django.shortcuts import redirect
-from django.forms import formset_factory
-from django.db import transaction
 from django.urls import reverse
 from datetime import date
 from django.contrib import messages
-from datetime import datetime, timedelta
-from django.forms import modelformset_factory
+from datetime import datetime
 from django.db.models import Sum
+from django.http import JsonResponse
+from twilio.rest import Client
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
+from io import StringIO
+from io import BytesIO
+import bidi.algorithm as bidi
+from bidi.algorithm import get_display
+import io
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from xhtml2pdf import pisa
+
+
+def generate_pdf_view(html_content, filename):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    buffer = BytesIO()
+
+    # Create a PDF object from the HTML content
+    pisa.CreatePDF(BytesIO(html_content.encode("UTF-8")), buffer)
+
+
+    # Write the PDF contents to the response
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+
+    return response
+
+
+def crown_pdf(request, template_name, context):
+    # Register the Arabic font for embedding
+    pdfmetrics.registerFont(TTFont('arabic', r'E:\projects\dentistsite\dentist\static\website\fonts\Arial.ttf'))
+
+    # Get the HTML content from a template
+    html_template = get_template(template_name)
+
+    html_content = html_template.render(context)
+    filename = "print_crown_debt.pdf"  # Desired PDF filename
+
+    return generate_pdf_view(html_content, filename)
 
 
 def add_outcome(request):
@@ -472,9 +518,11 @@ def reception(request):
             days = request.POST.get('days')
             selected_times = request.POST.getlist('time')
 
-            # Check if the same combination of app_data, days, and time exists in the database
-            if Reception.objects.filter(app_data=app_data, days=days, time=selected_times).exists():
-                messages.error(request, 'This date, days, and time are already booked.<br/> You Can Choose another Time')
+            # Check if the same combination of app_data, days, and time exists for the selected doctor
+            if Reception.objects.filter(doctor=instance.doctor, app_data=app_data, days=days,
+                                        time=selected_times).exists():
+                messages.error(request,
+                               f'This date, days, and time are already booked for {doctor_name}.<br/> You Can Choose another Time')
                 return redirect('home')
 
             instance.app_data = app_data
@@ -483,9 +531,7 @@ def reception(request):
             instance.save()
             # Redirect to 'home' after successful form submission
             messages.success(request, f'Appointment successfully booked for {app_data}, {days}, {selected_times}.')
-            # Redirect to 'home' after successful form submission
             return redirect('home')  # Redirect after successful form submission
-
 
     else:
         form = ReceptionForm()
@@ -1069,6 +1115,38 @@ def all_exo(request):
         appointment.simpleexo = appointment.simpleexo.replace("'", "")
         appointment.complcated = appointment.complcated.replace("'", "")
     return render(request, 'exo/all_exo.html', {'appointments': appointments})
+
+
+def send_appointment_reminders(request):
+    # Replace with your actual Twilio credentials
+    account_sid = 'AC4fc2552605eaf126991299f892900b66'
+    auth_token = '0416c3c28f88fe8e6d7a0876db4bc367'
+
+    # Initialize the Twilio client
+    client = Client(account_sid, auth_token)
+
+    # Define the criteria for upcoming appointments (e.g., within the next 24 hours)
+    # You may need to adjust this based on your application's requirements
+    appointments = Reception.objects.all()
+
+    # Iterate over the patients with upcoming appointments
+    for appointment in appointments:
+        print(appointments)
+
+        message_body = f'Hi {appointment.name}, your appointment is scheduled for {appointment.app_data}, at {appointment.time}.'
+
+        # Send the WhatsApp message
+        message = client.messages.create(
+            from_='whatsapp:+14155238886',
+            body=message_body,
+            to=f'whatsapp:+964{appointment.phone}' # Use the phone field to get the WhatsApp number
+        )
+
+        # Handle the response (printing the SID in this example)
+        print(message.sid)
+
+    # Return a response to the client (you can customize this as needed)
+    return JsonResponse({'status': 'Appointment reminders sent successfully'})
 
 
 def medicine(request, id):
@@ -1749,7 +1827,10 @@ def print_exo_debt(request, id):
         'total_remaining': total_remaining,
     }
 
-    return render(request, 'debts/print_exo_debt.html', context)
+    template_name = 'debts/print_exo_debt.html'  # Replace with your template name
+
+    # Redirect to the PDF generation view
+    return crown_pdf(request, template_name, context)
 
 
 def add_debt_crown(request, id):
@@ -1779,8 +1860,10 @@ def print_crown_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
+    template_name = 'debts/print_crown_debt.html'  # Replace with your template name
 
-    return render(request, 'debts/print_crown_debt.html', context)
+    # Redirect to the PDF generation view
+    return crown_pdf(request, template_name, context)
 
 
 def add_debt_filling(request, id):
@@ -1841,8 +1924,10 @@ def print_veneer_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
+    template_name = 'debts/print_veneer_debt.html'  # Replace with your template name
 
-    return render(request, 'debts/print_veneer_debt.html', context)
+    # Redirect to the PDF generation view
+    return generate_pdf_view(request, template_name, context)
 
 
 def add_debt_oral(request, id):
@@ -1872,5 +1957,7 @@ def print_oral_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
+    template_name = 'debts/print_oral_debt.html'  # Replace with your template name
 
-    return render(request, 'debts/print_oral_debt.html', context)
+    # Redirect to the PDF generation view
+    return generate_pdf_view(request, template_name, context)

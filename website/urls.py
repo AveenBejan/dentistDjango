@@ -26,6 +26,8 @@ urlpatterns = [
     path('remove_photo_oral/<int:photo_id>/', views.remove_photo_oral, name='remove-photo-oral'),
     path('implant.html', views.implant, name='implant'),
     path('delete-implant/<int:id>', views.delete_implant, name='delete-implant'),
+    path('send_appointment_reminders', views.send_appointment_reminders, name='send_appointment_reminders'),
+    path('generate_pdf/', views.generate_pdf_view, name='generate_pdf'),
 
     path('orthodontic.html', views.orthodontics, name='orthodontics'),
     path('doctors/doctor.html', views.doctor, name='doctor'),
@@ -63,6 +65,7 @@ urlpatterns = [
     path('crown_edit/<int:id>', views.crown_edit, name='crown_edit'),
     path('remove_photo_crown/<int:photo_id>/', views.remove_photo_crown, name='remove_photo_crown'),
     path('delete_crown/<int:id>', views.delete_crown, name='delete-crown'),
+    path('crown_pdf', views.crown_pdf, name='crown-pdf'),
 
 
     path('conservation/veneer/veneer_reception.html', views.veneer_reception, name='veneer-reception'),
