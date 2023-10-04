@@ -16,20 +16,9 @@ from datetime import datetime
 from django.db.models import Sum
 from django.http import JsonResponse
 from twilio.rest import Client
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from django.http import HttpResponse
 from django.template.loader import get_template
-from xhtml2pdf import pisa
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.units import inch
-from reportlab.pdfgen import canvas
-from io import StringIO
 from io import BytesIO
-import bidi.algorithm as bidi
-from bidi.algorithm import get_display
-import io
-from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from xhtml2pdf import pisa
