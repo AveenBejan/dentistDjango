@@ -15,7 +15,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.db.models import Sum
 from django.http import JsonResponse
-from twilio.rest import Client
+
 from django.http import HttpResponse
 from django.template.loader import get_template
 from io import BytesIO
