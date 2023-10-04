@@ -17,4 +17,5 @@ typing_extensions==4.6.3
 tzdata==2023.3
 virtualenv==20.21.0
 Pillow==10.0.0
+xhtml2pdf==0.2.11
 
