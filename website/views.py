@@ -519,8 +519,13 @@ def reception(request):
             instance.time = selected_times  # Set the time value
             instance.save()
             # Redirect to 'home' after successful form submission
-            messages.success(request, f'Appointment successfully booked for {app_data}, {days}, {selected_times}.')
-            return redirect('home')  # Redirect after successful form submission
+            # Assuming selected_times is a list of times, for example:
+            selected_times = request.POST.getlist('time')
+
+            # Join the list elements into a string with a comma separator
+            times_str = ', '.join(selected_times)
+            messages.success(request, f'Appointment successfully booked for {app_data}, {days},  at {times_str}.')
+            return redirect('home')  # Redirect after successful form submissionat {times_str}
 
     else:
         form = ReceptionForm()

@@ -27,7 +27,7 @@
                         <th scope="col">Time</th>
                         <th scope="col" colspan="">Update</th>
                         <th scope="col" colspan="">Delete</th>
-                        <th scope="col" colspan="">Send Reminder</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -44,7 +44,7 @@
                         <td scope="row">{{appointment.time|slice:"1:-1"}}</td>
                         <td><a href="{% url 'update-reception' appointment.id %}" style="display: inline;"><span class="btn btn-outline-warning">Update</span></a></td>
                         <td><a href="{% url 'delete-reception'  appointment.id  %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-                        <td><a href="{% url 'send_appointment_reminders' %}">Send Reminder</a></td>
+                        <!-- <th scope="col" colspan="">Send Reminder</th><td><a href="{% url 'send_appointment_reminders' %}">Send Reminder</a></td>-->
 
                     </tr>
                     {% endfor %}

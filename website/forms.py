@@ -118,6 +118,17 @@ class GaveAppointmentForm(forms.ModelForm):
 
 class ReceptionForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor", to_field_name='doctor_name')
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    )
+
+    gender = forms.ChoiceField(
+        choices=GENDER_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
     class Meta:
         model = Reception
         fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','app_data','days', 'time')
@@ -134,7 +145,7 @@ class ReceptionForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
-            'gender': forms.Select(attrs={'class': 'form-control'}),
+
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'app_data': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'days': forms.TextInput(attrs={'class': 'form-control'}),
