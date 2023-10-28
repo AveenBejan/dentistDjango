@@ -133,6 +133,35 @@ class Veneer(models.Model):
     exo_images = models.ImageField(null=True, blank=True,upload_to='')
 
 
+class Endo(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    name = models.CharField('Name',max_length=120,null=False)
+    phone = models.CharField('Phone', max_length=120,null=False)
+    gender = models.CharField('Gender', max_length=20,null=False)
+    date_of_birth = models.CharField('date_of_birth', max_length=20,null=False)
+    first_visit = models.CharField('date_of_birth', max_length=20,null=False)
+    components_first= models.CharField('components', max_length=120, blank=True,null=True)
+    ur = models.CharField('ur', max_length=120, blank=True,null=True)
+    ul = models.CharField('ul', max_length=120, blank=True,null=True)
+    lr = models.CharField('lr', max_length=120,null=True, blank=True)
+    ll = models.CharField('ll', max_length=120,null=True, blank=True)
+    canal = models.CharField('canal', max_length=120, blank=True, null=True)
+    work_length = models.CharField('work_length', max_length=120, blank=True, null=True)
+    no_prepare = models.IntegerField('no_prepare',null=False)
+    price = models.DecimalField('price',max_digits=8,decimal_places=2,null=False)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=False)
+    paid = models.DecimalField('paid', max_digits=20, decimal_places=2, null=True)
+    note = models.CharField('note', max_length=120, blank=True,null=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+    second_visit = models.DateField(blank=True, null=True)
+    components_second = models.CharField('components_second', max_length=120, blank=True, null=True)
+    third_visit = models.DateField(blank=True, null=True)
+    components_third = models.CharField('components_third', max_length=120, blank=True, null=True)
+    fourth_visit = models.DateField(blank=True, null=True)
+    components_fourth = models.CharField('components_fourth', max_length=120, blank=True, null=True)
+
+
 class Medicine1(models.Model):
     name_medicine = models.CharField(max_length=120)
 
@@ -226,6 +255,7 @@ class Photo(models.Model):
     veneer_instance = models.ForeignKey(Veneer, on_delete=models.CASCADE, null=True)
     filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, null=True)
     oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, null=True)
+    endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     def __str__(self):

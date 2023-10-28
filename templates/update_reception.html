@@ -13,7 +13,7 @@
                 <h4 class="text-center alert alert-info">Update Information</h4>
                 <form method="POST" id="updateForm">
                     {% csrf_token %}
-					<p>{{ form.name}}</p>
+					<input type="text" name="name" value="{{form.name}}" class="form-control" readonly>
 					<p>{{ form.phone }}</p>
 					<p>{{ form.date_of_birth }}</p>
 					<p>{{ form.gender }}</p>

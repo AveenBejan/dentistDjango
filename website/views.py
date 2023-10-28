@@ -4,9 +4,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthodonticsForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
-    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm
+    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Orthodontics,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -847,7 +847,6 @@ def oral_edit(request, id):
     form = OralSurgeryForm(instance=orall, initial=initial_data)
 
     return render(request, 'update_oral_surgery.html', {'form': form, 'orall': orall})
-
 
 
 def oral_visit(request, id):
@@ -1955,3 +1954,240 @@ def print_oral_debt(request, id):
 
     # Redirect to the PDF generation view
     return generate_pdf_view(request, template_name, context)
+
+
+def add_endo(request, id):
+    if request.method == 'POST':
+        form = EndoForm(request.POST, request.FILES)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception_id = id
+            no_prepare = form.cleaned_data['no_prepare']
+            price = form.cleaned_data['price']
+            total_price = no_prepare * price
+            oral_surgery.total_price = total_price
+            reception = Reception.objects.get(id=id)
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.save()
+
+            photos = request.FILES.getlist('exo_images')
+            endo_instance = form.save(commit=False)
+            endo_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(endo_instance=endo_instance, image=photo)
+
+            return redirect('add-endo', id=id)
+        else:
+            reception = Reception.objects.get(id=id)
+            initial_data = {
+                'idReception': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth
+            }
+            form = EndoForm(initial=initial_data)
+    else:
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth
+        }
+        form = EndoForm(initial=initial_data)
+
+    appointments = Reception.objects.all().order_by('-id')
+    oralls = Endo.objects.filter(idReception=id)
+    # Create a list to store photos for each OralSurgery instance
+    photos_list = []
+
+    try:
+        orall = oralls.first()
+        photos = orall.photo_set.all()
+    except AttributeError:
+        orall = None
+        photos = None
+
+    try:
+        medicine = Medicin.objects.get(idReception=id)
+    except Medicin.DoesNotExist:
+        medicine = None
+
+    for orall in oralls:
+        if orall.components_first:
+            # Remove square brackets if they exist
+            orall.components_first = orall.components_first[1:-1] if orall.components_first[0] == '[' and \
+               orall.components_first[-1] == ']' else orall.components_first
+        if orall.ur:
+            orall.ur = orall.ur.replace("'", "")
+        if orall.ul:
+            orall.ul = orall.ul.replace("'", "")
+        if orall.lr:
+            orall.lr = orall.lr.replace("'", "")
+        if orall.ll:
+            orall.ll = orall.ll.replace("'", "")
+        orall.total_price = orall.no_prepare * orall.price
+        orall.save()
+        # Retrieve photos associated with the current OralSurgery instance
+        photos = orall.photo_set.all()
+
+        # Append the photos to the photos_list
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
+    formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
+    if not form.is_valid():
+
+     return render(request, 'conservation/endo/endo.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'oralls': oralls,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
+
+
+def remove_photo_endo(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    endo_instance = photo.endo_instance
+    photo.delete()
+    return redirect('endo-edit', id=endo_instance.id)
+
+
+def delete_endo(request, id):
+    # Get the drug related to the Reception
+    oral = get_object_or_404(Endo, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = oral.idReception_id
+
+    # Delete the drug
+    oral.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('add-endo', id=idReception)
+
+
+def endo_reception(request):
+    appointments = Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+    return render(request, 'conservation/endo/endo_reception.html', {'appointments': appointments})
+
+
+def search_endo(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception.objects.all()
+        return render(request, 'conservation/endo/search_endo.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'conservation/endo/search_endo.html', {})
+
+
+def endo_edit(request, id):
+    orall = get_object_or_404(Endo, id=id)
+
+    if request.method == 'POST':
+        form = EndoForm(request.POST, request.FILES, instance=orall)
+        if form.is_valid():
+            # Extract no_prepare and price from form cleaned data
+            no_prepare = form.cleaned_data['no_prepare']
+            price = form.cleaned_data['price']
+
+            # Update the Endo instance with the new values
+            orall.no_prepare = no_prepare
+            orall.price = price
+
+            # Calculate and update total_price
+            total_price = no_prepare * price
+            orall.total_price = total_price
+            form.save()
+            # Handle uploaded photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(endo_instance=orall, image=photo)
+            return redirect('add-endo', id=orall.idReception_id)  # Redirect to a success view after saving
+    else:
+        initial_data = {
+            'first_visit': orall.first_visit,
+            'second_visit': orall.second_visit,
+            'third_visit': orall.third_visit,
+            'fourth_visit': orall.fourth_visit,
+            'ur': orall.ur[1:-1] if orall.ur else None,
+            'ul': orall.ul[1:-1] if orall.ul else None,
+            'lr': orall.lr[1:-1] if orall.lr else None,
+            'll': orall.ll[1:-1] if orall.ll else None,
+        }
+        form = EndoForm(instance=orall, initial=initial_data)
+
+    return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall})
+
+
+def endo_visit(request, id):
+    orall = get_object_or_404(Endo, id=id)
+
+    if request.method == 'POST':
+        form = EndoForm(request.POST, instance=orall)
+        if form.is_valid():
+
+            # Replace single quotes in certain fields
+            if orall.ur:
+                orall.ur = orall.ur.replace("'", "")
+            if orall.ul:
+                orall.ul = orall.ul.replace("'", "")
+            if orall.lr:
+                orall.lr = orall.lr.replace("'", "")
+            if orall.ll:
+                orall.ll = orall.ll.replace("'", "")
+
+            form.save()
+            return redirect('add-endo', id=orall.idReception_id)
+    else:
+        # Define a default value for first_visit when the request method is not POST
+        first_visit = orall.first_visit if orall.first_visit else date.today()
+        # Define a default value for second_visit when the request method is not POST
+        second_visit = orall.second_visit if orall.second_visit is not None else None
+        components_second = orall.components_second if orall.components_second is not None else None
+        third_visit = orall.third_visit if orall.third_visit is not None else None
+        components_third = orall.components_third if orall.components_third is not None else None
+        fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
+        components_fourth = orall.components_fourth if orall.components_fourth is not None else None
+        # Remove first and last characters from certain fields
+        ur = orall.ur[1:-1] if orall.ur else None
+        ul = orall.ul[1:-1] if orall.ul else None
+        lr = orall.lr[1:-1] if orall.lr else None
+        ll = orall.ll[1:-1] if orall.ll else None
+        components_first = orall.components_first[1:-1] if orall.components_first else None
+        components_second = orall.components_second[1:-1] if orall.components_second else None
+        components_third = orall.components_third[1:-1] if orall.components_third else None
+        components_fourth = orall.components_fourth[1:-1] if orall.components_fourth else None
+
+        form = EndoForm(instance=orall, initial={
+            'components_first': components_first,
+            'second_visit': second_visit,
+            'components_second': components_second,
+            'third_visit': third_visit,
+            'components_third': components_third,
+            'fourth_visit': fourth_visit,
+            'components_fourth': components_fourth,
+            'ur': ur,
+            'ul': ul,
+            'lr': lr,
+            'll': ll,
+        })
+
+    return render(request, 'conservation/endo/endo_visit.html', {'form': form, 'orall': orall, 'first_visit': first_visit})
+
+

@@ -83,6 +83,15 @@ urlpatterns = [
     path('remove_photo_filling/<int:photo_id>/', views.remove_photo_filling, name='remove_photo_filling'),
     path('delete_filling/<int:id>', views.delete_filling, name='delete-filling'),
 
+    path('add-endo/<int:id>', views.add_endo, name='add-endo'),
+    path('conservation/endo/endo_reception.html', views.endo_reception, name='endo-reception'),
+    path('conservation/endo/endo.html', views.add_endo, name='add-endo'),
+    path('endo_edit/<int:id>', views.endo_edit, name='endo-edit'),
+    path('search_endo', views.search_endo, name='search-endo'),
+    path('endo_visit/<int:id>', views.endo_visit, name='endo-visit'),
+    path('delete_endo/<int:id>', views.delete_endo, name='delete-endo'),
+    path('remove_photo_endo/<int:photo_id>/', views.remove_photo_endo, name='remove-photo-endo'),
+
 
     path('search_appo', views.search_appo, name='search-appo'),
     path('appointment1.html', views.appointment1, name='appointment1'),

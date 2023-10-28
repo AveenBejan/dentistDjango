@@ -1,0 +1,102 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                    </ol>
+                </nav>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="idReception" value="{{ form.initial.idReception }}">
+                    <input type="hidden" name="name" value="{{ form.initial.name }}" readonly>
+                    <input type="hidden" name="phone" value="{{ form.initial.phone }}" readonly>
+                    <input type="hidden" name="gender" value="{{ form.initial.gender }}" readonly>
+                    <input type="hidden" name="date_of_birth" value="{{ form.initial.date_of_birth }}" readonly>
+                    <div class="form-group">
+                        <label>first_visit:</label>
+                        <input type="text" name="first_visit" value="{{ form.initial.first_visit }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>components_first:</label>
+                        <input type="text" name="components_first" value="{{ form.initial.components_first }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upper Right:</label>
+                       <input type="text" name="ur" value="{% if form.initial.ur %}{{ form.initial.ur }}{% endif %}" class="form-control">
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label>Upper Left:</label>
+                        <input type="text" name="ul" value="{% if form.initial.ul %}{{ form.initial.ul}}{% endif %}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lower Right:</label>
+                        <input type="text" name="lr" value="{% if form.initial.lr %}{{ form.initial.lr }}{% endif %}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lower Left:</label>
+                      <input type="text" name="ll" value="{% if form.initial.ll %}{{ form.initial.ll }}{% endif %}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>No of canal:</label>
+                        <input type="text" name="canal" value="{{ form.initial.canal }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>work_length:</label>
+                        <input type="text" name="work_length" value="{{ form.initial.work_length }}" class="form-control">
+                    </div>
+                      <div class="form-group">
+                        <label>no_prepare:</label>
+                        <input type="text" name="no_prepare" value="{{ form.initial.no_prepare }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price:</label>
+                        <input type="text" name="price" value="{{ form.initial.price }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paid:</label>
+                        <input type="text" name="paid" value="{{ form.initial.paid }}" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note:</label>
+                        <input type="text" name="note" value="{{ form.initial.note }}" class="form-control">
+                    </div>
+
+                    <input type="file" name="exo_images" class="form-control" multiple>
+                    <input type="text" name="first_visit" value="{{ form.initial.first_visit }}" class="form-control">
+                    <input type="hidden" name="second_visit" value="{{ form.initial.second_visit|date:" Y-m-d" }}" readonly>
+                    <input type="hidden" name="third_visit" value="{{ form.initial.third_visit|date:" Y-m-d" }}" readonly>
+                    <input type="hidden" name="fourth_visit" value="{{ form.initial.fourth_visit|date:" Y-m-d" }}" readonly>
+                    <input type="hidden" name="fifth_visit" value="{{ form.initial.fifth_visit|date:" Y-m-d" }}" readonly>
+
+
+                    <!-- Render form fields here -->
+                    <button type="submit">Save</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

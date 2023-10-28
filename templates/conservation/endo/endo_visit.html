@@ -1,0 +1,189 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Visits</li>
+                    </ol>
+                </nav>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="idReception" value="{{ form.initial.idReception }}" readonly>
+                    <input type="hidden" name="name" value="{{ form.initial.name }}" readonly>
+                    <input type="hidden" name="phone" value="{{ form.initial.phone }}" readonly>
+                    <input type="hidden" name="gender" value="{{ form.initial.gender }}" readonly>
+                    <input type="hidden" name="date_of_birth" value="{{ form.initial.date_of_birth }}" readonly>
+                    <input type="text" value="{{ orall.first_visit }}" name="first_visit" class="form-control" readonly>
+                    <input type="hidden" name="components_first" value="{{ form.initial.components_first }}" class="form-control" readonly>
+                    <input type="hidden" name="ur" value="{{ form.initial.ur }}" class="form-control" readonly>
+                    <input type="hidden" name="ul" value="{{ form.initial.ul }}" class="form-control" readonly>
+                    <input type="hidden" name="lr" value="{{ form.initial.lr }}" class="form-control" readonly>
+                    <input type="hidden" name="ll" value="{{ form.initial.ll }}" class="form-control" readonly>
+                    <input type="hidden" name="canal" value="{{ form.initial.canal }}" class="form-control" readonly>
+                    <input type="hidden" name="work_length" value="{{ form.initial.work_length }}" class="form-control" readonly>
+                    <input type="hidden" name="no_prepare" value="{{ form.initial.no_prepare }}">
+                    <input type="hidden" name="price" value="{{ form.initial.price }}" class="form-control" readonly>
+                    <input type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control" readonly>
+                    <input type="hidden" name="note" value="{{ form.initial.note }}" class="form-control">
+                    <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}" class="form-control"
+                           multiple>
+                    <div class="col-6">
+
+                        <table>
+                             <td> <h6 style="font-weight: bold;">Frist Visit</h6><input type="text" name="first_visit" id="first_visit" value="{{ form.initial.first_visit }}" readonly></td>
+                            <td><h6 style="font-weight: bold;">Second Visit</h6><input type="date" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %}
+       value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:"Y-m-d" }}{% else %}
+                        {{ date.today|date:"Y-m-d" }}{% endif %}"></td>
+                           <td>
+                               <div class="form-check form-check-inline">
+                                   <input type="checkbox"
+                                          class="form-check-input"
+                                          name="components_second"
+                                          value="Filling"
+                                          {% if "Filling" in form.initial.components_second %}checked{% endif %}>
+                                   <label class="form-check-label">Filling</label>
+                               </div>
+                               <div class="form-check form-check-inline">
+                                   <input type="checkbox"
+                                          class="form-check-input"
+                                          name="components_second"
+                                          value="Opturation"{% if "Opturation" in form.initial.components_second %}checked{% endif %}>
+                                   <label class="form-check-label">Opturation</label>
+                               </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_second"
+                                                                   value="Instrumentation"{% if "Instrumentation" in form.initial.components_second %}checked{% endif %}>
+                                                            <label class="form-check-label">Instrumentation</label>
+                                                        </div></td>
+                            <br/>
+                            <td><h6 style="font-weight: bold;">Third Visit</h6><input type="date" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %}
+       value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}"></td>
+                            <td> <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_third"
+                                                                   value="Filling"{% if "Filling" in form.initial.components_third %}checked{% endif %}>
+                                                            <label class="form-check-label">Filling</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_third"
+                                                                   value="Opturation"{% if "Opturation" in form.initial.components_third %}checked{% endif %}>
+                                                            <label class="form-check-label">Opturation</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_third"
+                                                                   value="Instrumentation"{% if "Instrumentation" in form.initial.components_third %}checked{% endif %}>
+                                                            <label class="form-check-label">Instrumentation</label>
+                                                        </div></td>
+                            <br/>
+                            <td><h6 style="font-weight: bold;">Fourth Visit</h6><input type="date" name="fourth_visit" id="fourth_visit" {% if form.initial.fourth_visit %}readonly{% endif %}
+       value="{% if form.initial.fourth_visit %}{{ form.initial.fourth_visit|date:"Y-m-d" }}{% endif %}"></td>
+                            <td> <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_fourth"
+                                                                   value="Filling"{% if "Filling" in form.initial.components_fourth %}checked{% endif %}>
+                                                            <label class="form-check-label">Filling</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_fourth"
+                                                                   value="Opturation"{% if "Opturation" in form.initial.components_fourth %}checked{% endif %}>
+                                                            <label class="form-check-label">Opturation</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="components_fourth"
+                                                                   value="Instrumentation"{% if "Instrumentation" in form.initial.components_fourth %}checked{% endif %}>
+                                                            <label class="form-check-label">Instrumentation</label>
+                                                        </div></td>
+                            <td><h6 style="font-weight: bold;">Add Visits</h6><input type="submit" value="Add Visits" class="btn btn-info"></td>
+                        </table>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    // Define the toggleVisitField function first
+    function toggleVisitField(visitField, enable) {
+        visitField.disabled = !enable;
+        if (enable) {
+            visitField.value = "";  // Clear the field if enabling
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firstVisitField = document.getElementById("first_visit");
+        var secondVisitField = document.getElementById("second_visit");
+        var thirdVisitField = document.getElementById("third_visit");
+        var fourthVisitField = document.getElementById("fourth_visit");
+
+        // Function to make an input field readonly if it has a value
+        function makeReadonlyIfValueExists(inputField) {
+            if (inputField.value !== "") {
+                inputField.readOnly = true;
+            }
+        }
+
+        // Call the function for each input field
+        makeReadonlyIfValueExists(secondVisitField);
+        makeReadonlyIfValueExists(thirdVisitField);
+        makeReadonlyIfValueExists(fourthVisitField);
+
+        // Initially, check if there is a date in the first visit
+        if (firstVisitField.value !== "") {
+            toggleVisitField(secondVisitField, true);  // Enable the second visit field
+        } else {
+            // If the first visit is empty, disable all subsequent visits
+            toggleVisitField(secondVisitField, false);
+            toggleVisitField(thirdVisitField, false);
+            toggleVisitField(fourthVisitField, false);
+        }
+
+        // Add event listeners to enable/disable fields based on the previous visit
+        firstVisitField.addEventListener("change", function() {
+            if (firstVisitField.value !== "") {
+                toggleVisitField(secondVisitField, true);
+                toggleVisitField(thirdVisitField, false);
+                toggleVisitField(fourthVisitField, false);
+            } else {
+                toggleVisitField(secondVisitField, false);
+                toggleVisitField(thirdVisitField, false);
+                toggleVisitField(fourthVisitField, false);
+            }
+        });
+
+        // Add an event listener for the second visit
+        secondVisitField.addEventListener("change", function() {
+            var secondVisitValue = secondVisitField.value;
+            console.log("Second Visit Value:", secondVisitValue);
+
+            if (secondVisitValue !== "") {
+                toggleVisitField(thirdVisitField, true);
+            } else {
+                toggleVisitField(thirdVisitField, false);
+            }
+        });
+    });
+</script>
+{% endblock %}

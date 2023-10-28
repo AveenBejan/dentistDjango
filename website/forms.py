@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo
 from django.forms import formset_factory
 
 
@@ -488,6 +488,67 @@ class OralSurgeryForm(forms.ModelForm):
             'third_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'fourth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'fifth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+        }
+
+
+class EndoForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+
+    class Meta:
+        model = Endo
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length','no_prepare',
+                  'price', 'paid','note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'first_visit': '',
+            'components_first': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'canal': '',
+            'work_length': '',
+            'no_prepare': '',
+            'price': '',
+            'paid': '',
+            'note': '',
+            'second_visit': '',
+            'components_second': '',
+            'third_visit': '',
+            'components_third': '',
+            'fourth_visit': '',
+            'components_fourth': '',
+
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'first_visit': forms.TextInput(attrs={'class': 'form-control'}),
+            'components_first': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_first'}),
+            'canal': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'canal'}),
+            'work_length': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'work_length'}),
+            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'size'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'second_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'components_second': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
+            'third_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'components_third': forms.CheckboxSelectMultiple( attrs={'class': 'form-control', 'placeholder': 'components_third'}),
+            'fourth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'components_fourth': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_fourth'}),
         }
 
 
