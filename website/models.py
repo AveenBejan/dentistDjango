@@ -192,9 +192,7 @@ class Exo(models.Model):
     ul = models.CharField('Name', max_length=120, blank=True,null=True)
     lr = models.CharField('Name', max_length=120, blank=True,null=True)
     ll = models.CharField('Name', max_length=120, blank=True,null=True)
-    no_prepare = models.IntegerField('no_prepare', blank=True,null=True)
     price = models.DecimalField('price',max_digits=20,decimal_places=2,null=True)
-    total_price = models.DecimalField('total_price', max_digits=20, decimal_places=2,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=2, null=True)
     note = models.CharField('Name', max_length=120, blank=True,null=True)
     exoby = models.CharField('Name', max_length=120, blank=True,null=True)
@@ -243,7 +241,59 @@ class OralSurgery(models.Model):
     third_visit = models.DateField(blank=True,null=True)
     fourth_visit = models.DateField(blank=True,null=True)
     fifth_visit = models.DateField(blank=True,null=True)
-    regdate = models.DateTimeField('Regdate', default=datetime.now(), editable=False)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.idReception
+
+
+class Ortho(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
+    name = models.CharField('Name',max_length=120, blank=True,null=True)
+    phone = models.CharField('Phone', max_length=120, blank=True,null=True)
+    gender = models.CharField('Gender', max_length=20, blank=True,null=True)
+    date_of_birth = models.CharField('Gender', max_length=20, blank=True,null=True)
+    ur = models.CharField('Name',max_length=120, blank=True,null=True)
+    ul = models.CharField('Name', max_length=120, blank=True,null=True)
+    lr = models.CharField('Name', max_length=120, blank=True,null=True)
+    ll = models.CharField('Name', max_length=120, blank=True,null=True)
+    urn = models.CharField('Name',max_length=120, blank=True,null=True)
+    uln = models.CharField('Name', max_length=120, blank=True,null=True)
+    lrn = models.CharField('Name', max_length=120, blank=True,null=True)
+    lln = models.CharField('Name', max_length=120, blank=True,null=True)
+    teeth_type = models.CharField('teeth_type', max_length=120, blank=True,null=True)
+    angle_class = models.CharField('angle_class', max_length=120, blank=True,null=True)
+    over_jet = models.CharField('Name', max_length=120, blank=True,null=True)
+    over_bt = models.CharField('Name', max_length=120, blank=True,null=True)
+    jow_shift = models.CharField('Name', max_length=120, blank=True,null=True)
+    midlin_shift = models.CharField('Name', max_length=120, blank=True,null=True)
+    urs = models.CharField('Name',max_length=120, blank=True,null=True)
+    uls = models.CharField('Name', max_length=120, blank=True,null=True)
+    lrs = models.CharField('Name', max_length=120, blank=True,null=True)
+    lls = models.CharField('Name', max_length=120, blank=True,null=True)
+    teeth_size = models.CharField('Name', max_length=120, blank=True,null=True)
+    SNA_before = models.CharField('Name', max_length=120, blank=True,null=True)
+    SNA_after = models.CharField('Name', max_length=120, blank=True,null=True)
+    SNB_before = models.CharField('Name', max_length=120, blank=True,null=True)
+    SNB_after = models.CharField('Name', max_length=120, blank=True,null=True)
+    ANB_before = models.CharField('Name', max_length=120, blank=True,null=True)
+    ANB_after = models.CharField('Name', max_length=120, blank=True,null=True)
+    IMPA_before = models.CharField('Name', max_length=120, blank=True,null=True)
+    IMPA_after = models.CharField('Name', max_length=120, blank=True,null=True)
+    U1_SN_before = models.CharField('Name', max_length=120, blank=True,null=True)
+    U1_SN_after = models.CharField('Name', max_length=120, blank=True,null=True)
+    SNGOGN_before = models.CharField('Name', max_length=120, blank=True,null=True)
+    SNGOGN_after = models.CharField('Name', max_length=120, blank=True,null=True)
+    treatment_plan = models.TextField('Name', max_length=120, blank=True,null=True)
+    visit_type = models.CharField('Name', max_length=120, blank=True,null=True)
+    wive_size = models.CharField('Name', max_length=120, blank=True,null=True)
+    cross_sectional = models.CharField('Name', max_length=120, blank=True,null=True)
+    material = models.CharField('Name', max_length=120, blank=True,null=True)
+    price = models.DecimalField('price',max_digits=8,decimal_places=2,blank=True,null=True)
+    paid = models.DecimalField('paid', max_digits=20, decimal_places=2, blank=True,null=True)
+    notes = models.CharField('Name', max_length=120, blank=True,null=True)
+    exo_images = models.ImageField(null=True, blank=True, upload_to='')
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
 
     def __str__(self):
         return self.idReception
@@ -256,6 +306,7 @@ class Photo(models.Model):
     filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, null=True)
     oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, null=True)
     endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, null=True)
+    ortho_instance = models.ForeignKey(Ortho, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     def __str__(self):
@@ -311,13 +362,6 @@ class DentistDetails(models.Model):
 
     def __str__(self):
         return self.details
-
-
-class Orthodontics(models.Model):
-    name = models.CharField(max_length=100,)
-    yes_no_field = models.CharField(max_length=100)
-    material_field = models.CharField(max_length=100)
-    width_field = models.CharField(max_length=100)
 
 
 class Debts(models.Model):

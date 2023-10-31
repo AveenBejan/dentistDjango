@@ -1,0 +1,1345 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <title>{% block title %}Dental Clinic {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.css' %}">
+    <style>
+textarea {
+  border: none; outline: none;
+  background: repeating-linear-gradient(
+    to bottom, transparent, transparent 26px, #000 27px
+  );
+  background-attachment: local;
+}
+
+
+    </style>
+</head>
+<body>
+<br/>
+<div class="row"
+     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+    <div class="col-12">
+        <div class="accordion" id="accordionExample">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Ortho</li>
+                </ol>
+            </nav>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                        Patient Information
+                    </button>
+                </h2>
+                <p>{{ form.initial.name }} &nbsp;&nbsp;
+                    {{ form.initial.phone }}&nbsp;&nbsp;
+                    {{ form.initial.gender }}&nbsp;&nbsp;
+                </p>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Date of Birth</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Appointment Date</th>
+                                <th scope="col">Day Name</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Upper Right</th>
+                                <th scope="col">Upper Left</th>
+                                <th scope="col">Lower Right</th>
+                                <th scope="col">Lower Left</th>
+                                <th scope="col">Upper Right NOW</th>
+                                <th scope="col">Upper Left NOW</th>
+                                <th scope="col">Lower Right NOW</th>
+                                <th scope="col">Lower Left NOW</th>
+                                <th scope="col">Teeth Type</th>
+                                <th scope="col">Start</th>
+                                <th scope="col">angle_class</th>
+                                <th scope="col">over_jet</th>
+                                <th scope="col">over_bt</th>
+                                <th scope="col">jow_shift</th>
+                                <th scope="col">midlin_shift</th>
+                                <th scope="col">Upper Right S</th>
+                                <th scope="col">Upper Left S</th>
+                                <th scope="col">Lower Right S</th>
+                                <th scope="col">Lower Left S</th>
+                                <th scope="col">teeth_size</th>
+                                <th scope="col">CEPHALOMETRIC</th>
+                                <th scope="col">treatment_plan</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">paid</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Exo Photo</th>
+                                <th scope="col" colspan="5" style="text-align:center;">Other</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for orall in oralls %}
+                            <tr>
+                                <td style="text-align: center;" scope="row">{{ orall.id }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.idReception_id }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.name }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.phone }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.gender }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.date_of_birth }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.days }}</td>
+                                <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.ur|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.ul|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lr|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.ll|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.urn|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.uln|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lrn|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lln|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.teeth_type|slice:"1:-1" }}</td>
+                                {% if orall %}
+                                <td><a href="{% url 'start-ortho' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Start Ortho</span></a></td>
+                                {% endif %}
+                                <td style="text-align: center;" scope="row">{{ orall.angle_class }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.over_jet }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.over_bt }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.jow_shift }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.midlin_shift }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.urs|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.uls|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lrs|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lls|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.teeth_size |slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row"><!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                                            data-target="#exampleModal">
+                                        CEPHALOMETRIC
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <table border="1" class="table table-hover">
+                                                            <thead style="background-color:#73ccf0; color:#fff;">
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Before</th>
+                                                                <th>After</th>
+                                                                <th>Range</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tr>
+                                                                <th>SNA</th>
+                                                                <td>{{ orall.SNA_before }}</td>
+                                                                <td>{{ orall.SNA_after }}</td>
+                                                                <td>80.8 ± 3.9</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>SNB</th>
+                                                                <td>{{ orall.SNB_before }}</td>
+                                                                <td>{{ orall.SNB_after }}</td>
+                                                                <td>78.0 ± 3.1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>ANB</th>
+                                                                <td>{{ orall.ANB_before }}</td>
+                                                                <td>{{ orall.ANB_after }}</td>
+                                                                <td>0.4 - 5.1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>1MPA</th>
+                                                                <td>{{ orall.1MPA_before }}</td>
+                                                                <td>{{ orall.1MPA_after }}</td>
+                                                                <td>90.0 ± 7.0</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>U1- SN</th>
+                                                                <td>{{ orall.U1_SN_before }}</td>
+                                                                <td>{{ orall.U1_SN_after }}</td>
+                                                                <td>103.0 ± 5.0</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>SNGOGN</th>
+                                                                <td>{{ orall.SNGOGN_before }}</td>
+                                                                <td>{{ orall.SNGOGN_after }}</td>
+                                                                <td>32.3 ± 4.7</td>
+                                                            </tr>
+                                                        </table>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center;" scope="row">{{ orall.treatment_plan }}</td>
+                                <td style="text-align: center;">
+                                    {% if orall.price is not None %}
+                                    {{ orall.price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center;" scope="row">{{ orall.paid }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.notes }}</td>
+                                <td>
+                                    {% for photos in photos_list %}
+                                    {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                    {% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove-photo-ortho' photo.id %}">Remove</a>
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </td>
+                                {% if orall %}
+                                <!--<td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a></td>
+                                <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span
+                                        class="btn btn-warning">Edit</span></a></td>-->
+                                <td><a href="{% url 'delete-ortho'  orall.id %}" style="display: inline;"><span
+                                        class="btn btn-outline-danger">Delete</span></a></td>
+                                <td><a href="{% url 'drugs' id=id %}" style="display: inline;"><span
+                                        class="btn btn-outline-info">Add Drugs</span></a></td>
+                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                        class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo"
+                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            Ortho
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            {%if user.is_authenticated%}
+                            <p>{{form.initial.idReception.name}}</p>
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception }}"
+                                       class="form-control">
+                                <input type="hidden" name="name" value="{{ form.initial.name }}"
+                                       class="form-control">
+                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                                       class="form-control">
+                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                                       class="form-control">
+                                <input type="hidden" name="date_of_birth"
+                                       value="{{ form.initial.date_of_birth }}"
+                                       class="form-control">
+
+                                <div class="container">
+                                    <div class="col-10">
+
+                                        <div class="card-header">
+
+                                            <h4 style="font-size: 22px; text-align:center;"> Teeth Need Filling</h4>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Upper Right
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR1">
+                                                            <label class="form-check-label">UR1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR2">
+                                                            <label class="form-check-label">UR2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR3">
+                                                            <label class="form-check-label">UR3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR4">
+                                                            <label class="form-check-label">UR4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR5">
+                                                            <label class="form-check-label">UR5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR6">
+                                                            <label class="form-check-label">UR6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR7">
+                                                            <label class="form-check-label">UR7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ur"
+                                                                   value="UR8">
+                                                            <label class="form-check-label">UR8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Upper Left
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL1">
+                                                            <label class="form-check-label">UL1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL2">
+                                                            <label class="form-check-label">UL2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL3">
+                                                            <label class="form-check-label">UL3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL4">
+                                                            <label class="form-check-label">UL4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL5">
+                                                            <label class="form-check-label">UL5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL6">
+                                                            <label class="form-check-label">UL6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL7">
+                                                            <label class="form-check-label">UL7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ul"
+                                                                   value="UL8">
+                                                            <label class="form-check-label">UL8</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Lower Right
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR1">
+                                                            <label class="form-check-label">LR1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR2">
+                                                            <label class="form-check-label">LR2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR3">
+                                                            <label class="form-check-label">LR3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR4">
+                                                            <label class="form-check-label">LR4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR5">
+                                                            <label class="form-check-label">LR5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR6">
+                                                            <label class="form-check-label">LR6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR7">
+                                                            <label class="form-check-label">LR7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lr"
+                                                                   value="LR8">
+                                                            <label class="form-check-label">LR8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Lower Left
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL1">
+                                                            <label class="form-check-label">LL1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL2">
+                                                            <label class="form-check-label">LL2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL3">
+                                                            <label class="form-check-label">LL3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL4">
+                                                            <label class="form-check-label">LL4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL5">
+                                                            <label class="form-check-label">LL5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL6">
+                                                            <label class="form-check-label">LL6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL7">
+                                                            <label class="form-check-label">LL7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="ll"
+                                                                   value="LL8">
+                                                            <label class="form-check-label">LL8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="card-header">
+
+                                            <h4 style="font-size: 22px; text-align:center;"> Teeth Need Exo Now</h4>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Upper Right
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR1">
+                                                            <label class="form-check-label">UR1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR2">
+                                                            <label class="form-check-label">UR2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR3">
+                                                            <label class="form-check-label">UR3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR4">
+                                                            <label class="form-check-label">UR4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR5">
+                                                            <label class="form-check-label">UR5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR6">
+                                                            <label class="form-check-label">UR6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR7">
+                                                            <label class="form-check-label">UR7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urn"
+                                                                   value="UR8">
+                                                            <label class="form-check-label">UR8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Upper Left
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL1">
+                                                            <label class="form-check-label">UL1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL2">
+                                                            <label class="form-check-label">UL2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL3">
+                                                            <label class="form-check-label">UL3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL4">
+                                                            <label class="form-check-label">UL4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL5">
+                                                            <label class="form-check-label">UL5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL6">
+                                                            <label class="form-check-label">UL6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL7">
+                                                            <label class="form-check-label">UL7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uln"
+                                                                   value="UL8">
+                                                            <label class="form-check-label">UL8</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Lower Right
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR1">
+                                                            <label class="form-check-label">LR1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR2">
+                                                            <label class="form-check-label">LR2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR3">
+                                                            <label class="form-check-label">LR3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR4">
+                                                            <label class="form-check-label">LR4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR5">
+                                                            <label class="form-check-label">LR5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR6">
+                                                            <label class="form-check-label">LR6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR7">
+                                                            <label class="form-check-label">LR7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrn"
+                                                                   value="LR8">
+                                                            <label class="form-check-label">LR8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Lower Left
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL1">
+                                                            <label class="form-check-label">LL1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL2">
+                                                            <label class="form-check-label">LL2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL3">
+                                                            <label class="form-check-label">LL3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL4">
+                                                            <label class="form-check-label">LL4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL5">
+                                                            <label class="form-check-label">LL5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL6">
+                                                            <label class="form-check-label">LL6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL7">
+                                                            <label class="form-check-label">LL7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lln"
+                                                                   value="LL8">
+                                                            <label class="form-check-label">LL8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="teeth_type"
+                                                                   value="S&P">
+                                                            <label class="form-check-label">S&P</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="teeth_type"
+                                                                   value="Ginjivel">
+                                                            <label class="form-check-label">Ginjivel</label>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="angle_class">
+                                                    <input type="hidden" name="over_jet">
+                                                    <input type="hidden" name="over_bt">
+                                                    <input type="hidden" name="jow_shift">
+                                                    <input type="hidden" name="midlin_shift">
+                                                    <input type="hidden" name="urs">
+                                                    <input type="hidden" name="uls">
+                                                    <input type="hidden" name="lrs">
+                                                    <input type="hidden" name="lls">
+                                                    <input type="hidden" name="teeth_size">
+                                                    <input type="hidden" name="before">
+                                                    <input type="hidden" name="after">
+                                                    <input type="hidden" name="treatment_plan">
+                                                    <input type="hidden" name="price">
+                                                    <input type="hidden" name="paid">
+                                                    <input type="hidden" name="notes">
+                                                    <input type="hidden" name="exo_images">
+
+                                                    <div class="col-12">
+                                                        <div class="alert alert-secondary" role="alert" align="center">
+                                                            <input type="submit" id="but1"
+                                                                   value="Add Ortho Before Start"
+                                                                   class="btn btn-info">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            Start Ortho
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            {% if user.is_authenticated %}
+                            <p>{{ form.initial.idReception.name }}</p>
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception }}"
+                                       class="form-control">
+                                <input type="hidden" name="name" value="{{ form.initial.name }}"
+                                       class="form-control">
+                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                                       class="form-control">
+                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                                       class="form-control">
+                                <input type="hidden" name="date_of_birth"
+                                       value="{{ form.initial.date_of_birth }}"
+                                       class="form-control">
+
+                                <input type="hidden" name="ur" value="{{ form.initial.ur }}">
+                                <input type="hidden" name="ul" value="{{ form.initial.ul }}">
+                                <input type="hidden" name="lr" value="{{ form.initial.lr }}">
+                                <input type="hidden" name="ll" value="{{ form.initial.ll }}">
+                                <input type="hidden" name="urn" value="{{ form.initial.urn }}">
+                                <input type="hidden" name="uln" value="{{ form.initial.uln }}">
+                                <input type="hidden" name="lrn" value="{{ form.initial.lrn }}">
+                                <input type="hidden" name="lln" value="{{ form.initial.lln }}">
+                                <input type="hidden" name="teeth_type" value="{{ form.initial.teeth_type }}">
+
+                                <div class="container">
+                                    <div class="col-10">
+                                        <br/>
+                                        <div class="card-header">
+
+                                            <h4 style="font-size: 22px; text-align:center;"> Super Numerous</h4>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Upper Right
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR1">
+                                                            <label class="form-check-label">UR1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR2">
+                                                            <label class="form-check-label">UR2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR3">
+                                                            <label class="form-check-label">UR3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR4">
+                                                            <label class="form-check-label">UR4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR5">
+                                                            <label class="form-check-label">UR5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR6">
+                                                            <label class="form-check-label">UR6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR7">
+                                                            <label class="form-check-label">UR7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="urs"
+                                                                   value="UR8">
+                                                            <label class="form-check-label">UR8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Upper Left
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL1">
+                                                            <label class="form-check-label">UL1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL2">
+                                                            <label class="form-check-label">UL2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL3">
+                                                            <label class="form-check-label">UL3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL4">
+                                                            <label class="form-check-label">UL4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL5">
+                                                            <label class="form-check-label">UL5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL6">
+                                                            <label class="form-check-label">UL6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL7">
+                                                            <label class="form-check-label">UL7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="uls"
+                                                                   value="UL8">
+                                                            <label class="form-check-label">UL8</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Lower Right
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR1">
+                                                            <label class="form-check-label">LR1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR2">
+                                                            <label class="form-check-label">LR2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR3">
+                                                            <label class="form-check-label">LR3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR4">
+                                                            <label class="form-check-label">LR4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR5">
+                                                            <label class="form-check-label">LR5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR6">
+                                                            <label class="form-check-label">LR6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR7">
+                                                            <label class="form-check-label">LR7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lrs"
+                                                                   value="LR8">
+                                                            <label class="form-check-label">LR8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card-header">
+                                                    Lower Left
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL1">
+                                                            <label class="form-check-label">LL1</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL2">
+                                                            <label class="form-check-label">LL2</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL3">
+                                                            <label class="form-check-label">LL3</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL4">
+                                                            <label class="form-check-label">LL4</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL5">
+                                                            <label class="form-check-label">LL5</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL6">
+                                                            <label class="form-check-label">LL6</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL7">
+                                                            <label class="form-check-label">LL7</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox"
+                                                                   class="form-check-input"
+                                                                   name="lls"
+                                                                   value="LL8">
+                                                            <label class="form-check-label">LL8</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <select name="angle_class" class="form-control">
+                                                    <option selected disabled>Angle Class</option>
+                                                    <option value="I">I</option>
+                                                    <option value="II">II</option>
+                                                    <option value="III">III</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox"
+                                                           class="form-check-input"
+                                                           name="teeth_size"
+                                                           value="Crowding">
+                                                    <label class="form-check-label">Crowding</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox"
+                                                           class="form-check-input"
+                                                           name="teeth_size"
+                                                           value="Spacing">
+                                                    <label class="form-check-label">Spacing</label>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <input type="text" class="form-control" name="over_jet" required
+                                                           placeholder="Over Jet" style="font-weight:bold;"
+                                                           value="">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <input type="text" class="form-control" name="over_bt"
+                                                           placeholder="Over Bt" required value=""
+                                                           style="font-weight:bold;">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <input type="text" class="form-control" name="jow_shift"
+                                                           required
+                                                           placeholder="Jow Shift" style="font-weight:bold;"
+                                                           value="">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <input type="text" class="form-control" name="midlin_shift"
+                                                           placeholder="Midline Shift" required value=""
+                                                           style="font-weight:bold;">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <input type="text" class="form-control" name="price" required
+                                                           placeholder="price" style="font-weight:bold;" value="">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <input type="text" class="form-control" name="notes"
+                                                           placeholder="notes" required value=""
+                                                           style="font-weight:bold;">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <input type="file" name="exo_images"
+                                                           class="form-control"
+                                                           multiple>
+                                                </div>
+                                                <textarea name="treatment_plan" placeholder="Treatment Plan" rows="4"
+                                                          cols="100"></textarea>
+                                                <div class="col-12">
+                                                    <br/>
+                                                    <div class="card-header">
+
+                                                        <h4 style="font-size: 22px; text-align:center;">
+                                                            CEPHALOMETRIC</h4>
+                                                    </div>
+                                                    <br/>
+                                                    <FORM>
+                                                        <table border="1" class="table table-hover">
+                                                            <thead style="background-color:#73ccf0; color:#fff;">
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Before</th>
+                                                                <th>After</th>
+                                                                <th>Range</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tr>
+                                                                <th>SNA</th>
+                                                                <td><input type="text" name="SNA_before" class=""></td>
+                                                                <td><input type="text" name="SNA_after" class=""></td>
+                                                                <td>80.8 ± 3.9</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>SNB</th>
+                                                                <td><input type="text" name="SNB_before" class=""></td>
+                                                                <td><input type="text" name="SNB_after" class=""></td>
+                                                                <td>78.0 ± 3.1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>ANB</th>
+                                                                <td><input type="text" name="ANB_before" class=""></td>
+                                                                <td><input type="text" name="ANB_after" class=""></td>
+                                                                <td>0.4 - 5.1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>1MPA</th>
+                                                                <td><input type="text" name="IMPA_before"></td>
+                                                                <td><input type="text" name="IMPA_after"></td>
+                                                                <td>90.0 ± 7.0</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>U1- SN</th>
+                                                                <td><input type="text" name="U1_SN_before"></td>
+                                                                <td><input type="text" name="U1_SN_after"></td>
+                                                                <td>103.0 ± 5.0</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>SNGOGN</th>
+                                                                <td><input type="text" name="SNGOGN_before"></td>
+                                                                <td><input type="text" name="SNGOGN_after"></td>
+                                                                <td>32.3 ± 4.7</td>
+                                                            </tr>
+                                                        </table>
+                                                    </FORM>
+                                                </div>
+
+
+                                                <input type="hidden" name="paid">
+
+                                                <div class="col-12">
+                                                    <div class="alert alert-secondary" role="alert" align="center">
+                                                        <input type="submit" value="Add Ortho Before Start"
+                                                               class="btn btn-info">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

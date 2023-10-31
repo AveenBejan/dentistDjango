@@ -29,7 +29,6 @@ urlpatterns = [
     path('send_appointment_reminders', views.send_appointment_reminders, name='send_appointment_reminders'),
     path('generate_pdf/', views.generate_pdf_view, name='generate_pdf'),
 
-    path('orthodontic.html', views.orthodontics, name='orthodontics'),
     path('doctors/doctor.html', views.doctor, name='doctor'),
     path('delete-doctor/<int:id>', views.delete_doctor, name='delete-doctor'),
     path('search_doctor', views.search_doctor, name='search-doctor'),
@@ -91,6 +90,16 @@ urlpatterns = [
     path('endo_visit/<int:id>', views.endo_visit, name='endo-visit'),
     path('delete_endo/<int:id>', views.delete_endo, name='delete-endo'),
     path('remove_photo_endo/<int:photo_id>/', views.remove_photo_endo, name='remove-photo-endo'),
+
+    path('add-ortho/<int:id>', views.add_ortho, name='add-ortho'),
+    path('ortho/ortho_reception.html', views.ortho_reception, name='ortho-reception'),
+    path('ortho/ortho.html', views.add_ortho, name='add-ortho'),
+    #path('ortho_edit/<int:id>', views.ortho_edit, name='ortho-edit'),
+    path('search_ortho', views.search_ortho, name='search-ortho'),
+    #path('ortho_visit/<int:id>', views.ortho_visit, name='ortho-visit'),
+    path('start_ortho/<int:id>', views.start_ortho, name='start-ortho'),
+    path('delete_ortho/<int:id>', views.delete_ortho, name='delete-ortho'),
+    path('remove_photo_ortho/<int:photo_id>/', views.remove_photo_ortho, name='remove-photo-ortho'),
 
 
     path('search_appo', views.search_appo, name='search-appo'),

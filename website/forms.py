@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Orthodontics,Exo,Medicin,Photo,Drug,\
+from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
     Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo
 from django.forms import formset_factory
 
@@ -155,7 +155,6 @@ class ReceptionForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor")
-
 
 
 class Medicine1Form(forms.ModelForm):
@@ -628,19 +627,98 @@ class AppointmentForm(ModelForm):
         }
 
 
-class OrthodonticsForm(forms.ModelForm):
-    YES_NO_CHOICES = [('Yes', 'Yes'), ('No', 'No')]
-    MATERIAL_CHOICES = [('AUG', 'AUG'), ('AUG1', 'AUG1')]
-    WIDTH_CHOICES = [('3*10', '3*10'), ('4*10', '4*10')]
-
-    name = forms.CharField(label='Name', max_length=100)
-    yes_no_field = forms.ChoiceField(label='Yes/No', choices=YES_NO_CHOICES, widget=forms.RadioSelect)
-    material_field = forms.MultipleChoiceField(label='Material', choices=MATERIAL_CHOICES, widget=forms.CheckboxSelectMultiple)
-    width_field = forms.MultipleChoiceField(label='Width', choices=WIDTH_CHOICES, widget=forms.CheckboxSelectMultiple)
+class OrthoForm(forms.ModelForm):
+    exo_images = forms.FileInput()
 
     class Meta:
-        model = Orthodontics
-        fields = ('name', 'yes_no_field', 'material_field', 'width_field')
+        model = Ortho
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
+                  'over_jet','over_bt', 'jow_shift', 'midlin_shift','urs', 'uls','lrs', 'lls','teeth_size','SNA_before','SNA_after','SNB_before','SNB_after','ANB_before','ANB_after',
+                  'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid', 'notes','exo_images')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'urn': '',
+            'uln': '',
+            'lrn': '',
+            'lln': '',
+            'teeth_type': '',
+            'angle_class': '',
+            'over_jet': '',
+            'over_bt': '',
+            'jow_shift': '',
+            'midlin_shift': '',
+            'urs': '',
+            'uls': '',
+            'lrs': '',
+            'lls': '',
+            'teeth_size': '',
+            'SNA_before': '',
+            'SNA_after': '',
+            'SNB_before': '',
+            'SNB_after': '',
+            'ANB_before': '',
+            'ANB_after': '',
+            'IMPA_before': '',
+            'IMPA_after': '',
+            'U1_SN_before': '',
+            'U1_SN_after': '',
+            'SNGOGN_before': '',
+            'SNGOGN_after': '',
+            'treatment_plan': '',
+            'price': '',
+            'paid': '',
+            'notes': '',
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'urn': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'urn'}),
+            'uln': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'uln'}),
+            'lrn': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'urn'}),
+            'lln': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lln'}),
+            'teeth_type': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'canal'}),
+            'angle_class': forms.Select(attrs={'class': 'form-control', 'placeholder': 'angle_class'}),
+            'over_jet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'over_jet'}),
+            'over_bt': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'over_bt'}),
+            'jow_shift': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'jow_shift'}),
+            'midlin_shift': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'midlin_shift'}),
+            'urs': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'uls': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lrs': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'lls': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'teeth_size': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'SNA_before': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'SNA_after': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'SNB_before': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
+            'SNB_after': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'ANB_before': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
+            'ANB_after': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'IMPA_before': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
+            'IMPA_after': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'U1_SN_before': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
+            'U1_SN_after': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'SNGOGN_before': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
+            'SNGOGN_after': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'treatment_plan': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'components_third'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'notes': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+        }
 
 
 class DebtsForm(forms.ModelForm):
