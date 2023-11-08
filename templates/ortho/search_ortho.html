@@ -14,7 +14,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Add Implant </li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Ortho </li>
                     </ol>
                 </nav>
                 <table class="table table-hover">
@@ -37,7 +37,7 @@
                         <td> {{oral.phone}}</td>
                         <td> {{oral.gender}}</td>
                         <td> {{oral.date_of_birth}}</td>
-                        <td><a href="{% url 'add-oral-surgery' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Implant</span></a></td>
+                        <td><a href="{% url 'add-ortho' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Ortho</span></a></td>
                         <!--<td><a href="{% url 'medicine' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Medicine</span></a></td>
                         <td><a href="{% url 'drugs' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Drugs</span></a></td>-->
 

@@ -4,9 +4,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
-    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm
+    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -22,6 +22,7 @@ from io import BytesIO
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from xhtml2pdf import pisa
+from django.http import Http404
 
 
 def generate_pdf_view(html_content, filename):
@@ -904,6 +905,25 @@ def all_oral_surgery(request):
     return render(request, 'all_oral_surgery.html', {'orals': orals})
 
 
+def visit(request):
+    if request.method == 'POST':
+        form = VisitsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('visit')  # Redirect to the same page after saving the form data
+    else:
+        form = VisitsForm()
+    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+    appointments = Visits.objects.all().order_by('-id')
+    return render(request, 'ortho/visit.html', {'form': form, 'appointments': appointments})
+
+
+def delete_visit(request,id):
+    appointments = Visits.objects.get(pk=id)
+    appointments.delete()
+    return redirect('visit')
+
+
 def add_ortho(request, id):
     if request.method == 'POST':
         form = OrthoForm(request.POST, request.FILES)
@@ -925,6 +945,7 @@ def add_ortho(request, id):
                 'phone': reception.phone,
                 'gender': reception.gender,
                 'date_of_birth': reception.date_of_birth
+
             }
             form = OrthoForm(initial=initial_data)
     else:
@@ -937,11 +958,13 @@ def add_ortho(request, id):
             'date_of_birth': reception.date_of_birth
         }
         form = OrthoForm(initial=initial_data)
+    # Retrieve the first Ortho object where visits_id is null or 1
+    orall = Ortho.objects.filter(Q(visits_id__isnull=True) | Q(visits_id=1)
+                                 ).filter(idReception=id).first()
     appointments = Reception.objects.all().order_by('-id')
     oralls = Ortho.objects.filter(idReception=id)
     # Create a list to store photos for each OralSurgery instance
     photos_list = []
-
 
     try:
         orall = oralls.first()
@@ -974,6 +997,16 @@ def add_ortho(request, id):
             orall.lln = orall.lln.replace("'", "")
         if orall.teeth_type:
             orall.teeth_type = orall.teeth_type.replace("'", "")
+        if orall.urs:
+            orall.urs = orall.urs.replace("'", "")
+        if orall.uls:
+            orall.uls = orall.uls.replace("'", "")
+        if orall.lrs:
+            orall.lrs = orall.lrs.replace("'", "")
+        if orall.lls:
+            orall.lls = orall.lls.replace("'", "")
+        if orall.teeth_size:
+            orall.teeth_size = orall.teeth_size.replace("'", "")
         orall.save()
         # Retrieve photos associated with the current OralSurgery instance
         photos = orall.photo_set.all()
@@ -981,6 +1014,7 @@ def add_ortho(request, id):
         # Append the photos to the photos_list
         photos_list.append(photos)
     formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
+    # Retrieve the first Ortho object where visits_id is null or 1
 
     return render(request, 'ortho/ortho.html', {
         'form': form,
@@ -990,7 +1024,8 @@ def add_ortho(request, id):
         'id': id,
         'photos': photos,
         'photos_list': photos_list,
-        'formatted_prices': formatted_prices
+        'formatted_prices': formatted_prices,
+        'orall': orall
     })
 
 
@@ -1055,7 +1090,134 @@ def start_ortho(request, id):
             'teeth_size': teeth_size,
         })
 
-    return render(request, 'ortho/ortho.html', {'form': form, 'orall': orall})
+    return render(request, 'ortho/start_ortho.html', {'form': form, 'orall': orall})
+
+
+def ortho_visit(request, id):
+    orall = get_object_or_404(Ortho, id=id)
+
+    if request.method == 'POST':
+        form = OrthoForm(request.POST, instance=orall)
+        if form.is_valid():
+            form.save()
+            return redirect('add-ortho', id=orall.idReception_id)
+    else:
+        form = OrthoForm(instance=orall)
+
+    return render(request, 'ortho/ortho_visit.html', {'form': form, 'orall': orall})
+
+
+def ortho_edit(request, id):
+    orall = get_object_or_404(Ortho, id=id)
+
+    if request.method == 'POST':
+        form = OrthoForm(request.POST, instance=orall)
+        if form.is_valid():
+            form.save()
+            return redirect('add-ortho', id=orall.idReception_id)
+    else:
+        form = OrthoForm(instance=orall)
+
+    return render(request, 'ortho/update_ortho.html', {'form': form, 'orall': orall})
+
+
+def ortho_visit1(request, id):
+    orall = get_object_or_404(Ortho, id=id)
+    if request.method == 'POST':
+        # Create a new instance of Ortho
+        new_orall = Ortho()
+
+        # Copy data from the existing orall object to the new instance
+        new_orall.idReception = orall.idReception
+        new_orall.name = orall.name
+        new_orall.phone = orall.phone
+        new_orall.gender = orall.gender
+        new_orall.date_of_birth = orall.date_of_birth
+        new_orall.ur = orall.ur
+        new_orall.ul = orall.ul
+        new_orall.lr = orall.lr
+        new_orall.ll = orall.ll
+        new_orall.urn = orall.urn
+        new_orall.uln = orall.uln
+        new_orall.lrn = orall.lrn
+        new_orall.lln = orall.lln
+        new_orall.teeth_type = orall.teeth_type
+        new_orall.angle_class = orall.angle_class
+        new_orall.over_jet = orall.over_jet
+        new_orall.over_bt = orall.over_bt
+        new_orall.jow_shift = orall.jow_shift
+        new_orall.midlin_shift = orall.midlin_shift
+        new_orall.urs = orall.urs.replace("'", "") if orall.urs else None
+        new_orall.uls = orall.uls.replace("'", "") if orall.uls else None
+        new_orall.lrs = orall.lrs.replace("'", "") if orall.lrs else None
+        new_orall.lls = orall.lls.replace("'", "") if orall.lls else None
+        new_orall.teeth_size = orall.teeth_size.replace("'", "") if orall.teeth_size else None
+        new_orall.SNA_before = orall.SNA_before
+        new_orall.SNA_after = orall.SNA_after
+        new_orall.SNB_before = orall.SNB_before
+        new_orall.SNB_after = orall.SNB_after
+        new_orall.ANB_before = orall.ANB_before
+        new_orall.ANB_after = orall.ANB_after
+        new_orall.IMPA_before = orall.IMPA_before
+        new_orall.IMPA_after = orall.IMPA_after
+        new_orall.U1_SN_before = orall.U1_SN_before
+        new_orall.U1_SN_after = orall.U1_SN_after
+        new_orall.SNGOGN_before = orall.SNGOGN_before
+        new_orall.SNGOGN_after = orall.SNGOGN_after
+        new_orall.treatment_plan = orall.treatment_plan
+        new_orall.price = orall.price
+        new_orall.paid = orall.paid
+        new_orall.notes = orall.notes
+        new_orall.exo_images = orall.exo_images
+
+        form = OrthoForm(request.POST, request.FILES, instance=new_orall)
+        if form.is_valid():
+            form.save()
+            photos = request.FILES.getlist('exo_images')
+
+            for photo in photos:
+                Photo.objects.create(ortho_instance=new_orall, image=photo)
+
+            return redirect('add-ortho', id=orall.idReception_id)
+    else:
+        # Remove first and last characters from certain fields
+        urs = orall.urs[1:-1] if orall.urs else None
+        uls = orall.uls[1:-1] if orall.uls else None
+        lrs = orall.lrs[1:-1] if orall.lrs else None
+        lls = orall.lls[1:-1] if orall.lls else None
+        ur = orall.ur[1:-1] if orall.ur else None
+        ul = orall.ul[1:-1] if orall.ul else None
+        lr = orall.lr[1:-1] if orall.lr else None
+        ll = orall.ll[1:-1] if orall.ll else None
+        urn = orall.urn[1:-1] if orall.urn else None
+        uln = orall.uln[1:-1] if orall.uln else None
+        lrn = orall.lrn[1:-1] if orall.lrn else None
+        lln = orall.lln[1:-1] if orall.lln else None
+        teeth_type = orall.teeth_type[1:-1] if orall.teeth_type else None
+        teeth_size = orall.teeth_size[1:-1] if orall.teeth_size else None
+
+        form = OrthoForm(instance=orall, initial={
+            'urs': urs,
+            'uls': uls,
+            'lrs': lrs,
+            'lls': lls,
+            'ur': ur,
+            'ul': ul,
+            'lr': lr,
+            'll': ll,
+            'urn': urn,
+            'uln': uln,
+            'lrn': lrn,
+            'lln': lln,
+            'teeth_type': teeth_type,
+            'teeth_size': teeth_size,
+        })
+        oralls = Ortho.objects.filter(idReception=id)
+        try:
+            orall = oralls.first()
+        except AttributeError:
+            orall = None
+    return render(request, 'ortho/ortho_visit1.html', {'form': form, 'orall': orall})
 
 
 def remove_photo_ortho(request, photo_id):
@@ -1065,15 +1227,15 @@ def remove_photo_ortho(request, photo_id):
     return redirect('ortho-edit', id=ortho_instance.id)
 
 
-def delete_ortho(request, id):
-    # Get the drug related to the Reception
-    ortho = get_object_or_404(Ortho, id=id)
-    # Store the idReception before deleting the drug
-    idReception = ortho.idReception_id
-    # Delete the drug
-    ortho.delete()
-    # Redirect to the 'drugs' view with the same idReception
-    return redirect('add-ortho', id=idReception)
+def delete_ortho(request, idReception_id):
+    # Find all Ortho objects with the specified idReception_id
+    ortho_objects = Ortho.objects.filter(idReception_id=idReception_id)
+
+    # Delete all Ortho objects in the queryset
+    ortho_objects.delete()
+
+    # Redirect to a specific page, for example, the 'add-ortho' page for the idReception_id
+    return redirect('add-ortho', id=idReception_id)
 
 
 def ortho_reception(request):
@@ -1089,9 +1251,9 @@ def search_ortho(request):
         searched = request.POST.get('searched')
         orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
         receptions = Reception.objects.all()
-        return render(request, 'search_ortho.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+        return render(request, 'ortho/search_ortho.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
     else:
-        return render(request, 'search_ortho.html', {})
+        return render(request, 'ortho/search_ortho.html', {})
 
 
 def exo_reception(request):

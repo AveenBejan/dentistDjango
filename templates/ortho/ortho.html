@@ -18,7 +18,13 @@ textarea {
 }
 
 
+
     </style>
+    <style>
+  #myAccordionItem {
+    display: none;
+  }
+</style>
 </head>
 <body>
 <br/>
@@ -71,7 +77,7 @@ textarea {
                                 <th scope="col">Lower Right NOW</th>
                                 <th scope="col">Lower Left NOW</th>
                                 <th scope="col">Teeth Type</th>
-                                <th scope="col">Start</th>
+                                <th scope="col">Start Ortho</th>
                                 <th scope="col">angle_class</th>
                                 <th scope="col">over_jet</th>
                                 <th scope="col">over_bt</th>
@@ -82,17 +88,20 @@ textarea {
                                 <th scope="col">Lower Right S</th>
                                 <th scope="col">Lower Left S</th>
                                 <th scope="col">teeth_size</th>
-                                <th scope="col">CEPHALOMETRIC</th>
                                 <th scope="col">treatment_plan</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">paid</th>
                                 <th scope="col">Notes</th>
                                 <th scope="col">Exo Photo</th>
-                                <th scope="col" colspan="5" style="text-align:center;">Other</th>
+
+                                <th scope="col">Add Visits</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                                <th scope="col" style="text-align:center;">Show Data</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for orall in oralls %}
+                            {% if orall %}
                             <tr>
                                 <td style="text-align: center;" scope="row">{{ orall.id }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.idReception_id }}</td>
@@ -113,10 +122,8 @@ textarea {
                                 <td style="text-align: center;" scope="row">{{ orall.lrn|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.lln|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.teeth_type|slice:"1:-1" }}</td>
-                                {% if orall %}
                                 <td><a href="{% url 'start-ortho' orall.id %}" style="display: inline;"><span
                                         class="btn btn-warning">Start Ortho</span></a></td>
-                                {% endif %}
                                 <td style="text-align: center;" scope="row">{{ orall.angle_class }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.over_jet }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.over_bt }}</td>
@@ -127,77 +134,6 @@ textarea {
                                 <td style="text-align: center;" scope="row">{{ orall.lrs|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.lls|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.teeth_size |slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row"><!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                                            data-target="#exampleModal">
-                                        CEPHALOMETRIC
-                                    </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <table border="1" class="table table-hover">
-                                                            <thead style="background-color:#73ccf0; color:#fff;">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Before</th>
-                                                                <th>After</th>
-                                                                <th>Range</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tr>
-                                                                <th>SNA</th>
-                                                                <td>{{ orall.SNA_before }}</td>
-                                                                <td>{{ orall.SNA_after }}</td>
-                                                                <td>80.8 ± 3.9</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>SNB</th>
-                                                                <td>{{ orall.SNB_before }}</td>
-                                                                <td>{{ orall.SNB_after }}</td>
-                                                                <td>78.0 ± 3.1</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>ANB</th>
-                                                                <td>{{ orall.ANB_before }}</td>
-                                                                <td>{{ orall.ANB_after }}</td>
-                                                                <td>0.4 - 5.1</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>1MPA</th>
-                                                                <td>{{ orall.1MPA_before }}</td>
-                                                                <td>{{ orall.1MPA_after }}</td>
-                                                                <td>90.0 ± 7.0</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>U1- SN</th>
-                                                                <td>{{ orall.U1_SN_before }}</td>
-                                                                <td>{{ orall.U1_SN_after }}</td>
-                                                                <td>103.0 ± 5.0</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>SNGOGN</th>
-                                                                <td>{{ orall.SNGOGN_before }}</td>
-                                                                <td>{{ orall.SNGOGN_after }}</td>
-                                                                <td>32.3 ± 4.7</td>
-                                                            </tr>
-                                                        </table>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
                                 <td style="text-align: center;" scope="row">{{ orall.treatment_plan }}</td>
                                 <td style="text-align: center;">
                                     {% if orall.price is not None %}
@@ -208,7 +144,9 @@ textarea {
                                 </td>
                                 <td style="text-align: center;" scope="row">{{ orall.paid }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.notes }}</td>
+
                                 <td>
+                                    {% for orall in oralls %}
                                     {% for photos in photos_list %}
                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                     {% for photo in photos %}
@@ -217,40 +155,153 @@ textarea {
                                     {% endfor %}
                                     {% endif %}
                                     {% endfor %}
+                                    {% endfor %}
+
                                 </td>
+
                                 {% if orall %}
-                                <!--<td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
+
+
+                                <!--<td><a href="{% url 'ortho-visit' orall.id %}" style="display: inline;"><span class="btn btn-warning">Add first visit</span></a></td>-->
+                                <td><a href="{% url 'ortho-visit1' orall.id   %}" style="display: inline;"><span
                                         class="btn btn-warning">Add Visits</span></a></td>
-                                <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span
-                                        class="btn btn-warning">Edit</span></a></td>-->
-                                <td><a href="{% url 'delete-ortho'  orall.id %}" style="display: inline;"><span
+                                <td><a href="{% url 'ortho-edit' orall.id   %}" style="display: inline;"><span
+                                         class="btn btn-warning">Edit</span></a></td>
+                                <td><a href="{% url 'delete-ortho'  orall.idReception_id %}"
+                                       style="display: inline;"><span
                                         class="btn btn-outline-danger">Delete</span></a></td>
-                                <td><a href="{% url 'drugs' id=id %}" style="display: inline;"><span
-                                        class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                <td><!-- Example split danger button -->
+                                    <div class="list-group">
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target="#exampleModal">
+                                            CEPHALOMETRIC
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <table border="1" class="table table-hover">
+                                                                <thead style="background-color:#73ccf0; color:#fff;">
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Before</th>
+                                                                    <th>After</th>
+                                                                    <th>Range</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tr>
+                                                                    <th>SNA</th>
+                                                                    <td>{{ orall.SNA_before }}</td>
+                                                                    <td>{{ orall.SNA_after }}</td>
+                                                                    <td>80.8 ± 3.9</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>SNB</th>
+                                                                    <td>{{ orall.SNB_before }}</td>
+                                                                    <td>{{ orall.SNB_after }}</td>
+                                                                    <td>78.0 ± 3.1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>ANB</th>
+                                                                    <td>{{ orall.ANB_before }}</td>
+                                                                    <td>{{ orall.ANB_after }}</td>
+                                                                    <td>0.4 - 5.1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>1MPA</th>
+                                                                    <td>{{ orall.IMPA_after }}</td>
+                                                                    <td>{{ orall.IMPA_after }}</td>
+                                                                    <td>90.0 ± 7.0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>U1- SN</th>
+                                                                    <td>{{ orall.U1_SN_before }}</td>
+                                                                    <td>{{ orall.U1_SN_after }}</td>
+                                                                    <td>103.0 ± 5.0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>SNGOGN</th>
+                                                                    <td>{{ orall.SNGOGN_before }}</td>
+                                                                    <td>{{ orall.SNGOGN_after }}</td>
+                                                                    <td>32.3 ± 4.7</td>
+                                                                </tr>
+                                                            </table>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target=".bd-example-modal-lg">Show Visits
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                             aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    {% if orall.idReception %}
+                                                    <h2># of Visits for Patient {{ orall.idReception.name }}</h2>
+                                                    <table border="1" class="table table-hover">
+                                                        <thead style="background-color:#73ccf0; color:#fff;">
+                                                        <tr>
+                                                            <th>Visit Num</th>
+                                                            <th>Wive Size</th>
+                                                            <th>Cross Sectional</th>
+                                                            <th>Materials</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for orall in oralls %}
+                                                        <tr>
+
+                                                            <td>{{ orall.visits.visit_name }}</td>
+                                                            <td>{{ orall.wive_size }}</td>
+                                                            <td>{{ orall.cross_sectional }}</td>
+                                                            <td>{{ orall.material }}</td>
+
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    {% else %}
+                                                    <p>No associated ID Reception data found.</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <a href="{% url 'drugs' id=id %}"><span class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+                                        <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                                class="btn btn-info">&nbsp;Gave-Appointment&nbsp;</span></a>
+                                    </div>
+                                </td>
                                 {% endif %}
                             </tr>
-                            {% endfor %}
+                            {% endif %}
                             </tbody>
                         </table>
                     </div>
 
 
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false"
-                                aria-controls="collapseTwo"
-                                style="text-align: justify; background-color:#a7e2fa; color:#000">
-                            Ortho
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse"
-                         aria-labelledby="headingTwo"
-                         data-bs-parent="#accordionExample">
+                <button class="btn btn-warning" id="toggleButton">Befor Start Ortho</button>
+                <div class="accordion-item" id="myAccordionItem">
                         <div class="accordion-body">
                             {%if user.is_authenticated%}
                             <p>{{form.initial.idReception.name}}</p>
@@ -853,19 +904,32 @@ textarea {
                                                     <input type="hidden" name="lrs">
                                                     <input type="hidden" name="lls">
                                                     <input type="hidden" name="teeth_size">
-                                                    <input type="hidden" name="before">
-                                                    <input type="hidden" name="after">
                                                     <input type="hidden" name="treatment_plan">
                                                     <input type="hidden" name="price">
                                                     <input type="hidden" name="paid">
+                                                    <input type="hidden" name="SNA_before">
+                                                    <input type="hidden" name="SNA_after">
+                                                    <input type="hidden" name="SNB_before">
+                                                    <input type="hidden" name="SNB_after">
+                                                    <input type="hidden" name="ANB_before">
+                                                    <input type="hidden" name="ANB_after">
+                                                    <input type="hidden" name="IMPA_before">
+                                                    <input type="hidden" name="IMPA_after">
+                                                    <input type="hidden" name="U1_SN_before">
+                                                    <input type="hidden" name="U1_SN_after">
+                                                    <input type="hidden" name="SNGOGN_before">
+                                                    <input type="hidden" name="SNGOGN_after">
                                                     <input type="hidden" name="notes">
                                                     <input type="hidden" name="exo_images">
+                                                    <input type="hidden" name="visits">
+                                                    <input type="hidden" name="wive_size">
+                                                    <input type="hidden" name="cross_sectional">
+                                                    <input type="hidden" name="material">
 
                                                     <div class="col-12">
                                                         <div class="alert alert-secondary" role="alert" align="center">
                                                             <input type="submit" id="but1"
-                                                                   value="Add Ortho Before Start"
-                                                                   class="btn btn-info">
+                                                                   value="Add Ortho Before Start" class="btn btn-info">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -874,466 +938,6 @@ textarea {
                                     </div>
                                 </div>
                             </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
-                                style="text-align: justify; background-color:#a7e2fa; color:#000">
-                            Start Ortho
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                         data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {% if user.is_authenticated %}
-                            <p>{{ form.initial.idReception.name }}</p>
-                            <form method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
-                                       class="form-control">
-                                <input type="hidden" name="name" value="{{ form.initial.name }}"
-                                       class="form-control">
-                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
-                                       class="form-control">
-                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
-                                       class="form-control">
-                                <input type="hidden" name="date_of_birth"
-                                       value="{{ form.initial.date_of_birth }}"
-                                       class="form-control">
-
-                                <input type="hidden" name="ur" value="{{ form.initial.ur }}">
-                                <input type="hidden" name="ul" value="{{ form.initial.ul }}">
-                                <input type="hidden" name="lr" value="{{ form.initial.lr }}">
-                                <input type="hidden" name="ll" value="{{ form.initial.ll }}">
-                                <input type="hidden" name="urn" value="{{ form.initial.urn }}">
-                                <input type="hidden" name="uln" value="{{ form.initial.uln }}">
-                                <input type="hidden" name="lrn" value="{{ form.initial.lrn }}">
-                                <input type="hidden" name="lln" value="{{ form.initial.lln }}">
-                                <input type="hidden" name="teeth_type" value="{{ form.initial.teeth_type }}">
-
-                                <div class="container">
-                                    <div class="col-10">
-                                        <br/>
-                                        <div class="card-header">
-
-                                            <h4 style="font-size: 22px; text-align:center;"> Super Numerous</h4>
-                                        </div>
-                                        <br/>
-                                        <div class="row">
-
-                                            <div class="col-sm-6">
-                                                <div class="card-header">
-                                                    Upper Right
-                                                </div>
-                                                <div class="card">
-                                                    <div class="card-body">
-
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR1">
-                                                            <label class="form-check-label">UR1</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR2">
-                                                            <label class="form-check-label">UR2</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR3">
-                                                            <label class="form-check-label">UR3</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR4">
-                                                            <label class="form-check-label">UR4</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR5">
-                                                            <label class="form-check-label">UR5</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR6">
-                                                            <label class="form-check-label">UR6</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR7">
-                                                            <label class="form-check-label">UR7</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="urs"
-                                                                   value="UR8">
-                                                            <label class="form-check-label">UR8</label>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="card-header">
-                                                    Upper Left
-                                                </div>
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL1">
-                                                            <label class="form-check-label">UL1</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL2">
-                                                            <label class="form-check-label">UL2</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL3">
-                                                            <label class="form-check-label">UL3</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL4">
-                                                            <label class="form-check-label">UL4</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL5">
-                                                            <label class="form-check-label">UL5</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL6">
-                                                            <label class="form-check-label">UL6</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL7">
-                                                            <label class="form-check-label">UL7</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="uls"
-                                                                   value="UL8">
-                                                            <label class="form-check-label">UL8</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="card-header">
-                                                    Lower Right
-                                                </div>
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR1">
-                                                            <label class="form-check-label">LR1</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR2">
-                                                            <label class="form-check-label">LR2</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR3">
-                                                            <label class="form-check-label">LR3</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR4">
-                                                            <label class="form-check-label">LR4</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR5">
-                                                            <label class="form-check-label">LR5</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR6">
-                                                            <label class="form-check-label">LR6</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR7">
-                                                            <label class="form-check-label">LR7</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lrs"
-                                                                   value="LR8">
-                                                            <label class="form-check-label">LR8</label>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="card-header">
-                                                    Lower Left
-                                                </div>
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL1">
-                                                            <label class="form-check-label">LL1</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL2">
-                                                            <label class="form-check-label">LL2</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL3">
-                                                            <label class="form-check-label">LL3</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL4">
-                                                            <label class="form-check-label">LL4</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL5">
-                                                            <label class="form-check-label">LL5</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL6">
-                                                            <label class="form-check-label">LL6</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL7">
-                                                            <label class="form-check-label">LL7</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="lls"
-                                                                   value="LL8">
-                                                            <label class="form-check-label">LL8</label>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <select name="angle_class" class="form-control">
-                                                    <option selected disabled>Angle Class</option>
-                                                    <option value="I">I</option>
-                                                    <option value="II">II</option>
-                                                    <option value="III">III</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="teeth_size"
-                                                           value="Crowding">
-                                                    <label class="form-check-label">Crowding</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           name="teeth_size"
-                                                           value="Spacing">
-                                                    <label class="form-check-label">Spacing</label>
-                                                </div>
-                                            </div>
-                                            <br/>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <input type="text" class="form-control" name="over_jet" required
-                                                           placeholder="Over Jet" style="font-weight:bold;"
-                                                           value="">
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <input type="text" class="form-control" name="over_bt"
-                                                           placeholder="Over Bt" required value=""
-                                                           style="font-weight:bold;">
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <input type="text" class="form-control" name="jow_shift"
-                                                           required
-                                                           placeholder="Jow Shift" style="font-weight:bold;"
-                                                           value="">
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <input type="text" class="form-control" name="midlin_shift"
-                                                           placeholder="Midline Shift" required value=""
-                                                           style="font-weight:bold;">
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control" name="price" required
-                                                           placeholder="price" style="font-weight:bold;" value="">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control" name="notes"
-                                                           placeholder="notes" required value=""
-                                                           style="font-weight:bold;">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="file" name="exo_images"
-                                                           class="form-control"
-                                                           multiple>
-                                                </div>
-                                                <textarea name="treatment_plan" placeholder="Treatment Plan" rows="4"
-                                                          cols="100"></textarea>
-                                                <div class="col-12">
-                                                    <br/>
-                                                    <div class="card-header">
-
-                                                        <h4 style="font-size: 22px; text-align:center;">
-                                                            CEPHALOMETRIC</h4>
-                                                    </div>
-                                                    <br/>
-                                                    <FORM>
-                                                        <table border="1" class="table table-hover">
-                                                            <thead style="background-color:#73ccf0; color:#fff;">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Before</th>
-                                                                <th>After</th>
-                                                                <th>Range</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tr>
-                                                                <th>SNA</th>
-                                                                <td><input type="text" name="SNA_before" class=""></td>
-                                                                <td><input type="text" name="SNA_after" class=""></td>
-                                                                <td>80.8 ± 3.9</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>SNB</th>
-                                                                <td><input type="text" name="SNB_before" class=""></td>
-                                                                <td><input type="text" name="SNB_after" class=""></td>
-                                                                <td>78.0 ± 3.1</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>ANB</th>
-                                                                <td><input type="text" name="ANB_before" class=""></td>
-                                                                <td><input type="text" name="ANB_after" class=""></td>
-                                                                <td>0.4 - 5.1</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>1MPA</th>
-                                                                <td><input type="text" name="IMPA_before"></td>
-                                                                <td><input type="text" name="IMPA_after"></td>
-                                                                <td>90.0 ± 7.0</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>U1- SN</th>
-                                                                <td><input type="text" name="U1_SN_before"></td>
-                                                                <td><input type="text" name="U1_SN_after"></td>
-                                                                <td>103.0 ± 5.0</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>SNGOGN</th>
-                                                                <td><input type="text" name="SNGOGN_before"></td>
-                                                                <td><input type="text" name="SNGOGN_after"></td>
-                                                                <td>32.3 ± 4.7</td>
-                                                            </tr>
-                                                        </table>
-                                                    </FORM>
-                                                </div>
-
-
-                                                <input type="hidden" name="paid">
-
-                                                <div class="col-12">
-                                                    <div class="alert alert-secondary" role="alert" align="center">
-                                                        <input type="submit" value="Add Ortho Before Start"
-                                                               class="btn btn-info">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
                             {% endif %}
                         </div>
                     </div>
@@ -1342,4 +946,18 @@ textarea {
         </div>
     </div>
 </div>
+<script>
+document.getElementById("toggleButton").addEventListener("click", function () {
+    var accordionItem = document.getElementById("myAccordionItem");
+
+    if (accordionItem.style.display === "none" || accordionItem.style.display === "") {
+        accordionItem.style.display = "block";
+    } else {
+        accordionItem.style.display = "none";
+    }
+});
+</script>
+</body>
+</html>
+
 {% endblock %}

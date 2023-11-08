@@ -1,0 +1,114 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Visits</li>
+                    </ol>
+                </nav>
+                            {% if user.is_authenticated %}
+                            <p>{{ form.initial.idReception.name }}</p>
+                            <form method="POST" enctype="multipart/form-data">
+
+
+                                {% csrf_token %}
+                                <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception }}"
+                                       class="form-control">
+                                <input type="hidden" name="name" value="{{ form.initial.name }}"
+                                       class="form-control">
+                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                                       class="form-control">
+                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                                       class="form-control">
+                                <input type="hidden" name="date_of_birth"
+                                       value="{{ form.initial.date_of_birth }}"
+                                       class="form-control">
+
+                                <input type="hidden" name="ur" value="{{ form.initial.ur }}">
+                                <input type="hidden" name="ul" value="{{ form.initial.ul }}">
+                                <input type="hidden" name="lr" value="{{ form.initial.lr }}">
+                                <input type="hidden" name="ll" value="{{ form.initial.ll }}">
+                                <input type="hidden" name="urn" value="{{ form.initial.urn }}">
+                                <input type="hidden" name="uln" value="{{ form.initial.uln }}">
+                                <input type="hidden" name="lrn" value="{{ form.initial.lrn }}">
+                                <input type="hidden" name="lln" value="{{ form.initial.lln }}">
+                                <input type="hidden" name="teeth_type" value="{{ form.initial.teeth_type }}">
+                                <input type="hidden" name="angle_class" value="{{ form.initial.angle_class }}">
+                                <input type="hidden" name="over_jet" value="{{ form.initial.over_jet }}">
+                                <input type="hidden" name="over_bt" value="{{ form.initial.over_bt }}">
+                                <input type="hidden" name="jow_shift" value="{{ form.initial.jow_shift }}">
+                                <input type="hidden" name="midlin_shift" value="{{ form.initial.midlin_shift }}">
+                                <input type="hidden" name="urs" value="{{ form.initial.urs }}">
+                                <input type="hidden" name="uls" value="{{ form.initial.uls }}">
+                                <input type="hidden" name="lrs" value="{{ form.initial.lrs }}">
+                                <input type="hidden" name="lls" value="{{ form.initial.lls }}">
+                                <input type="hidden" name="teeth_size" value="{{ form.initial.teeth_size }}">
+                                <input type="hidden" name="SNA_before" value="{{ form.initial.SNA_before }}">
+                                <input type="hidden" name="SNA_after" value="{{ form.initial.SNA_after }}">
+                                <input type="hidden" name="SNB_before" value="{{ form.initial.SNB_before }}">
+                                <input type="hidden" name="SNB_after" value="{{ form.initial.SNB_after }}">
+                                <input type="hidden" name="ANB_before" value="{{ form.initial.ANB_before }}">
+                                <input type="hidden" name="ANB_after" value="{{ form.initial.ANB_after }}">
+                                <input type="hidden" name="IMPA_before" value="{{ form.initial.IMPA_before }}">
+                                <input type="hidden" name="IMPA_after" value="{{ form.initial.IMPA_after }}">
+                                <input type="hidden" name="U1_SN_before" value="{{ form.initial.U1_SN_before }}">
+                                <input type="hidden" name="U1_SN_after" value="{{ form.initial.U1_SN_after }}">
+                                <input type="hidden" name="SNGOGN_before" value="{{ form.initial.SNGOGN_before }}">
+                                <input type="hidden" name="SNGOGN_after" value="{{ form.initial.SNGOGN_after }}">
+                                <input type="hidden" name="treatment_plan" value="{{ form.initial.treatment_plan }}">
+                                <input type="hidden" name="price" value="{{ form.initial.price }}">
+                                <input type="hidden" name="paid" value="{{ form.initial.paid }}">
+                                <input type="hidden" name="notes" value="{{ form.initial.notes }}">
+                                <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-3"  required="required">
+                                        {{ form.visits }}
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select name="wive_size" class="form-select" required="required">
+                                            <option value="">Wive Size</option>
+                                            <option value="I">I</option>
+                                            <option value="II">II</option>
+                                            <option value="III">III</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select name="cross_sectional" class="form-select" required="required">
+                                            <option value="">Cross Sectional</option>
+                                            <option value="I">I</option>
+                                            <option value="II">II</option>
+                                            <option value="III">III</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select name="material" class="form-select" required="required">
+                                            <option value="">Material</option>
+                                            <option value="I">I</option>
+                                            <option value="II">II</option>
+                                            <option value="III">III</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-secondary" role="alert" align="center">
+                                        <input type="submit" value="Add New Visits"
+                                               class="btn btn-info">
+                                    </div>
+                                </div>
+                            </form>
+
+                            {% endif %}
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

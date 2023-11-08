@@ -247,6 +247,14 @@ class OralSurgery(models.Model):
         return self.idReception
 
 
+class Visits(models.Model):
+    visit_name = models.CharField('visit_name',max_length=120, blank=True,null=True)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.visit_name
+
+
 class Ortho(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
     name = models.CharField('Name',max_length=120, blank=True,null=True)
@@ -285,7 +293,7 @@ class Ortho(models.Model):
     SNGOGN_before = models.CharField('Name', max_length=120, blank=True,null=True)
     SNGOGN_after = models.CharField('Name', max_length=120, blank=True,null=True)
     treatment_plan = models.TextField('Name', max_length=120, blank=True,null=True)
-    visit_type = models.CharField('Name', max_length=120, blank=True,null=True)
+    visits = models.ForeignKey(Visits, on_delete=models.CASCADE, blank=True,null=True)
     wive_size = models.CharField('Name', max_length=120, blank=True,null=True)
     cross_sectional = models.CharField('Name', max_length=120, blank=True,null=True)
     material = models.CharField('Name', max_length=120, blank=True,null=True)

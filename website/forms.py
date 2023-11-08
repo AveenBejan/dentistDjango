@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits
 from django.forms import formset_factory
 
 
@@ -627,14 +627,29 @@ class AppointmentForm(ModelForm):
         }
 
 
+class VisitsForm(forms.ModelForm):
+    class Meta:
+        model = Visits
+        fields = ['visit_name']
+        labels = {
+            'visit_name': '',}
+        widgets = {
+            'visit_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'visit_name'}),}
+
+
 class OrthoForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    visits = forms.ModelChoiceField(queryset=Visits.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Select Visits",
+                                    to_field_name='visit_name',
+                                    required=False,  # Mark the field as not required
+                                    initial=None) # Set the initial value to None
 
     class Meta:
         model = Ortho
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
                   'over_jet','over_bt', 'jow_shift', 'midlin_shift','urs', 'uls','lrs', 'lls','teeth_size','SNA_before','SNA_after','SNB_before','SNB_after','ANB_before','ANB_after',
-                  'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid', 'notes','exo_images')
+                  'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid', 'notes','exo_images','visits',
+                  'wive_size','cross_sectional','material')
         labels = {
             'idReception': '',
             'name': '',
@@ -676,6 +691,10 @@ class OrthoForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'notes': '',
+            'visits': '',
+            'wive_size': '',
+            'cross_sectional': '',
+            'material': '',
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
@@ -718,6 +737,9 @@ class OrthoForm(forms.ModelForm):
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'notes': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'wive_size': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
+            'cross_sectional': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
+            'material': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
         }
 
 
