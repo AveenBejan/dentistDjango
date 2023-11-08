@@ -78,9 +78,23 @@
                                     <br/>
                                     <a href="{% url 'filling' reception.id %}" style="display: inline;"><span
                                             class="btn btn-outline-warning">Add Filling</span></a>
+                                        <br/>
+                                    <a href="{% url 'add-endo' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Endo</span></a>
                                 </div>
                             </li>
                         </td>
+                        <td><li class="nav-item dropdown" style="color: #fff;">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                   aria-expanded="false" style="color: #000;">
+                                    Ortho
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="{% url 'add-ortho' reception.id %}" style="display: inline;"><span
+                                            class="btn btn-outline-warning">Add Ortho</span></a>
+                                    <br/>
+                                </div>
+                            </li></td>
 
 
                     </tr>
