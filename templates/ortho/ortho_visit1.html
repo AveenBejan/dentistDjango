@@ -111,4 +111,13 @@
     </div>
 
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var visitsSelect = document.getElementById('id_visits');
+    if (visitsSelect) {
+        visitsSelect.removeChild(visitsSelect.options[1]);
+    }
+});
+</script>
+
 {% endblock %}

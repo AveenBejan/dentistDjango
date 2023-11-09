@@ -619,4 +619,28 @@
             </div>
           </div>
 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    // Get a reference to the date picker input field
+    var datePicker = $("#datepicker-3");
+
+    // Add an event listener for when a date is selected
+    datePicker.change(function () {
+        // Get the selected date
+        var selectedDate = datePicker.val();
+
+        // Parse the selected date to create a Date object
+        var date = new Date(selectedDate);
+
+        // Check if the selected date is Thursday (day 4) or Friday (day 5)
+        if (date.getDay() === 4 || date.getDay() === 5) {
+            // Display an alert if it's Thursday or Friday
+            alert("Our Dental Center is closed on Thursday and Friday.Thank you!");
+        }
+    });
+});
+</script>
+
 {% endblock %}
