@@ -20,7 +20,7 @@
                     <input type="hidden" name="phone" value="{{ form.initial.phone }}" readonly>
                     <input type="hidden" name="gender" value="{{ form.initial.gender }}" readonly>
                     <input type="hidden" name="date_of_birth" value="{{ form.initial.date_of_birth }}" readonly>
-                    <input type="text" value="{{ orall.first_visit }}" name="first_visit" class="form-control" readonly>
+                    <input type="hidden" value="{{ orall.first_visit }}" name="first_visit" class="form-control" readonly>
                     <input type="hidden" name="components_first" value="{{ form.initial.components_first }}" class="form-control" readonly>
                     <input type="hidden" name="ur" value="{{ form.initial.ur }}" class="form-control" readonly>
                     <input type="hidden" name="ul" value="{{ form.initial.ul }}" class="form-control" readonly>
@@ -34,11 +34,11 @@
                     <input type="hidden" name="note" value="{{ form.initial.note }}" class="form-control">
                     <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}" class="form-control"
                            multiple>
-                    <div class="col-6">
-
+                    <div class="col-12">
+<h6 style="font-weight: bold;">Frist Visit</h6><input type="text" name="first_visit" id="first_visit" value="{{ form.initial.first_visit }}" readonly>
                         <table>
-                             <td> <h6 style="font-weight: bold;">Frist Visit</h6><input type="text" name="first_visit" id="first_visit" value="{{ form.initial.first_visit }}" readonly></td>
-                            <td><h6 style="font-weight: bold;">Second Visit</h6><input type="date" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %}
+                             <td> </td>
+                            <td><h6 style="font-weight: bold;">Second Visit</h6><input type="date" name="second_visit" id="secondVisitValue"  {% if form.initial.second_visit %}readonly{% endif %}
        value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:"Y-m-d" }}{% else %}
                         {{ date.today|date:"Y-m-d" }}{% endif %}"></td>
                            <td>
@@ -64,7 +64,7 @@
                                                                    value="Instrumentation"{% if "Instrumentation" in form.initial.components_second %}checked{% endif %}>
                                                             <label class="form-check-label">Instrumentation</label>
                                                         </div></td>
-                            <br/>
+                            <br/><br/><br/>
                             <td><h6 style="font-weight: bold;">Third Visit</h6><input type="date" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %}
        value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}"></td>
                             <td> <div class="form-check form-check-inline">
@@ -89,7 +89,7 @@
                                                             <label class="form-check-label">Instrumentation</label>
                                                         </div></td>
                             <br/>
-                            <td><h6 style="font-weight: bold;">Fourth Visit</h6><input type="date" name="fourth_visit" id="fourth_visit" {% if form.initial.fourth_visit %}readonly{% endif %}
+                            <td><h6 style="font-weight: bold;">Fourth Visit</h6><input type="date" name="fourth_visit" id="fourth_visit"   {% if form.initial.fourth_visit %}readonly{% endif %}
        value="{% if form.initial.fourth_visit %}{{ form.initial.fourth_visit|date:"Y-m-d" }}{% endif %}"></td>
                             <td> <div class="form-check form-check-inline">
                                                             <input type="checkbox"

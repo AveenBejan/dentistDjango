@@ -65,12 +65,13 @@
                                 <input type="hidden" name="SNGOGN_after" value="{{ form.initial.SNGOGN_after }}">
                                 <input type="hidden" name="treatment_plan" value="{{ form.initial.treatment_plan }}">
                                 <input type="hidden" name="price" value="{{ form.initial.price }}">
-                                <input type="hidden" name="paid" value="{{ form.initial.paid }}">
+                                <input type="hidden" name="paid" value="0">
                                 <input type="hidden" name="notes" value="{{ form.initial.notes }}">
                                 <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}">
                                 <div class="form-row">
-                                    <div class="form-group col-md-3"  required="required">
+                                    <div class="form-group col-md-3">
                                         {{ form.visits }}
+
                                     </div>
                                     <div class="form-group col-md-3">
                                         <select name="wive_size" class="form-select" required="required">

@@ -6,8 +6,6 @@
     <title>{% block title %}Dental Clinic {% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.css' %}">
 </head>
 <body>
 <br/>
@@ -30,64 +28,52 @@
                         Patient Information
                     </button>
                 </h2>
-                <p>{{ form.initial.name }} &nbsp;&nbsp;
-{{ form.initial.phone }}&nbsp;&nbsp;
-{{ form.initial.gender }}&nbsp;&nbsp;
-</p>
+                <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
+                </p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <table class="table table-hover">
                             <thead style="background-color:#73ccf0; color:#fff;">
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Date of Birth</th>
-                                <th scope="col">Doctor Name</th>
-                                <th scope="col">Appointment Date</th>
-                                <th scope="col">Day Name</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">First Visit</th>
-                                <th scope="col">components_first</th>
-                                <th scope="col">Upper Right</th>
-                                <th scope="col">Upper Left</th>
-                                <th scope="col">Lower Right</th>
-                                <th scope="col">Lower Left</th>
-                                <th scope="col">no_prepare</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Paid</th>
-                                <th scope="col">Notes</th>
-                                <th scope="col">Exo Photo</th>
-                                <th scope="col">Second Visit</th>
-                                <th scope="col">components_second</th>
-                                <th scope="col">Third Visit</th>
-                                <th scope="col">components_third</th>
-                                <th scope="col">Fourth Visit</th>
-                                <th scope="col">components_fourth</th>
-                                <th scope="col" colspan="5" style="text-align:center;">Other</th>
+                                <th style="text-align: center;"  scope="col">#</th>
+                                <th style="text-align: center;"  scope="col">Doctor Name</th>
+                                <th style="text-align: center;"  scope="col">Appointment Date</th>
+                                <th style="text-align: center;"  scope="col">Day Name</th>
+                                <th style="text-align: center;"  scope="col">Time</th>
+                                <th style="text-align: center;"  scope="col">Upper Right</th>
+                                <th style="text-align: center;"  scope="col">Upper Left</th>
+                                <th style="text-align: center;"  scope="col">Lower Right</th>
+                                <th style="text-align: center;"  scope="col">Lower Left</th>
+                                <th style="text-align: center;"  scope="col">Canal</th>
+                                <th style="text-align: center;"  scope="col">Work Length</th>
+                                <th style="text-align: center;"  scope="col">no_prepare</th>
+                                <th style="text-align: center;"  scope="col">Price</th>
+                                <th style="text-align: center;"  scope="col">Total Price</th>
+                                <th style="text-align: center;"  scope="col">Paid</th>
+                                <th style="text-align: center;"  scope="col">Notes</th>
+                                <th style="text-align: center;"  scope="col">Exo Photo</th>
+                                <th scope="col" style="text-align:center;">Action</th>
+                                <th scope="col" style="text-align:center;">Show Data</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for orall in oralls %}
                             <tr>
                                 <td style="text-align: center;" scope="row">{{ orall.id }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.name }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.phone }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.gender }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.date_of_birth }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.days }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.components_first|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.ur|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.ul|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.lr|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.ll|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.canal|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.work_length }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.no_prepare }}</td>
                                 <td style="text-align: center;">
                                     {% if orall.price is not None %}
@@ -107,30 +93,80 @@
                                 <td style="text-align: center;" scope="row">{{ orall.paid }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.note }}</td>
 
-                                <td>
+                                <td style="text-align: center;" scope="row">
                                     {% for photos in photos_list %}
-                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
-                                      {% for photo in photos %}
-                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                        <a href="{% url 'remove-photo-endo' photo.id %}">Remove</a>
-                                      {% endfor %}
-                                     {% endif %}
+                                    {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                    {% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove-photo-endo' photo.id %}">Remove</a>
+                                    {% endfor %}
+                                    {% endif %}
                                     {% endfor %}
                                 </td>
-                                 <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.components_second |slice:"1:-1" }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.components_third |slice:"1:-1" }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.components_fourth |slice:"1:-1" }}</td>
-
                                 {% if orall %}
-                                <td><a href="{% url 'endo-visit' orall.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">Add Visits</span></a></td>
-                                <td><a href="{% url 'endo-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
-                                <td ><a href="{% url 'delete-endo'  orall.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                <td style="text-align: center;" scope="row"><a href="{% url 'endo-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a><br/>
+                                <a href="{% url 'endo-edit' orall.id   %}" style="display: inline;"><span
+                                        class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'delete-endo'  orall.id %}" style="display: inline;"><span
+                                        class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a></td>
+                                <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target=".bd-example-modal-lg">Show Visits
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                             aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    {% if orall.idReception %}
+                                                    <h2># of Visits for Patient {{ orall.idReception.name }}</h2>
+                                                    <table border="1" class="table table-hover">
+                                                        <thead style="background-color:#73ccf0; color:#fff;">
+                                                        <tr>
+                                                            <th style="text-align: center;"  scope="col">First Visit</th>
+                                                            <th style="text-align: center;"  scope="col">Com.first</th>
+                                                            <th style="text-align: center;" scope="col">Second Visit</th>
+                                                            <th style="text-align: center;" scope="col">Com.Second</th>
+                                                            <th style="text-align: center;" scope="col">Third Visit</th>
+                                                            <th style="text-align: center;" scope="col">Com.Third</th>
+                                                            <th style="text-align: center;" scope="col">Fourth Visit</th>
+                                                            <th style="text-align: center;" scope="col">Com.Fourth</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for orall in oralls %}
+                                                        <tr>
+
+                                                            <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.components_first|slice:"1:-1" }}
+                                                            <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.components_second|slice:"1:-1"}}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.components_third|slice:"1:-1"}}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.components_fourth|slice:"1:-1"}}</td>
+
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    {% else %}
+                                                    <p>No associated ID Reception data found.</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div><br/><a href="{% url 'drugs' id=id %}" style="display: inline;"><span
+                                        class="btn btn-info">Add Drugs</span></a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                        class="btn btn-info">Gave-Appointment</span></a></td>
+
+
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -171,13 +207,13 @@
                                 <input type="hidden" name="date_of_birth"
                                        value="{{ form.initial.date_of_birth }}"
                                        class="form-control">
-                               <!-- <div class="col-2" style="float: right; margin-top: 28px;">
-                                    <div class="card-header" align="right">
-                                        <a href="{% url 'drugs' id=id %}"
-                                           class="btn btn-outline-info d-flex align-items-center">&nbsp;&nbsp;&nbsp;
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs</a>
-                                    </div>
-                                </div>-->
+                                <!-- <div class="col-2" style="float: right; margin-top: 28px;">
+                                     <div class="card-header" align="right">
+                                         <a href="{% url 'drugs' id=id %}"
+                                            class="btn btn-outline-info d-flex align-items-center">&nbsp;&nbsp;&nbsp;
+                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs</a>
+                                     </div>
+                                 </div>-->
 
                                 <div class="container">
                                     <div class="col-10">
@@ -464,104 +500,108 @@
                                             <div class="card-body">
                                                 <div class="form-row">
                                                     <div class="col">
-                                                        <span style="margin-right: 80px;">Date of First Visit</span>
-                                                        <input type="date" class="form-control" name="first_visit"
-                                                               required placeholder="First Visit" value="">
+                                                        <input type="text" class="form-control" name="first_visit"
+                                                               id="datepicker-3"
+                                                               required placeholder="Date of First Visit" value="">
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="components_first"
-                                                                   value="Access Opining">
-                                                            <label class="form-check-label">Access Opining</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="components_first"
-                                                                   value="Opturation">
-                                                            <label class="form-check-label">Opturation</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="components_first"
-                                                                   value="Instrumentation">
-                                                            <label class="form-check-label">Instrumentation</label>
-                                                        </div>
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="components_first"
+                                                               value="Access Opining">
+                                                        <label class="form-check-label">Access Opining</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="components_first"
+                                                               value="Opturation">
+                                                        <label class="form-check-label">Opturation</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="components_first"
+                                                               value="Instrumentation">
+                                                        <label class="form-check-label">Instrumentation</label>
+                                                    </div>
                                                 </div>
                                                 <br/>
-                                                    <div class="col">
-                                                        <label class="form-check-label">No of Canal</label>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="canal"
-                                                                   value="1">
-                                                            <label class="form-check-label">1</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="canal"
-                                                                   value="2">
-                                                            <label class="form-check-label">2</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="canal"
-                                                                   value="3">
-                                                            <label class="form-check-label">3</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input"
-                                                                   name="canal"
-                                                                   value="4">
-                                                            <label class="form-check-label">4</label>
-                                                        </div>
-
-                                                <div class="form-row">
-                                                       <input type="hidden" id="paid" name="paid" value="0"
-                                                          class="form-control"
-                                                          placeholder="Paid:" required>
-                                                </div>
-                                                        <br/>
-                                                <div class="form-row">
-                                                     <div class="col">
-                                                        <input type="text" class="form-control" name="work_length" required
-                                                               placeholder="work_length" style="font-weight:bold;"
-                                                               value="">
+                                                <div class="col">
+                                                    <label class="form-check-label">No of Canal</label>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal"
+                                                               value="1">
+                                                        <label class="form-check-label">1</label>
                                                     </div>
-                                                        <div class="col">
-                                                        <input type="text" class="form-control" name="no_prepare"
-                                                               placeholder="No of Prepare:" required
-                                                               style="font-weight:bold;">
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal"
+                                                               value="2">
+                                                        <label class="form-check-label">2</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal"
+                                                               value="3">
+                                                        <label class="form-check-label">3</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal"
+                                                               value="4">
+                                                        <label class="form-check-label">4</label>
                                                     </div>
 
-                                                    <div class="col">
-                                                        <input type="text" name="price" value="" class="form-control"
-                                                               placeholder="Price:" style="font-weight:bold;" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <input type="text" name="note" value="" class="form-control"
-                                                           placeholder="Notes:" style="font-weight:bold;">
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="file" name="exo_images"
+                                                    <div class="form-row">
+                                                        <input type="hidden" id="paid" name="paid" value="0"
                                                                class="form-control"
-                                                               multiple>
+                                                               placeholder="Paid:" required>
+                                                    </div>
+                                                    <br/>
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <input type="text" class="form-control" name="work_length"
+                                                                   required
+                                                                   placeholder="work_length" style="font-weight:bold;"
+                                                                   value="">
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="text" class="form-control" name="no_prepare"
+                                                                   placeholder="No of Prepare:" required
+                                                                   style="font-weight:bold;">
+                                                        </div>
+
+                                                        <div class="col">
+                                                            <input type="text" name="price" value=""
+                                                                   class="form-control"
+                                                                   placeholder="Price:" style="font-weight:bold;"
+                                                                   required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="text" name="note" value="" class="form-control"
+                                                               placeholder="Notes:" style="font-weight:bold;">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <input type="file" name="exo_images"
+                                                                   class="form-control"
+                                                                   multiple>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="alert alert-secondary" role="alert" align="center">
-                                                    <input type="submit" id="but1" value="Apply Endo"
-                                                           class="btn btn-info">
+                                                <div class="col-12">
+                                                    <div class="alert alert-secondary" role="alert" align="center">
+                                                        <input type="submit" id="but1" value="Apply Endo"
+                                                               class="btn btn-info">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

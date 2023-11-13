@@ -25,10 +25,11 @@
                         Patient Information
                     </button>
                 </h2>
-                     <p>{{ form.initial.name }} &nbsp;&nbsp;
-{{ form.initial.phone }}&nbsp;&nbsp;
-{{ form.initial.gender }}&nbsp;&nbsp;
-</p>
+                      <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
+                </p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -36,34 +37,26 @@
                             <thead style="background-color:#73ccf0; color:#fff;">
                             <tr>
 
-                                <th scope="col">#</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Date of Birth</th>
-                                <th scope="col">Shade</th>
-                                <th scope="col">No of Unite</th>
-                                <th scope="col">Color</th>
-                                <th scope="col">No of Pre.Unite</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Notes</th>
-                                <th scope="col">Crown Photo</th>
-                                <th scope="col" colspan="5" style="text-align:center;">Other</th>
+                                <th style="text-align: center;"  scope="col">#</th>
+                                <th style="text-align: center;"  scope="col">Shade</th>
+                                <th style="text-align: center;"  scope="col">No of Unite</th>
+                                <th style="text-align: center;"  scope="col">Color</th>
+                                <th style="text-align: center;"  scope="col">No of Pre.Unite</th>
+                                <th style="text-align: center;"  scope="col">Price</th>
+                                <th style="text-align: center;"  scope="col">Total Price</th>
+                                <th style="text-align: center;"  scope="col">Notes</th>
+                                <th style="text-align: center;"  scope="col">Crown Photo</th>
+                                <th scope="col" style="text-align:center;">Other</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for crown in crownn %}
                             <tr>
-                                <td text-align="center" scope="row">{{ crown.id }}</td>
-                                <td text-align="center" scope="row">{{ crown.name }}</td>
-                                <td text-align="center" scope="row">{{ crown.phone }}</td>
-                                <td text-align="center" scope="row">{{ crown.gender }}</td>
-                                <td text-align="center" scope="row">{{ crown.date_of_birth }}</td>
-                                <td text-align="center" scope="row" align="center">{{crown.shade}}</td>
-                                <td text-align="center" scope="row" align="center">{{crown.no_unite}}</td>
-                                <td text-align="center" scope="row" align="center">{{crown.color}}</td>
-                                <td text-align="center" scope="row" align="center">{{crown.no_prepare}}</td>
+                                <td style="text-align: center;" scope="row">{{ crown.id }}</td>
+                                <td style="text-align: center;" scope="row" align="center">{{crown.shade}}</td>
+                                <td style="text-align: center;" scope="row" align="center">{{crown.no_unite}}</td>
+                                <td style="text-align: center;" scope="row" align="center">{{crown.color}}</td>
+                                <td style="text-align: center;" scope="row" align="center">{{crown.no_prepare}}</td>
                                   <td style="text-align: center;">
                                     {% if crown.price is not None %}
                                     {{ crown.price|floatformat:2 }}
@@ -79,25 +72,26 @@
                                     {% endif %}
                                 </td>
 
-                                <td text-align="center" scope="row" align="center">{{crown.note}}</td>
+                                <td style="text-align: center;" scope="row" align="center">{{crown.note}}</td>
 
 
-                                <td>
+                                <td style="text-align: center;">
                                     {% for photos in photos_list %}
                                      {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                       {% for photo in photos %}
                                         <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <br/>
                                         <a href="{% url 'remove_photo_crown' photo.id %}">Remove</a>
                                       {% endfor %}
                                      {% endif %}
                                     {% endfor %}
                                 </td>
                                 {% if crown %}
-                                <td><a href="{% url 'crown_edit' crown.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Edit</span></a></td>
-                                <td scope="row" ><a href="{% url 'delete-crown'  crown.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                <td  style="text-align: center;<a href="{% url 'crown_edit' crown.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'delete-crown'  crown.id %}" style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;Deletet&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-info">Add Drugs</span></a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info">Add Appointment</span></a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}

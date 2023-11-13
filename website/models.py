@@ -292,7 +292,7 @@ class Ortho(models.Model):
     U1_SN_after = models.CharField('Name', max_length=120, blank=True,null=True)
     SNGOGN_before = models.CharField('Name', max_length=120, blank=True,null=True)
     SNGOGN_after = models.CharField('Name', max_length=120, blank=True,null=True)
-    treatment_plan = models.TextField('Name', max_length=120, blank=True,null=True)
+    treatment_plan = models.CharField('Name', max_length=245, blank=True,null=True)
     visits = models.ForeignKey(Visits, on_delete=models.CASCADE, blank=True,null=True)
     wive_size = models.CharField('Name', max_length=120, blank=True,null=True)
     cross_sectional = models.CharField('Name', max_length=120, blank=True,null=True)

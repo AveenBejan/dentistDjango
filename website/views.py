@@ -2364,6 +2364,16 @@ def add_endo(request, id):
             orall.lr = orall.lr.replace("'", "")
         if orall.ll:
             orall.ll = orall.ll.replace("'", "")
+        if orall.canal:
+            orall.canal = orall.canal.replace("'", "")
+        if orall.components_first:
+            orall.components_first = orall.components_first.replace("'", "")
+        if orall.components_second:
+            orall.components_second = orall.components_second.replace("'", "")
+        if orall.components_third:
+            orall.components_third = orall.components_third.replace("'", "")
+        if orall.components_fourth:
+            orall.components_fourth = orall.components_fourth.replace("'", "")
         orall.total_price = orall.no_prepare * orall.price
         orall.save()
         # Retrieve photos associated with the current OralSurgery instance
@@ -2461,6 +2471,11 @@ def endo_edit(request, id):
             'ul': orall.ul[1:-1] if orall.ul else None,
             'lr': orall.lr[1:-1] if orall.lr else None,
             'll': orall.ll[1:-1] if orall.ll else None,
+            'canal': orall.canal[1:-1] if orall.canal else None,
+            'components_first': orall.components_first[1:-1] if orall.components_first else None,
+            'components_second': orall.components_second[1:-1] if orall.components_second else None,
+            'components_third': orall.components_third[1:-1] if orall.components_third else None,
+            'components_fourth': orall.components_fourth[1:-1] if orall.components_fourth else None,
         }
         form = EndoForm(instance=orall, initial=initial_data)
 
@@ -2490,6 +2505,7 @@ def endo_visit(request, id):
         # Define a default value for first_visit when the request method is not POST
         first_visit = orall.first_visit if orall.first_visit else date.today()
         # Define a default value for second_visit when the request method is not POST
+        components_first = orall.components_first if orall.components_first is not None else None
         second_visit = orall.second_visit if orall.second_visit is not None else None
         components_second = orall.components_second if orall.components_second is not None else None
         third_visit = orall.third_visit if orall.third_visit is not None else None
@@ -2501,10 +2517,7 @@ def endo_visit(request, id):
         ul = orall.ul[1:-1] if orall.ul else None
         lr = orall.lr[1:-1] if orall.lr else None
         ll = orall.ll[1:-1] if orall.ll else None
-        components_first = orall.components_first[1:-1] if orall.components_first else None
-        components_second = orall.components_second[1:-1] if orall.components_second else None
-        components_third = orall.components_third[1:-1] if orall.components_third else None
-        components_fourth = orall.components_fourth[1:-1] if orall.components_fourth else None
+        canal = orall.canal[1:-1] if orall.canal else None
 
         form = EndoForm(instance=orall, initial={
             'components_first': components_first,
@@ -2518,6 +2531,7 @@ def endo_visit(request, id):
             'ul': ul,
             'lr': lr,
             'll': ll,
+            'canal': canal,
         })
 
     return render(request, 'conservation/endo/endo_visit.html', {'form': form, 'orall': orall, 'first_visit': first_visit})

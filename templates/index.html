@@ -5,9 +5,8 @@
 <head>
     <title>{% block title %}Dental Clinic {% endblock %}</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <br/>
@@ -30,10 +29,11 @@
                         Patient Information
                     </button>
                 </h2>
-                <p>{{ form.initial.name }} &nbsp;&nbsp;
-{{ form.initial.phone }}&nbsp;&nbsp;
-{{ form.initial.gender }}&nbsp;&nbsp;
-</p>
+                <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
+                </p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -41,47 +41,35 @@
                             <thead style="background-color:#73ccf0; color:#fff;">
                             <tr>
 
-                                <th scope="col">#</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Date of Birth</th>
-                                <th scope="col">Doctor Name</th>
-                                <th scope="col">Appointment Date</th>
-                                <th scope="col">Day Name</th>
-                                <th scope="col">Time</th>
-
-                                <th scope="col">Implant</th>
-                                <th scope="col">Diameter</th>
-                                <th scope="col">Length</th>
-                                <th scope="col">No Of Implant</th>
-                                <th scope="col">Upper Right</th>
-                                <th scope="col">Upper Left</th>
-                                <th scope="col">Lower Right</th>
-                                <th scope="col">Lower Left</th>
-                                <th scope="col">Shade</th>
-                                <th scope="col">No Of Uint</th>
-                                <th scope="col">color</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Notes</th>
-                                <th scope="col">Exo Photo</th>
-                                <th scope="col">First Visit</th>
-                                <th scope="col">Second Visit</th>
-                                <th scope="col">Third Visit</th>
-                                <th scope="col">Fourth Visit</th>
-                                <th scope="col">Fifth Visit</th>
-                                <th scope="col" colspan="5" style="text-align:center;">Other</th>
+                                <th scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">Doctor Name</th>
+                                <th scope="col" style="text-align: center;">Appointment Date</th>
+                                <th scope="col" style="text-align: center;">Day Name</th>
+                                <th scope="col" style="text-align: center;">Time</th>
+                                <th scope="col" style="text-align: center;">Implant</th>
+                                <th scope="col" style="text-align: center;">Diameter</th>
+                                <th scope="col" style="text-align: center;">Length</th>
+                                <th scope="col" style="text-align: center;">No Of Implant</th>
+                                <th scope="col" style="text-align: center;"  class="hideable">Upper Right</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
+                                <th scope="col" style="text-align: center;">Shade</th>
+                                <th scope="col" style="text-align: center;">No Of Uint</th>
+                                <th scope="col" style="text-align: center;">color</th>
+                                <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" style="text-align: center;">Total Price</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Paid</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Exo Photo</th>
+                                <th scope="col"  style="text-align: center;">Actions</th>
+                                <th scope="col"  style="text-align: center;">Show Data</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for orall in oralls %}
                             <tr>
                                 <td style="text-align: center;" scope="row">{{ orall.id }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.name }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.phone }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.gender }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.date_of_birth }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.days }}</td>
@@ -90,10 +78,10 @@
                                 <td style="text-align: center;" scope="row">{{ orall.diameter }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.length }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.no_Implant }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.ur|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.ul|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.lr|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.ll|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.ur|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.ul|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.lr|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.ll|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.shade }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.no_unite }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.color }}</td>
@@ -113,9 +101,9 @@
                                     {% endif %}
                                 </td>
 
-
-                                <td style="text-align: center;" scope="row">{{ orall.note }}</td>
-                                <td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.paid }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.note }}</td>
+                                <td class="hideable">
                                     {% for photos in photos_list %}
                                      {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                       {% for photo in photos %}
@@ -125,19 +113,59 @@
                                      {% endif %}
                                     {% endfor %}
                                 </td>
-                                 <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
-                                 <td style="text-align: center;" scope="row">{{ orall.fifth_visit }}</td>
 
                                 {% if orall %}
-                                <td><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">Add Visits</span></a></td>
-                                <td><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Edit</span></a></td>
-                                <td ><a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a><br/>
+                                <a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></td>
+                                <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target=".bd-example-modal-lg">&nbsp;&nbsp;Show Visits&nbsp;&nbsp;
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                             aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    {% if orall.idReception %}
+                                                    <h2># of Visits for Patient {{ orall.idReception.name }}</h2>
+                                                    <table border="1" class="table table-hover">
+                                                        <thead style="background-color:#73ccf0; color:#fff;">
+                                                        <tr>
+                                                            <th style="text-align: center;"  scope="col">First Visit</th>
+                                                            <th style="text-align: center;" scope="col">Second Visit</th>
+                                                            <th style="text-align: center;" scope="col">Third Visit</th>
+                                                            <th style="text-align: center;" scope="col">Fourth Visit</th>
+                                                            <th style="text-align: center;" scope="col">Fifth Visit</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for orall in oralls %}
+                                                        <tr>
+
+                                                            <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.fifth_visit}}</td>
+
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    {% else %}
+                                                    <p>No associated ID Reception data found.</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div><br/><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info">Add Appointment</span></a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -470,11 +498,9 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-row">
-                                                    <div class="col">
-                                                        <span style="margin-right: 80px;">Date of First Visit</span>
-                                                        <input type="date" class="form-control" name="first_visit"
-                                                               required placeholder="First Visit" value="">
-                                                    </div>
+                                                    <input type="text" name="first_visit" class="form-control"
+                                                           required placeholder="Date of First Visit" value=""
+                                                           id="datepicker-3">
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="col">
@@ -565,4 +591,25 @@
         </div>
     </div>
 </div>
+<script>
+    // Run the script after the page has loaded
+    $(document).ready(function () {
+        // Find all elements with the 'hideable' class
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
+
+            // Check the content of each element
+            if (content === "None") {
+                // Hide the current element
+                $(this).hide();
+
+                // If it's a <td> or <th>, find the corresponding <th> by index
+                if ($(this).is('td,th')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

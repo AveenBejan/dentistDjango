@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> this is to hid th and td-->
 <br/>
 <div class="row"
      style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
@@ -21,10 +22,11 @@
                     </button>
                 </h2>
 
-<p>{{ form.initial.name }} &nbsp;&nbsp;
-{{ form.initial.phone }}&nbsp;&nbsp;
-{{ form.initial.gender }}&nbsp;&nbsp;
-</p>
+                <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
+                </p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -32,44 +34,37 @@
                             <thead style="background-color:#73ccf0; color:#fff;">
                             <tr>
 
-                                <th scope="col">#</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Date of Birth</th>
-                                <th scope="col">Doctor Name</th>
-                                <th scope="col">Appointment Date</th>
-                                <th scope="col">Day Name</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Upper Right</th>
-                                <th scope="col">Upper Left</th>
-                                <th scope="col">Lower Right</th>
-                                <th scope="col">Lower Left</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Notes</th>
-                                <th scope="col">Exo by Surgery</th>
-                                <th scope="col">Simple Exo</th>
-                                <th scope="col">Complicated</th>
-                                <th scope="col">Exo Photo</th>
-                                <th scope="col" colspan="4" style="text-align:center;">Other</th>
+                                <th scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">Doctor Name</th>
+                                <th scope="col" style="text-align: center;">Appointment Date</th>
+                                <th scope="col" style="text-align: center;">Day Name</th>
+                                <th scope="col" style="text-align: center;">Time</th>
+                                <th scope="col" class="hideable">Upper Right</th>
+                                <th scope="col" class="hideable">Upper Left</th>
+                                <th scope="col" class="hideable">Lower Right</th>
+                                <th scope="col" class="hideable">Lower Left</th>
+                                <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" class="hideable">Notes</th>
+                                <th scope="col" class="hideable">Exo by Surgery</th>
+                                <th scope="col" class="hideable">Simple Exo</th>
+                                <th scope="col" class="hideable">Complicated</th>
+                                <th scope="col" class="hideable">Exo Photo</th>
+                                <th scope="col"  style="text-align: center;">Action</th>
+                                <th scope="col"  style="text-align: center;">Show Data</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for exoo in exooes %}
                             <tr>
-                                <td text-align="center" scope="row">{{ exoo.id }}</td>
-                                <td text-align="center" scope="row">{{ exoo.name }}</td>
-                                <td text-align="center" scope="row">{{ exoo.phone }}</td>
-                                <td text-align="center" scope="row">{{ exoo.gender }}</td>
-                                <td text-align="center" scope="row">{{ exoo.date_of_birth }}</td>
-                                <td text-align="center" scope="row">{{ exoo.idReception.doctor.doctor_name }}</td>
-                                <td text-align="center" scope="row">{{ exoo.idReception.app_data }}</td>
-                                <td text-align="center" scope="row">{{ exoo.idReception.days }}</td>
-                                <td text-align="center" scope="row">{{ exoo.idReception.time|slice:"1:-1" }}</td>
-                                <td text-align="center" scope="row">{{exoo.ur|slice:"1:-1" }}</td>
-                                <td text-align="center" scope="row">{{exoo.ul|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{exoo.lr|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{exoo.ll|slice:"1:-1"}}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.id }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.doctor.doctor_name }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.app_data }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.days }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.time|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.ur|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.ul|slice:"1:-1"}}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.lr|slice:"1:-1"}}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.ll|slice:"1:-1"}}</td>
                                 <td style="text-align: center;">
                                     {% if exoo.price is not None %}
                                     {{ exoo.price|floatformat:2 }}
@@ -77,11 +72,11 @@
                                     None
                                     {% endif %}
                                 </td>
-                                <td text-align="center" scope="row">{{exoo.note}}</td>
-                                <td text-align="center" scope="row">{{exoo.exoby|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{exoo.simpleexo|slice:"1:-1"}}</td>
-                                <td text-align="center" scope="row">{{exoo.complcated |slice:"1:-1"}}</td>
-                                <td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{exoo.note}}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.exoby|slice:"1:-1"}}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.simpleexo|slice:"1:-1"}}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.complcated |slice:"1:-1"}}</td>
+                                <td class="hideable" style="text-align: center;" scope="row">
                                     {% for photos in photos_list %}
                                      {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                       {% for photo in photos %}
@@ -93,15 +88,15 @@
                                 </td>
 
                                 {% if exoo %}
-                                <td><a href="{% url 'exo_edit' exoo.id   %}" style="display: inline;"><span
-                                        class="btn btn-warning">Edit</span></a></td>
-                                <td><a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-danger">Delete</span></a></td>
+                                <td style="text-align: center;" scope="row" ><a href="{% url 'exo_edit' exoo.id   %}" style="display: inline;"><span
+                                        class="btn btn-warning">&nbsp;&nbsp;Edit&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
+                                        class="btn btn-danger">Delete</span></a></td>
                                 {% endif %}
-                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
-                                        class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
+                                        class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                        class="btn btn-info">Add Appointment</span></a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -507,5 +502,26 @@
     <img src="{{ image.url }}" alt="Image">
   {% endfor %}
 {% endif %} -->
+<script>
+    // Run the script after the page has loaded
+    $(document).ready(function () {
+        // Find all elements with the 'hideable' class
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
+
+            // Check the content of each element
+            if (content === "None") {
+                // Hide the current element
+                $(this).hide();
+
+                // If it's a <td> or <th>, find the corresponding <th> by index
+                if ($(this).is('td,th')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
+    });
+</script>
 
 {% endblock %}

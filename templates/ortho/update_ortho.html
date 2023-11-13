@@ -19,21 +19,21 @@
 
 
                                 {% csrf_token %}
-                                <input type="text" name="idReception"
+                                <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
                                        class="form-control">
-                                <input type="text" name="name" value="{{ form.initial.name }}"
+                                <input type="hidden" name="name" value="{{ form.initial.name }}"
                                        class="form-control">
-                                <input type="text" name="phone" value="{{ form.initial.phone }}"
+                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
                                        class="form-control">
-                                <input type="text" name="gender" value="{{ form.initial.gender }}"
+                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
                                        class="form-control">
-                                <input type="text" name="date_of_birth"
+                                <input type="hidden" name="date_of_birth"
                                        value="{{ form.initial.date_of_birth }}"
                                        class="form-control">
 
                                 <div class="container">
-                                    <div class="col-10">
+                                    <div class="col-12">
 
                                         <div class="card-header">
 
@@ -897,6 +897,7 @@
                             <br/>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                    <label>Angle Class</label>
                                     <input type="text" name="angle_class" class="form-control" value="{{ form.initial.angle_class }}" >
 
                                 </div>
@@ -919,22 +920,26 @@
                                 <br/>
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
+                                        <label>Over Jet</label>
                                         <input type="text" class="form-control" name="over_jet"
                                                placeholder="Over Jet" style="font-weight:bold;"
                                                value="{{ form.initial.over_jet }}">
                                     </div>
                                     <div class="form-group col-md-3">
+                                        <label>Over Bt</label>
                                         <input type="text" class="form-control" name="over_bt"
                                                placeholder="Over Bt" value="{{ form.initial.over_bt }}"
                                                style="font-weight:bold;">
                                     </div>
                                     <div class="form-group col-md-3">
+                                        <label>Jow Shift</label>
                                         <input type="text" class="form-control" name="jow_shift"
 
                                                placeholder="Jow Shift" style="font-weight:bold;"
                                                value="{{ form.initial.jow_shift }}">
                                     </div>
                                     <div class="form-group col-md-3">
+                                        <label>Midline Shift</label>
                                         <input type="text" class="form-control" name="midlin_shift"
                                                placeholder="Midline Shift" value="{{ form.initial.midlin_shift }}"
                                                style="font-weight:bold;">
@@ -942,19 +947,23 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
+                                        <label>Price</label>
                                         <input type="text" class="form-control" name="price" required
                                                placeholder="price" style="font-weight:bold;" value="{{ form.initial.price }}">
                                     </div>
                                     <div class="form-group col-md-4">
+                                        <label>Notes</label>
                                         <input type="text" class="form-control" name="notes"
                                                placeholder="notes" value="{{ form.initial.notes }}"
                                                style="font-weight:bold;">
                                     </div>
                                     <div class="form-group col-md-4">
+                                        <label>Photos</label>
                                         <input type="file" name="exo_images"
                                                class="form-control"
                                                multiple value="{{ form.initial.exo_images }}">
                                     </div>
+                                    <label>Treatment Plan</label>
                                     <input name="treatment_plan" placeholder="Treatment Plan" value="{{ form.initial.treatment_plan }}">
                                     <div class="col-12">
                                         <br/>
@@ -1010,26 +1019,30 @@
                                                     <td>32.3 ± 4.7</td>
                                                 </tr>
                                             </table>
-
-                                        <input type="hidden" name="paid" value="0">
+<label>Paid</label>
+                                        <input type="text" name="paid" value="{{ form.initial.paid }}">
 
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" required="required">
+                                <label>Do not Forget Visits</label>
                                 {{ form.visits }}
                             </div>
 
                             <div class="form-group col-md-3">
+                                <label>wive_size</label>
                                 <input type="text" name="wive_size"  value="{{ form.initial.wive_size }}">
                             </div>
                                                 <div class="form-group col-md-3">
+                                                    <label>cross_sectional</label>
                                                     <input type="text" name="cross_sectional"  value="{{ form.initial.cross_sectional }}">
 
                                                 </div>
                                                 <div class="form-group col-md-3">
+                                                    <label>material</label>
                                                     <input type="text" name="material"  value="{{ form.initial.material }}"required="required">
 
                                                 </div>
@@ -1038,7 +1051,7 @@
 
                                 <div class="col-12">
                                     <div class="alert alert-secondary" role="alert" align="center">
-                                        <input type="submit" value="Add New Visits"
+                                        <input type="submit" value="Update Ortho Information"
                                                class="btn btn-info">
                                     </div>
                                 </div>

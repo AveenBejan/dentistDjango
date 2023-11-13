@@ -1,10 +1,10 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% load widget_tweaks %}
-
 {% block title %} Contact Page{% endblock %}
-
 {% block content %}
+
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>this is to hide td and th-->
 
 <br/>
 <div class="row"
@@ -25,10 +25,11 @@
                         Patient Information
                     </button>
                 </h2>
-                          <p>{{ form.initial.name }} &nbsp;&nbsp;
-{{ form.initial.phone }}&nbsp;&nbsp;
-{{ form.initial.gender }}&nbsp;&nbsp;
-</p>
+                <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
+                </p>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
@@ -36,42 +37,36 @@
                             <thead style="background-color:#73ccf0; color:#fff;">
                             <tr>
 
-                                <th scope="col">#</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Date of Birth</th>
-                                <th scope="col">Doctor Name</th>
-                                <th scope="col">Appointment Date</th>
-                                <th scope="col">Day Name</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Shade</th>
-                                <th scope="col">No of Unite</th>
-                                <th scope="col">Color</th>
-                                <th scope="col">No of Pre.Unite</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Notes</th>
-                                <th scope="col">Crown Photo</th>
-                                <th scope="col" colspan="5">Other</th>
+                                <th scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">Doctor Name</th>
+                                <th scope="col" style="text-align: center;">Appointment Date</th>
+                                <th scope="col" style="text-align: center;">Day Name</th>
+                                <th scope="col" style="text-align: center;">Time</th>
+                                <th scope="col" style="text-align: center;">Shade</th>
+                                <th scope="col" style="text-align: center;">No of Unite</th>
+                                <th scope="col" style="text-align: center;">Color</th>
+                                <th scope="col" style="text-align: center;">No of Pre.Unite</th>
+                                <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" style="text-align: center;">Total Price</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">Notes</th>
+                                <th scope="col" style="text-align: center;">Veneer Photo</th>
+                                <th scope="col"  style="text-align: center;">Other</th>
+
+
                             </tr>
                             </thead>
                             <tbody>
                             {% for veneer in veneerr %}
                             <tr>
-                                <td text-align="center" scope="row">{{ veneer.idReception }}</td>
-                                <td text-align="center" scope="row">{{ veneer.name }}</td>
-                                <td text-align="center" scope="row">{{ veneer.phone }}</td>
-                                <td text-align="center" scope="row">{{ veneer.gender }}</td>
-                                <td text-align="center" scope="row">{{ veneer.date_of_birth }}</td>
-                                <td style="center" scope="row">{{ veneer.idReception.doctor.doctor_name }}</td>
-                                <td style="center" scope="row">{{ veneer.idReception.app_data }}</td>
-                                <td style="center" scope="row">{{ veneer.idReception.days }}</td>
-                                <td style="center" scope="row">{{ veneer.idReception.time|slice:"1:-1" }}</td>
-                                <td text-align="center" scope="row" align="center">{{veneer.shade}}</td>
-                                <td text-align="center" scope="row" align="center">{{veneer.no_unite}}</td>
-                                <td text-align="center" scope="row" align="center">{{veneer.color}}</td>
-                                <td text-align="center" scope="row" align="center">{{veneer.no_prepare}}</td>
+                                <td  style="text-align: center;" scope="row">{{ veneer.idReception }}</td>
+                                <td  style="text-align: center;"scope="row">{{ veneer.idReception.doctor.doctor_name }}</td>
+                                <td  style="text-align: center;"scope="row">{{ veneer.idReception.app_data }}</td>
+                                <td  style="text-align: center;"scope="row">{{ veneer.idReception.days }}</td>
+                                <td  style="text-align: center;"scope="row">{{ veneer.idReception.time|slice:"1:-1" }}</td>
+                                <td  style="text-align: center;" scope="row" align="center">{{veneer.shade}}</td>
+                                <td  style="text-align: center;" scope="row" align="center">{{veneer.no_unite}}</td>
+                                <td  style="text-align: center;" scope="row" align="center">{{veneer.color}}</td>
+                                <td  style="text-align: center;" scope="row" align="center">{{veneer.no_prepare}}</td>
                                 <td style="text-align: center;">
                                     {% if veneer.price is not None %}
                                     {{ veneer.price|floatformat:2 }}
@@ -86,23 +81,26 @@
                                     None
                                     {% endif %}
                                 </td>
-                                <td text-align="center" scope="row" align="center">{{veneer.note}}</td>
+                                <td  style="text-align: center;" scope="row" align="center" class="hideable">{{veneer.note}}</td>
                                 <td>
                                     {% for photos in photos_list %}
-                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
-                                      {% for photo in photos %}
-                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                        <a href="{% url 'remove_photo_veneer' photo.id %}">Remove</a>
-                                      {% endfor %}
-                                     {% endif %}
+                                    {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                    {% for photo in photos %}
+                                    <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                    <a href="{% url 'remove_photo_veneer' photo.id %}">Remove</a>
+                                    {% endfor %}
+                                    {% endif %}
                                     {% endfor %}
                                 </td>
                                 {% if veneer %}
-                                <td><a href="{% url 'veneer_edit' veneer.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Edit</span></a></td>
-                                <td scope="row" ><a href="{% url 'delete-veneer'  veneer.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-                                <td><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-outline-info">Add Drugs</span></a></td>
-                                <td><a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-outline-info">Gave-Appointment</span></a></td>
+                                <td  style="text-align: center;"><a href="{% url 'veneer_edit' veneer.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'delete-veneer'  veneer.id %}" style="display: inline;"><span
+                                        class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'drugs' id=id %}" style="display: inline;"><span
+                                        class="btn btn-info">Add Drugs</span></a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                        class="btn btn-info">Add Appointment</span></a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -190,9 +188,9 @@
                                                     <input type="text" name="note" value="" class="form-control"
                                                            placeholder="Notes:">
                                                 </div>
-                                                 <input type="hidden" id="paid" name="paid" value="0"
-                                                          class="form-control"
-                                                          placeholder="Paid:" required>
+                                                <input type="hidden" id="paid" name="paid" value="0"
+                                                       class="form-control"
+                                                       placeholder="Paid:" required>
                                                 <div class="form-group">
                                                     <input type="file" name="exo_images" class="form-control" multiple>
                                                 </div>
@@ -204,7 +202,7 @@
 
                                     <div class="col-6">
                                         <div class="card-footer text-center">
-                                            <input type="submit" value="Add New Crown"
+                                            <input type="submit" value="Add New Veneer"
                                                    class="btn btn-primary">
                                         </div>
                                     </div>
@@ -217,6 +215,27 @@
         </div>
     </div>
 </div>
-</div>
+
+<script>
+    // Run the script after the page has loaded
+    $(document).ready(function () {
+        // Find all elements with the 'hideable' class
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
+
+            // Check the content of each element
+            if (content === "None") {
+                // Hide the current element
+                $(this).hide();
+
+                // If it's a <td> or <th>, find the corresponding <th> by index
+                if ($(this).is('td,th')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
+    });
+</script>
 
 {% endblock %}
