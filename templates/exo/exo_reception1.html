@@ -44,7 +44,7 @@
                     {% for appointment in appointments  %}
                     <tr>
                         <td scope="row">{{appointment.id}}</td>
-                        <td scope="row">{{appointment.name}}</td>
+                        <td scope="row"><a href="{% url 'drugs' appointment.id %}" style="display: inline;">{{appointment.name}}</a></td>
                         <td scope="row">{{appointment.phone}}</td>
                         <td scope="row">{{appointment.gender}}</td>
                         <td scope="row">{{appointment.date_of_birth}}</td>

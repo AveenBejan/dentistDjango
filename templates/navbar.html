@@ -17,7 +17,7 @@
                      <div class="dropdown-menu">
                          {% if user.is_authenticated %}
                            {% if user.role == 'admin' %}
-                            <a class="dropdown-item" href="{% url 'signup' %}">SignOut</a>
+                            <a class="dropdown-item" href="{% url 'signup' %}">Register</a>
                            {% endif %}
                          <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
                          {% else %}

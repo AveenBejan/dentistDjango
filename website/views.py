@@ -545,13 +545,22 @@ def reception(request):
 
 
 def search_doctor(request):
+    cleaned_receptions = []  # Initialize the variable outside the conditional blocks
+
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
             selected_doctor = form.cleaned_data['doctor']
+
+            # Check if the user is an admin
+            is_admin = request.user.is_authenticated and request.user.role == 'admin'
+
+            # Check if the selected doctor's name matches the logged-in user's username
+            if not is_admin and request.user.username != selected_doctor.doctor_name:
+                return redirect(reverse('login'))  # Redirect to the login page for non-admin users
+
             receptions = Reception.objects.filter(doctor=selected_doctor).order_by('-app_data')
             # Clean appointments data before rendering
-            cleaned_receptions = []
             for reception in receptions:
                 if reception.days:
                     reception.days = reception.days.replace("'", "")
@@ -559,11 +568,10 @@ def search_doctor(request):
                     reception.time = reception.time.replace("'", "")
                 cleaned_receptions.append(reception)
 
-            return render(request, 'doctors/search_doctor.html', {'receptions': receptions, 'form': form})
     else:
         form = SearchForm()
         receptions = Reception.objects.all().order_by('-app_data')
-        cleaned_receptions = []
+        # Clean appointments data before rendering
         for reception in receptions:
             if reception.days:
                 reception.days = reception.days.replace("'", "")
@@ -571,7 +579,7 @@ def search_doctor(request):
                 reception.time = reception.time.replace("'", "")
             cleaned_receptions.append(reception)
 
-    return render(request, 'doctors/search_doctor.html', {'form': form,'receptions': receptions})
+    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': cleaned_receptions})
 
 
 def all_reception(request):
