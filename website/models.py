@@ -48,12 +48,23 @@ class Doctors(models.Model):
         return self.doctor_name
 
 
+class Educational(models.Model):
+    educational_name = models.CharField('educational_name',max_length=120)
+    phone = models.CharField('phone',max_length=120)
+    gender = models.CharField('Gender',max_length=20)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.educational_name
+
+
 class Reception(models.Model):
     name = models.CharField('Name',max_length=120)
     phone = models.CharField('phone',max_length=120)
     gender = models.CharField('Gender',max_length=20)
     date_of_birth = models.DateField(null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     app_data = models.DateField(null=True)
     days = models.CharField('Days',max_length=20,null=True)
     time = models.CharField(null=True,max_length=200)

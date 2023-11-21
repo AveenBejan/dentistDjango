@@ -33,6 +33,10 @@ urlpatterns = [
     path('delete-doctor/<int:id>', views.delete_doctor, name='delete-doctor'),
     path('search_doctor', views.search_doctor, name='search-doctor'),
 
+    path('educational/educational.html', views.educational, name='educational'),
+    path('delete-educational/<int:id>', views.delete_educational, name='delete-educational'),
+    path('search_educational', views.search_educational, name='search-educational'),
+
 
     path('exo/<int:id>',views.exo, name='exo'),
     path('exo/exo_reception.html',views.exo_reception, name='exo-reception'),

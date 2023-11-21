@@ -485,7 +485,7 @@
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lrn"
-                                               value="LR4"{% if "LR4" in form.initial.lrn %}checked{% endif %}>
+                                               value="LR4" {% if "LR4" in form.initial.lrn %}checked{% endif %}>
                                         <label class="form-check-label">LR4</label>
                                     </div>
                                     <div class="form-check form-check-inline">
@@ -1027,7 +1027,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3" required="required">
+                            <div class="form-group col-md-3" required>
                                 <label>Do not Forget Visits</label>
                                 {{ form.visits }}
                             </div>

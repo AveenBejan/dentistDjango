@@ -2,6 +2,7 @@
 
 {% load static %}
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <section class="home-slider owl-carousel">
       <div class="slider-item" style="background-image: url({% static 'website/images/St2.png'  %});">
@@ -60,7 +61,7 @@
              </div>
              {% endif %}
 
-			 <form class="appointment-form" method="POST" action="">
+			 <form class="appointment-form" method="POST" id="myForm">
 				 {% csrf_token %}
 				 <div class="row">
 					 <div class="col-sm-5">
@@ -107,10 +108,25 @@
 									placeholder="Date of Appointment" required class="form-control">
 						 </div>
 					 </div>
-					 <div class="form-group">
-						 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
-								class="form-control">
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
+									class="form-control">
+						 </div>
 					 </div>
+					 {%if user.is_authenticated%}
+					 {% if user.role == 'educational_center' %}
+					 <div class="col-sm-5">
+						 <div class="form-group">
+							 <div class="icon"><span class="icon-user"></span></div>
+							 <div class="form-group">
+								 {{ form.educational }}
+							 </div>
+
+						 </div>
+					 </div>
+					 {% endif %}
+					 {% endif %}
 
 					 <div class="col-sm-12">
 						 <div class="form-check form-check-inline">
@@ -188,7 +204,7 @@
 
 
 				 <div class="form-group">
-					 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary">
+					 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary" id="submitBtn">
 				 </div>
 				 </div>
 			 </form>
@@ -619,28 +635,41 @@
             </div>
           </div>
 -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-$(document).ready(function () {
-    // Get a reference to the date picker input field
-    var datePicker = $("#datepicker-3");
+    $(document).ready(function () {
+        var datePicker = $("#datepicker-3");
+        var submitBtn = $("#submitBtn");
 
-    // Add an event listener for when a date is selected
-    datePicker.change(function () {
-        // Get the selected date
-        var selectedDate = datePicker.val();
-
-        // Parse the selected date to create a Date object
-        var date = new Date(selectedDate);
-
-        // Check if the selected date is Thursday (day 4) or Friday (day 5)
-        if (date.getDay() === 4 || date.getDay() === 5) {
-            // Display an alert if it's Thursday or Friday
-            alert("Our Dental Center is closed on Thursday and Friday.Thank you!");
+        function isThursdayOrFriday(date) {
+            return date.getDay() === 4 || date.getDay() === 5;
         }
+
+        datePicker.change(function () {
+            var selectedDate = datePicker.val();
+            var date = new Date(selectedDate);
+
+            if (isThursdayOrFriday(date)) {
+                alert("Our Dental Center is closed on Thursday and Friday. Thank you!");
+                submitBtn.prop("enabled", true);
+            } else {
+                submitBtn.prop("enabled", false);
+            }
+        });
+
+        submitBtn.on("click", function (event) {
+            var selectedDate = datePicker.val();
+            var date = new Date(selectedDate);
+
+            if (isThursdayOrFriday(date)) {
+                event.preventDefault();
+                alert("Please select a date other than Thursday or Friday.");
+            }
+        });
+
+        // Initial check on page load
+        datePicker.trigger("change");
     });
-});
 </script>
 
 {% endblock %}

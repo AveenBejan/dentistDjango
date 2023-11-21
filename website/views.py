@@ -4,9 +4,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
-    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm
+    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -345,6 +345,25 @@ def delete_doctor(request,id):
     return redirect('doctor')
 
 
+def educational(request):
+    if request.method == 'POST':
+        form = EducationalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('educational')  # Redirect to the same page after saving the form data
+    else:
+        form = EducationalForm()
+    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+    appointments = Educational.objects.all().order_by('-id')
+    return render(request, 'educational/educational.html', {'form': form, 'appointments': appointments})
+
+
+def delete_educational(request,id):
+    appointments = Educational.objects.get(pk=id)
+    appointments.delete()
+    return redirect('educational')
+
+
 def medicine1(request):
     if request.method == 'POST':
         form = Medicine1Form(request.POST)
@@ -502,14 +521,23 @@ def reception(request):
         if form.is_valid():
             instance = form.save(commit=False)
             doctor_name = form.cleaned_data['doctor']
+            educational_name = form.cleaned_data['educational']
             instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
+            # Handle potential non-existence of the Educational object
+            try:
+                educational_instance = Educational.objects.get(educational_name=educational_name)
+            except Educational.DoesNotExist:
+                educational_instance = None  # or handle this scenario as needed
+
+            # Assign the retrieved educational_instance to the instance.educational
+            instance.educational = educational_instance
 
             app_data = request.POST.get('app_data')
             days = request.POST.get('days')
             selected_times = request.POST.getlist('time')
 
             # Check if the same combination of app_data, days, and time exists for the selected doctor
-            if Reception.objects.filter(doctor=instance.doctor, app_data=app_data, days=days,
+            if Reception.objects.filter(doctor=instance.doctor,educational=instance.educational, app_data=app_data, days=days,
                                         time=selected_times).exists():
                 messages.error(request,
                                f'This date, days, and time are already booked for {doctor_name}.<br/> You Can Choose another Time')
@@ -545,7 +573,8 @@ def reception(request):
 
 
 def search_doctor(request):
-    cleaned_receptions = []  # Initialize the variable outside the conditional blocks
+    form = SearchForm()  # Always instantiate the form
+    receptions = Reception.objects.none()  # Initialize as empty queryset
 
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -560,26 +589,43 @@ def search_doctor(request):
                 return redirect(reverse('login'))  # Redirect to the login page for non-admin users
 
             receptions = Reception.objects.filter(doctor=selected_doctor).order_by('-app_data')
-            # Clean appointments data before rendering
-            for reception in receptions:
-                if reception.days:
-                    reception.days = reception.days.replace("'", "")
-                if reception.time:
-                    reception.time = reception.time.replace("'", "")
-                cleaned_receptions.append(reception)
 
-    else:
-        form = SearchForm()
-        receptions = Reception.objects.all().order_by('-app_data')
-        # Clean appointments data before rendering
-        for reception in receptions:
-            if reception.days:
-                reception.days = reception.days.replace("'", "")
-            if reception.time:
-                reception.time = reception.time.replace("'", "")
-            cleaned_receptions.append(reception)
+    # Clean appointments data before rendering
+    for reception in receptions:
+        if reception.days:
+            reception.days = reception.days.replace("'", "")
+        if reception.time:
+            reception.time = reception.time.replace("'", "")
 
-    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': cleaned_receptions})
+    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': receptions})
+
+
+def search_educational(request):
+    form = SearchForm1  # Always instantiate the form
+    receptions = Reception.objects.none()  # Initialize as empty queryset
+
+    if request.method == 'POST':
+        form = SearchForm1(request.POST)
+        if form.is_valid():
+            selected_educational = form.cleaned_data['educational']
+
+            # Check if the user is an admin
+            is_admin = request.user.is_authenticated and request.user.role == 'admin'
+
+            # Check if the selected educational's name matches the logged-in user's username
+            if not is_admin and request.user.username != selected_educational.educational_name:
+                return redirect(reverse('login'))  # Redirect to the login page for non-admin users
+
+            receptions = Reception.objects.filter(educational=selected_educational).order_by('-app_data')
+
+    # Clean appointments data before rendering
+    for reception in receptions:
+        if reception.days:
+            reception.days = reception.days.replace("'", "")
+        if reception.time:
+            reception.time = reception.time.replace("'", "")
+
+    return render(request, 'doctors/search_educational.html', {'form': form, 'receptions': receptions})
 
 
 def all_reception(request):
@@ -970,7 +1016,7 @@ def add_ortho(request, id):
     orall = Ortho.objects.filter(Q(visits_id__isnull=True) | Q(visits_id=1)
                                  ).filter(idReception=id).first()
     appointments = Reception.objects.all().order_by('-id')
-    oralls = Ortho.objects.filter(idReception=id)
+    oralls = Ortho.objects.filter(idReception=id).order_by('-id')
     # Create a list to store photos for each OralSurgery instance
     photos_list = []
 
@@ -1220,12 +1266,14 @@ def ortho_visit1(request, id):
             'teeth_type': teeth_type,
             'teeth_size': teeth_size,
         })
+        # Get all instances related to the idReception
+        all_oralls = Ortho.objects.filter(idReception=orall.idReception).order_by('-id')
         oralls = Ortho.objects.filter(idReception=id)
         try:
             orall = oralls.first()
         except AttributeError:
             orall = None
-    return render(request, 'ortho/ortho_visit1.html', {'form': form, 'orall': orall})
+    return render(request, 'ortho/ortho_visit1.html', {'form': form,'all_oralls': all_oralls,'orall': orall})
 
 
 def remove_photo_ortho(request, photo_id):

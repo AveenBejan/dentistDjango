@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits,Educational
 from django.forms import formset_factory
 
 
@@ -89,8 +89,26 @@ class DoctorsForm(forms.ModelForm):
         }
 
 
+class EducationalForm(forms.ModelForm):
+    class Meta:
+        model = Educational
+        fields = ( 'educational_name', 'phone', 'gender')
+        labels = {
+            'educational_name': '',
+            'phone': '',
+            'gender': '',
+
+        }
+        widgets = {
+            'educational_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'educational_name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+        }
+
+
 class GaveAppointmentForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor",to_field_name='doctor_name')
+
     class Meta:
         model = GaveAppointment
         fields = ( 'name', 'phone', 'gender', 'date_of_birth','doctor','app_data','days', 'time')
@@ -100,6 +118,7 @@ class GaveAppointmentForm(forms.ModelForm):
             'gender': 'Gender',
             'date_of_birth': 'Date of Birth',
             'doctor': '',
+
             'app_data':'',
             'days': '',
             'time': 'Time',
@@ -118,7 +137,10 @@ class GaveAppointmentForm(forms.ModelForm):
 
 class ReceptionForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor", to_field_name='doctor_name')
+    educational = forms.ModelChoiceField(queryset=Educational.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}),empty_label="Select Educational Center",
+                                         to_field_name='educational_name', required=False)
     GENDER_CHOICES = (
+        ('', 'Select Gender'),
         ('Male', 'Male'),
         ('Female', 'Female'),
         ('Other', 'Other'),
@@ -131,13 +153,14 @@ class ReceptionForm(forms.ModelForm):
 
     class Meta:
         model = Reception
-        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','app_data','days', 'time')
+        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time')
         labels = {
             'name': 'Full Name',
             'phone': 'Phone Number',
             'gender': 'Gender',
             'date_of_birth': 'Date of Birth',
             'doctor': '',
+            'educational': '',
             'app_data': '',
             'days': '',
             'time': 'Time',
@@ -155,6 +178,10 @@ class ReceptionForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor")
+
+
+class SearchForm1(forms.Form):
+    educational = forms.ModelChoiceField(queryset=Educational.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Educational Center")
 
 
 class Medicine1Form(forms.ModelForm):

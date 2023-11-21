@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
         ('admin', 'Admin'),
         ('doctor', 'Doctor'),
         ('user', 'User'),
+        ('educational_center', 'Educational Center'),
     )
 
     # Add a field to store the role of the user
