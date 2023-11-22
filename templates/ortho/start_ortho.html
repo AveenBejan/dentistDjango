@@ -36,6 +36,7 @@ textarea {
                 </ol>
             </nav>
             <div class="col-10" style="text-align: justify; background-color:#fff; color:#000">
+                {% if user.is_authenticated %}
                 <p>{{ form.initial.idReception.name }}</p>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -473,9 +474,8 @@ textarea {
                                             <br/>
                                             <div class="form-row">
                                                 <div class="form-group col-md-3">
-                                                    <select name="visits" class="form-select">
-                                                        <option value="">Select Visits</option>
-                                                        <option value="V1">V1</option>
+                                                    <select name="visits" class="form-select" required="required">
+                                                        <option value="V1">First Visit</option>
                                                     </select>
                                                     </div>
 
@@ -508,7 +508,7 @@ textarea {
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="paid" value="0">
+                                        <input type="text" name="paid" value="">
 
                                         <div class="col-12">
                                             <div class="alert alert-secondary" role="alert" align="center">
@@ -522,6 +522,7 @@ textarea {
                         </div>
                     </div>
                 </form>
+                {% endif %}
             </div>
         </div>
     </div>
