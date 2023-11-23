@@ -11,18 +11,38 @@
                 <h2 class="h4">Update Information for Patient </h2>
 
                 <h4 class="text-center alert alert-info">Update Information</h4>
-                <form method="POST" id="updateForm">'fullname', '', 'phoneNumber','', 'type', 'startDay','salaryPaid'
+                <form method="POST" id="updateForm">
                     {% csrf_token %}
-					<p>{{form.fullname}}</p>
-					<p>{{ form.gender }}</p>
-					<p>{{ form.type }}</p>
-					<p>{{ form.startDay }}</p>
-                    {{ form.doctor }}
-                     <input type="text" name="phoneNumber" placeholder="Phone Number" value="{{ form.phoneNumber }}" required class="form-control">
-                    <input type="text" name="address" placeholder="address" value="{{ form.address }}" class="form-control">
-					<input type="text" name="salaryPaid" placeholder="salaryPaid" value="{{ form.salaryPaid }}" class="form-control">
+                    {{ form.fullname }}
+                    <p>Gender:
+    <select name="gender" class="form-control">
+        <option value="" disabled selected>Select Gender</option>
+        <option value="Male" {% if form.instance.gender == 'Male' %} selected {% endif %}>Male</option>
+        <option value="Female" {% if form.instance.gender == 'Female' %} selected {% endif %}>Female</option>
+        <!-- Add more options manually if needed -->
+    </select>
+</p>
 
-                    <button type="submit" class="btn btn-success" onclick="validateAndShowAlert()">Update</button>
+                    {{ form.phoneNumber }}
+                    {{ form.address }}
+                    <p>Type of Employment:
+    <select name="type" class="form-control">
+        <option value="" disabled selected>Select Type</option>
+        <option value="Doctor" {% if form.instance.type == 'Doctor' %} selected {% endif %}>Doctor</option>
+        <option value="Reception" {% if form.instance.type == 'Reception' %} selected {% endif %}>Reception</option>
+        <option value="Dental Assistant" {% if form.instance.type == 'Dental Assistant' %} selected {% endif %}>Dental Assistant</option>
+        <option value="Cleaner" {% if form.instance.type == 'Cleaner' %} selected {% endif %}>Cleaner</option>
+        <option value="Generator Services" {% if form.instance.type == 'Generator Services' %} selected {% endif %}>Generator Services</option>
+        <option value="Other" {% if form.instance.type == 'Other' %} selected {% endif %}>Other</option>
+        <!-- Add more options manually if needed -->
+    </select>
+</p>
+
+                    {{ form.startDay }}
+                    {{ form.salaryPaid }}
+
+
+                    <button type="submit" class="btn btn-success">Update</button>
                 </form>
 
                 <script>
@@ -49,7 +69,10 @@
             document.getElementById("updateForm").submit();
         }
     }
-</script>
+
+
+
+                </script>
 
             </div>
         </div>

@@ -89,12 +89,18 @@ def add_new_employ(request):
 
 
 def update_employ(request, id):
-    pi = BasicInfo.objects.get(pk=id)
-    form = BasicInfoForm(request.POST or None, instance=pi)
-    if form.is_valid():
-        form.save()
-        return redirect('add-new-employ')
-    return render(request, 'employs/update_employ.html', {'form': form, 'pi': pi})
+    basic_info = get_object_or_404(BasicInfo, pk=id)
+    form = BasicInfoForm(instance=basic_info)  # Initialize form variable
+
+    if request.method == 'POST':
+        form = BasicInfoForm(request.POST, instance=basic_info)
+        if form.is_valid():
+            form.save()
+            return redirect('add-new-employ')  # Redirect to a success page or appropriate URL
+        else:
+            print(form.errors)  # Check for form errors in the console
+
+    return render(request, 'employs/update_employ.html', {'form': form})
 
 
 def salary_reception(request):
