@@ -94,7 +94,7 @@ def update_employ(request, id):
     if form.is_valid():
         form.save()
         return redirect('add-new-employ')
-    return render(request, 'update_employ.html', {'form': form, 'pi': pi})
+    return render(request, 'employs/update_employ.html', {'form': form, 'pi': pi})
 
 
 def salary_reception(request):
