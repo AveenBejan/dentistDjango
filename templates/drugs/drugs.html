@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 {% load static %}
@@ -62,53 +61,57 @@ function deleteRows(){
             <li class="breadcrumb-item active" aria-current="page">Add Drugs</li>
         </ol>
     </nav>
-        <div class="d-flex bd-highlight mb-3">
-            <div class="p-2 bd-highlight">{{ form.initial.idReception }}</div>
-            <div class="p-2 bd-highlight">{{ form.initial.name }}</div>
-            <div class="p-2 bd-highlight">{{ form.initial.phone }}</div>
-            <div class="p-2 bd-highlight">{{ form.initial.gender }}</div>
-            <div class="p-2 bd-highlight">{{ form.initial.date_of_birth }}</div>
-        </div>
-        <table class="table table-hover">
-            <thead style="background-color:#73ccf0; color:#fff;">
-            <tr>
-
-                <th scope="col">#</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Phone Number</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Date of Birth</th>
-                <th scope="col">Drugs Name</th>
-                <th scope="col">Doze</th>
-                <th scope="col">Type</th>
-                <th scope="col">Times</th>
-                <th scope="col"  colspan="2" style="text-align:center;">Other</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for medicin in medicines %}
-            <tr>
-                <td scope="row">{{ medicin.id }}</td>
-                <td scope="row">{{ medicin.name }}</td>
-                <td scope="row">{{ medicin.phone }}</td>
-                <td scope="row">{{ medicin.gender }}</td>
-                <td scope="row">{{ medicin.date_of_birth }}</td>
-                <td scope="row" align="center">{{ medicin.name_medicine }}</td>
-                <td scope="row" align="center">{{ medicin.doze }}</td>
-                <td scope="row" align="center">{{ medicin.type }}</td>
-                <td scope="row" align="center">{{ medicin.times }}</td>
-                <td>
-                    {% if medicin.id %}
-                    <a href="{% url 'print-drugs'  medicin.idReception_id  %}" style="display: inline;" class="btn btn-outline-info">Print
-                        Drugs</a>
-                    {% endif %}
-                </td>
-                <td scope="row" ><a href="{% url 'delete-drugs'  medicin.id %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="d-flex bd-highlight mb-3">
+        <div class="p-2 bd-highlight">{{ form.initial.idReception }}</div>
+        <div class="p-2 bd-highlight">{{ form.initial.name }}</div>
+        <div class="p-2 bd-highlight">{{ form.initial.phone }}</div>
+        <div class="p-2 bd-highlight">{{ form.initial.gender }}</div>
+        <div class="p-2 bd-highlight">{{ form.initial.date_of_birth }}</div>
     </div>
+    <table class="table table-hover">
+        <thead style="background-color:#73ccf0; color:#fff;">
+        <tr>
+
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Drugs Name</th>
+            <th scope="col">Doze</th>
+            <th scope="col">Type</th>
+            <th scope="col">Times</th>
+            <th scope="col">Tablet</th>
+            <th scope="col" colspan="2" style="text-align:center;">Other</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for medicin in medicines %}
+        <tr>
+            <td scope="row">{{ medicin.id }}</td>
+            <td scope="row">{{ medicin.name }}</td>
+            <td scope="row">{{ medicin.phone }}</td>
+            <td scope="row">{{ medicin.gender }}</td>
+            <td scope="row">{{ medicin.date_of_birth }}</td>
+            <td scope="row" align="center">{{ medicin.name_medicine }}</td>
+            <td scope="row" align="center">{{ medicin.doze }}</td>
+            <td scope="row" align="center">{{ medicin.type }}</td>
+            <td scope="row" align="center">{{ medicin.times }}</td>
+            <td scope="row" align="center">{{ medicin.tablet }}</td>
+            <td>
+                {% if medicin.id %}
+                <a href="{% url 'print-drugs'  medicin.idReception_id  %}" style="display: inline;"
+                   class="btn btn-outline-info">Print
+                    Drugs</a>
+                {% endif %}
+            </td>
+            <td scope="row"><a href="{% url 'delete-drugs'  medicin.id %}" style="display: inline;"><span
+                    class="btn btn-outline-danger">Delete</span></a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 </div>
 <br/>
 <div class="container" align="center" id="form-container">
@@ -131,10 +134,12 @@ function deleteRows(){
             <div class="col-10">
                 <div class="form-row">
                     <div class="col">
-                        <label for="{{ form.name_medicine.id_for_label }}" ></label>{{ form.name_medicine }}</div>
+                        <label for="{{ form.name_medicine.id_for_label }}"></label>{{ form.name_medicine }}
+                    </div>
                     <div class="col">{{ form.doze }}</div>
                     <div class="col"> {{ form.type }}</div>
                     <div class="col">{{ form.times }}</div>
+                    <div class="col">{{ form.tablet }}</div>
                 </div>
             </div>
             {{ formset.management_form }}
@@ -142,10 +147,12 @@ function deleteRows(){
             <div class="col-10">
                 <div class="form-row">
                     <div class="col">
-                        <label for="{{ form.name_medicine.id_for_label }}"></label>{{ form.name_medicine }}</div>
+                        <label for="{{ form.name_medicine.id_for_label }}"></label>{{ form.name_medicine }}
+                    </div>
                     <div class="col">{{ form.doze }}</div>
                     <div class="col">{{ form.type }}</div>
                     <div class="col">{{ form.times }}</div>
+                    <div class="col">{{ form.tablet }}</div>
                 </div>
             </div>
             {% endfor %}
@@ -153,7 +160,7 @@ function deleteRows(){
             <div class="col-10">
                 <div class="form-row">
                     <div class="col">
-                          <br/>
+                        <br/>
                         <button type="submit" class="btn btn-info">Add Drugs</button>
                     </div>
                 </div>
@@ -161,6 +168,7 @@ function deleteRows(){
         </div>
     </form>
 </div>
+
 <script src="{% static 'website/js/jquery.min.js' %}"></script>
 <script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>
@@ -178,4 +186,6 @@ function deleteRows(){
 
 
 <script src="{% static 'website/js/main.js' %}"></script>
+</body>
+</html>
 {% endblock %}

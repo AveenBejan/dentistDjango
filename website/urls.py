@@ -15,6 +15,7 @@ urlpatterns = [
     path('all-reception', views.all_reception, name='all-reception'),
     path('oral_reception.html', views.oral_reception, name='oral-reception'),
     path('delete_reception/<int:id>', views.delete_reception, name='delete-reception'),
+    path('search_reception', views.search_reception, name='search-reception'),
     path('update-reception/<int:id>', views.update_reception, name='update-reception'),
     path('add-oral-surgery/<int:id>', views.add_oral_surgery, name='add-oral-surgery'),
     path('index.html', views.add_oral_surgery, name='add-oral-surgery'),
@@ -138,6 +139,8 @@ urlpatterns = [
     path('delete_employ/<int:id>', views.delete_employ, name='delete-employ'),
     path('add_salary/<int:id>', views.add_salary, name='add-salary'),
     path('salary_reception', views.salary_reception, name='salary_reception'),
+    path('update_employ/<int:id>', views.update_employ, name='update-employ'),
+
 
     path('add_outcome', views.add_outcome, name='add-outcome'),
     path('delete_outcome/<int:id>', views.delete_outcome, name='delete-outcome'),

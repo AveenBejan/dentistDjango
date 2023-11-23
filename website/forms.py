@@ -196,7 +196,7 @@ class Medicine1Form(forms.ModelForm):
 
 class DrugForm(forms.ModelForm):
     name_medicine = forms.ModelChoiceField(queryset=Medicine1.objects.all(),widget=forms.Select(attrs=
-                                           {'class': 'form-control'}), empty_label='Select Medicine')
+                                           {'class': 'form-control'}), empty_label='Select Drugs')
 
     TYPE_CHOICES = [
         ('', 'Select Type'),
@@ -212,14 +212,23 @@ class DrugForm(forms.ModelForm):
         ('1*5', '1*5'),
         ('1*6', '1*6'),
     ]
+    TABLET_CHOICES = [
+        ('', 'Select Tablet'),
+        ('Syrup', 'Syrup'),
+        ('Ointment', 'Ointment'),
+        ('Mouth Wash', 'Mouth Wash'),
+        ('Capsule', 'Capsule'),
+        ('Drop', 'Drop'),
+        ('Injection', 'Injection'),
+    ]
 
     type = forms.ChoiceField(choices=TYPE_CHOICES, initial='', widget=forms.Select(attrs={'class': 'form-control'}))
-    times = forms.ChoiceField(choices=TIMES_CHOICES, initial='',
-                              widget=forms.Select(attrs={'class': 'form-control'}))
+    times = forms.ChoiceField(choices=TIMES_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}))
+    tablet = forms.ChoiceField(choices=TABLET_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Drug
-        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times']
+        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times','tablet']
         labels = {
             'idReception': '',
             'name': '',
@@ -230,6 +239,7 @@ class DrugForm(forms.ModelForm):
             'doze': '',
             'type': '',
             'times': '',
+            'tablet': '',
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control', 'style': 'display: none;'}),

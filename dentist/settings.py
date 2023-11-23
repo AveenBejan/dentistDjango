@@ -74,16 +74,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dentist.wsgi.application'
 
 
+
 DATABASES = {
-
-    'default': dj_database_url.config(
-
-        default='mysql://ra3088zq3xlw0y1h:j3sxqn9j5qidrgnh@eanl4i1omny740jw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/cnjogdf58wagvdjv',
-        engine='django.db.backends.mysql'
-
-
-    )
+     'default': {
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': 'dentest',
+      'USER': 'root',
+      'PASSWORD': 'qwer1234',
+      'HOST': 'localhost',
+      'PORT': '3306 ',
+       'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
+        },
+    }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

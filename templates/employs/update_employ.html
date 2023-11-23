@@ -1,0 +1,59 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12 mb-4">
+                <h2 class="h4">Update Information for Patient </h2>
+
+                <h4 class="text-center alert alert-info">Update Information</h4>
+                <form method="POST" id="updateForm">'fullname', '', 'phoneNumber','', 'type', 'startDay','salaryPaid'
+                    {% csrf_token %}
+					<p>{{form.fullname}}</p>
+					<p>{{ form.gender }}</p>
+					<p>{{ form.type }}</p>
+					<p>{{ form.startDay }}</p>
+                    {{ form.doctor }}
+                     <input type="text" name="phoneNumber" placeholder="Phone Number" value="{{ form.phoneNumber }}" required class="form-control">
+                    <input type="text" name="address" placeholder="address" value="{{ form.address }}" class="form-control">
+					<input type="text" name="salaryPaid" placeholder="salaryPaid" value="{{ form.salaryPaid }}" class="form-control">
+
+                    <button type="submit" class="btn btn-success" onclick="validateAndShowAlert()">Update</button>
+                </form>
+
+                <script>
+    function validateAndShowAlert() {
+        var requiredFields = document.querySelectorAll('[required]');
+        var allFieldsFilled = true;
+
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            showAlert();
+        } else {
+            alert("Please fill out all required fields.");
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Are you sure you want to update?")) {
+            document.getElementById("updateForm").submit();
+        }
+    }
+</script>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

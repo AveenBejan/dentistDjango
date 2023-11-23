@@ -190,6 +190,7 @@ class Drug(models.Model):
     doze = models.CharField(max_length=200,blank=True,null=False)
     type = models.CharField(max_length=200,blank=True,null=False)
     times = models.CharField(max_length=200,blank=True,null=False)
+    tablet = models.CharField(max_length=200, blank=True, null=False)
     regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
 
 

@@ -10,7 +10,7 @@ from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
-from datetime import date
+from datetime import date,timedelta
 from django.contrib import messages
 from datetime import datetime
 from django.db.models import Sum
@@ -86,6 +86,15 @@ def add_new_employ(request):
     # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
     appointments = BasicInfo.objects.all().order_by('-regdate')
     return render(request, 'employs/add_new_employ.html', {'form': form, 'appointments': appointments})
+
+
+def update_employ(request, id):
+    pi = BasicInfo.objects.get(pk=id)
+    form = BasicInfoForm(request.POST or None, instance=pi)
+    if form.is_valid():
+        form.save()
+        return redirect('add-new-employ')
+    return render(request, 'update_employ.html', {'form': form, 'pi': pi})
 
 
 def salary_reception(request):
@@ -335,7 +344,7 @@ def doctor(request):
     else:
         form = DoctorsForm()
     # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
-    appointments = Doctors.objects.all().order_by('-id')
+    appointments = Doctors.objects.all().order_by('id')
     return render(request, 'doctors/doctor.html', {'form': form, 'appointments': appointments})
 
 
@@ -629,7 +638,14 @@ def search_educational(request):
 
 
 def all_reception(request):
-    appointments = Reception.objects.all().order_by('-id')
+    # Get current time
+    current_time = datetime.now()
+
+    # Filter appointments older than 24 hours
+    appointments = Reception.objects.filter(
+        app_data__gte=current_time - timedelta(hours=24)
+    ).order_by('-id')
+
     for appointment in appointments:
         if appointment.days:
             appointment.days = appointment.days.replace("'", "")
@@ -637,6 +653,16 @@ def all_reception(request):
             appointment.time = appointment.time.replace("'", "")
 
     return render(request, 'all_reception.html', {'appointments': appointments})
+
+
+def search_reception(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception.objects.all()
+        return render(request, 'search_reception.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'search_reception.html', {})
 
 
 def delete_reception(request, id):
@@ -729,15 +755,19 @@ def gave_appointment(request, id):
 
 
 def all_gave(request):
-    gaves = Reception.objects.all().order_by('-id')
-    # Clean appointments data before rendering
-    cleaned_gaves = []
+    # Get current time
+    current_time = datetime.now()
+
+    # Retrieve 'gave' records within the last 24 hours
+    gaves = Reception.objects.filter(app_data__gte=current_time - timedelta(hours=24)).order_by('-id')
+
+    # Clean 'gave' data if needed
     for gave in gaves:
         if gave.days:
             gave.days = gave.days.replace("'", "")
         if gave.time:
             gave.time = gave.time.replace("'", "")
-        cleaned_gaves.append(gave)
+
     return render(request, 'all_gave.html', {'gaves': gaves})
 
 

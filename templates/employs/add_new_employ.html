@@ -46,9 +46,15 @@
                                        class="form-control">
                                   <select name="type" placeholder="type"
                                         class="form-control">
-                                    <option selected disabled>Select Type</option>
-                                    <option value="aa">aa</option>
-                                    <option value="bb">bb</option>
+                                      <option selected disabled>Select Type</option>
+                                      <option value="Doctor">Doctor</option>
+                                      <option value="Reception">Reception</option>
+                                      <option value="Dental Assistant">Dental Assistant</option>
+                                      <option value="Cleaner">Cleaner</option>
+                                      <option value="Generator Services">Generator Services</option>
+                                      <option value="Other">Other</option>
+
+
 
                                 </select>
                                 <input type="text" name="salaryPaid" placeholder="Basic Salary"
@@ -100,6 +106,8 @@
                 <td scope="row">{{appointment.regdate}}</td>
                 <td><a href="{% url 'delete-employ' appointment.id %}" style="display: inline;"><span
                          class="btn btn-outline-danger">Delete</span></a></td>
+                <td><a href="{% url 'update-employ' appointment.id %}" style="display: inline;"><span
+                         class="btn btn-outline-danger">Edit</span></a></td>
             </tr>
             {% endfor %}
             </tbody>

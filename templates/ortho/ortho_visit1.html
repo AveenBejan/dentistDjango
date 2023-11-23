@@ -78,27 +78,32 @@
 
                         </div>
                         <div class="form-group col-md-3">
-                            <select name="wive_size" class="form-select" required="required">
-                                <option value="">Wive Size</option>
-                                <option value="I">I</option>
-                                <option value="II">II</option>
-                                <option value="III">III</option>
+                            <select name="wive_size" class="form-select"
+                                    required="required">
+                                <option value="">Wire Size</option>
+                                <option value="12">12</option>
+                                <option value="14">14</option>
+                                <option value="16">16</option>
+                                <option value="18">18</option>
+                                <option value="16*22">16*22</option>
+                                <option value="17*25">17*25</option>
+                                <option value="19*25">19*25</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <select name="cross_sectional" class="form-select" required="required">
+                            <select name="cross_sectional" class="form-select"
+                                    required="required">
                                 <option value="">Cross Sectional</option>
-                                <option value="I">I</option>
-                                <option value="II">II</option>
-                                <option value="III">III</option>
+                                <option value="Round">Round</option>
+                                <option value="Rectangular">Rectangular</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <select name="material" class="form-select" required="required">
+                            <select name="material" class="form-select"
+                                    required="required">
                                 <option value="">Material</option>
-                                <option value="I">I</option>
-                                <option value="II">II</option>
-                                <option value="III">III</option>
+                                <option value="Stainless Steel">Stainless Steel</option>
+                                <option value="NiTi">NiTi</option>
                             </select>
                         </div>
                     </div>
@@ -121,8 +126,8 @@
                 <table border="1" class="table table-hover">
                     <thead style="background-color:#73ccf0; color:#fff;">
                     <tr>
-                        <th>Visit Num</th>
-                        <th>Wive Size</th>
+                        <th>Visit No.</th>
+                        <th>Wire Size</th>
                         <th>Cross Sectional</th>
                         <th>Materials</th>
                         <th>Date Visit</th>
@@ -153,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
         visitsSelect.removeChild(visitsSelect.options[1]);
     }
 });
+
 
 
 
