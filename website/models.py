@@ -89,6 +89,8 @@ class GaveAppointment(models.Model):
 
 class Filling(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
     phone = models.CharField('Phone', max_length=120,null=False)
     gender = models.CharField('Gender', max_length=20,null=False)
@@ -110,6 +112,8 @@ class Filling(models.Model):
 
 class Crown(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
     phone = models.CharField('Phone', max_length=120,null=False)
     gender = models.CharField('Gender', max_length=20,null=False)
@@ -128,6 +132,8 @@ class Crown(models.Model):
 
 class Veneer(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
     phone = models.CharField('Phone', max_length=120)
     gender = models.CharField('Gender', max_length=20,null=False)
@@ -146,6 +152,8 @@ class Veneer(models.Model):
 
 class Endo(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
     phone = models.CharField('Phone', max_length=120,null=False)
     gender = models.CharField('Gender', max_length=20,null=False)
@@ -196,6 +204,8 @@ class Drug(models.Model):
 
 class Exo(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
     phone = models.CharField('Phone', max_length=120,null=False)
     gender = models.CharField('Gender', max_length=20,null=False)
@@ -205,6 +215,7 @@ class Exo(models.Model):
     lr = models.CharField('Name', max_length=120, blank=True,null=True)
     ll = models.CharField('Name', max_length=120, blank=True,null=True)
     price = models.DecimalField('price',max_digits=20,decimal_places=2,null=True)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=2, null=True)
     note = models.CharField('Name', max_length=120, blank=True,null=True)
     exoby = models.CharField('Name', max_length=120, blank=True,null=True)
@@ -227,6 +238,8 @@ class Implant(models.Model):
 
 class OralSurgery(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120, blank=True,null=True)
     phone = models.CharField('Phone', max_length=120, blank=True,null=True)
     gender = models.CharField('Gender', max_length=20, blank=True,null=True)
@@ -269,6 +282,8 @@ class Visits(models.Model):
 
 class Ortho(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120, blank=True,null=True)
     phone = models.CharField('Phone', max_length=120, blank=True,null=True)
     gender = models.CharField('Gender', max_length=20, blank=True,null=True)
@@ -310,6 +325,7 @@ class Ortho(models.Model):
     cross_sectional = models.CharField('Name', max_length=120, blank=True,null=True)
     material = models.CharField('Name', max_length=120, blank=True,null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=2,blank=True,null=True)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=2, blank=True,null=True)
     notes = models.CharField('Name', max_length=120, blank=True,null=True)
     exo_images = models.ImageField(null=True, blank=True, upload_to='')

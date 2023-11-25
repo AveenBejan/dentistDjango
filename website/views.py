@@ -166,6 +166,8 @@ def search_view(request):
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
     oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
 
     if query:
         exos = Exo.objects.filter(name=query)
@@ -173,6 +175,8 @@ def search_view(request):
         crowns = Crown.objects.filter(name=query)
         veneers = Veneer.objects.filter(name=query)
         oralSurgery = OralSurgery.objects.filter(name=query)
+        endos = Endo.objects.filter(name=query)
+        orthos = Ortho.objects.filter(name=query)
 
     search_results = []
 
@@ -186,6 +190,10 @@ def search_view(request):
         search_results.append(('Veneer', veneers))
     if oralSurgery.exists():
         search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
 
     context = {
         'query': query,
@@ -203,6 +211,8 @@ def search_debts(request):
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
     oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
 
     if query:
         exos = Exo.objects.filter(Q(name=query) | Q(phone=query))
@@ -210,6 +220,8 @@ def search_debts(request):
         crowns = Crown.objects.filter(Q(name=query) | Q(phone=query))
         veneers = Veneer.objects.filter(Q(name=query) | Q(phone=query))
         oralSurgery = OralSurgery.objects.filter(Q(name=query) | Q(phone=query))
+        endos = Endo.objects.filter(Q(name=query) | Q(phone=query))
+        orthos = Ortho.objects.filter(Q(name=query) | Q(phone=query))
 
     search_results = []
 
@@ -223,6 +235,10 @@ def search_debts(request):
         search_results.append(('Veneer', veneers))
     if oralSurgery.exists():
         search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
 
     context = {
         'query': query,
@@ -230,6 +246,58 @@ def search_debts(request):
     }
 
     return render(request, 'finance/search_debts.html', context)
+
+
+def search_educational1(request):
+    form = SearchForm1()  # Always instantiate the form
+    selected_educational = None  # Initialize the variable
+
+    if request.method == 'POST':
+        form = SearchForm1(request.POST)
+        if form.is_valid():
+            selected_educational = form.cleaned_data.get('educational')
+
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()  # Initialize as an empty queryset
+
+    if selected_educational:
+        exos = Exo.objects.filter(educational=selected_educational)
+        fillings = Filling.objects.filter(educational=selected_educational)
+        crowns = Crown.objects.filter(educational=selected_educational)
+        veneers = Veneer.objects.filter(educational=selected_educational)
+        oralSurgery = OralSurgery.objects.filter(educational=selected_educational)
+        endos = Endo.objects.filter(educational=selected_educational)
+        orthos = Ortho.objects.filter(educational=selected_educational)
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
+
+    context = {
+        'selected_educational': selected_educational,
+        'search_results': search_results,
+        'form': form
+    }
+
+    return render(request, 'educational/search_educational.html', context)
 
 
 def all_debts(request):
@@ -241,6 +309,8 @@ def all_debts(request):
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
     oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -251,6 +321,8 @@ def all_debts(request):
         crowns = Crown.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         veneers = Veneer.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        endos = Endo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        orthos = Ortho.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
 
     search_results = []
 
@@ -264,6 +336,10 @@ def all_debts(request):
         search_results.append(('Veneer', veneers))
     if oralSurgery.exists():
         search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
 
     context = {
         'start_date': start_date,
@@ -283,6 +359,8 @@ def all_total(request):
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
     oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
     outcomes = Outcome.objects.none()
     salaries = Salary.objects.none()
 
@@ -295,6 +373,8 @@ def all_total(request):
         crowns = Crown.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         veneers = Veneer.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        endos = Endo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        orthos = Ortho.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         outcomes = Outcome.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         salaries = Salary.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
 
@@ -309,8 +389,11 @@ def all_total(request):
     if veneers.exists():
         search_results.append(('Veneer', veneers))
     if oralSurgery.exists():
-
         search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
     if outcomes.exists():
         search_results.append(('Outcome', outcomes))
     if salaries.exists():
@@ -320,6 +403,8 @@ def all_total(request):
     total_crown = Crown.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_endo = Endo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho = Ortho.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_salary = salaries.aggregate(total_final_salary=Sum('finalSalary'))['total_final_salary'] or 0
     total_outcome = Outcome.objects.aggregate(total_price=Sum('price'))['total_price'] or 0
     remaining = ((total_exo+total_filling+total_crown+total_veneer+total_oralSurgery)-(total_salary+total_outcome))
@@ -333,6 +418,8 @@ def all_total(request):
         'total_crown': total_crown,  # Add total_salary to the context
         'total_veneer': total_veneer,  # Add total_salary to the context
         'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
+        'total_endo': total_endo,  # Add total_salary to the context
+        'total_ortho': total_ortho,  # Add total_salary to the context
         'total_salary': total_salary,  # Add total_salary to the context
         'total_outcome': total_outcome,  # Add total_salary to the context
         'remaining': remaining,  # Add total_salary to the context
@@ -794,6 +881,8 @@ def add_oral_surgery(request, id):
             oral_surgery.phone = reception.phone
             oral_surgery.gender = reception.gender
             oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
             oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -811,7 +900,9 @@ def add_oral_surgery(request, id):
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
             }
             form = OralSurgeryForm(initial=initial_data)
     else:
@@ -821,7 +912,9 @@ def add_oral_surgery(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = OralSurgeryForm(initial=initial_data)
 
@@ -1024,6 +1117,8 @@ def add_ortho(request, id):
             ortho.phone = reception.phone
             ortho.gender = reception.gender
             ortho.date_of_birth = reception.date_of_birth
+            ortho.educational_id = reception.educational_id
+            ortho.doctor_id = reception.doctor_id
             ortho.save()
 
             return redirect('add-ortho', id=id)
@@ -1034,7 +1129,9 @@ def add_ortho(request, id):
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
 
             }
             form = OrthoForm(initial=initial_data)
@@ -1045,7 +1142,9 @@ def add_ortho(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = OrthoForm(initial=initial_data)
     # Retrieve the first Ortho object where visits_id is null or 1
@@ -1137,13 +1236,20 @@ def start_ortho(request, id):
                 orall.teeth_type = orall.teeth_type.replace("'", "")
             if orall.teeth_size:
                 orall.teeth_size = orall.teeth_size.replace("'", "")
-            form.save()
-            photos = request.FILES.getlist('exo_images')
-            ortho_instance = form.save(commit=False)
-            ortho_instance.save()
 
+                # Saving the form and assigning total_price
+            ortho_instance = form.save(commit=False)
+            price = form.cleaned_data['price']
+            total_price = price  # Initially, total_price is just the price itself
+            ortho_instance.total_price = total_price
+            ortho_instance.save()
+            photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(ortho_instance=ortho_instance, image=photo)
+
+            price = form.cleaned_data['price']
+            total_price = price  # Initially, total_price is just the price itself
+            ortho_instance.total_price = total_price
             return redirect('add-ortho', id=orall.idReception_id)
     else:
         # Remove first and last characters from certain fields
@@ -1203,6 +1309,9 @@ def ortho_edit(request, id):
     if request.method == 'POST':
         form = OrthoForm(request.POST, instance=orall)
         if form.is_valid():
+            price = form.cleaned_data['price']
+            total_price = price
+            form.instance.total_price = total_price
             form.save()
             return redirect('add-ortho', id=orall.idReception_id)
     else:
@@ -1376,6 +1485,8 @@ def exo(request, id):
             oral_surgery.phone = reception.phone
             oral_surgery.gender = reception.gender
             oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
             oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -1393,7 +1504,9 @@ def exo(request, id):
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
 
             }
             form = ExoForm(initial=initial_data)
@@ -1404,7 +1517,9 @@ def exo(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = ExoForm(initial=initial_data)
 
@@ -1806,6 +1921,8 @@ def crown(request, id):
             oral_surgery.phone = reception.phone
             oral_surgery.gender = reception.gender
             oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
             oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -1823,7 +1940,9 @@ def crown(request, id):
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
             }
             form = CrownForm(initial=initial_data)
     else:
@@ -1833,7 +1952,9 @@ def crown(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = CrownForm(initial=initial_data)
 
@@ -1953,6 +2074,8 @@ def veneer(request, id):
             oral_surgery.phone = reception.phone
             oral_surgery.gender = reception.gender
             oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
             oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -1970,7 +2093,9 @@ def veneer(request, id):
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
             }
             form = VeneerForm(initial=initial_data)
     else:
@@ -1980,7 +2105,9 @@ def veneer(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = VeneerForm(initial=initial_data)
 
@@ -2083,6 +2210,8 @@ def filling(request, id):
             filling_instance.phone = reception.phone
             filling_instance.gender = reception.gender
             filling_instance.date_of_birth = reception.date_of_birth
+            filling_instance.educational_id = reception.educational_id
+            filling_instance.doctor_id = reception.doctor_id
             filling_instance.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -2097,7 +2226,9 @@ def filling(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = FillingForm(initial=initial_data)
 
@@ -2227,8 +2358,26 @@ def add_debt(request, id):
         exo_instance.paid = paid
         exo_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
+        # Redirect back to the 'search-debts' page with the same query parameter        'start_date': start_date,
+        #         'end_date': end_date,
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt.html', {'id': id, 'exo_instance': exo_instance})
+
+
+def add_debt1(request, id):
+    try:
+        exo_instance = Exo.objects.get(id=id)
+    except Exo.DoesNotExist:
+        return HttpResponse("Exo instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        exo_instance.paid = paid
+        exo_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
         return render(request, 'debts/add_debt.html', {'id': id, 'exo_instance': exo_instance})
 
@@ -2267,6 +2416,23 @@ def add_debt_crown(request, id):
         return render(request, 'debts/add_debt_crown.html', {'id': id, 'crown_instance': crown_instance})
 
 
+def add_debt_crown1(request, id):
+    try:
+        crown_instance = Crown.objects.get(id=id)
+    except Crown.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        crown_instance.paid = paid
+        crown_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+    else:
+        return render(request, 'debts/add_debt_crown.html', {'id': id, 'crown_instance': crown_instance})
+
+
 def print_crown_debt(request, id):
     debts = Crown.objects.filter(idReception=id)
 
@@ -2278,6 +2444,55 @@ def print_crown_debt(request, id):
         'total_remaining': total_remaining,
     }
     template_name = 'debts/print_crown_debt.html'  # Replace with your template name
+
+    # Redirect to the PDF generation view
+    return crown_pdf(request, template_name, context)
+
+
+def add_debt_ortho(request, id):
+    try:
+        ortho_instance = Ortho.objects.get(id=id)
+    except Ortho.DoesNotExist:
+        return HttpResponse("Ortho instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        ortho_instance.paid = paid
+        ortho_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_ortho.html', {'id': id, 'ortho_instance': ortho_instance})
+
+
+def add_debt_ortho1(request, id):
+    try:
+        ortho_instance = Ortho.objects.get(id=id)
+    except Ortho.DoesNotExist:
+        return HttpResponse("Ortho instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        ortho_instance.paid = paid
+        ortho_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+    else:
+        return render(request, 'debts/add_debt_ortho.html', {'id': id, 'ortho_instance': ortho_instance})
+
+def print_ortho_debt(request, id):
+    debts = Ortho.objects.filter(idReception=id)
+
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
+    template_name = 'debts/print_ortho_debt.html'  # Replace with your template name
 
     # Redirect to the PDF generation view
     return crown_pdf(request, template_name, context)
@@ -2296,6 +2511,23 @@ def add_debt_filling(request, id):
 
         # Redirect back to the 'search-debts' page with the same query parameter
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_filling.html', {'id': id, 'filling_instance': filling_instance})
+
+
+def add_debt_filling1(request, id):
+    try:
+        filling_instance = Filling.objects.get(id=id)
+    except Filling.DoesNotExist:
+        return HttpResponse("Filling instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        filling_instance.paid = paid
+        filling_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
         return render(request, 'debts/add_debt_filling.html', {'id': id, 'filling_instance': filling_instance})
 
@@ -2327,6 +2559,23 @@ def add_debt_veneer(request, id):
 
         # Redirect back to the 'search-debts' page with the same query parameter
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_veneer.html', {'id': id, 'veneer_instance': veneer_instance})
+
+
+def add_debt_veneer1(request, id):
+    try:
+        veneer_instance = Veneer.objects.get(id=id)
+    except Veneer.DoesNotExist:
+        return HttpResponse("Veneer instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        veneer_instance.paid = paid
+        veneer_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
         return render(request, 'debts/add_debt_veneer.html', {'id': id, 'veneer_instance': veneer_instance})
 
@@ -2363,6 +2612,22 @@ def add_debt_oral(request, id):
     else:
         return render(request, 'debts/add_debt_oral.html', {'id': id, 'oral_surgery_instance': oral_surgery_instance})
 
+def add_debt_oral1(request, id):
+    try:
+        oral_surgery_instance = OralSurgery.objects.get(id=id)
+    except OralSurgery.DoesNotExist:
+        return HttpResponse("OralSurgery instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        oral_surgery_instance.paid = paid
+        oral_surgery_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+    else:
+        return render(request, 'debts/add_debt_oral.html', {'id': id, 'oral_surgery_instance': oral_surgery_instance})
+
 
 def print_oral_debt(request, id):
     debts = OralSurgery.objects.filter(idReception=id)
@@ -2395,6 +2660,8 @@ def add_endo(request, id):
             oral_surgery.phone = reception.phone
             oral_surgery.gender = reception.gender
             oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
             oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -2412,7 +2679,9 @@ def add_endo(request, id):
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
             }
             form = EndoForm(initial=initial_data)
     else:
@@ -2422,7 +2691,9 @@ def add_endo(request, id):
             'name': reception.name,
             'phone': reception.phone,
             'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
         }
         form = EndoForm(initial=initial_data)
 
@@ -2572,6 +2843,56 @@ def endo_edit(request, id):
         form = EndoForm(instance=orall, initial=initial_data)
 
     return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall})
+
+
+def add_debt_endo(request, id):
+    try:
+        endo_instance = Endo.objects.get(id=id)
+    except Endo.DoesNotExist:
+        return HttpResponse("Endo instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        endo_instance.paid = paid
+        endo_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        return render(request, 'debts/add_debt_endo.html', {'id': id, 'endo_instance': endo_instance})
+
+
+def add_debt_endo1(request, id):
+    try:
+        endo_instance = Endo.objects.get(id=id)
+    except Endo.DoesNotExist:
+        return HttpResponse("Endo instance not found")
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid')
+        endo_instance.paid = paid
+        endo_instance.save()
+
+        # Redirect back to the 'search-debts' page with the same query parameter
+        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+    else:
+        return render(request, 'debts/add_debt_endo.html', {'id': id, 'endo_instance': endo_instance})
+
+
+def print_endo_debt(request, id):
+    debts = Endo.objects.filter(idReception=id)
+
+    # Calculate the total remaining amount for idReception
+    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+    }
+    template_name = 'debts/print_endo_debt.html'  # Replace with your template name
+
+    # Redirect to the PDF generation view
+    return generate_pdf_view(request, template_name, context)
 
 
 def endo_visit(request, id):

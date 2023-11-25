@@ -1,0 +1,80 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                    </ol>
+                </nav>
+                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
+                    {% csrf_token %}
+                    <input type="text" name="idReception" value="{{ ortho_instance.idReception_id  }}" class="form-control"  readonly>
+                    <input type="text" name="name" value="{{ ortho_instance.name }}" class="form-control" readonly>
+                    <input type="text" name="phone" value="{{ ortho_instance.phone }}" class="form-control" readonly>
+                    <input type="text" name="gender" value="{{ ortho_instance.gender }}" class="form-control"  readonly>
+                    <input type="text" name="date_of_birth" value="{{ ortho_instance.date_of_birth }}"  readonly
+                           class="form-control">
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="card-header">
+                                Upper Right
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-control">
+                                        <input type="text" id="paid" name="paid" value="{{ ortho_instance.paid }}"
+                                               class="form-control"
+                                               placeholder="Paid:" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br/>
+                            <div class="form-group" style="text-align: center;">
+                                <button type="submit" value="update" onclick="validateAndShowAlert()"
+                                        class="btn btn-outline-primary">Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                   <script>
+    function validateAndShowAlert() {
+        var requiredFields = document.querySelectorAll('[required]');
+        var allFieldsFilled = true;
+
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            showAlert();
+        } else {
+            alert("Please fill out all required fields.");
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Are you sure you want to update?")) {
+            document.getElementById("updateForm").submit();
+        }
+    }
+</script>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

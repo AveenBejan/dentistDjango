@@ -1,15 +1,28 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+<html lang="en">
+<head>
+    <title>{% block title %}Dental Clinic {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
 <br/>
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
     <form method="get" action="{% url 'search' %}">
-        <input type="text" name="query" value="{{ query }}">
-        <button type="submit">Search</button>
+        <input type="text" name="query" value="" PLACEHOLDER="Search Patient Name">
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
     {% endif %}
+</nav>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Search for Patient History</li>
+    </ol>
 </nav>
 <h1>Search Results for "{{ query }}"</h1>
 
@@ -21,86 +34,129 @@
     <thead style="background-color:#73ccf0; color:#fff;">
     <tr>
         {% if model_name == 'Exo' %}
-        <th scope="col">#</th>
-        <th scope="col">Full Name</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Date of Birth</th>
-        <th scope="col">Upper Right</th>
-        <th scope="col">Upper Left</th>
-        <th scope="col">Lower Right</th>
-        <th scope="col">Lower Left</th>
-        <th scope="col">No of Prepare Teeth</th>
-        <th scope="col">Price</th>
-        <th scope="col">Total Price</th>
-        <th scope="col">Notes</th>
-        <th scope="col">Exo by Surgery</th>
-        <th scope="col">Simple Exo</th>
-        <th scope="col">Complicated</th>
-        {% elif model_name == 'Crown' %}
-        <th scope="col">#</th>
-        <th scope="col">Full Name</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Date of Birth</th>
-        <th scope="col">Shade</th>
-        <th scope="col">No of Unite</th>
-        <th scope="col">Color</th>
-        <th scope="col">No of Pre.Unite</th>
-        <th scope="col">Price</th>
-        <th scope="col">Total Price</th>
-        <th scope="col">Notes</th>
-        {% elif model_name == 'Filling' %}
-        <th scope="col">#</th>
-        <th scope="col">Full Name</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Date of Birth</th>
-        <th scope="col">Filling Type</th>
-        <th scope="col">Filling Place</th>
-        <th scope="col">Upper Right</th>
-        <th scope="col">Upper Left</th>
-        <th scope="col">Lower Right</th>
-        <th scope="col">Lower Left</th>
-        <th scope="col">No of Pre.Unite</th>
-        <th scope="col">Price</th>
-        <th scope="col">Total Price</th>
-        <th scope="col">Notes</th>
-        {% elif model_name == 'Veneer' %}
-        <th scope="col">#</th>
-        <th scope="col">Full Name</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Date of Birth</th>
-        <th scope="col">Shade</th>
-        <th scope="col">No of Unite</th>
-        <th scope="col">Color</th>
-        <th scope="col">No of Pre.Unite</th>
-        <th scope="col">Price</th>
-        <th scope="col">Total Price</th>
-        <th scope="col">Notes</th>
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Full Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" >Gender</th>
+        <th scope="col" style="text-align: center;" >Date of Birth</th>
+        <th scope="col" style="text-align: center;" >Upper Right</th>
+        <th scope="col" style="text-align: center;" >Upper Left</th>
+        <th scope="col" style="text-align: center;" >Lower Right</th>
+        <th scope="col" style="text-align: center;" >Lower Left</th>
+        <th scope="col" style="text-align: center;" >No of Prepare Teeth</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        <th scope="col" style="text-align: center;" >Exo by Surgery</th>
+        <th scope="col" style="text-align: center;" >Simple Exo</th>
+        <th scope="col" style="text-align: center;" >Complicated</th>
         {% elif model_name == 'OralSurgery' %}
-        <th scope="col">#</th>
-        <th scope="col">Full Name</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Date of Birth</th>
-        <th scope="col">First Visit</th>
-        <th scope="col">Implant</th>
-        <th scope="col">Diameter</th>
-        <th scope="col">Length</th>
-        <th scope="col">No Of Implant</th>
-        <th scope="col">Upper Right</th>
-        <th scope="col">Upper Left</th>
-        <th scope="col">Lower Right</th>
-        <th scope="col">Lower Left</th>
-        <th scope="col">Shade</th>
-        <th scope="col">No Of Uint</th>
-        <th scope="col">color</th>
-
-        <th scope="col">Price</th>
-        <th scope="col">Total Price</th>
-        <th scope="col">Notes</th>
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Full Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" >Gender</th>
+        <th scope="col" style="text-align: center;" >Date of Birth</th>
+        <th scope="col" style="text-align: center;" >First Visit</th>
+        <th scope="col" style="text-align: center;" >Implant</th>
+        <th scope="col" style="text-align: center;" >Diameter</th>
+        <th scope="col" style="text-align: center;" >Length</th>
+        <th scope="col" style="text-align: center;" >No Of Implant</th>
+        <th scope="col" style="text-align: center;" >Upper Right</th>
+        <th scope="col" style="text-align: center;" >Upper Left</th>
+        <th scope="col" style="text-align: center;" >Lower Right</th>
+        <th scope="col" style="text-align: center;" >Lower Left</th>
+        <th scope="col" style="text-align: center;" >Shade</th>
+        <th scope="col" style="text-align: center;" >No Of Uint</th>
+        <th scope="col" style="text-align: center;" >color</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        {% elif model_name == 'Crown' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Full Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" >Gender</th>
+        <th scope="col" style="text-align: center;" >Date of Birth</th>
+        <th scope="col" style="text-align: center;" >Shade</th>
+        <th scope="col" style="text-align: center;" >No of Unite</th>
+        <th scope="col" style="text-align: center;" >Color</th>
+        <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        {% elif model_name == 'Filling' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Full Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" >Gender</th>
+        <th scope="col" style="text-align: center;" >Date of Birth</th>
+        <th scope="col" style="text-align: center;" >Filling Type</th>
+        <th scope="col" style="text-align: center;" >Filling Place</th>
+        <th scope="col" style="text-align: center;" >Upper Right</th>
+        <th scope="col" style="text-align: center;" >Upper Left</th>
+        <th scope="col" style="text-align: center;" >Lower Right</th>
+        <th scope="col" style="text-align: center;" >Lower Left</th>
+        <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        {% elif model_name == 'Veneer' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Full Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" >Gender</th>
+        <th scope="col" style="text-align: center;" >Date of Birth</th>
+        <th scope="col" style="text-align: center;" >Shade</th>
+        <th scope="col" style="text-align: center;" >No of Unite</th>
+        <th scope="col" style="text-align: center;" >Color</th>
+        <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        {% elif model_name == 'Endo' %}
+        <th style="text-align: center;" scope="col">#</th>
+        <td style="text-align: center;" scope="row">{{ result.id }}</td>
+        <th style="text-align: center;" scope="col">Doctor Name</th>
+         <td style="center" scope="row">{{ result.idReception.doctor.doctor_name }}</td>
+        <th style="text-align: center;" scope="col">Appointment Date</th>
+        <td style="center" scope="row">{{ result.idReception.app_data }}</td>
+        <th style="text-align: center;" scope="col">Day Name</th>
+        <th style="text-align: center;" scope="col">Time</th>
+        <th style="text-align: center;" scope="col">Upper Right</th>
+        <th style="text-align: center;" scope="col">Upper Left</th>
+        <th style="text-align: center;" scope="col">Lower Right</th>
+        <th style="text-align: center;" scope="col">Lower Left</th>
+        <th style="text-align: center;" scope="col">Canal</th>
+        <th style="text-align: center;" scope="col">Work Length</th>
+        <th style="text-align: center;" scope="col">no_prepare</th>
+        <th style="text-align: center;" scope="col">Price</th>
+        <th style="text-align: center;" scope="col">Total Price</th>
+        <th style="text-align: center;" scope="col">Paid</th>
+        <th style="text-align: center;" scope="col">Notes</th>
+        {% elif model_name == 'Ortho' %}
+        <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Right NOW</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Left NOW</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Right NOW</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Left NOW</th>
+        <th scope="col" style="text-align: center;" class="hideable">Teeth Type</th>
+        <th scope="col" style="text-align: center;" class="hideable">angle_class</th>
+        <th scope="col" style="text-align: center;" class="hideable">over_jet</th>
+        <th scope="col" style="text-align: center;" class="hideable">over_bt</th>
+        <th scope="col" style="text-align: center;" class="hideable">jow_shift</th>
+        <th scope="col" style="text-align: center;" class="hideable">midlin_shift</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Right S</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Left S</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Right S</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Left S</th>
+        <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
+        <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
         {% endif %}
         <!-- ... other header columns ... -->
     </tr>
@@ -109,65 +165,22 @@
     {% for result in results %}
     <tr>
         {% if model_name == 'Exo' %}
-        <td>{{ result.id }}</td>
-        <td>{{ result.name }}</td>
-        <td>{{ result.phone }}</td>
-        <td>{{ result.gender }}</td>
-        <td>{{ result.date_of_birth }}</td>
-        <td>{{ result.ur|slice:"1:-1" }}</td>
-        <td>{{ result.ul|slice:"1:-1" }}</td>
-        <td>{{ result.lr|slice:"1:-1" }}</td>
-        <td>{{ result.ll|slice:"1:-1" }}</td>
-        <td>{{ result.no_prepare }}</td>
-        <td>{{ result.price }}</td>
-        <td>{{ result.total_price }}</td>
-        <td>{{ result.note }}</td>
-        <td>{{ result.exoby|slice:"1:-1" }}</td>
-        <td>{{ result.simpleexo|slice:"1:-1" }}</td>
-        <td>{{ result.complcated|slice:"1:-1" }}</td>
-        {% elif model_name == 'Crown' %}
-        <td scope="row">{{ result.id }}</td>
-        <td text-align="center" scope="row">{{ result.name }}</td>
-        <td text-align="center" scope="row">{{ result.phone }}</td>
-        <td text-align="center" scope="row">{{ result.gender }}</td>
-        <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
-        <td text-align="center" scope="row" align="center">{{result.shade}}</td>
-        <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
-        <td text-align="center" scope="row" align="center">{{result.color}}</td>
-        <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
-        <td text-align="center" scope="row" align="center">{{result.price}}</td>
-        <td text-align="center" scope="row" align="center"> {{result.total_price }}</td>
-        <td text-align="center" scope="row" align="center">{{result.note}}</td>
-        <!-- ... other crown-related fields ... -->
-        {% elif model_name == 'Filling' %}
-        <td scope="row">{{ result.id }}</td>
-        <td scope="row">{{ result.name }}</td>
-        <td scope="row">{{ result.phone }}</td>
-        <td scope="row">{{ result.gender }}</td>
-        <td scope="row">{{ result.date_of_birth }}</td>
-        <td scope="row">{{result.filling_type}}</td>
-        <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
-        <td scope="row">{{result.ur|slice:"1:-1" }}</td>
-        <td scope="row">{{result.ul|slice:"1:-1"}}</td>
-        <td scope="row">{{result.lr|slice:"1:-1"}}</td>
-        <td scope="row">{{result.ll|slice:"1:-1"}}</td>
-        <td scope="row">{{result.no_prepare}}</td>
-        <td scope="row">{{result.price}}</td>
-        <td scope="row">{{result.total_price}}</td>
-        <td scope="row">{{result.note}}</td>
-        {% elif model_name == 'Veneer' %}
-        <td text-align="center" scope="row">{{ result.id}}</td>
-        <td text-align="center" scope="row">{{ result.name }}</td>
-        <td text-align="center" scope="row">{{ result.phone }}</td>
-        <td text-align="center" scope="row">{{ result.gender }}</td>
-        <td text-align="center" scope="row">{{ result.date_of_birth }}</td>
-        <td text-align="center" scope="row" align="center">{{result.shade}}</td>
-        <td text-align="center" scope="row" align="center">{{result.no_unite}}</td>
-        <td text-align="center" scope="row" align="center">{{result.color}}</td>
-        <td text-align="center" scope="row" align="center">{{result.no_prepare}}</td>
-        <td text-align="center" scope="row" align="center">{{result.price}}</td>
-        <td text-align="center" scope="row" align="center"> {{ result.total_price }}</td>
-        <td text-align="center" scope="row" align="center">{{result.note}}</td>
+        <td style="text-align: center;" >{{ result.id }}</td>
+        <td style="text-align: center;" >{{ result.name }}</td>
+        <td style="text-align: center;" >{{ result.phone }}</td>
+        <td style="text-align: center;" >{{ result.gender }}</td>
+        <td style="text-align: center;" >{{ result.date_of_birth }}</td>
+        <td style="text-align: center;" >{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.ul|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.lr|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.ll|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.no_prepare }}</td>
+        <td style="text-align: center;" >{{ result.price }}</td>
+        <td style="text-align: center;" >{{ result.total_price }}</td>
+        <td style="text-align: center;" >{{ result.note }}</td>
+        <td style="text-align: center;" >{{ result.exoby|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
         {% elif model_name == 'OralSurgery' %}
         <td style="text-align: center;" scope="row">{{ result.id }}</td>
         <td style="text-align: center;" scope="row">{{ result.name }}</td>
@@ -189,6 +202,90 @@
         <td style="text-align: center;" scope="row">{{ result.price }}</td>
         <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
+        {% elif model_name == 'Crown' %}
+        <td scope="row">{{ result.id }}</td>
+        <td style="text-align: center;" scope="row">{{ result.name }}</td>
+        <td style="text-align: center;" scope="row">{{ result.phone }}</td>
+        <td style="text-align: center;" scope="row">{{ result.gender }}</td>
+        <td style="text-align: center;" scope="row">{{ result.date_of_birth }}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.shade}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.no_unite}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.color}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.no_prepare}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.price}}</td>
+        <td style="text-align: center;" scope="row" align="center"> {{result.total_price }}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.note}}</td>
+        <!-- ... other crown-related fields ... -->
+        {% elif model_name == 'Filling' %}
+        <td scope="row">{{ result.id }}</td>
+        <td scope="row">{{ result.name }}</td>
+        <td scope="row">{{ result.phone }}</td>
+        <td scope="row">{{ result.gender }}</td>
+        <td scope="row">{{ result.date_of_birth }}</td>
+        <td scope="row">{{result.filling_type}}</td>
+        <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
+        <td scope="row">{{result.ur|slice:"1:-1" }}</td>
+        <td scope="row">{{result.ul|slice:"1:-1"}}</td>
+        <td scope="row">{{result.lr|slice:"1:-1"}}</td>
+        <td scope="row">{{result.ll|slice:"1:-1"}}</td>
+        <td scope="row">{{result.no_prepare}}</td>
+        <td scope="row">{{result.price}}</td>
+        <td scope="row">{{result.total_price}}</td>
+        <td scope="row">{{result.note}}</td>
+        {% elif model_name == 'Veneer' %}
+        <td style="text-align: center;" scope="row">{{ result.id}}</td>
+        <td style="text-align: center;" scope="row">{{ result.name }}</td>
+        <td style="text-align: center;" scope="row">{{ result.phone }}</td>
+        <td style="text-align: center;" scope="row">{{ result.gender }}</td>
+        <td style="text-align: center;" scope="row">{{ result.date_of_birth }}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.shade}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.no_unite}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.color}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.no_prepare}}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.price}}</td>
+        <td style="text-align: center;" scope="row" align="center"> {{ result.total_price }}</td>
+        <td style="text-align: center;" scope="row" align="center">{{result.note}}</td>
+        {% elif model_name == 'Endo' %}
+        <td style="text-align: center;" scope="row">{{ result.id }}</td>
+        <td style="center" scope="row">{{ result.idReception.doctor.doctor_name }}</td>
+        <td style="center" scope="row">{{ result.idReception.app_data }}</td>
+        <td style="center" scope="row">{{ result.idReception.days }}</td>
+        <td style="center" scope="row">{{ result.idReception.time|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ll|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.canal|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.work_length }}</td>
+        <td style="text-align: center;" scope="row">{{ result.no_prepare }}</td>
+        <td style="text-align: center;">{{ result.price }}</td>
+        <td style="text-align: center;">{{ result.total_price }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid }}</td>
+        <td style="text-align: center;" scope="row">{{ result.note }}</td>
+        {% elif model_name == 'Ortho' %}
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.ul|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.lr|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.ll|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.urn|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.uln|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.lrn|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.lln|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.teeth_type|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.angle_class }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.over_jet }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.over_bt }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.jow_shift }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.midlin_shift }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.urs|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.uls|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.lrs|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.lls|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.teeth_size |slice:"1:-1" }}</td>
+        <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>
+        <td style="text-align: center;">{{ result.price}}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.paid }}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.notes }}</td>
         {% endif %}
         <!-- ... other fields ... -->
     </tr>
@@ -202,5 +299,27 @@
 {% else %}
 <p>No results found.</p>
 {% endif %}
+<script>
+    // Run the script after the page has loaded
+    $(document).ready(function () {
+        // Find all elements with the 'hideable' class
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
 
+            // Check the content of each element
+            if (content === "None") {
+                // Hide the current element
+                $(this).hide();
+
+                // If it's a <td> or <th>, find the corresponding <th> by index
+                if ($(this).is('td,th')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
 {% endblock %}
