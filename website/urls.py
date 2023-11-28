@@ -32,6 +32,7 @@ urlpatterns = [
 
     path('upload/', views.upload_file, name='upload'),
     path('delete_upload_file/<int:id>', views.delete_upload_file, name='delete-upload_file'),
+    path('upload_file1', views.upload_file1, name='upload_file1'),
 
     path('doctors/doctor.html', views.doctor, name='doctor'),
     path('delete-doctor/<int:id>', views.delete_doctor, name='delete-doctor'),

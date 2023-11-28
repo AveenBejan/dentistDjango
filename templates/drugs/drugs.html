@@ -172,6 +172,29 @@ function deleteRows(){
         </div>
     </form>
 </div>
+<div class="card" style="width: 18rem; float:left;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <table border="1" class="table table-hover">
+            <thead style="background-color:#73ccf0; color:#fff;">
+            <tr>
+                <th>#</th>
+                <th>File Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for uploaded_file in appointments %}
+            <tr>
+                <td>{{ uploaded_file.id }}</td>
+                <td><a href="{{ uploaded_file.pdf_file.url }}" target="_blank">{{ uploaded_file.pdf_file.name }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>

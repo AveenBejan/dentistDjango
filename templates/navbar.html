@@ -34,13 +34,14 @@
                 <li class="nav-item"><a href="contact.html" class="nav-link" style="color: #ffffff;">Contact</a></li>
                 {% endif %}
                 -->
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false" style="color: #ffffff;">
                         Reception
                     </a>
                     <div class="dropdown-menu">
-                        {% if user.role == 'admin' or user.role == 'user' %}
+                        {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' %}
                         <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
                         <a class="dropdown-item" href="{% url 'all-gave' %}">All Booked Appointment</a>
                         {% else %}
@@ -56,9 +57,8 @@
                         {% endif %}
                     </div>
                 </li>
-
-
-
+                {% endif %}
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false" style="color: #ffffff;">
@@ -83,7 +83,8 @@
                         {% endif %}
                     </div>
                 </li>
-
+                {% endif %}
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
                    <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false" style="color: #ffffff;">
@@ -191,6 +192,7 @@
                         {% endif %}
                     </div>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false" style="color: #ffffff;">
@@ -204,6 +206,7 @@
                         {% endif %}
                     </div>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false" style="color: #ffffff;">
@@ -220,6 +223,8 @@
                         {% endif %}
                     </div>
                 </li>
+                {% endif %}
+
                 <!--{% if user.role == 'admin' or user.role == 'doctor' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="{% url 'search-doctor' %}" role="button"
