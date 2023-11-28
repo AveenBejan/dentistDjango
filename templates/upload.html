@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- upload.html -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+</form>
+
+<br/>
+<table border="1" class="table table-hover">
+    <thead style="background-color:#73ccf0; color:#fff;">
+    <tr>
+        <th>#</th>
+        <th>File Name</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for uploaded_file in uploaded_files %}
+    <tr>
+        <td>{{ uploaded_file.id }}</td>
+        <td><a href="{{ uploaded_file.pdf_file.url }}" target="_blank">{{ uploaded_file.pdf_file.name }}</a></td>
+        <td scope="row">
+            <a href="{% url 'delete-upload_file' uploaded_file.id %}" style="display: inline;">
+                <span class="btn btn-outline-danger">Delete</span>
+            </a>
+        </td>
+
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+</body>
+</html>

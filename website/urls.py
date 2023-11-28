@@ -30,6 +30,9 @@ urlpatterns = [
     path('send_appointment_reminders', views.send_appointment_reminders, name='send_appointment_reminders'),
     path('generate_pdf/', views.generate_pdf_view, name='generate_pdf'),
 
+    path('upload/', views.upload_file, name='upload'),
+    path('delete_upload_file/<int:id>', views.delete_upload_file, name='delete-upload_file'),
+
     path('doctors/doctor.html', views.doctor, name='doctor'),
     path('delete-doctor/<int:id>', views.delete_doctor, name='delete-doctor'),
     path('search_doctor', views.search_doctor, name='search-doctor'),
@@ -70,6 +73,22 @@ urlpatterns = [
     path('remove_photo_crown/<int:photo_id>/', views.remove_photo_crown, name='remove_photo_crown'),
     path('delete_crown/<int:id>', views.delete_crown, name='delete-crown'),
     path('crown_pdf', views.crown_pdf, name='crown-pdf'),
+
+
+    path('periodontology/<int:id>',views.periodontology, name='periodontology'),
+    path('periodontology/periodontology_reception.html', views.periodontology_reception, name='periodontology-reception'),
+    path('periodontology_edit/<int:id>', views.periodontology_edit, name='periodontology_edit'),
+    path('remove_photo_periodontology/<int:photo_id>/', views.remove_photo_periodontology, name='remove_photo_periodontology'),
+    path('search_periodontology', views.search_periodontology, name='search-periodontology'),
+    path('delete_periodontology/<int:id>', views.delete_periodontology, name='delete-periodontology'),
+
+
+    path('prosthodontics/prosthodontics_reception.html', views.prosthodontics_reception,name='prosthodontics-reception'),
+    path('search_prosthodontics', views.search_prosthodontics, name='search-prosthodontics'),
+    path('prosthodontics/<int:id>', views.prosthodontics, name='prosthodontics'),
+    path('prosthodontics_edit/<int:id>', views.prosthodontics_edit, name='prosthodontics_edit'),
+    path('remove_photo_prosthodontics/<int:photo_id>/', views.remove_photo_prosthodontics, name='remove_photo_prosthodontics'),
+    path('delete_prosthodontics/<int:id>', views.delete_prosthodontics, name='delete-prosthodontics'),
 
 
     path('conservation/veneer/veneer_reception.html', views.veneer_reception, name='veneer-reception'),

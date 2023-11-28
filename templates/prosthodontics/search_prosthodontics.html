@@ -1,0 +1,62 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<div class="container">
+
+  <div class="row justify-content-center">
+            <div class="col-md-10">
+                {% if searched and orals %}
+                <!--<h2>Search Results:{{ searched }}</h2>-->
+                <br/>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Prosthodontics</li>
+                    </ol>
+                </nav>
+                <table class="table table-hover">
+                    <thead style="background-color:#73ccf0; color:#fff;">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col" colspan="">Add Prosthodontics</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for oral in orals %}
+                    <tr>
+                        <td scope="row">{{oral.id}}</td>
+                        <td> {{oral.name}}</td>
+                        <td> {{oral.phone}}</td>
+                        <td> {{oral.gender}}</td>
+                        <td> {{oral.date_of_birth}}</td>
+                        <td><a href="{% url 'prosthodontics' oral.id %}" style="display: inline;"><span class="btn btn-outline-warning">Add Prosthodontics</span></a></td>
+                        <!--<td><a href="{% url 'medicine' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Medicine</span></a></td>
+                        <td><a href="{% url 'drugs' oral.id %}" style="display: inline;"><span class="btn btn-outline-danger">Drugs</span></a></td>-->
+
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <br/>
+                {% else %}
+                <div class="alert alert-danger" role="alert">
+                    No Patient Record found.
+                </div>
+                {% endif %}
+
+            </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,365 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                    </ol>
+                </nav>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="idReception"
+                           value="{{ form.initial.idReception }}"
+                           class="form-control">
+                    <input type="hidden" name="name" value="{{ form.initial.name }}"
+                           class="form-control">
+                    <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                           class="form-control">
+                    <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                           class="form-control">
+                    <input type="hidden" name="date_of_birth"
+                           value="{{ form.initial.date_of_birth }}"
+                           class="form-control">
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="card-header">
+                                Upper Right
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR1"{% if "UR1" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR2"{% if "UR2" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR3"{% if "UR3" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR4"{% if "UR4" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR4</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR5"{% if "UR5" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR5</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR6"{% if "UR6" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR6</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR7"{% if "UR7" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR7</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="UR8"{% if "UR8" in form.initial.ur %}checked{% endif %}>
+                                        <label class="form-check-label">UR8</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card-header">
+                                Upper Left
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL1"{% if "UL1" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL2"{% if "UL2" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL3"{% if "UL3" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL4"{% if "UL4" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL4</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL5"{% if "UL5" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL5</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL6"{% if "UL6" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL6</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL7"{% if "UL7" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL7</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="UL8"{% if "UL8" in form.initial.ul %}checked{% endif %}>
+                                        <label class="form-check-label">UL8</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card-header">
+                                Lower Right
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR1"{% if "LR1" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR2"{% if "LR2" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR3"{% if "LR3" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR4"{% if "LR4" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR4</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR5"{% if "LR5" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR5</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR6"{% if "LR6" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR6</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR7"{% if "LR7" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR7</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LR8"{% if "LR8" in form.initial.lr %}checked{% endif %}>
+                                        <label class="form-check-label">LR8</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card-header">
+                                Lower Left
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL1"{% if "LL1" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL2"{% if "LL2" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL3"{% if "LL2" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL4"{% if "LL4" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL4</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL5"{% if "LL5" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL5</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL6"{% if "LL6" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL6</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL7"{% if "LL7" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL7</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LL8"{% if "LL8" in form.initial.ll %}checked{% endif %}>
+                                        <label class="form-check-label">LL8</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="card text-left">
+                        <div class="card-header">
+                            <h4 style="font-size: 22px; text-align:center;">Prosthodontics
+                                Notes</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-control">
+                                <input type="text" name="price" value="{{ form.initial.price }}"
+                                       class="form-control"
+                                       placeholder="Price:"required>
+                            </div>
+                            <input type="hidden" name="paid" value="{{ form.initial.paid }}"
+                                       class="form-control"
+                                       placeholder="paid:">
+                            <div class="form-control">
+                                <input type="text" name="note" value="{{ form.initial.note }}"
+                                       class="form-control"
+                                       placeholder="Notes:"required>
+                            </div>
+                            <div class="form-control">
+                                <label>Upload Photo</label>
+                                <input type="file" name="exo_images"
+                                       class="form-control"
+                                       multiple>
+                            </div>
+                            <br/>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="denture"
+                                       value="Complete Denture"{% if "Complete Denture" in form.initial.denture %}checked{% endif %}>
+                                <label class="form-check-label">Complete Denture</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="upper"
+                                       value="Complete Upper Denture"{% if "Complete Upper Denture" in form.initial.upper %}checked{% endif %}>
+                                <label class="form-check-label">Complete Upper Denture</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="lower"
+                                       value="Complete Lower Denture"{% if "Complete Lower Denture" in form.initial.lower %}checked{% endif %}>
+                                <label class="form-check-label">Complete Lower Denture</label>
+                            </div>
+                             <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="partial"
+                                       value="Partial Denture"{% if "Partial Denture" in form.initial.partial %}checked{% endif %}>
+                                <label class="form-check-label">Partial Denture</label>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="form-group" style="text-align: center;">
+                            <button type="submit">save</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

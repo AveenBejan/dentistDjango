@@ -30,27 +30,30 @@
             <table class="table table-hover">
                 <thead style="background-color:#73ccf0; color:#fff;">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Full Name</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Doctor Name</th>
-                    <th scope="col">Appointment Date</th>
-                    <th scope="col">Day Name</th>
-                    <th scope="col">Time</th>
-                    <th scope="col" colspan="5" style="text-align:center;">Other</th>
+                    <th scope="col" style="text-align:center;">#</th>
+                    <th scope="col" style="text-align:center;">Full Name</th>
+                    <th scope="col" style="text-align:center;">Phone Number</th>
+                    <th scope="col" style="text-align:center;">Doctor Name</th>
+                    <th scope="col" style="text-align:center;">Appointment Date</th>
+                    <th scope="col" style="text-align:center;">Day Name</th>
+                    <th scope="col" style="text-align:center;">Time</th>
+                    <th scope="col" style="text-align:center;">Oral Surgery</th>
+                    <th scope="col" style="text-align:center;">Conservation</th>
+                    <th scope="col" style="text-align:center;">Orthodontic</th>
+                    <th scope="col" style="text-align:center;">Prosthodontics</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for reception in receptions %}
                 <tr>
-                    <td scope="row">{{reception.id}}</td>
-                    <td scope="row">{{reception.name}}</td>
-                    <td scope="row">{{reception.phone}}</td>
-                    <td scope="row">{{ reception.educational.educational_name }}</td>
-                    <td scope="row">{{reception.app_data}}</td>
-                    <td scope="row">{{reception.days}}</td>
-                    <td scope="row">{{reception.time|slice:"1:-1" }}</td>
-                    <td>
+                    <td scope="row" style="text-align:center;">{{reception.id}}</td>
+                    <td scope="row" style="text-align:center;">{{reception.name}}</td>
+                    <td scope="row" style="text-align:center;">{{reception.phone}}</td>
+                    <td scope="row" style="text-align:center;">{{ reception.educational.educational_name }}</td>
+                    <td scope="row" style="text-align:center;">{{reception.app_data}}</td>
+                    <td scope="row" style="text-align:center;">{{reception.days}}</td>
+                    <td scope="row" style="text-align:center;">{{reception.time|slice:"1:-1" }}</td>
+                    <td scope="row" style="text-align:center;">
                         <li class="nav-item dropdown" style="color: #fff;">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                                aria-expanded="false" style="color: #000;">
@@ -62,10 +65,13 @@
                                 <br/>
                                 <a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span
                                         class="btn btn-outline-warning">Add Implant</span></a>
+                                <br/>
+                                <a href="{% url 'periodontology' reception.id %}" style="display: inline;"><span
+                                        class="btn btn-outline-warning">Add Periodontology</span></a>
                             </div>
                         </li>
                     </td>
-                    <td>
+                    <td scope="row" style="text-align:center;">
                         <li class="nav-item dropdown" style="color: #fff;">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                                aria-expanded="false" style="color: #000;">
@@ -86,15 +92,28 @@
                             </div>
                         </li>
                     </td>
-                    <td>
+                    <td scope="row" style="text-align:center;">
                         <li class="nav-item dropdown" style="color: #fff;">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                                aria-expanded="false" style="color: #000;">
-                                Ortho
+                                Orthodontic
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'add-ortho' reception.id %}" style="display: inline;"><span
                                         class="btn btn-outline-warning">Add Ortho</span></a>
+                                <br/>
+                            </div>
+                        </li>
+                    </td>
+                     <td scope="row" style="text-align:center;">
+                        <li class="nav-item dropdown" style="color: #fff;">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                               aria-expanded="false" style="color: #000;">
+                                Prosthodontics
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'prosthodontics' reception.id %}" style="display: inline;"><span
+                                        class="btn btn-outline-warning">Add Prosthodontics</span></a>
                                 <br/>
                             </div>
                         </li>

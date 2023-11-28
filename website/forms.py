@@ -1,8 +1,14 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits,Educational
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile
 from django.forms import formset_factory
+
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadedFile
+        fields = ['pdf_file']
 
 
 class OutcomeForm(forms.ModelForm):
@@ -196,7 +202,7 @@ class Medicine1Form(forms.ModelForm):
 
 class DrugForm(forms.ModelForm):
     name_medicine = forms.ModelChoiceField(queryset=Medicine1.objects.all(),widget=forms.Select(attrs=
-                                           {'class': 'form-control'}), empty_label='Select Drugs')
+                                           {'class': 'form-control'}), empty_label='Select Drugs', required=True)
 
     TYPE_CHOICES = [
         ('', 'Select Type'),
@@ -221,14 +227,30 @@ class DrugForm(forms.ModelForm):
         ('Drop', 'Drop'),
         ('Injection', 'Injection'),
     ]
+    DISPENSE_CHOICES = [
+        ('', 'Select Dispense'),
+        ('1 Day', '1 Day'),
+        ('2 Days', '2 Days'),
+        ('3 Days', '3 Days'),
+        ('4 Days', '4 Days'),
+        ('5 Days', '5 Days'),
+        ('6 Days', '6 Days'),
+        ('7 Days', '7 Days'),
+        ('One Week', 'One Week'),
+        ('Two Weeks', 'Two Week'),
+    ]
 
-    type = forms.ChoiceField(choices=TYPE_CHOICES, initial='', widget=forms.Select(attrs={'class': 'form-control'}))
-    times = forms.ChoiceField(choices=TIMES_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}))
-    tablet = forms.ChoiceField(choices=TABLET_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}))
+    type = forms.ChoiceField(choices=TYPE_CHOICES, initial='', widget=forms.Select(attrs={'class': 'form-control'}),
+                             required=True)
+    times = forms.ChoiceField(choices=TIMES_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}),
+                              required=True)
+    tablet = forms.ChoiceField(choices=TABLET_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}),
+                               required=True)
+    dispense = forms.ChoiceField(choices=DISPENSE_CHOICES, initial='',widget=forms.Select(attrs={'class': 'form-control'}), required=True)
 
     class Meta:
         model = Drug
-        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times','tablet']
+        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times','tablet','dispense']
         labels = {
             'idReception': '',
             'name': '',
@@ -240,6 +262,7 @@ class DrugForm(forms.ModelForm):
             'type': '',
             'times': '',
             'tablet': '',
+            'dispense': '',
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control', 'style': 'display: none;'}),
@@ -372,6 +395,38 @@ class ExoForm(forms.ModelForm):
             'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),
             'simpleexo': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'simpleexo'}),
             'complcated': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
+
+        }
+
+
+class PeriodontologyForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+
+    class Meta:
+        model = Periodontology
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','type','price', 'paid', 'note', 'exo_images')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'type': '',
+            'price': '',
+            'paid': '',
+            'note': '',
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'type': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
 
         }
 
@@ -686,7 +741,7 @@ class OrthoForm(forms.ModelForm):
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
                   'over_jet','over_bt', 'jow_shift', 'midlin_shift','urs', 'uls','lrs', 'lls','teeth_size','SNA_before','SNA_after','SNB_before','SNB_after','ANB_before','ANB_after',
                   'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid', 'notes','exo_images','visits',
-                  'wive_size','cross_sectional','material')
+                  'wive_size','cross_sectional','material','brackets','visit_date')
         labels = {
             'idReception': '',
             'name': '',
@@ -732,6 +787,8 @@ class OrthoForm(forms.ModelForm):
             'wive_size': '',
             'cross_sectional': '',
             'material': '',
+            'brackets': '',
+            'visit_date': '',
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
@@ -777,6 +834,9 @@ class OrthoForm(forms.ModelForm):
             'wive_size': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
             'cross_sectional': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
             'material': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
+            'brackets': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
+            'visit_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+
         }
 
 
@@ -807,3 +867,46 @@ class DebtsForm(forms.ModelForm):
             'remaining': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'remaining'}),
         }
 
+
+class ProsthodonticsForm(forms.ModelForm):
+    class Meta:
+        model = Prosthodontics
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid', 'note', 'denture', 'upper','lower', 'partial','exo_images')
+        labels = {
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'price': '',
+            'paid': '',
+            'note': '',
+            'denture': '',
+            'upper': '',
+            'lower': '',
+            'partial': '',
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'denture': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'denture'}),
+            'upper': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'upper'}),
+            'lower': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
+            'partial': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
+
+        }

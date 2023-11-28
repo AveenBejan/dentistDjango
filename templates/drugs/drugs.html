@@ -82,6 +82,7 @@ function deleteRows(){
             <th scope="col">Type</th>
             <th scope="col">Times</th>
             <th scope="col">Tablet</th>
+            <th scope="col">Dispense</th>
             <th scope="col" colspan="2" style="text-align:center;">Other</th>
         </tr>
         </thead>
@@ -98,6 +99,7 @@ function deleteRows(){
             <td scope="row" align="center">{{ medicin.type }}</td>
             <td scope="row" align="center">{{ medicin.times }}</td>
             <td scope="row" align="center">{{ medicin.tablet }}</td>
+            <td scope="row" align="center">{{ medicin.dispense }}</td>
             <td>
                 {% if medicin.id %}
                 <a href="{% url 'print-drugs'  medicin.idReception_id  %}" style="display: inline;"
@@ -116,7 +118,7 @@ function deleteRows(){
 <br/>
 <div class="container" align="center" id="form-container">
 
-    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form">
+    <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form" r>
         {% csrf_token %}
         <input type="hidden" name="idReception"
                value="{{ form.initial.idReception }}"
@@ -131,28 +133,30 @@ function deleteRows(){
                value="{{ form.initial.date_of_birth }}"
                class="form-control">
         <div class="row">
-            <div class="col-10">
+            <div class="col-12">
                 <div class="form-row">
                     <div class="col">
                         <label for="{{ form.name_medicine.id_for_label }}"></label>{{ form.name_medicine }}
                     </div>
                     <div class="col">{{ form.doze }}</div>
                     <div class="col"> {{ form.type }}</div>
-                    <div class="col">{{ form.times }}</div>
                     <div class="col">{{ form.tablet }}</div>
+                    <div class="col">{{ form.times }}</div>
+                    <div class="col">{{ form.dispense }}</div>
                 </div>
             </div>
             {{ formset.management_form }}
             {% for form in formset %}
-            <div class="col-10">
+            <div class="col-12">
                 <div class="form-row">
                     <div class="col">
                         <label for="{{ form.name_medicine.id_for_label }}"></label>{{ form.name_medicine }}
                     </div>
                     <div class="col">{{ form.doze }}</div>
                     <div class="col">{{ form.type }}</div>
-                    <div class="col">{{ form.times }}</div>
                     <div class="col">{{ form.tablet }}</div>
+                    <div class="col">{{ form.times }}</div>
+                    <div class="col">{{ form.dispense }}</div>
                 </div>
             </div>
             {% endfor %}
@@ -168,9 +172,8 @@ function deleteRows(){
         </div>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="{% static 'website/js/jquery.min.js' %}"></script>
-<script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>
 <script src="{% static 'website/js/popper.min.js' %}"></script>
 <script src="{% static 'website/js/bootstrap.min.js' %}"></script>
@@ -186,6 +189,7 @@ function deleteRows(){
 
 
 <script src="{% static 'website/js/main.js' %}"></script>
+
 </body>
 </html>
 {% endblock %}

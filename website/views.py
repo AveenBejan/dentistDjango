@@ -4,9 +4,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
-    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1
+    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -23,6 +23,25 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from xhtml2pdf import pisa
 from django.http import Http404
+
+
+def upload_file(request):
+    uploaded_files = None
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('upload')
+    else:
+        form = UploadFileForm()
+        uploaded_files = UploadedFile.objects.all()  # Replace UploadedFile with your model name
+    return render(request, 'upload.html', {'form': form,'uploaded_files': uploaded_files})
+
+
+def delete_upload_file(request,id):
+    uploaded_files = UploadedFile.objects.get(pk=id)
+    uploaded_files.delete()
+    return redirect('upload')
 
 
 def generate_pdf_view(html_content, filename):
@@ -1108,6 +1127,7 @@ def delete_visit(request,id):
 
 
 def add_ortho(request, id):
+    disable_submit = False  # Initialize disable_submit before the if block
     if request.method == 'POST':
         form = OrthoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1120,7 +1140,8 @@ def add_ortho(request, id):
             ortho.educational_id = reception.educational_id
             ortho.doctor_id = reception.doctor_id
             ortho.save()
-
+            # Set disable_submit flag to True after successful form processing
+            disable_submit = True
             return redirect('add-ortho', id=id)
         else:
             reception = Reception.objects.get(id=id)
@@ -1204,6 +1225,7 @@ def add_ortho(request, id):
         photos_list.append(photos)
     formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
     # Retrieve the first Ortho object where visits_id is null or 1
+    # Disable the form submission after processing
 
     return render(request, 'ortho/ortho.html', {
         'form': form,
@@ -1212,6 +1234,7 @@ def add_ortho(request, id):
         'oralls': oralls,
         'id': id,
         'photos': photos,
+        'disable_submit': disable_submit,
         'photos_list': photos_list,
         'formatted_prices': formatted_prices,
         'orall': orall
@@ -1332,6 +1355,8 @@ def ortho_visit1(request, id):
         new_orall.phone = orall.phone
         new_orall.gender = orall.gender
         new_orall.date_of_birth = orall.date_of_birth
+        new_orall.educational_id = orall.educational_id
+        new_orall.doctor_id = orall.doctor_id
         new_orall.ur = orall.ur
         new_orall.ul = orall.ul
         new_orall.lr = orall.lr
@@ -1465,6 +1490,14 @@ def exo_reception(request):
     return render(request, 'exo/exo_reception.html', {'appointments': appointments})
 
 
+def prosthodontics_reception(request):
+    appointments =Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+    return render(request, 'prosthodontics/prosthodontics_reception.html', {'appointments': appointments})
+
+
 def exo_reception1(request):
     appointments =Reception.objects.all().order_by('-id')
     return render(request, 'exo/exo_reception1.html', {'appointments': appointments})
@@ -1551,8 +1584,8 @@ def exo(request, id):
             exoo.ll = exoo.ll.replace("'", "")
         if exoo.exoby:
             exoo.exoby = exoo.exoby.replace("'", "")
-        if exoo.simpleexo:
-            exoo.simpleexo = exoo.simpleexo.replace("'", "")
+        if exoo.uper:
+            exoo.uper = exoo.uper.replace("'", "")
         if exoo.complcated:
             exoo.complcated = exoo.complcated.replace("'", "")
         exoo.total_price = exoo.price
@@ -1609,8 +1642,8 @@ def exo_edit(request, id):
                 exoo.ll = exoo.ll.replace("'", "")
             if exoo.exoby:
                 exoo.exoby = exoo.exoby.replace("'", "")
-            if exoo.simpleexo:
-                exoo.simpleexo = exoo.simpleexo.replace("'", "")
+            if exoo.uper:
+                exoo.uper = exoo.uper.replace("'", "")
             if exoo.complcated:
                 exoo.complcated = exoo.complcated.replace("'", "")
         except Exo.DoesNotExist:
@@ -1626,6 +1659,345 @@ def remove_photo(request, photo_id):
     photo.delete()
     return redirect('exo_edit', id=exo_instance.id)
 
+
+def prosthodontics_edit(request, id):
+    exoo = get_object_or_404(Prosthodontics, id=id)
+    photos = Photo.objects.filter(prosthodontics_instance=exoo)  # Fetch photos associated with the oral surgery instance
+    if request.method == 'POST':
+        form = ProsthodonticsForm(request.POST, request.FILES, instance=exoo)
+        if form.is_valid():
+            form.save()
+
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(prosthodontics_instance=exoo, image=photo)
+
+            return redirect('prosthodontics', id=exoo.idReception_id)
+    else:
+        form = ProsthodonticsForm(instance=exoo)
+        try:
+            exoo = Prosthodontics.objects.get(idReception=id)
+            photos = exoo.photo_set.all()
+            # Sanitize field values in the instance
+            if exoo.ur:
+                exoo.ur = exoo.ur.replace("'", "")
+            if exoo.ul:
+                exoo.ul = exoo.ul.replace("'", "")
+            if exoo.lr:
+                exoo.lr = exoo.lr.replace("'", "")
+            if exoo.ll:
+                exoo.ll = exoo.ll.replace("'", "")
+            if exoo.denture:
+                exoo.denture = exoo.denture.replace("'", "")
+            if exoo.upper:
+                exoo.upper = exoo.upper.replace("'", "")
+            if exoo.lower:
+                exoo.lower = exoo.lower.replace("'", "")
+            if exoo.partial:
+                exoo.partial = exoo.partial.replace("'", "")
+        except Prosthodontics.DoesNotExist:
+            exoo = None
+            photos = None
+
+    return render(request, 'prosthodontics/prosthodontics_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
+
+
+def remove_photo_prosthodontics(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    prosthodontics_instance = photo.prosthodontics_instance
+    photo.delete()
+    return redirect('prosthodontics_edit', id=prosthodontics_instance.id)
+
+
+def delete_prosthodontics(request, id):
+    # Get the drug related to the Reception
+    exo = get_object_or_404(Prosthodontics, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = exo.idReception_id
+
+    # Delete the drug
+    exo.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('prosthodontics', id=idReception)
+
+
+def prosthodontics(request, id):
+    if request.method == 'POST':
+        form = ProsthodonticsForm(request.POST, request.FILES)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception_id = id
+
+            price = form.cleaned_data['price']
+            total_price = price
+            oral_surgery.total_price = total_price
+            reception = Reception.objects.get(id=id)
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
+            oral_surgery.save()
+
+            photos = request.FILES.getlist('exo_images')
+            prosthodontics_instance = form.save(commit=False)
+            prosthodontics_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(prosthodontics_instance=prosthodontics_instance, image=photo)
+
+            return redirect('prosthodontics', id=id)
+        else:
+            reception = Reception.objects.get(id=id)
+            initial_data = {
+                'idReception': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
+
+            }
+            form = ProsthodonticsForm(initial=initial_data)
+    else:
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
+        }
+        form = ProsthodonticsForm(initial=initial_data)
+
+    appointments = Reception.objects.all().order_by('-id')
+    exooes = Prosthodontics.objects.filter(idReception=id)
+    # Create a list to store photos for each OralSurgery instance
+    photos_list = []
+
+    try:
+        exoo = exooes.first()
+        photos = exoo.photo_set.all()
+    except AttributeError:
+        exoo = None
+        photos = None
+
+    try:
+        medicine = Medicin.objects.get(idReception=id)
+    except Medicin.DoesNotExist:
+        medicine = None
+
+    for exoo in exooes:
+        if exoo.ur:
+            exoo.ur = exoo.ur.replace("'", "")
+        if exoo.ul:
+            exoo.ul = exoo.ul.replace("'", "")
+        if exoo.lr:
+            exoo.lr = exoo.lr.replace("'", "")
+        if exoo.ll:
+            exoo.ll = exoo.ll.replace("'", "")
+        if exoo.denture:
+            exoo.denture = exoo.denture.replace("'", "")
+        if exoo.upper:
+            exoo.upper = exoo.upper.replace("'", "")
+        if exoo.lower:
+            exoo.lower = exoo.lower.replace("'", "")
+        if exoo.partial:
+            exoo.partial = exoo.partial.replace("'", "")
+        exoo.total_price = exoo.price
+        exoo.save()
+        # Retrieve photos associated with the current OralSurgery instance
+        photos = exoo.photo_set.all()
+
+        # Append the photos to the photos_list
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+    formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
+    return render(request, 'prosthodontics/prosthodontics.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'exooes': exooes,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
+
+
+def search_periodontology(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception.objects.all()
+        return render(request, 'periodontology/search_periodontology.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'periodontology/search_periodontology.html', {})
+
+
+def remove_photo_periodontology(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    periodontology_instance = photo.periodontology_instance
+    photo.delete()
+    return redirect('periodontology_edit', id=periodontology_instance.id)
+
+
+def delete_periodontology(request, id):
+    # Get the drug related to the Reception
+    exo = get_object_or_404(Periodontology, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = exo.idReception_id
+
+    # Delete the drug
+    exo.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('periodontology', id=idReception)
+
+
+def periodontology(request, id):
+    if request.method == 'POST':
+        form = PeriodontologyForm(request.POST, request.FILES)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception_id = id
+
+            price = form.cleaned_data['price']
+            total_price = price
+            oral_surgery.total_price = total_price
+            reception = Reception.objects.get(id=id)
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.doctor_id = reception.doctor_id
+            oral_surgery.save()
+
+            photos = request.FILES.getlist('exo_images')
+            periodontology_instance = form.save(commit=False)
+            periodontology_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(periodontology_instance=periodontology_instance, image=photo)
+
+            return redirect('periodontology', id=id)
+        else:
+            reception = Reception.objects.get(id=id)
+            initial_data = {
+                'idReception': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'doctor_id': reception.doctor_id
+
+            }
+            form = PeriodontologyForm(initial=initial_data)
+    else:
+        reception = Reception.objects.get(id=id)
+        initial_data = {
+            'idReception': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
+        }
+        form = PeriodontologyForm(initial=initial_data)
+
+    appointments = Reception.objects.all().order_by('-id')
+    exooes = Periodontology.objects.filter(idReception=id)
+    # Create a list to store photos for each OralSurgery instance
+    photos_list = []
+
+    try:
+        exoo = exooes.first()
+        photos = exoo.photo_set.all()
+    except AttributeError:
+        exoo = None
+        photos = None
+
+    try:
+        medicine = Medicin.objects.get(idReception=id)
+    except Medicin.DoesNotExist:
+        medicine = None
+
+    for exoo in exooes:
+        if exoo.type:
+            exoo.type = exoo.type.replace("'", "")
+        exoo.total_price = exoo.price
+        exoo.save()
+        # Retrieve photos associated with the current OralSurgery instance
+        photos = exoo.photo_set.all()
+
+        # Append the photos to the photos_list
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+    formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
+    return render(request, 'periodontology/periodontology.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'exooes': exooes,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
+
+
+def periodontology_edit(request, id):
+    exoo = get_object_or_404(Periodontology, id=id)
+    photos = Photo.objects.filter(periodontology_instance=exoo)  # Fetch photos associated with the oral surgery instance
+    if request.method == 'POST':
+        form = PeriodontologyForm(request.POST, request.FILES, instance=exoo)
+        if form.is_valid():
+            form.save()
+
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(periodontology_instance=exoo, image=photo)
+
+            return redirect('periodontology', id=exoo.idReception_id)
+    else:
+        form = PeriodontologyForm(instance=exoo)
+        try:
+            exoo = Periodontology.objects.get(idReception=id)
+            photos = exoo.photo_set.all()
+            # Sanitize field values in the instance
+            if exoo.type:
+                exoo.type = exoo.type.replace("'", "")
+        except Periodontology.DoesNotExist:
+            exoo = None
+            photos = None
+
+    return render(request, 'periodontology/periodontology_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
+
+
+def periodontology_reception(request):
+    appointments =Reception.objects.all().order_by('-id')
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+    return render(request, 'periodontology/periodontology_reception.html', {'appointments': appointments})
 
 def add_linebreaks(values, n):
     value_list = values.split(', ')
@@ -1644,7 +2016,7 @@ def all_exo(request):
         appointment.lr = appointment.lr.replace("'", "")
         appointment.ll = appointment.ll.replace("'", "")
         appointment.exoby = appointment.exoby.replace("'", "")
-        appointment.simpleexo = appointment.simpleexo.replace("'", "")
+        appointment.uper = appointment.uper.replace("'", "")
         appointment.complcated = appointment.complcated.replace("'", "")
     return render(request, 'exo/all_exo.html', {'appointments': appointments})
 
@@ -1787,6 +2159,15 @@ def search_exo(request):
     else:
         return render(request, 'exo/search_exo.html', {})
 
+
+def search_prosthodontics(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception.objects.all()
+        return render(request, 'prosthodontics/search_prosthodontics.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'prosthodontics/search_prosthodontics.html', {})
 
 def search_exo1(request):
     if request.method == 'POST':

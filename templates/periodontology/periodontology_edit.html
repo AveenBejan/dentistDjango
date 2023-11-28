@@ -1,0 +1,87 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                    </ol>
+                </nav>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="idReception"
+                           value="{{ form.initial.idReception }}"
+                           class="form-control">
+                    <input type="hidden" name="name" value="{{ form.initial.name }}"
+                           class="form-control">
+                    <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                           class="form-control">
+                    <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                           class="form-control">
+                    <input type="hidden" name="date_of_birth"
+                           value="{{ form.initial.date_of_birth }}"
+                           class="form-control">
+                    <div class="row">
+                       <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="type"
+                                       value="Scaling"{% if "Scaling" in form.initial.type %}checked{% endif %}>
+                                <label class="form-check-label">Scaling</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="type"
+                                       value="Polishing"{% if "Polishing" in form.initial.type %}checked{% endif %}>
+                                <label class="form-check-label">Polishing</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                       name="type"
+                                       value="Air Flow"{% if "Air Flow" in form.initial.type %}checked{% endif %}>
+                                <label class="form-check-label">Air Flow</label>
+                            </div>
+
+                    <div class="card text-left">
+                        <div class="card-body">
+                            <div class="form-control">
+                                <input type="text" name="price" value="{{ form.initial.price }}"
+                                       class="form-control"
+                                       placeholder="Price:"required>
+                            </div>
+                            <input type="hidden" name="paid" value="{{ form.initial.paid }}"
+                                       class="form-control"
+                                       placeholder="paid:">
+                            <div class="form-control">
+                                <input type="text" name="note" value="{{ form.initial.note }}"
+                                       class="form-control"
+                                       placeholder="Notes:"required>
+                            </div>
+                            <div class="form-control">
+                                <label>Upload Photo</label>
+                                <input type="file" name="exo_images"
+                                       class="form-control"
+                                       multiple>
+                            </div>
+                            <br/>
+
+                        </div>
+                        <br/>
+                        <div class="form-group" style="text-align: center;">
+                            <button type="submit">save</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

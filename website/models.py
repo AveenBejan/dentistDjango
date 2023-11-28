@@ -188,6 +188,10 @@ class Medicine1(models.Model):
         return self.name_medicine
 
 
+class UploadedFile(models.Model):
+    pdf_file = models.FileField(upload_to='pdfs/')
+
+
 class Drug(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
     name_medicine = models.CharField(max_length=200, blank=True,null=False)  # This should be a CharField, not ForeignKey
@@ -195,10 +199,11 @@ class Drug(models.Model):
     phone = models.CharField('Phone', max_length=120,blank=True,null=False)
     gender = models.CharField('Gender', max_length=20,blank=True,null=False)
     date_of_birth = models.CharField('Gender', max_length=20,blank=True,null=False)
-    doze = models.CharField(max_length=200,blank=True,null=False)
-    type = models.CharField(max_length=200,blank=True,null=False)
-    times = models.CharField(max_length=200,blank=True,null=False)
-    tablet = models.CharField(max_length=200, blank=True, null=False)
+    doze = models.CharField(max_length=200,blank=True,null=True)
+    type = models.CharField(max_length=200,blank=True,null=True)
+    times = models.CharField(max_length=200,blank=True,null=True)
+    tablet = models.CharField(max_length=200, blank=True, null=True)
+    dispense = models.CharField(max_length=200, blank=True, null=True)
     regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
 
 
@@ -280,6 +285,50 @@ class Visits(models.Model):
         return self.visit_name
 
 
+class Periodontology(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField('Name',max_length=120,null=False)
+    phone = models.CharField('Phone', max_length=120,null=False)
+    gender = models.CharField('Gender', max_length=20,null=False)
+    date_of_birth = models.CharField('Gender', max_length=20,null=False)
+    type = models.CharField('Name',max_length=120, blank=True,null=True)
+    price = models.DecimalField('price',max_digits=20,decimal_places=2,null=True)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=True)
+    paid = models.DecimalField('paid', max_digits=20, decimal_places=2, null=True)
+    note = models.CharField('Name', max_length=120, blank=True,null=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+
+
+class Prosthodontics(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField('Name',max_length=120,null=False)
+    phone = models.CharField('Phone', max_length=120,null=False)
+    gender = models.CharField('Gender', max_length=20,null=False)
+    date_of_birth = models.CharField('Gender', max_length=20,null=False)
+    ur = models.CharField('Name',max_length=120, blank=True,null=True)
+    ul = models.CharField('Name', max_length=120, blank=True,null=True)
+    lr = models.CharField('Name', max_length=120, blank=True,null=True)
+    ll = models.CharField('Name', max_length=120, blank=True,null=True)
+    price = models.DecimalField('price',max_digits=20,decimal_places=2,null=True)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=True)
+    paid = models.DecimalField('paid', max_digits=20, decimal_places=2, null=True)
+    note = models.CharField('Name', max_length=120, blank=True,null=True)
+    denture = models.CharField('Name', max_length=120, blank=True,null=True)
+    upper = models.CharField('Name', max_length=120, blank=True, null=True)
+    lower = models.CharField('Name', max_length=120, blank=True, null=True)
+    partial = models.CharField('Name', max_length=120, blank=True, null=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+
+    def __str__(self):
+        return self.name
+
+
 class Ortho(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
@@ -324,12 +373,14 @@ class Ortho(models.Model):
     wive_size = models.CharField('Name', max_length=120, blank=True,null=True)
     cross_sectional = models.CharField('Name', max_length=120, blank=True,null=True)
     material = models.CharField('Name', max_length=120, blank=True,null=True)
+    brackets = models.CharField('Name', max_length=120, blank=True, null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=2,blank=True,null=True)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=2, null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=2, blank=True,null=True)
     notes = models.CharField('Name', max_length=120, blank=True,null=True)
     exo_images = models.ImageField(null=True, blank=True, upload_to='')
     regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    visit_date = models.DateField('Visit Date', null=True, blank=True)
 
     def __str__(self):
         return self.idReception
@@ -343,6 +394,8 @@ class Photo(models.Model):
     oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, null=True)
     endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, null=True)
     ortho_instance = models.ForeignKey(Ortho, on_delete=models.CASCADE, null=True)
+    periodontology_instance = models.ForeignKey(Periodontology, on_delete=models.CASCADE, null=True)
+    prosthodontics_instance = models.ForeignKey(Prosthodontics, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     def __str__(self):

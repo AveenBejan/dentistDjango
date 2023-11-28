@@ -1,0 +1,247 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> this is to hid th and td-->
+<br/>
+<div class="row"
+     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+    <div class="col-12">
+        <div class="accordion" id="accordionExample">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Periodontology Information</li>
+                </ol>
+            </nav>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                        Patient Information
+                    </button>
+                </h2>
+
+                <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
+                    <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
+                </p>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table table-hover">
+                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <tr>
+
+                                <th style="text-align: center;"  scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">Doctor Name</th>
+                                <th scope="col" style="text-align: center;">Appointment Date</th>
+                                <th scope="col" style="text-align: center;">Day Name</th>
+                                <th scope="col" style="text-align: center;">Time</th>
+                                <th scope="col" style="text-align: center;"   class="hideable">Type</th>
+                                <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                                <th scope="col" style="text-align: center;"  class="hideable">Exo Photo</th>
+                                <th scope="col"  style="text-align: center;">Action</th>
+                                <th scope="col"  style="text-align: center;">Show Data</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for exoo in exooes %}
+                            <tr>
+                                <td style="text-align: center;" scope="row">{{ exoo.id }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.doctor.doctor_name }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.app_data }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.days }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.idReception.time|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{exoo.type|slice:"1:-1" }}</td>
+                                <td style="text-align: center;">
+                                    {% if exoo.price is not None %}
+                                    {{ exoo.price|floatformat:2 }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{exoo.note}}</td>
+                                <td class="hideable" style="text-align: center;" scope="row">
+                                    {% for photos in photos_list %}
+                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                      {% for photo in photos %}
+                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
+                                         <a href="{% url 'remove_photo_periodontology' photo.id %}">Remove</a>
+                                      {% endfor %}
+                                     {% endif %}
+                                    {% endfor %}
+                                </td>
+
+                                {% if exoo %}
+                                <td style="text-align: center;" scope="row" ><a href="{% url 'periodontology_edit' exoo.id   %}" style="display: inline;"><span
+                                        class="btn btn-warning">&nbsp;&nbsp;Edit&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'delete-periodontology'  exoo.id %}" style="display: inline;"><span
+                                        class="btn btn-danger">Delete</span></a></td>
+                                {% endif %}
+                                <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
+                                        class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                        class="btn btn-info">Add Appointment</span></a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo"
+                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            Add New Periodontology
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception }}"
+                                       class="form-control">
+                                <input type="hidden" name="doctor"
+                                       value="{{ form.initial.doctor }}"
+                                       class="form-control">
+                                <input type="hidden" name="educational"
+                                       value="{{ form.initial.educational }}"
+                                       class="form-control">
+                                <input type="hidden" name="name" value="{{ form.initial.name }}"
+                                       class="form-control">
+                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+                                       class="form-control">
+                                <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+                                       class="form-control">
+                                <input type="hidden" name="date_of_birth"
+                                       value="{{ form.initial.date_of_birth }}"
+                                       class="form-control">
+                               <!-- <div class="col-2" style="float: right; margin-top: 28px;">
+                                    <div class="card-header" align="right">
+                                        <a href="{% url 'drugs' id=id %}"
+                                           class="btn btn-outline-info">&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs &nbsp; &nbsp; &nbsp; &nbsp;</a>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/><br/><br/>
+                                <div class="col-2" style="float: right; ">
+                                    <div class="card-header" align="center">
+                                        <a href="{% url 'gave-appointment' id=id %}"
+                                           class="btn btn-outline-info" >
+                                           Gave-Appointment</a>
+                                    </div>
+                                </div>-->
+                                <div class="container">
+
+                                    <div class="col-10">
+
+                                        <br/>
+                                        <div class="card-header">
+                                            <h4 style="font-size: 22px; text-align:center;">Add New Periodontology</h4>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col">
+                                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" class="form-check-input"
+                                                       name="type"
+                                                       value="Scaling">
+                                                <label class="form-check-label">Scaling</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" class="form-check-input"
+                                                       name="type"
+                                                       value="Polishing">
+                                                <label class="form-check-label">Polishing</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" class="form-check-input"
+                                                       name="type"
+                                                       value="Air Flow">
+                                                <label class="form-check-label">Air Flow</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="card text-left">
+                                            <div class="card-body">
+                                                <div class="form-row">
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price" id="price"
+                                                               class="form-control"
+                                                               placeholder="Price:" required>
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="note" value=""
+                                                               class="form-control"
+                                                               placeholder="Notes:">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input type="file" name="exo_images"
+                                                               class="form-control"
+                                                               multiple>
+                                                    </div>
+                                                </div>
+                                                 <input type="hidden" id="paid" name="paid" value="0"
+                                               class="form-control"
+                                               placeholder="Paid:" required>
+
+                                                <br/>
+                                                <div class="form-group" style="text-align: center;">
+                                                    <input type="submit" value="Add New Periodontology"
+                                                           class="btn btn-outline-primary">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Display existing images if available
+{% if exoo and exoo.exo_image %}
+  <h2>Existing Images</h2>
+  {% for image in exoo.exo_image.all %}
+    <img src="{{ image.url }}" alt="Image">
+  {% endfor %}
+{% endif %} -->
+<script>
+    // Run the script after the page has loaded
+    $(document).ready(function () {
+        // Find all elements with the 'hideable' class
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
+
+            // Check the content of each element
+            if (content === "None") {
+                // Hide the current element
+                $(this).hide();
+
+                // If it's a <td> or <th>, find the corresponding <th> by index
+                if ($(this).is('td,th')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

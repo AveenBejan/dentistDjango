@@ -9,7 +9,7 @@
 
         <div class="row d-flex mb-5 contact-info">
 
-            <div class="col-md-6 mb-6">
+            <div class="col-md-10 mb-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
@@ -19,7 +19,7 @@
 
                 {% if user.is_authenticated %}
                 <p>{{ form.initial.idReception.name }}</p>
-                <form method="POST" enctype="multipart/form-data">
+                <form id="myForm" method="POST" enctype="multipart/form-data">
 
 
                     {% csrf_token %}
@@ -75,8 +75,8 @@
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             {{ form.visits }}
-
                         </div>
+
                         <div class="form-group col-md-3">
                             <select name="wive_size" class="form-select"
                                     required="required">
@@ -98,6 +98,8 @@
                                 <option value="Rectangular">Rectangular</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-3">
                             <select name="material" class="form-select"
                                     required="required">
@@ -106,7 +108,21 @@
                                 <option value="NiTi">NiTi</option>
                             </select>
                         </div>
+                        <div class="form-group col-md-3">
+                            <select name="brackets" class="form-select"
+                                    required="required">
+                                <option value="">Type of Brackets</option>
+                                <option value="Ceramic">Ceramic</option>
+                                <option value="Zircon">Zircon</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input type="text" name="visit_date" class="form-control" placeholder="Date of Visit"
+                                   id="datepicker-3" required="required">
+                        </div>
                     </div>
+
+
                     <div class="col-12">
                         <div class="alert alert-secondary" role="alert" align="center">
                             <input type="submit" value="Add New Visits"
@@ -117,7 +133,7 @@
 
                 {% endif %}
             </div>
-            <div class="col-md-6 mb-6">
+            <div class="col-md-10 mb-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active" aria-current="page">Visit Inforamtion</li>
@@ -130,19 +146,46 @@
                         <th>Wire Size</th>
                         <th>Cross Sectional</th>
                         <th>Materials</th>
+                        <th>Type of Brackets</th>
                         <th>Date Visit</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for instance in all_oralls %}
                     <tr>
-
+                        {% if instance.visits.visit_name is not None %}
                         <td>{{ instance.visits.visit_name }}</td>
-                        <td>{{ instance.wive_size }}</td>
-                        <td>{{ instance.cross_sectional }}</td>
-                        <td>{{ instance.material }}</td>
-                        <td>{{ instance.regdate }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
 
+                        {% if instance.wive_size is not None %}
+                        <td>{{ instance.wive_size }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+
+                        {% if instance.cross_sectional is not None %}
+                        <td>{{ instance.cross_sectional }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+
+                        {% if instance.material is not None %}
+                        <td>{{ instance.material }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        {% if instance.brackets is not None %}
+                        <td>{{ instance.brackets }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        {% if instance.visit_date is not None %}
+                        <td>{{ instance.visit_date }}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -152,18 +195,20 @@
     </div>
 </section>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var visitsSelect = document.getElementById('id_visits');
-    if (visitsSelect) {
-        visitsSelect.removeChild(visitsSelect.options[1]);
-    }
-});
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+        // Get the value of the visits field
+        var visitsField = document.querySelector('.form-group.col-md-3 select[name="visits"]');
+        var selectedVisit = visitsField.value;
 
+        // Check if the visits field is empty or the default "Select Visits" value
+        if (selectedVisit === '' || selectedVisit === 'Select Visits') {
+            // Prevent the form submission
+            event.preventDefault();
 
-
-
-
+            // Add a message or alert to notify the user about the mandatory field
+            alert('Please select a visit!');
+            // You can modify this to display an error message in a specific location on your page
+        }
+    });
 </script>
-
-
 {% endblock %}
