@@ -38,10 +38,6 @@ def upload_file(request):
     return render(request, 'upload.html', {'form': form,'uploaded_files': uploaded_files})
 
 
-def upload_file1(request):
-    appointments = UploadedFile.objects.all()  # Replace UploadedFile with your model name
-    return render(request, 'drugs.html', {'appointments': appointments})
-
 
 def delete_upload_file(request,id):
     uploaded_files = UploadedFile.objects.get(pk=id)

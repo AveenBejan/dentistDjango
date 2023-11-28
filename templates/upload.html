@@ -1,43 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<!-- upload.html -->
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
-
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
 <br/>
-<table border="1" class="table table-hover">
-    <thead style="background-color:#73ccf0; color:#fff;">
-    <tr>
-        <th>#</th>
-        <th>File Name</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for uploaded_file in uploaded_files %}
-    <tr>
-        <td>{{ uploaded_file.id }}</td>
-        <td><a href="{{ uploaded_file.pdf_file.url }}" target="_blank">{{ uploaded_file.pdf_file.name }}</a></td>
-        <td scope="row">
-            <a href="{% url 'delete-upload_file' uploaded_file.id %}" style="display: inline;">
-                <span class="btn btn-outline-danger">Delete</span>
-            </a>
-        </td>
+<br/>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Upload Files</li>
+        </ol>
+    </nav>
+    <br/><br/>
+    {% if user.is_authenticated %}
+    <div class="container px-5">
+        <div class="row gx-5">
+            <div class="col">
+                {% if user.role == 'admin' %}
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Add New Upload Files</h4></div>
+                {% endif %}
+                <br/>
+                 {% if user.role == 'admin' %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" name="pdf_file"
+                                   class="form-control"
+                                   multiple>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: center;">
+                        <input type="submit" value="Add New Files"
+                               class="btn btn-info">
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+            <div class="col-8">
+
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Files Information</h4></div>
+                <br/>
+                <table class="table table-hover">
+                    <thead style="background-color:#73ccf0; color:#fff;">
+                    <tr>
+
+                        <th>#</th>
+                        <th>File Name</th>
+                        {% if user.role == 'admin' %}
+                        <th>Delete</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for uploaded_file in uploaded_files %}
+                    <tr>
+                        <td>{{ uploaded_file.id }}</td>
+                        <td><a href="{{ uploaded_file.pdf_file.url }}" target="_blank">{{ uploaded_file.pdf_file.name }}</a></td>
+                        {% if user.role == 'admin' %}
+                        <td scope="row">
+                            <a href="{% url 'delete-upload_file' uploaded_file.id %}" style="display: inline;">
+                                <span class="btn btn-outline-danger">Delete</span>
+                            </a></td>
+                         {% endif %}
 
 
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-
-
-</body>
-</html>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
