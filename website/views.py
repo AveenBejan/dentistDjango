@@ -1094,7 +1094,7 @@ def oral_edit(request, id):
             return redirect('add-oral-surgery', id=orall.idReception_id)  # Redirect to a success view after saving
     else:
             # Define a default value for first_visit when the request method is not POST
-            first_visit = orall.first_visit if orall.first_visit else date.today()
+            first_visit = orall.first_visit if orall.first_visit is not None else None
             # Define a default value for second_visit when the request method is not POST
             second_visit = orall.second_visit if orall.second_visit is not None else None
             third_visit = orall.third_visit if orall.third_visit is not None else None

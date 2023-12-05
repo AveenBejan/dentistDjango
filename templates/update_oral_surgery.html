@@ -732,17 +732,15 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
                         <div class="form-row">
                             <div class="col">
                                  <br/>
-                                <h6 style="font-weight: bold;">Date Of Suture</h6><input type="text" class="datepicker" name="first_visit" id="first_visit" {% if form.initial.first_visit %}readonly{% endif %} value="{% if form.initial.first_visit %}{{ form.initial.first_visit|date:" Y-m-d" }}{% else %} {{ date.today|date:"Y-m-d" }}{% endif %}">
+                                <h6 style="font-weight: bold;">Date Of Suture</h6><input type="text" class="datepicker" name="first_visit" id="first_visit" {% if form.initial.first_visit %}readonly{% endif %} value="{% if form.initial.first_visit %}{{ form.initial.first_visit|date:" Y-m-d" }}{% endif %}">
                             </div>
                             <div class="col">
                                  <br/>
-                                <h6 style="font-weight: bold;">Date Of Gingival Formal</h6><input type="text" class="datepicker" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:" Y-m-d" }}{% else %}
-                                {{ date.today|date:"Y-m-d" }}{% endif %}">
+                                <h6 style="font-weight: bold;">Date Of Gingival Formal</h6><input type="text" class="datepicker" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:" Y-m-d" }}{% else %}{% endif %}">
                             </div>
                            <div class="col">
                                <br/>
-                            <h6 style="font-weight: bold;">Date Of Impression</h6><input type="text" class="datepicker" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %}
-                             value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}">
+                            <h6 style="font-weight: bold;">Date Of Impression</h6><input type="text" class="datepicker" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %} value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}">
                            </div>
                             <div class="col">
                                 <br/>
