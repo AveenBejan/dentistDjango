@@ -3,10 +3,15 @@
 {% block title %} Contact Page{% endblock %}
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    .hidden {
+      display: none;
+    }
+  </style>
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
-            <div class="col-md-8 mb-8">
+            <div class="col-md-10 mb-10">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
@@ -32,56 +37,56 @@
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR1" {% if "UR1" in form.initial.ur %}checked{% endif %}>
+                                               value="UR1" {% if "UR1" in form.initial.ur %}checked{% endif %}  data-diameter="diameterur1" data-length="lengthur1">
                                         <label class="form-check-label">UR1</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR2" {% if "UR2" in form.initial.ur %}checked{% endif %}>
+                                               value="UR2" {% if "UR2" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur2" data-length="lengthur2">>
                                         <label class="form-check-label">UR2</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR3" {% if "UR3" in form.initial.ur %}checked{% endif %}>
+                                               value="UR3" {% if "UR3" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur3" data-length="lengthur3">
                                         <label class="form-check-label">UR3</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR4" {% if "UR4" in form.initial.ur %}checked{% endif %}>
+                                               value="UR4" {% if "UR4" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur4" data-length="lengthur4">
                                         <label class="form-check-label">UR4</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR5" {% if "UR5" in form.initial.ur %}checked{% endif %}>
+                                               value="UR5" {% if "UR5" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur5" data-length="lengthur5">
                                         <label class="form-check-label">UR5</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR6" {% if "UR6" in form.initial.ur %}checked{% endif %}>
+                                               value="UR6" {% if "UR6" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur6" data-length="lengthur6">
                                         <label class="form-check-label">UR6</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR7" {% if "UR7" in form.initial.ur %}checked{% endif %}>
+                                               value="UR7" {% if "UR7" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur7" data-length="lengthur7">
                                         <label class="form-check-label">UR7</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ur"
-                                               value="UR8" {% if "UR8" in form.initial.ur %}checked{% endif %}>
+                                               value="UR8" {% if "UR8" in form.initial.ur %} checked{% endif %}  data-diameter="diameterur8" data-length="lengthur8">
                                         <label class="form-check-label">UR8</label>
                                     </div>
 
@@ -98,56 +103,56 @@
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL1" {% if "UL1" in form.initial.ul %}checked{% endif %}>
+                                               value="UL1" {% if "UL1" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul1" data-length="lengthul1">
                                         <label class="form-check-label">UL1</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL2" {% if "UL2" in form.initial.ul %}checked{% endif %}>
+                                               value="UL2" {% if "UL2" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul2" data-length="lengthul2">
                                         <label class="form-check-label">UL2</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL3" {% if "UL3" in form.initial.ul %}checked{% endif %}>
+                                               value="UL3" {% if "UL3" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul3" data-length="lengthul3">
                                         <label class="form-check-label">UL3</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL4" {% if "UL4" in form.initial.ul %}checked{% endif %}>
+                                               value="UL4" {% if "UL4" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul4" data-length="lengthul4">
                                         <label class="form-check-label">UL4</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL5" {% if "UL5" in form.initial.ul %}checked{% endif %}>
+                                               value="UL5" {% if "UL5" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul5" data-length="lengthul5">
                                         <label class="form-check-label">UL5</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL6" {% if "UL6" in form.initial.ul %}checked{% endif %}>
+                                               value="UL6" {% if "UL6" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul6" data-length="lengthul6">
                                         <label class="form-check-label">UL6</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL7" {% if "UL7" in form.initial.ul %}checked{% endif %}>
+                                               value="UL7" {% if "UL7" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul7" data-length="lengthul7">
                                         <label class="form-check-label">UL7</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ul"
-                                               value="UL8" {% if "UL8" in form.initial.ul %}checked{% endif %}>
+                                               value="UL8" {% if "UL8" in form.initial.ul %} checked{% endif %}  data-diameter="diameterul8" data-length="lengthul8">
                                         <label class="form-check-label">UL8</label>
                                     </div>
                                 </div>
@@ -166,56 +171,56 @@
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR1" {% if "LR1" in form.initial.lr %}checked{% endif %}>
+                                               value="LR1" {% if "LR1" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr1" data-length="lengthlr1">
                                         <label class="form-check-label">LR1</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR2" {% if "LR2" in form.initial.lr %}checked{% endif %}>
+                                               value="LR2" {% if "LR2" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr2" data-length="lengthlr2">
                                         <label class="form-check-label">LR2</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR3" {% if "LR3" in form.initial.lr %}checked{% endif %}>
+                                               value="LR3" {% if "LR3" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr3" data-length="lengthlr3">
                                         <label class="form-check-label">LR3</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR4" {% if "LR4" in form.initial.lr %}checked{% endif %}>
+                                               value="LR4" {% if "LR4" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr4" data-length="lengthlr4">
                                         <label class="form-check-label">LR4</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR5" {% if "LR5" in form.initial.lr %}checked{% endif %}>
+                                               value="LR5" {% if "LR5" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr5" data-length="lengthlr5">
                                         <label class="form-check-label">LR5</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR6" {% if "LR6" in form.initial.lr %}checked{% endif %}>
+                                               value="LR6" {% if "LR6" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr6" data-length="lengthlr6">
                                         <label class="form-check-label">LR6</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR7" {% if "LR7" in form.initial.lr %}checked{% endif %}>
+                                               value="LR7" {% if "LR7" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr7" data-length="lengthlr7">
                                         <label class="form-check-label">LR7</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="lr"
-                                               value="LR8" {% if "LR8" in form.initial.lr %}checked{% endif %}>
+                                               value="LR8" {% if "LR8" in form.initial.lr %} checked{% endif %}  data-diameter="diameterlr8" data-length="lengthlr8">
                                         <label class="form-check-label">LR8</label>
                                     </div>
 
@@ -232,114 +237,477 @@
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL1" {% if "LL1" in form.initial.ll %}checked{% endif %}>
+                                               value="LL1" {% if "LL1" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll1" data-length="lengthll1">
                                         <label class="form-check-label">LL1</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL2" {% if "LL2" in form.initial.ll %}checked{% endif %}>
+                                               value="LL2" {% if "LL2" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll2" data-length="lengthll2">
                                         <label class="form-check-label">LL2</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL3" {% if "LL2" in form.initial.ll %}checked{% endif %}>
+                                               value="LL3" {% if "LL2" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll3" data-length="lengthll3">
                                         <label class="form-check-label">LL3</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL4" {% if "LL4" in form.initial.ll %}checked{% endif %}>
+                                               value="LL4" {% if "LL4" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll4" data-length="lengthll4">
                                         <label class="form-check-label">LL4</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL5" {% if "LL5" in form.initial.ll %}checked{% endif %}>
+                                               value="LL5" {% if "LL5" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll5" data-length="lengthll5">
                                         <label class="form-check-label">LL5</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL6" {% if "LL6" in form.initial.ll %}checked{% endif %}>
+                                               value="LL6" {% if "LL6" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll6" data-length="lengthll6">
                                         <label class="form-check-label">LL6</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL7" {% if "LL7" in form.initial.ll %}checked{% endif %}>
+                                               value="LL7" {% if "LL7" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll7" data-length="lengthll7">
                                         <label class="form-check-label">LL7</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox"
                                                class="form-check-input"
                                                name="ll"
-                                               value="LL8" {% if "LL8" in form.initial.ll %}checked{% endif %}>
+                                               value="LL8" {% if "LL8" in form.initial.ll %} checked{% endif %}  data-diameter="diameterll8" data-length="lengthll8">
                                         <label class="form-check-label">LL8</label>
                                     </div>
 
                                 </div>
                             </div>
-                        </div>
+                        </div><div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur1" name="lengthur1"
+                                                               placeholder="UR1 Length"  value="{{ form.initial.lengthur1 }}"  style="font-weight:bold;">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur1" name="diameterur1"
+                                                               placeholder="UR1 Diameter"  value="{{ form.initial.diameterur1 }}"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur2" name="lengthur2"
+                                                               placeholder="UR2 Length" style="font-weight:bold;" value="{{ form.initial.lengthur2 }}"
+                                                               >
+                                                    </div>
+                                                    <!--<input type="checkbox" class="form-check-input" name="ur" value="UR7" {% if "UR7" in form.initial.ur %} checked{% endif %} data-diameter="diameterur7" data-length="lengthur7"> Show Inputs UR7<br><br>
+<input type="text" class="form-control diameterur7 {% if "UR7" in form.initial.ur %} {% else %}hidden{% endif %}" name="diameterur7" placeholder="UR7 Diameter" style="font-weight:bold;" value="{{ form.initial.diameterur7 }}"><br>
+<input type="text" class="form-control lengthur7 {% if "UR7" in form.initial.ur %} {% else %}hidden{% endif %}" name="lengthur7" placeholder="UR7 Length"
+style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
+
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur2" name="diameterur2"
+                                                               placeholder="UR2 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur2 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur3" name="lengthur3"
+                                                               placeholder="UR3 Length" style="font-weight:bold;" value="{{ form.initial.lengthur3 }}">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur3" name="diameterur3"
+                                                               placeholder="UR3 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur3 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur4" name="lengthur4"
+                                                               placeholder="UR4 Length" style="font-weight:bold;" value="{{ form.initial.lengthur4 }}"
+                                                        >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur4" name="diameterur4"
+                                                               placeholder="UR4 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur4 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur5" name="lengthur5"
+                                                               placeholder="UR5 Length" style="font-weight:bold;" value="{{ form.initial.lengthur5 }}"
+                                                             >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur5" name="diameterur5"
+                                                               placeholder="UR5 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur5 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur6" name="lengthur6"
+                                                               placeholder="UR6 Length" style="font-weight:bold;" value="{{ form.initial.lengthur6 }}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur6" name="diameterur6"
+                                                               placeholder="UR6 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur6 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur7" name="lengthur7"
+                                                               placeholder="UR7 Length" style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur7" name="diameterur7"
+                                                               placeholder="UR7 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur7 }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur8" name="lengthur8"
+                                                               placeholder="UR8 Length" style="font-weight:bold;" value="{{ form.initial.lengthur8 }}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur8" name="diameterur8"
+                                                               placeholder="UR8 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterur8 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthul1" name="lengthul1"
+                                                               placeholder="UL1 Length" style="font-weight:bold;" value="{{ form.initial.lengthul1}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul1" name="diameterul1"
+                                                               placeholder="UL1 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul1}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul2" name="lengthul2"
+                                                               placeholder="UL2 Length" style="font-weight:bold;" value="{{ form.initial.lengthul2}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul2" name="diameterul2"
+                                                               placeholder="UL2  Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul2}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul3" name="lengthul3"
+                                                               placeholder="UL3 Length" style="font-weight:bold;" value="{{ form.initial.lengthul3}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul3" name="diameterul3"
+                                                               placeholder="UL3 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul3}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul4" name="lengthul4"
+                                                               placeholder="UL4 Length" style="font-weight:bold;" value="{{ form.initial.lengthul4}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul4" name="diameterul4"
+                                                               placeholder="UL4 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul4}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthul5" name="lengthul5"
+                                                               placeholder="UL5 Length" style="font-weight:bold;" value="{{ form.initial.lengthul5}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul5" name="diameterul5"
+                                                               placeholder="UL5 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul5}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul6" name="lengthul6"
+                                                               placeholder="UL6 Length" style="font-weight:bold;" value="{{ form.initial.lengthul6}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul6" name="diameterul6"
+                                                               placeholder="UL6  Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul6}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul7" name="lengthul7"
+                                                               placeholder="UL7 Length" style="font-weight:bold;" value="{{ form.initial.lengthul7}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul7" name="diameterul7"
+                                                               placeholder="UL7 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul7}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul8" name="lengthul8"
+                                                               placeholder="UL8 Length" style="font-weight:bold;" value="{{ form.initial.lengthul8}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul8" name="diameterul8"
+                                                               placeholder="UL8 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterul8}}">
+                                                    </div>
+                                                </div>
+                                               <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr1" name="lengthlr1"
+                                                               placeholder="LR1 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr1}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr1" name="diameterlr1"
+                                                               placeholder="LR1 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr1}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr2" name="lengthlr2"
+                                                               placeholder="LR2 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr2}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden diameterlr2" name="diameterlr2"
+                                                               placeholder="LR2 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr2}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr3" name="lengthlr3"
+                                                               placeholder="LR3 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr3}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr3" name="diameterlr3"
+                                                               placeholder="LR3 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr3}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr4" name="lengthlr4"
+                                                               placeholder="LR4 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr4}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr4" name="diameterlr4"
+                                                               placeholder="LR4 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr4}}">
+                                                    </div>
+                                                </div>
+                                                 <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr5" name="lengthlr5"
+                                                               placeholder="LR5 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr5}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr5" name="diameterlr5"
+                                                               placeholder="LR5 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr5}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr6" name="lengthlr6"
+                                                               placeholder="LR6 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr6}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden diameterlr6" name="diameterlr6"
+                                                               placeholder="LR6 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr6}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr7" name="lengthlr7"
+                                                               placeholder="LR7 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr7}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr7" name="diameterlr7"
+                                                               placeholder="LR7 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr7}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr8" name="lengthlr8"
+                                                               placeholder="LR8 Length" style="font-weight:bold;" value="{{ form.initial.lengthlr8}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr8" name="diameterlr8"
+                                                               placeholder="LR8 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterlr8}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll1" name="lengthll1"
+                                                               placeholder="LL1 Length" style="font-weight:bold;" value="{{ form.initial.lengthll1}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll1" name="diameterll1"
+                                                               placeholder="LL1 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll1}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll2" name="lengthll2"
+                                                               placeholder="LL2 Length" style="font-weight:bold;" value="{{ form.initial.lengthll2}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll2" name="diameterll2"
+                                                               placeholder="LL2 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll2}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll3" name="lengthll3"
+                                                               placeholder="LL3 Length" style="font-weight:bold;" value="{{ form.initial.lengthll3}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll3" name="diameterll3"
+                                                               placeholder="LL3 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll3}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll4" name="lengthll4"
+                                                               placeholder="LL4 Length" style="font-weight:bold;" value="{{ form.initial.lengthll4}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll4" name="diameterll4"
+                                                               placeholder="LL4 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll4}}">
+                                                    </div>
+                                                </div>
+                                               <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll5" name="lengthll5"
+                                                               placeholder="LL5 Length" style="font-weight:bold;" value="{{ form.initial.lengthll5}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll5" name="diameterll5"
+                                                               placeholder="LL5 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll5}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll6" name="lengthll6"
+                                                               placeholder="LL6 Length" style="font-weight:bold;" value="{{ form.initial.lengthll6}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll6" name="diameterll6"
+                                                               placeholder="LL6 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll6}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll7" name="lengthll7"
+                                                               placeholder="LL7 Length" style="font-weight:bold;" value="{{ form.initial.lengthll7}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll7" name="diameterll7"
+                                                               placeholder="LL7 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll7}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll8" name="lengthll8"
+                                                               placeholder="LL8 Length" style="font-weight:bold;" value="{{ form.initial.lengthll8}}"
+                                                               >
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll8" name="diameterll8"
+                                                               placeholder="LL8 Diameter"
+                                                               style="font-weight:bold;" value="{{ form.initial.diameterll8}}">
+                                                    </div>
+                                                </div>
                         <div class="form-row">
                             <div class="col">
-                                <label>Implant:</label>
-                                {{ form.implant }}
+                                <label>Implant</label>
+                                <input type="text" name="implant" value="{{ orall.implant }}" class="form-control">
                             </div>
                             <div class="col">
-                                <label>Shade:</label>
-                                <select name="shade" class="form-control" required="required">
-                                    <option value="">Select Shade</option>
-                                    <option value="VITA Shade">VITA</option>
-                                    <option value="A-D Shade">A-D Shade</option>
-                                    <option value="Bleach Shade">Bleach Shade</option>
-                                    <option value="Tetric N-Ceram(16) Shade">Tetric N-Ceram(16) Shade</option>
-                                    <option value="Tetric N-Flow(10) Shade">Tetric N-Ceram(10) Shade</option>
-                                </select>
+                                <label>Shade</label>
+                                <input type="text" name="shade" class="form-control" value="{{ form.initial.shade}}">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="col">
-                                <label>Diameter:</label>
-                                <input type="text" name="diameter" value="{{ form.initial.diameter }}"
-                                       class="form-control">
-                            </div>
-
-                            <div class="col">
-                                <label>Length:</label>
-                                <input type="text" name="length" value="{{ form.initial.length }}" class="form-control">
-                            </div>
-
-
-                            <div class="col">
-                                <label>No. of Implant:</label>
+                                <label>No Of Implant</label>
                                 <input type="text" name="no_Implant" value="{{ form.initial.no_Implant }}"
                                        class="form-control">
                             </div>
-                        </div>
-
-                        <div class="form-row">
                             <div class="col">
-                                <label>No of Unite:</label>
+                                <label>No Of Unite</label>
                                 <input type="text" name="no_unite" value="{{ form.initial.no_unite }}"
                                        class="form-control">
                             </div>
-
                             <div class="col">
-                                <label>Color:</label>
+                                <label>color</label>
                                 <input type="text" name="color" value="{{ form.initial.color }}" class="form-control">
                             </div>
-
                             <div class="col">
-                                <label>Price:</label>
+                                <label>price:</label>
                                 <input type="text" name="price" value="{{ form.initial.price }}" class="form-control">
                             </div>
                         </div>
@@ -360,23 +728,153 @@
                                        multiple>
                             </div>
                         </div>
-                        <label>First Visit</label>
-                        <input type="text" name="first_visit" value="{{ form.initial.first_visit|date:" Y-m-d" }}">
-                        <input type="hidden" name="second_visit" value="{{ form.initial.second_visit|date:" Y-m-d" }}"
-                        readonly>
-                        <input type="hidden" name="third_visit" value="{{ form.initial.third_visit|date:" Y-m-d" }}"
-                        readonly>
-                        <input type="hidden" name="fourth_visit" value="{{ form.initial.fourth_visit|date:" Y-m-d" }}"
-                        readonly>
-                        <input type="hidden" name="fifth_visit" value="{{ form.initial.fifth_visit|date:" Y-m-d" }}"
-                        readonly>
-                    </div>
 
-                        <!-- Render form fields here -->
-                        <button type="submit">Save</button>
+                        <div class="form-row">
+                            <div class="col">
+                                 <br/>
+                                <h6 style="font-weight: bold;">Date Of Suture</h6><input type="text" class="datepicker" name="first_visit" id="first_visit" {% if form.initial.first_visit %}readonly{% endif %} value="{% if form.initial.first_visit %}{{ form.initial.first_visit|date:" Y-m-d" }}{% else %} {{ date.today|date:"Y-m-d" }}{% endif %}">
+                            </div>
+                            <div class="col">
+                                 <br/>
+                                <h6 style="font-weight: bold;">Date Of Gingival Formal</h6><input type="text" class="datepicker" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:" Y-m-d" }}{% else %}
+                                {{ date.today|date:"Y-m-d" }}{% endif %}">
+                            </div>
+                           <div class="col">
+                               <br/>
+                            <h6 style="font-weight: bold;">Date Of Impression</h6><input type="text" class="datepicker" name="third_visit" id="third_visit" {% if form.initial.third_visit %}readonly{% endif %}
+                             value="{% if form.initial.third_visit %}{{ form.initial.third_visit|date:"Y-m-d" }}{% endif %}">
+                           </div>
+                            <div class="col">
+                                <br/>
+                            <h6 style="font-weight: bold;">Date Of Delivery</h6><input type="text" class="datepicker" name="fourth_visit" id="fourth_visit" {% if form.initial.fourth_visit %}readonly{% endif %}
+       value="{% if form.initial.fourth_visit %}{{ form.initial.fourth_visit|date:"Y-m-d" }}{% endif %}">
+                                <br/><br/>
+                            </div>
+                            <!--
+                            <div class="col">
+                            <h6 style="font-weight: bold;">Fifth Visit</h6><input type="date" name="fifth_visit" id="fifth_visit" {% if form.initial.fifth_visit %}readonly{% endif %}
+                             value="{% if form.initial.fifth_visit %}{{ form.initial.fifth_visit|date:"Y-m-d" }}{% endif %}">
+                            </div>-->
+
+                        </div>
+
+                          <input type="submit" value="Update Implant" class="btn btn-info">
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </section>
+<script>
+    $( function() {
+  $( "#first_visit" ).datepicker();
+  $( "#secondVisitValue" ).datepicker();
+  $( "#third_visit" ).datepicker();
+  $( "#fourth_visit" ).datepicker();
+} );
+</script>
+<script>
+  function handleCheckboxChange(checkboxes) {
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const diameterName = this.getAttribute('data-diameter');
+        const lengthName = this.getAttribute('data-length');
+
+        const diameterInput = document.querySelector(`input[name="${diameterName}"]`);
+        const lengthInput = document.querySelector(`input[name="${lengthName}"]`);
+
+        if (this.checked) {
+          diameterInput.classList.remove('hidden');
+          lengthInput.classList.remove('hidden');
+        } else {
+          diameterInput.classList.add('hidden');
+          lengthInput.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  const checkboxesUR = document.querySelectorAll('input[name="ur"]');
+  handleCheckboxChange(checkboxesUR);
+
+  const checkboxesUL = document.querySelectorAll('input[name="ul"]');
+  handleCheckboxChange(checkboxesUL);
+
+  const checkboxesLR = document.querySelectorAll('input[name="lr"]');
+  handleCheckboxChange(checkboxesLR);
+
+  const checkboxesLL = document.querySelectorAll('input[name="ll"]');
+  handleCheckboxChange(checkboxesLL);
+</script>
+
+
+
+<script>
+    // Define the toggleVisitField function first
+    function toggleVisitField(visitField, enable) {
+        visitField.disabled = !enable;
+        if (enable) {
+            visitField.value = "";  // Clear the field if enabling
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firstVisitField = document.getElementById("first_visit");
+        var secondVisitField = document.getElementById("second_visit");
+        var thirdVisitField = document.getElementById("third_visit");
+        var fourthVisitField = document.getElementById("fourth_visit");
+        var fifthVisitField = document.getElementById("fifth_visit");
+
+        // Function to make an input field readonly if it has a value
+        function makeReadonlyIfValueExists(inputField) {
+            if (inputField.value !== "") {
+                inputField.readOnly = true;
+            }
+        }
+
+        // Call the function for each input field
+        makeReadonlyIfValueExists(secondVisitField);
+        makeReadonlyIfValueExists(thirdVisitField);
+        makeReadonlyIfValueExists(fourthVisitField);
+        makeReadonlyIfValueExists(fifthVisitField);
+
+        // Initially, check if there is a date in the first visit
+        if (firstVisitField.value !== "") {
+            toggleVisitField(secondVisitField, true);  // Enable the second visit field
+        } else {
+            // If the first visit is empty, disable all subsequent visits
+            toggleVisitField(secondVisitField, false);
+            toggleVisitField(thirdVisitField, false);
+            toggleVisitField(fourthVisitField, false);
+            toggleVisitField(fifthVisitField, false);
+        }
+
+        // Add event listeners to enable/disable fields based on the previous visit
+        firstVisitField.addEventListener("change", function() {
+            if (firstVisitField.value !== "") {
+                toggleVisitField(secondVisitField, true);
+                toggleVisitField(thirdVisitField, false);
+                toggleVisitField(fourthVisitField, false);
+                toggleVisitField(fifthVisitField, false);
+            } else {
+                toggleVisitField(secondVisitField, false);
+                toggleVisitField(thirdVisitField, false);
+                toggleVisitField(fourthVisitField, false);
+                toggleVisitField(fifthVisitField, false);
+            }
+        });
+
+        // Add an event listener for the second visit
+        secondVisitField.addEventListener("change", function() {
+            var secondVisitValue = secondVisitField.value;
+            console.log("Second Visit Value:", secondVisitValue);
+
+            if (secondVisitValue !== "") {
+                toggleVisitField(thirdVisitField, true);
+            } else {
+                toggleVisitField(thirdVisitField, false);
+            }
+        });
+    });
+</script>
 {% endblock %}

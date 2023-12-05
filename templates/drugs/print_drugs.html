@@ -5,40 +5,41 @@
 <br/>
 <br/><br/>
 
-<p align="center" style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">نوژدار
-    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا ددانا<br/>B.D.S/M.SC.Ortho</br>
-<br/>عطلة العيادة الخميس والجمعة </p>
+<p align="center"
+   style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+    نوژدار
+    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>
+    <br/>عطلة العيادة الخميس والجمعة </p>
 <hr class="border border-primary border-3 opacity-40">
 
 
+<h4 style="font-size:16px; font-weight:bold" align="left">
+    &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{drugs.0.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <h4 style="font-size:16px; font-weight:bold" align="left">
-        &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{drugs.0.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <label dir="ltr">Date: {{drugs.0.regdate}}</label>
 
-        <label dir="ltr">Date: {{drugs.0.regdate}}</label>
-
-        <br/>&nbsp;&nbsp;<label>Date :</label>{{drugs.0.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         <label dir="ltr">Gender: {{drugs.0.gender}}</label>&nbsp;</h4>
+    <br/>&nbsp;&nbsp;<label>Date :</label>{{drugs.0.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <label dir="ltr">Gender: {{drugs.0.gender}}</label>&nbsp;</h4>
 <div class="col-8">
- <div class="card-body">
+    <div class="card-body">
 
-     <h3 STYLE="color:red;">RX</h3>
-    {% for drug in drugs %}
+        <h3 STYLE="color:red;">RX</h3>
+        {% for drug in drugs %}
 
-     <h3><p>&nbsp;- &nbsp;{{ drug.name_medicine }} &nbsp;&nbsp;{{ drug.doze }}&nbsp;&nbsp;{{ drug.type }} &nbsp;&nbsp;{{ drug.tablet }} &nbsp;&nbsp;{{ drug.times }} &nbsp;&nbsp;{{ drug.dispense }}</p></h3>
+        <h3><p>&nbsp;- &nbsp;{{ drug.name_medicine }} &nbsp;&nbsp;{{ drug.doze }}&nbsp;&nbsp;{{ drug.type }} &nbsp;&nbsp;{{
+            drug.tablet }} &nbsp;&nbsp;{{ drug.times }} &nbsp;&nbsp;{{ drug.dispense }}</p></h3>
 
-    {% endfor %}
-
-
-
-
-
-    <footer id="footer">
-        <hr class="border border-primary border-3 opacity-40">
-        <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
-            التمنيات بالشفاء العاجل</h4>
-    </footer>
+        {% endfor %}
+    </div>
+</div>
 
 
-
-    {% endblock %}
+        <footer id="footer">
+            <hr class="border border-primary border-3 opacity-40">
+            <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
+                التمنيات بالشفاء العاجل</h4>
+        </footer>
+        {% endblock %}

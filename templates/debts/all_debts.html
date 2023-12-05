@@ -164,6 +164,7 @@
         <th style="text-align: center;" scope="col">Notes</th>
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
+
         {% elif model_name == 'Ortho' %}
         <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
         <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
@@ -186,6 +187,29 @@
         <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
         <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
         <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Add Debts</th>
+        <th scope="col" style="text-align: center;" >Print Invoice</th>
+        {% elif model_name == 'Prosthodontics' %}
+        <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Complete Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">Complete Upper Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">Complete Lower Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">Partial Denture</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th style="text-align: center;" scope="col">Total Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Add Debts</th>
+        <th scope="col" style="text-align: center;" >Print Invoice</th>
+        {% elif model_name == 'Periodontology' %}
+        <th scope="col" style="text-align: center;" class="hideable">Type</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th style="text-align: center;" scope="col">Total Price</th>
         <th scope="col" style="text-align: center;" class="hideable">paid</th>
         <th scope="col" style="text-align: center;" class="hideable">Notes</th>
         <th scope="col" style="text-align: center;" >Add Debts</th>
@@ -353,6 +377,41 @@
         </td>
         <td style="text-align: center;" > {% if result.total_price == result.paid %}
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
+         {% elif model_name == 'Prosthodontics' %}
+        <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ll|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.denture|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.upper }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lower }}</td>
+        <td style="text-align: center;" scope="row">{{ result.partial }}</td>
+        <td style="text-align: center;">{{ result.price }}</td>
+        <td style="text-align: center;">{{ result.total_price }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid }}</td>
+        <td style="text-align: center;" scope="row">{{ result.note }}</td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        </td>
+        <td style="text-align: center;" > {% if result.total_price == result.paid %}
+            <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}
+        </td>
+         {% elif model_name == 'Periodontology' %}
+        <td style="text-align: center;" scope="row">{{ result.type }}</td>
+        <td style="text-align: center;">{{ result.price }}</td>
+        <td style="text-align: center;">{{ result.total_price }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid }}</td>
+        <td style="text-align: center;" scope="row">{{ result.note }}</td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        </td>
+        <td style="text-align: center;" > {% if result.total_price == result.paid %}
+            <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-outline-info">Print
                 Invoice</a>
             {% endif %}

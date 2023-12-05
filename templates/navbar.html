@@ -2,6 +2,7 @@
 <nav class="navbar navbar-expand-lg"  style="background-color: #73ccf0;">
 
     <div class="container" >
+
 <a class="navbar-brand" href="{% url 'home' %}" style="color: #ffffff;">ECONOARTSTECH</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,15 +19,19 @@
                          {% if user.is_authenticated %}
                            {% if user.role == 'admin' %}
                             <a class="dropdown-item" href="{% url 'signup' %}">Register</a>
+                         <a href="{% url 'feedback_view' %}" class="dropdown-item">feedback_view</a>
+
                            {% endif %}
                          <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
                          {% else %}
                          <a class="dropdown-item" href="{% url 'login' %}">Login</a>
                          <a href="contact.html" class="dropdown-item">Contact Us</a>
+
                          {% endif %}
                      </div>
 
                 </li>
+
                 <!--
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a href="{% url 'about' %}" class="nav-link"  style="color: #ffffff;">About</a></li>
@@ -273,7 +278,76 @@
 
         </div>
 
+
+         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#feedbackModal">
+    Give Feedback
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Include your Django feedback form here -->
+                <form id="feedbackForm" method="post" action="{% url 'feedback_view' %}" >
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_rating" class="col-form-label">Rating:</label>
+                        <select id="id_rating" name="rating" class="form-control">
+                            <option value="1">Select Rating</option>
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_comment" class="col-form-label">Comment:</label>
+                        <textarea id="id_comment" name="comment" rows="4" cols="50"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary"  onclick="submitFeedback()">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     </div>
 
 </nav>
+<script>
+function submitFeedback() {
+    var form = document.getElementById("feedbackForm");
+    var formData = new FormData(form);
+
+    fetch("{% url 'feedback_view' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Handle successful feedback submission (e.g., show a success message)
+            console.log("Feedback submitted successfully!");
+        } else {
+            // Handle errors if submission fails
+            console.error("Feedback submission failed");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
+</script>
 <!-- END nav -->

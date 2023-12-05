@@ -4,9 +4,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
-    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm
+    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,WebsiteFeedbackForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
-    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile
+    Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -23,6 +23,29 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from xhtml2pdf import pisa
 from django.http import Http404
+from django.core.paginator import Paginator
+from django.http import JsonResponse, HttpResponseRedirect
+
+
+def feedback_view(request):
+    if request.method == 'POST':
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            form = WebsiteFeedbackForm(request.POST)
+            if form.is_valid():
+                form.save()  # Save the feedback if the form is valid
+                return JsonResponse({'success': True})  # Return JSON response for success
+            else:
+                return JsonResponse({'success': False})  # Return JSON response for failure
+        else:
+            form = WebsiteFeedbackForm(request.POST)
+            if form.is_valid():
+                form.save()  # Save the feedback if the form is valid
+                return HttpResponseRedirect('feedback_view')  # Redirect after successful feedback submission
+
+    else:
+        form = WebsiteFeedbackForm()
+
+    return render(request, 'home.html', {'form': form})
 
 
 def upload_file(request):
@@ -331,6 +354,8 @@ def all_debts(request):
     oralSurgery = OralSurgery.objects.none()
     endos = Endo.objects.none()
     orthos = Ortho.objects.none()
+    periodontologys = Periodontology.objects.none()
+    prosthodonticss = Prosthodontics.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -343,6 +368,8 @@ def all_debts(request):
         oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         endos = Endo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
         orthos = Ortho.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        periodontologys = Periodontology.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        prosthodonticss = Prosthodontics.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
 
     search_results = []
 
@@ -360,7 +387,10 @@ def all_debts(request):
         search_results.append(('Endo', endos))
     if orthos.exists():
         search_results.append(('Ortho', orthos))
-
+    if periodontologys.exists():
+        search_results.append(('Periodontology', periodontologys))
+    if prosthodonticss.exists():
+        search_results.append(('Prosthodontics', prosthodonticss))
     context = {
         'start_date': start_date,
         'end_date': end_date,
@@ -867,6 +897,14 @@ def gave_appointment(request, id):
     return render(request, 'gave_appointment.html', {'form': form, 'appointments': cleaned_appointments})
 
 
+def print_appointment(request, id):
+    drugs = Reception.objects.filter(id=id)
+    context = {
+        'drugs': drugs,
+    }
+    return render(request, 'print_appointment.html', context)
+
+
 def all_gave(request):
     # Get current time
     current_time = datetime.now()
@@ -894,7 +932,7 @@ def add_oral_surgery(request, id):
             oral_surgery.idReception_id = id
             no_unite = form.cleaned_data['no_unite']
             price = form.cleaned_data['price']
-            total_price = no_unite * price
+            total_price = price
             oral_surgery.total_price = total_price
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
@@ -964,7 +1002,7 @@ def add_oral_surgery(request, id):
             orall.lr = orall.lr.replace("'", "")
         if orall.ll:
             orall.ll = orall.ll.replace("'", "")
-        orall.total_price = orall.no_unite * orall.price
+        orall.total_price = orall.price
         orall.save()
         # Retrieve photos associated with the current OralSurgery instance
         photos = orall.photo_set.all()
@@ -1011,6 +1049,10 @@ def delete_oral(request, id):
 
 def oral_reception(request):
     appointments = Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,25)  # Paginator
+    page = request.GET.get('page')  # Paginator
+    appointments = p.get_page(page)  # Paginator
+    nums = "a" * appointments.paginator.num_pages  # Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -1033,22 +1075,48 @@ def oral_edit(request, id):
     if request.method == 'POST':
         form = OralSurgeryForm(request.POST, instance=orall)
         if form.is_valid():
-            form.save()
+            implant_name = form.cleaned_data['implant']
+            implant = Implant.objects.get(implant_name=implant_name)
+            orall.implant = implant
+            # Get the form data
+            form_data = form.cleaned_data
+
+            # Remove single quotes in certain fields
+            for field in ['ur', 'ul', 'lr', 'll']:
+                form_data[field] = form_data[field].replace("'", "") if form_data[field] else None
+
+            # Update the 'OralSurgery' instance with the cleaned form data
+            for field, value in form_data.items():
+                setattr(orall, field, value)
+
+            # Save the updated 'OralSurgery' instance
+            orall.save()
             return redirect('add-oral-surgery', id=orall.idReception_id)  # Redirect to a success view after saving
     else:
-        initial_data = {
-            'first_visit': orall.first_visit,
-            'second_visit': orall.second_visit,
-            'third_visit': orall.third_visit,
-            'fourth_visit': orall.fourth_visit,
-            'fifth_visit': orall.fifth_visit,
-            'ur': orall.ur[1:-1] if orall.ur else None,
-            'ul': orall.ul[1:-1] if orall.ul else None,
-            'lr': orall.lr[1:-1] if orall.lr else None,
-            'll': orall.ll[1:-1] if orall.ll else None,
-        }
+            # Define a default value for first_visit when the request method is not POST
+            first_visit = orall.first_visit if orall.first_visit else date.today()
+            # Define a default value for second_visit when the request method is not POST
+            second_visit = orall.second_visit if orall.second_visit is not None else None
+            third_visit = orall.third_visit if orall.third_visit is not None else None
+            fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
+            fifth_visit = orall.fifth_visit if orall.fifth_visit is not None else None
+            # Remove first and last characters from certain fields
+            ur = orall.ur[1:-1] if orall.ur else None
+            ul = orall.ul[1:-1] if orall.ul else None
+            lr = orall.lr[1:-1] if orall.lr else None
+            ll = orall.ll[1:-1] if orall.ll else None
 
-    form = OralSurgeryForm(instance=orall, initial=initial_data)
+            form = OralSurgeryForm(instance=orall, initial={
+                'first_visit': first_visit,
+                'second_visit': second_visit,
+                'third_visit': third_visit,
+                'fourth_visit': fourth_visit,
+                'fifth_visit': fifth_visit,
+                'ur': ur,
+                'ul': ul,
+                'lr': lr,
+                'll': ll,
+            })
 
     return render(request, 'update_oral_surgery.html', {'form': form, 'orall': orall})
 
@@ -1467,6 +1535,10 @@ def delete_ortho(request, idReception_id):
 
 def ortho_reception(request):
     appointments = Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,1) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -1485,6 +1557,10 @@ def search_ortho(request):
 
 def exo_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,1) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -1493,6 +1569,10 @@ def exo_reception(request):
 
 def prosthodontics_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,1) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -1585,8 +1665,8 @@ def exo(request, id):
             exoo.ll = exoo.ll.replace("'", "")
         if exoo.exoby:
             exoo.exoby = exoo.exoby.replace("'", "")
-        if exoo.uper:
-            exoo.uper = exoo.uper.replace("'", "")
+        if exoo.simpleexo:
+            exoo.simpleexo = exoo.simpleexo.replace("'", "")
         if exoo.complcated:
             exoo.complcated = exoo.complcated.replace("'", "")
         exoo.total_price = exoo.price
@@ -1995,10 +2075,15 @@ def periodontology_edit(request, id):
 
 def periodontology_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    p = Paginator(appointments, 25)  # Paginator
+    page = request.GET.get('page')  # Paginator
+    appointments = p.get_page(page)  # Paginator
+    nums = "a" * appointments.paginator.num_pages  # Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
     return render(request, 'periodontology/periodontology_reception.html', {'appointments': appointments})
+
 
 def add_linebreaks(values, n):
     value_list = values.split(', ')
@@ -2272,6 +2357,10 @@ def print_drugs(request, id):
 
 def crown_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,25) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -2425,6 +2514,10 @@ def delete_crown(request, id):
 
 def veneer_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,1) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -2666,6 +2759,10 @@ def filling(request, id):
 
 def filling_reception(request):
     appointments =Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,1) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
@@ -3167,6 +3264,10 @@ def delete_endo(request, id):
 
 def endo_reception(request):
     appointments = Reception.objects.all().order_by('-id')
+    p = Paginator(appointments,1) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")

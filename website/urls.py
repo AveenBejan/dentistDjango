@@ -6,6 +6,7 @@ urlpatterns = [
     # path('', views.home, name='home'),
     path('', views.reception, name='home'),
     path('gave_appointment/<int:id>', views.gave_appointment, name='gave-appointment'),
+    path('print_appointment/<int:id>', views.print_appointment, name='print-appointment'),
     path('all_gave.html', views.all_gave, name='all-gave'),
     path('contact.html', views.contact, name='contact'),
     path('about.html', views.about, name='about'),
@@ -177,6 +178,7 @@ urlpatterns = [
     path('delete_outcome/<int:id>', views.delete_outcome, name='delete-outcome'),
 
     path('all_total', views.all_total, name='all-total'),
+    path('feedback_view', views.feedback_view, name='feedback_view'),
 
 
 

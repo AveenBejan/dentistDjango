@@ -1,8 +1,21 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback
 from django.forms import formset_factory
+
+
+class WebsiteFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = WebsiteFeedback
+        fields = ['rating', 'comment']
+        # You can also include additional fields if required
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Customization for fields (if needed)
+        self.fields['rating'].widget = forms.NumberInput(attrs={'min': '1', 'max': '5'})  # Adjusts the input for rating
+        self.fields['comment'].widget = forms.Textarea(attrs={'rows': 4})  # Adjusts the textarea size
 
 
 class UploadFileForm(forms.ModelForm):
@@ -524,19 +537,28 @@ class OralSurgeryForm(forms.ModelForm):
 
     class Meta:
         model = OralSurgery
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','implant', 'diameter', 'length', 'no_Implant', 'ur', 'ul','lr', 'll','shade','no_unite',
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','implant',
+                  'diameterur1', 'lengthur1', 'diameterur2', 'lengthur2', 'diameterur3', 'lengthur3', 'diameterur4', 'lengthur4',
+                  'diameterur5', 'lengthur5', 'diameterur6', 'lengthur6', 'diameterur7', 'lengthur7', 'diameterur8', 'lengthur8',
+                  'diameterul1', 'lengthul1', 'diameterul2', 'lengthul2', 'diameterul3', 'lengthul3', 'diameterul4', 'lengthul4',
+                  'diameterul5', 'lengthul5', 'diameterul6', 'lengthul6', 'diameterul7', 'lengthul7', 'diameterul8', 'lengthul8',
+                  'diameterlr1', 'lengthlr1', 'diameterlr2', 'lengthlr2', 'diameterlr3', 'lengthlr3', 'diameterlr4', 'lengthlr4',
+                  'diameterlr5', 'lengthlr5', 'diameterlr6', 'lengthlr6', 'diameterlr7', 'lengthlr7', 'diameterlr8', 'lengthlr8',
+                  'diameterll1', 'lengthll1', 'diameterll2', 'lengthll2', 'diameterll3', 'lengthll3', 'diameterll4', 'lengthll4',
+                  'diameterll5', 'lengthll5', 'diameterll6', 'lengthll6', 'diameterll7', 'lengthll7', 'diameterll8', 'lengthll8',
+                  'no_Implant', 'ur', 'ul','lr', 'll','shade','no_unite',
                   'color', 'price', 'paid','note', 'exo_images', 'first_visit','second_visit','third_visit',
                   'fourth_visit','fifth_visit')
         labels = {
-            'idReception': '',
-            'name': '',
-            'phone': '',
-            'gender': '',
-            'date_of_birth': '',
-            'first_visit': '',
-            'implant': '',
-            'diameter': '',
-            'length': '',
+            'idReception': '','name': '','phone': '','gender': '','date_of_birth': '','first_visit': '','implant': '',
+            'diameterur1': '', 'lengthur1': '','diameterur2': '', 'lengthur2': '','diameterur3': '','lengthur3': '', 'diameterur4': '', 'lengthur4': '',
+            'diameterur5': '', 'lengthur5': '', 'diameterur6': '', 'lengthur6': '', 'diameterur7': '', 'lengthur7': '','diameterur8': '', 'lengthur8': '',
+            'diameterul1': '', 'lengthul1': '','diameterul2': '', 'lengthul2': '', 'diameterul3': '', 'lengthul3': '', 'diameterul4': '','lengthul4': '',
+            'diameterul5': '', 'lengthul5': '', 'diameterul6': '', 'lengthul6': '', 'diameterul7': '', 'lengthul7': '','diameterul8': '', 'lengthul8': '',
+            'diameterlr1': '', 'lengthlr1': '', 'diameterlr2': '', 'lengthlr2': '', 'diameterlr3': '', 'lengthlr3': '', 'diameterlr4': '', 'lengthlr4': '',
+            'diameterlr5': '', 'lengthlr5': '', 'diameterlr6': '', 'lengthlr6': '', 'diameterlr7': '', 'lengthlr7': '','diameterlr8': '', 'lengthlr8': '',
+            'diameterll1': '', 'lengthll1': '','diameterll2': '', 'lengthll2': '', 'diameterll3': '', 'lengthll3': '', 'diameterll4': '', 'lengthll4': '',
+            'diameterll5': '', 'lengthll5': '', 'diameterll6': '', 'lengthll6': '', 'diameterll7': '', 'lengthll7': '','diameterll8': '', 'lengthll8': '',
             'no_Implant': '',
             'no_unite': '',
             'ur': '',
@@ -562,8 +584,70 @@ class OralSurgeryForm(forms.ModelForm):
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
             'first_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
-            'diameter': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
-            'length': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterur8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthur8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthu1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthul2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthul3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthul4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthu5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthul6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthul7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterul8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthul8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterlr8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthlr8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll2': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll4': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll5': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll6': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll7': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
+            'diameterll8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'diameter'}),
+            'lengthll8': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'material_type'}),
             'no_Implant': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_Implant'}),
             'no_unite': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'size'}),
             'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),

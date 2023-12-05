@@ -7,6 +7,11 @@
     <meta charset="utf-8">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 <br/>
@@ -47,10 +52,8 @@
                                 <th scope="col" style="text-align: center;">Day Name</th>
                                 <th scope="col" style="text-align: center;">Time</th>
                                 <th scope="col" style="text-align: center;">Implant</th>
-                                <th scope="col" style="text-align: center;">Diameter</th>
-                                <th scope="col" style="text-align: center;">Length</th>
                                 <th scope="col" style="text-align: center;">No Of Implant</th>
-                                <th scope="col" style="text-align: center;"  class="hideable">Upper Right</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
@@ -75,8 +78,6 @@
                                 <td style="center" scope="row">{{ orall.idReception.days }}</td>
                                 <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.implant }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.diameter }}</td>
-                                <td style="text-align: center;" scope="row">{{ orall.length }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.no_Implant }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.ur|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.ul|slice:"1:-1" }}</td>
@@ -115,9 +116,10 @@
                                 </td>
 
                                 {% if orall %}
-                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">Add Visits</span></a><br/>
-                                <a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <!--<a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a><br/>-->
+                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </a><br/><br/>
                                 <a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></td>
                                 <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target=".bd-example-modal-lg">&nbsp;&nbsp;Show Visits&nbsp;&nbsp;
@@ -133,11 +135,11 @@
                                                     <table border="1" class="table table-hover">
                                                         <thead style="background-color:#73ccf0; color:#fff;">
                                                         <tr>
-                                                            <th style="text-align: center;"  scope="col">First Visit</th>
-                                                            <th style="text-align: center;" scope="col">Second Visit</th>
-                                                            <th style="text-align: center;" scope="col">Third Visit</th>
-                                                            <th style="text-align: center;" scope="col">Fourth Visit</th>
-                                                            <th style="text-align: center;" scope="col">Fifth Visit</th>
+                                                            <th style="text-align: center;"  scope="col">Date Of Suture</th>
+                                                            <th style="text-align: center;" scope="col">Date Of Gingival Formal</th>
+                                                            <th style="text-align: center;" scope="col">Date Of Impression</th>
+                                                            <th style="text-align: center;" scope="col">Date Of Delivery</th>
+
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -148,7 +150,6 @@
                                                             <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
-                                                            <td style="text-align: center;" scope="row">{{ orall.fifth_visit}}</td>
 
                                                         </tr>
                                                         {% endfor %}
@@ -225,8 +226,7 @@
 
                                         <div class="card-header">
 
-                                            <h4 style="font-size: 22px; text-align:center;"> First
-                                                Visit</h4>
+                                            <h4 style="font-size: 22px; text-align:center;"> Add Implant</h4>
                                         </div>
                                         <br/>
                                         <div class="row">
@@ -242,56 +242,56 @@
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR1">
+                                                                   value="UR1" data-diameter="diameterur1" data-length="lengthur1">
                                                             <label class="form-check-label">UR1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR2">
+                                                                   value="UR2" data-diameter="diameterur2" data-length="lengthur2">
                                                             <label class="form-check-label">UR2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR3">
+                                                                   value="UR3" data-diameter="diameterur3" data-length="lengthur3">
                                                             <label class="form-check-label">UR3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR4">
+                                                                   value="UR4" data-diameter="diameterur4" data-length="lengthur4">
                                                             <label class="form-check-label">UR4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR5">
+                                                                   value="UR5" data-diameter="diameterur5" data-length="lengthur5">
                                                             <label class="form-check-label">UR5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR6">
+                                                                   value="UR6" data-diameter="diameterur6" data-length="lengthur6">
                                                             <label class="form-check-label">UR6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR7">
+                                                                   value="UR7" data-diameter="diameterur7" data-length="lengthur7">
                                                             <label class="form-check-label">UR7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR8">
+                                                                   value="UR8" data-diameter="diameterur8" data-length="lengthur8">
                                                             <label class="form-check-label">UR8</label>
                                                         </div>
 
@@ -308,56 +308,56 @@
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL1">
+                                                                   value="UL1" data-diameter="diameterul1" data-length="lengthul1">
                                                             <label class="form-check-label">UL1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL2">
+                                                                   value="UL2" data-diameter="diameterul2" data-length="lengthul2">
                                                             <label class="form-check-label">UL2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL3">
+                                                                   value="UL3" data-diameter="diameterul3" data-length="lengthul3">
                                                             <label class="form-check-label">UL3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL4">
+                                                                   value="UL4" data-diameter="diameterul4" data-length="lengthul4">
                                                             <label class="form-check-label">UL4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL5">
+                                                                   value="UL5" data-diameter="diameterul5" data-length="lengthul5">
                                                             <label class="form-check-label">UL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL6">
+                                                                   value="UL6" data-diameter="diameterul6" data-length="lengthul6">
                                                             <label class="form-check-label">UL6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL7">
+                                                                   value="UL7" data-diameter="diameterul7" data-length="lengthul7">
                                                             <label class="form-check-label">UL7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL8">
+                                                                   value="UL8" data-diameter="diameterul8" data-length="lengthul8">
                                                             <label class="form-check-label">UL8</label>
                                                         </div>
                                                     </div>
@@ -376,56 +376,56 @@
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR1">
+                                                                   value="LR1" data-diameter="diameterlr1" data-length="lengthlr1">
                                                             <label class="form-check-label">LR1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR2">
+                                                                   value="LR2"  data-diameter="diameterlr2" data-length="lengthlr2">
                                                             <label class="form-check-label">LR2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR3">
+                                                                   value="LR3" data-diameter="diameterlr3" data-length="lengthlr3">
                                                             <label class="form-check-label">LR3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR4">
+                                                                   value="LR4" data-diameter="diameterlr4" data-length="lengthlr4">
                                                             <label class="form-check-label">LR4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR5">
+                                                                   value="LR5" data-diameter="diameterlr5" data-length="lengthlr5">
                                                             <label class="form-check-label">LR5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR6">
+                                                                   value="LR6" data-diameter="diameterlr6" data-length="lengthlr6">
                                                             <label class="form-check-label">LR6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR7">
+                                                                   value="LR7" data-diameter="diameterlr7" data-length="lengthlr7">
                                                             <label class="form-check-label">LR7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR8">
+                                                                   value="LR8" data-diameter="diameterlr8" data-length="lengthlr8">
                                                             <label class="form-check-label">LR8</label>
                                                         </div>
 
@@ -442,56 +442,56 @@
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL1">
+                                                                   value="LL1"  data-diameter="diameterll1" data-length="lengthll1">
                                                             <label class="form-check-label">LL1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL2">
+                                                                   value="LL2" data-diameter="diameterll2" data-length="lengthll2">
                                                             <label class="form-check-label">LL2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL3">
+                                                                   value="LL3" data-diameter="diameterll3" data-length="lengthll3">
                                                             <label class="form-check-label">LL3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL4">
+                                                                   value="LL4" data-diameter="diameterll4" data-length="lengthll4">
                                                             <label class="form-check-label">LL4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL5">
+                                                                   value="LL5" data-diameter="diameterll5" data-length="lengthll5">
                                                             <label class="form-check-label">LL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL6">
+                                                                   value="LL6" data-diameter="diameterll6" data-length="lengthll6">
                                                             <label class="form-check-label">LL6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL7">
+                                                                   value="LL7" data-diameter="diameterll7" data-length="lengthll7">
                                                             <label class="form-check-label">LL7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL8">
+                                                                   value="LL8" data-diameter="diameterll8" data-length="lengthll8">
                                                             <label class="form-check-label">LL8</label>
                                                         </div>
 
@@ -504,19 +504,387 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-row">
-                                                    <input type="text" name="first_visit" class="form-control"
-                                                           required placeholder="Date of First Visit" value=""
-                                                           id="datepicker-3">
-                                                </div>
-                                                <div class="form-row">
                                                     <div class="col">
-                                                        <input type="text" class="form-control" name="length" required
-                                                               placeholder="Length" style="font-weight:bold;"
+                                                        <input type="text" class="form-control hidden lengthur1" name="lengthur1"
+                                                               placeholder="UR1 Length" style="font-weight:bold;"
                                                                value="">
                                                     </div>
                                                     <div class="col">
-                                                        <input type="text" class="form-control" name="diameter"
-                                                               placeholder="Diameter" required value=""
+                                                        <input type="text" class="form-control hidden diameterur1" name="diameterur1"
+                                                               placeholder="UR1 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur2" name="lengthur2"
+                                                               placeholder="UR2 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur2" name="diameterur2"
+                                                               placeholder="UR2 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur3" name="lengthur3"
+                                                               placeholder="UR3 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur3" name="diameterur3"
+                                                               placeholder="UR3 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur4" name="lengthur4"
+                                                               placeholder="UR4 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur4" name="diameterur4"
+                                                               placeholder="UR4 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur5" name="lengthur5"
+                                                               placeholder="UR5 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur5" name="diameterur5"
+                                                               placeholder="UR5 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur6" name="lengthur6"
+                                                               placeholder="UR6 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur6" name="diameterur6"
+                                                               placeholder="UR6 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur7" name="lengthur7"
+                                                               placeholder="UR7 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur7" name="diameterur7"
+                                                               placeholder="UR7 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthur8" name="lengthur8"
+                                                               placeholder="UR8 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterur8" name="diameterur8"
+                                                               placeholder="UR8 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthul1" name="lengthul1"
+                                                               placeholder="UL1 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul1" name="diameterul1"
+                                                               placeholder="UL1 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul2" name="lengthul2"
+                                                               placeholder="UL2 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul2" name="diameterul2"
+                                                               placeholder="UL2  Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul3" name="lengthul3"
+                                                               placeholder="UL3 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul3" name="diameterul3"
+                                                               placeholder="UL3 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul4" name="lengthul4"
+                                                               placeholder="UL4 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul4" name="diameterul4"
+                                                               placeholder="UL4 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthul5" name="lengthul5"
+                                                               placeholder="UL5 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul5" name="diameterul5"
+                                                               placeholder="UL5 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul6" name="lengthul6"
+                                                               placeholder="UL6 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul6" name="diameterul6"
+                                                               placeholder="UL6  Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul7" name="lengthul7"
+                                                               placeholder="UL7 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul7" name="diameterul7"
+                                                               placeholder="UL7 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthul8" name="lengthul8"
+                                                               placeholder="UL8 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterul8" name="diameterul8"
+                                                               placeholder="UL8 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                               <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr1" name="lengthlr1"
+                                                               placeholder="LR1 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr1" name="diameterlr1"
+                                                               placeholder="LR1 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr2" name="lengthlr2"
+                                                               placeholder="LR2 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden diameterlr2" name="diameterlr2"
+                                                               placeholder="LR2 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr3" name="lengthlr3"
+                                                               placeholder="LR3 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr3" name="diameterlr3"
+                                                               placeholder="LR3 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr4" name="lengthlr4"
+                                                               placeholder="LR4 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr4" name="diameterlr4"
+                                                               placeholder="LR4 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                 <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr5" name="lengthlr5"
+                                                               placeholder="LR5 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr5" name="diameterlr5"
+                                                               placeholder="LR5 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr6" name="lengthlr6"
+                                                               placeholder="LR6 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden diameterlr6" name="diameterlr6"
+                                                               placeholder="LR6 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control  hidden lengthlr7" name="lengthlr7"
+                                                               placeholder="LR7 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr7" name="diameterlr7"
+                                                               placeholder="LR7 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthlr8" name="lengthlr8"
+                                                               placeholder="LR8 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterlr8" name="diameterlr8"
+                                                               placeholder="LR8 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll1" name="lengthll1"
+                                                               placeholder="LL1 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll1" name="diameterll1"
+                                                               placeholder="LL1 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll2" name="lengthll2"
+                                                               placeholder="LL2 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll2" name="diameterll2"
+                                                               placeholder="LL2 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll3" name="lengthll3"
+                                                               placeholder="LL3 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll3" name="diameterll3"
+                                                               placeholder="LL3 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll4" name="lengthll4"
+                                                               placeholder="LL4 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll4" name="diameterll4"
+                                                               placeholder="LL4 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                               <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll5" name="lengthll5"
+                                                               placeholder="LL5 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll5" name="diameterll5"
+                                                               placeholder="LL5 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll6" name="lengthll6"
+                                                               placeholder="LL6 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll6" name="diameterll6"
+                                                               placeholder="LL6 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll7" name="lengthll7"
+                                                               placeholder="LL7 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll7" name="diameterll7"
+                                                               placeholder="LL7 Diameter"
+                                                               style="font-weight:bold;">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden lengthll8" name="lengthll8"
+                                                               placeholder="LL8 Length" style="font-weight:bold;"
+                                                               value="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control hidden diameterll8" name="diameterll8"
+                                                               placeholder="LL8 Diameter"
                                                                style="font-weight:bold;">
                                                     </div>
                                                 </div>
@@ -597,6 +965,40 @@
         </div>
     </div>
 </div>
+<script>
+  function handleCheckboxChange(checkboxes) {
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const diameterName = this.getAttribute('data-diameter');
+        const lengthName = this.getAttribute('data-length');
+
+        const diameterInput = document.querySelector(`input[name="${diameterName}"]`);
+        const lengthInput = document.querySelector(`input[name="${lengthName}"]`);
+
+        if (this.checked) {
+          diameterInput.classList.remove('hidden');
+          lengthInput.classList.remove('hidden');
+        } else {
+          diameterInput.classList.add('hidden');
+          lengthInput.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  const checkboxesUR = document.querySelectorAll('input[name="ur"]');
+  handleCheckboxChange(checkboxesUR);
+
+  const checkboxesUL = document.querySelectorAll('input[name="ul"]');
+  handleCheckboxChange(checkboxesUL);
+
+  const checkboxesLR = document.querySelectorAll('input[name="lr"]');
+  handleCheckboxChange(checkboxesLR);
+
+  const checkboxesLL = document.querySelectorAll('input[name="ll"]');
+  handleCheckboxChange(checkboxesLL);
+</script>
+
 <script>
     // Run the script after the page has loaded
     $(document).ready(function () {

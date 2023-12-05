@@ -1,8 +1,17 @@
 
 from django.db import models
-from django.contrib.auth.models import User
-from datetime import datetime
-from django.utils import timezone
+from django.conf import settings
+
+
+class WebsiteFeedback(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    rating = models.IntegerField()  # Assuming 1-5 star rating
+    comment = models.TextField(blank=True)
+
+    # Additional fields like timestamp, IP address, etc., can be added for more information
+
+    def __str__(self):
+        return f"Rating: {self.rating}, User: {self.user.username if self.user else 'Anonymous'}"
 
 
 class BasicInfo(models.Model):
@@ -250,16 +259,78 @@ class OralSurgery(models.Model):
     gender = models.CharField('Gender', max_length=20, blank=True,null=True)
     date_of_birth = models.CharField('Gender', max_length=20, blank=True,null=True)
     implant = models.ForeignKey(Implant, on_delete=models.CASCADE, blank=True,null=True)
-    diameter = models.CharField('Diameter',max_length=120, blank=True,null=True)
-    length = models.CharField('Length',max_length=120, blank=True,null=True)
+    diameterur1 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur1 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur2 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur2 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur3 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur3 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur4 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur4 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur5 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur5 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur6 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur6 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur7 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur7 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterur8 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthur8 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterul1 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthul1 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterul2 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthul2 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterul3 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthul3 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterul4 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthul4 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterul5 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthul5 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterul6 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthul6 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterul7 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthul7 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterul8 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthul8 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterlr1 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthlr1 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterlr2 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthlr2 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterlr3 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthlr3 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterlr4 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthlr4 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterlr5 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthlr5 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterlr6 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthlr6 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterlr7 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthlr7 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterlr8 = models.CharField('Diameter', max_length=20, blank=True, null=True)
+    lengthlr8 = models.CharField('Length', max_length=20, blank=True, null=True)
+    diameterll1 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll1 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll2 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll2 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll3 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll3 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll4 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll4 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll5 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll5 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll6 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll6 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll7 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll7 = models.CharField('Length',max_length=20, blank=True,null=True)
+    diameterll8 = models.CharField('Diameter',max_length=20, blank=True,null=True)
+    lengthll8 = models.CharField('Length',max_length=20, blank=True,null=True)
     no_Implant = models.CharField('No_Implant',max_length=120,blank=True)
     ur = models.CharField('Name',max_length=120, blank=True,null=True)
     ul = models.CharField('Name', max_length=120, blank=True,null=True)
     lr = models.CharField('Name', max_length=120, blank=True,null=True)
     ll = models.CharField('Name', max_length=120, blank=True,null=True)
+    color = models.CharField('color', max_length=20, blank=True, null=True)
     shade = models.CharField('shade', max_length=120, blank=True,null=True)
     no_unite = models.IntegerField('no_unite', blank=True,null=True)
-    color = models.CharField('color', max_length=120, blank=True,null=True)
     no_prepare = models.IntegerField('no_prepare',  blank=True,null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=2,null=True)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=2,null=True)
