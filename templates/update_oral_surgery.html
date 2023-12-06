@@ -18,7 +18,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data"  id="oral-form">
                     {% csrf_token %}
                     <input type="hidden" name="idReception" value="{{ form.initial.idReception }}">
                     <input type="hidden" name="name" value="{{ form.initial.name }}" readonly>
@@ -708,7 +708,7 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
                             </div>
                             <div class="col">
                                 <label>price:</label>
-                                <input type="text" name="price" value="{{ form.initial.price }}" class="form-control">
+                                <input type="text" name="price"  id="price" value="{{ form.initial.price }}" class="form-control">
                             </div>
                         </div>
 
@@ -763,6 +763,25 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#oral-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 <script>
     $( function() {
   $( "#first_visit" ).datepicker();

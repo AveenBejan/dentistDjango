@@ -15,7 +15,7 @@
                 </nav>
                             {% if user.is_authenticated %}
                             <p>{{ form.initial.idReception.name }}</p>
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="ortho-form">
 
 
                                 {% csrf_token %}
@@ -949,7 +949,7 @@
                                     <div class="form-group col-md-4">
                                         <label>Price</label>
                                         <input type="text" class="form-control" name="price" required
-                                               placeholder="price" style="font-weight:bold;" value="{{ form.initial.price }}">
+                                               placeholder="price" id="price" style="font-weight:bold;" value="{{ form.initial.price }}">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Notes</label>
@@ -1063,4 +1063,23 @@
     </div>
 
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#ortho-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 {% endblock %}

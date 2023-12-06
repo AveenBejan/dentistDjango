@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <form method="POST" action="" enctype="multipart/form-data">
+                <form method="POST" action="" enctype="multipart/form-data" id="exo-form">
                     {% csrf_token %}
                     <input type="hidden" name="idReception"
                            value="{{ form.initial.idReception }}"
@@ -306,7 +306,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-control">
-                                <input type="text" name="price" value="{{ form.initial.price }}"
+                                <input type="text" name="price" id="price" value="{{ form.initial.price }}"
                                        class="form-control"
                                        placeholder="Price:"required>
                             </div>
@@ -356,5 +356,23 @@
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#exo-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
 
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 {% endblock %}

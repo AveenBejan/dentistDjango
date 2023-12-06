@@ -4,7 +4,7 @@
 
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" id="filling-form">
     {% csrf_token %}
     <input type="hidden" name="idReception"
            value="{{ form.initial.idReception }}"
@@ -377,12 +377,12 @@
 
                             <input type="text" name="no_prepare" value="{{ form.initial.no_prepare }}"
                                    class="form-control"
-                                   placeholder="Total Teeth Prepare:" required>
+                                   placeholder="Total Teeth Prepare:">
                         </div>
                         <div class="col">
 
                             <input type="text" name="price" value="{{ form.initial.price }}"
-                                   class="form-control"
+                                   class="form-control" id="price"
                                    placeholder="Price:" required>
                         </div>
                     </div>
@@ -413,4 +413,23 @@
         </div>
     </div>
 </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#filling-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> this is to hid th and td-->
 <br/>
 <div class="row"
@@ -56,9 +57,9 @@
                                 <td style="text-align: center;" scope="row">{{ exoo.idReception.days }}</td>
                                 <td style="text-align: center;" scope="row">{{ exoo.idReception.time|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.type|slice:"1:-1" }}</td>
-                                <td style="text-align: center;">
-                                    {% if exoo.price is not None %}
-                                    {{ exoo.price|floatformat:2 }}
+                                 <td style="text-align: center;" scope="row">
+                                    {% if exoo.total_price is not None %}
+                                    {{ exoo.total_price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
@@ -107,7 +108,7 @@
                          aria-labelledby="headingTwo"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="per-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
@@ -212,7 +213,25 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#per-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
 
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 
 
 <!-- Display existing images if available
@@ -221,7 +240,7 @@
   {% for image in exoo.exo_image.all %}
     <img src="{{ image.url }}" alt="Image">
   {% endfor %}
-{% endif %} -->
+{% endif %}
 <script>
     // Run the script after the page has loaded
     $(document).ready(function () {
@@ -243,5 +262,5 @@
         });
     });
 </script>
-
+-->
 {% endblock %}

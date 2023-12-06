@@ -233,6 +233,7 @@ class DrugForm(forms.ModelForm):
     ]
     TABLET_CHOICES = [
         ('', 'Select Tablet'),
+        ('Tablet', 'Tablet'),
         ('Syrup', 'Syrup'),
         ('Ointment', 'Ointment'),
         ('Mouth Wash', 'Mouth Wash'),
@@ -671,7 +672,7 @@ class EndoForm(forms.ModelForm):
 
     class Meta:
         model = Endo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length','no_prepare',
+        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length',
                   'price', 'paid','note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth')
         labels = {
             'idReception': '',
@@ -687,7 +688,6 @@ class EndoForm(forms.ModelForm):
             'll': '',
             'canal': '',
             'work_length': '',
-            'no_prepare': '',
             'price': '',
             'paid': '',
             'note': '',
@@ -706,11 +706,10 @@ class EndoForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
-            'first_visit': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_visit': forms.DateInput(attrs={'class': 'form-control'}),
             'components_first': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_first'}),
             'canal': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'canal'}),
             'work_length': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'work_length'}),
-            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'size'}),
             'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
             'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
             'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),

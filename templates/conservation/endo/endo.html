@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <html lang="en">
 <head>
     <title>{% block title %}Dental Clinic {% endblock %}</title>
@@ -77,14 +78,14 @@
                                 <td style="text-align: center;" scope="row">{{ orall.no_prepare }}</td>
                                 <td style="text-align: center;">
                                     {% if orall.price is not None %}
-                                    {{ orall.price|floatformat:2 }}
+                                    {{ orall.price|format_with_commas}}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center;">
                                     {% if orall.total_price is not None %}
-                                    {{ orall.total_price|floatformat:2 }}
+                                    {{ orall.total_price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
@@ -104,9 +105,9 @@
                                     {% endfor %}
                                 </td>
                                 {% if orall %}
-                                <td style="text-align: center;" scope="row"><a href="{% url 'endo-visit' orall.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">Add Visits</span></a><br/>
-                                <a href="{% url 'endo-edit' orall.id   %}" style="display: inline;"><span
+                               <!-- <a href="{% url 'endo-visit' orall.id %}" style="display: inline;"><span
+                                        class="btn btn-warning">Add Visits</span></a><br/>-->
+                                <td style="text-align: center;" scope="row"><a href="{% url 'endo-edit' orall.id   %}" style="display: inline;"><span
                                         class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
                                 <a href="{% url 'delete-endo'  orall.id %}" style="display: inline;"><span
                                         class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a></td>
@@ -193,7 +194,7 @@
                         <div class="accordion-body">
                             {%if user.is_authenticated%}
                             <p>{{form.initial.idReception.name}}</p>
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="endo-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
@@ -504,35 +505,7 @@
 
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="form-row">
-                                                    <div class="col">
-                                                        <input type="text" class="form-control" name="first_visit"
-                                                               id="datepicker-3"
-                                                               required placeholder="Date of First Visit" value="">
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox"
-                                                               class="form-check-input"
-                                                               name="components_first"
-                                                               value="Access Opining">
-                                                        <label class="form-check-label">Access Opining</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox"
-                                                               class="form-check-input"
-                                                               name="components_first"
-                                                               value="Opturation">
-                                                        <label class="form-check-label">Opturation</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox"
-                                                               class="form-check-input"
-                                                               name="components_first"
-                                                               value="Instrumentation">
-                                                        <label class="form-check-label">Instrumentation</label>
-                                                    </div>
-                                                </div>
-                                                <br/>
+<div class="form-row">
                                                 <div class="col">
                                                     <label class="form-check-label">No of Canal</label>
                                                     <div class="form-check form-check-inline">
@@ -563,6 +536,13 @@
                                                                value="4">
                                                         <label class="form-check-label">4</label>
                                                     </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal"
+                                                               value="5">
+                                                        <label class="form-check-label">5</label>
+                                                    </div>
 
                                                     <div class="form-row">
                                                         <input type="hidden" id="paid" name="paid" value="0"
@@ -578,13 +558,7 @@
                                                                    value="">
                                                         </div>
                                                         <div class="col">
-                                                            <input type="text" class="form-control" name="no_prepare"
-                                                                   placeholder="No of Prepare:" required
-                                                                   style="font-weight:bold;">
-                                                        </div>
-
-                                                        <div class="col">
-                                                            <input type="text" name="price" value=""
+                                                            <input type="text" name="price" id="price" value=""
                                                                    class="form-control"
                                                                    placeholder="Price:" style="font-weight:bold;"
                                                                    required>
@@ -613,6 +587,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
                             </form>
                             {% endif %}
                         </div>
@@ -622,4 +597,23 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#endo-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 {% endblock %}

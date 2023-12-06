@@ -2,7 +2,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% load widget_tweaks %}
-
+{% load custom_filters %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
 
@@ -51,7 +51,8 @@
                                 <th style="text-align: center;" scope="col">Total Price</th>
                                 <th style="text-align: center;" scope="col">Notes</th>
                                 <th style="text-align: center;" scope="col">Exo Photo</th>
-                                <th scope="col" style="text-align: center;">Other</th>
+                                <th scope="col"  style="text-align: center;">Action</th>
+                                <th scope="col"  style="text-align: center;">Show Data</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -71,14 +72,14 @@
                                 <td  style="text-align: center;" scope="row">{{fill.no_prepare}}</td>
                                 <td style="text-align: center;">
                                     {% if fill.price is not None %}
-                                    {{ fill.price|floatformat:2 }}
+                                    {{ fill.price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center;">
                                     {% if fill.total_price is not None %}
-                                    {{ fill.total_price|floatformat:2 }}
+                                    {{ fill.total_price|format_with_commas}}
                                     {% else %}
                                     None
                                     {% endif %}
@@ -99,8 +100,8 @@
                                         class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
                                 <a href="{% url 'delete-filling'  fill.id %}"
                                                    style="display: inline;"><span
-                                        class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'drugs' id=id %}" style="display: inline;"><span
+                                        class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a></td>
+                                <td  style="text-align: center;" scope="row"><a href="{% url 'drugs' id=id %}" style="display: inline;"><span
                                         class="btn btn-info">Add Drugs</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
                                         class="btn btn-info">Gave-Appointment</span></a></td>
@@ -124,7 +125,7 @@
                          aria-labelledby="headingTwo"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="filling-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
@@ -495,7 +496,7 @@
 
                                                            <input type="text" name="no_prepare" value=""
                                                                   class="form-control"
-                                                                  placeholder="Total Teeth Prepare:" required>
+                                                                  placeholder="Total Teeth Prepare:">
                                                        </div>
                                                    <input type="hidden" id="paid" name="paid" value="0"
                                                           class="form-control"
@@ -503,7 +504,7 @@
                                                    <div class="col">
 
                                                        <input type="text" name="price" value=""
-                                                              class="form-control"
+                                                              class="form-control" id="price"
                                                               placeholder="Price:" required>
                                                    </div>
                                                </div>
@@ -540,6 +541,24 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#filling-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
 
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 
 {% endblock %}

@@ -13,3 +13,10 @@ def remove_quotes(value):
 def split_by_comma(value):
     return value.split(',')
 
+
+@register.filter
+def format_with_commas(value):
+    if value is not None:
+        return "{:,}".format(value)
+    return None
+

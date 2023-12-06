@@ -5,6 +5,7 @@
 {% block title %} Contact Page{% endblock %}
 
 {% block content %}
+{% load custom_filters %}
 
 <br/>
 <div class="row"
@@ -46,7 +47,8 @@
                                 <th style="text-align: center;"  scope="col">Total Price</th>
                                 <th style="text-align: center;"  scope="col">Notes</th>
                                 <th style="text-align: center;"  scope="col">Crown Photo</th>
-                                <th scope="col" style="text-align:center;">Other</th>
+                                <th scope="col"  style="text-align: center;">Action</th>
+                                <th scope="col"  style="text-align: center;">Show Data</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -59,14 +61,14 @@
                                 <td style="text-align: center;" scope="row" align="center">{{crown.no_prepare}}</td>
                                   <td style="text-align: center;">
                                     {% if crown.price is not None %}
-                                    {{ crown.price|floatformat:2 }}
+                                    {{ crown.price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center;">
                                     {% if crown.total_price is not None %}
-                                    {{ crown.total_price|floatformat:2 }}
+                                    {{ crown.total_price|format_with_commas  }}
                                     {% else %}
                                     None
                                     {% endif %}
@@ -87,10 +89,9 @@
                                     {% endfor %}
                                 </td>
                                 {% if crown %}
-                                <td  style="text-align: center;<a href="{% url 'crown_edit' crown.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <td  style="text-align: center;<a href="><a href="{% url 'crown_edit' crown.id %}" style="display: inline;" ><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
                                 <a href="{% url 'delete-crown'  crown.id %}" style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;Deletet&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-info">Add Drugs</span></a><br/>
+                                <td style="text-align: center;<a href="><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info">Add Appointment</span></a></td>
                                 {% endif %}
                             </tr>
@@ -113,7 +114,7 @@
                          aria-labelledby="headingTwo"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="crown-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
@@ -185,7 +186,7 @@
                                                            placeholder="No of Prepared Teeth" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" name="price" value="" class="form-control"
+                                                    <input type="text" name="price" id="price" value="" class="form-control"
                                                            placeholder="Price:" required>
                                                 </div>
 
@@ -221,7 +222,25 @@
     </div>
 </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#crown-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
 
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 <!-- Display existing images if available
 {% if exoo and exoo.exo_image %}
   <h2>Existing Images</h2>

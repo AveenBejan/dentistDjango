@@ -1010,8 +1010,8 @@ def add_oral_surgery(request, id):
         # Append the photos to the photos_list
         photos_list.append(photos)
 
-    formatted_total_prices = ["{:,.2f}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
-    formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
+    formatted_total_prices = ["{:,}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
+    formatted_prices = ["{:,}".format(orall.price) if orall.price is not None else None for orall in oralls]
 
     return render(request, 'index.html', {
         'form': form,
@@ -1292,7 +1292,8 @@ def add_ortho(request, id):
 
         # Append the photos to the photos_list
         photos_list.append(photos)
-    formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
+
+    formatted_prices = ["{:,}".format(orall.price) if orall.price is not None else None for orall in oralls]
     # Retrieve the first Ortho object where visits_id is null or 1
     # Disable the form submission after processing
 
@@ -1535,7 +1536,7 @@ def delete_ortho(request, idReception_id):
 
 def ortho_reception(request):
     appointments = Reception.objects.all().order_by('-id')
-    p = Paginator(appointments,1) #Paginator
+    p = Paginator(appointments,25) #Paginator
     page = request.GET.get('page') #Paginator
     appointments = p.get_page(page)#Paginator
     nums = "a" * appointments.paginator.num_pages#Paginator
@@ -1557,7 +1558,7 @@ def search_ortho(request):
 
 def exo_reception(request):
     appointments =Reception.objects.all().order_by('-id')
-    p = Paginator(appointments,1) #Paginator
+    p = Paginator(appointments,25) #Paginator
     page = request.GET.get('page') #Paginator
     appointments = p.get_page(page)#Paginator
     nums = "a" * appointments.paginator.num_pages#Paginator
@@ -1569,7 +1570,7 @@ def exo_reception(request):
 
 def prosthodontics_reception(request):
     appointments =Reception.objects.all().order_by('-id')
-    p = Paginator(appointments,1) #Paginator
+    p = Paginator(appointments,25) #Paginator
     page = request.GET.get('page') #Paginator
     appointments = p.get_page(page)#Paginator
     nums = "a" * appointments.paginator.num_pages#Paginator
@@ -1677,8 +1678,8 @@ def exo(request, id):
         # Append the photos to the photos_list
         photos_list.append(photos)
 
-    formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
-    formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+    formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+    formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
 
     return render(request, 'exo/exo.html', {
         'form': form,
@@ -1723,8 +1724,8 @@ def exo_edit(request, id):
                 exoo.ll = exoo.ll.replace("'", "")
             if exoo.exoby:
                 exoo.exoby = exoo.exoby.replace("'", "")
-            if exoo.uper:
-                exoo.uper = exoo.uper.replace("'", "")
+            if exoo.simpleexo:
+                exoo.simpleexo = exoo.simpleexo.replace("'", "")
             if exoo.complcated:
                 exoo.complcated = exoo.complcated.replace("'", "")
         except Exo.DoesNotExist:
@@ -2028,8 +2029,8 @@ def periodontology(request, id):
         # Append the photos to the photos_list
         photos_list.append(photos)
 
-    formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
-    formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+    formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+    formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
 
     return render(request, 'periodontology/periodontology.html', {
         'form': form,
@@ -2514,7 +2515,7 @@ def delete_crown(request, id):
 
 def veneer_reception(request):
     appointments =Reception.objects.all().order_by('-id')
-    p = Paginator(appointments,1) #Paginator
+    p = Paginator(appointments,20) #Paginator
     page = request.GET.get('page') #Paginator
     appointments = p.get_page(page)#Paginator
     nums = "a" * appointments.paginator.num_pages#Paginator
@@ -2677,7 +2678,7 @@ def filling(request, id):
             filling_instance.idReception_id = id
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
             filling_instance.total_price = total_price
 
             reception = Reception.objects.get(id=id)
@@ -2759,7 +2760,7 @@ def filling(request, id):
 
 def filling_reception(request):
     appointments =Reception.objects.all().order_by('-id')
-    p = Paginator(appointments,1) #Paginator
+    p = Paginator(appointments,20) #Paginator
     page = request.GET.get('page') #Paginator
     appointments = p.get_page(page)#Paginator
     nums = "a" * appointments.paginator.num_pages#Paginator
@@ -2788,7 +2789,7 @@ def filling_edit(request, id):
         if form.is_valid():
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()
@@ -3130,9 +3131,8 @@ def add_endo(request, id):
         if form.is_valid():
             oral_surgery = form.save(commit=False)
             oral_surgery.idReception_id = id
-            no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
             oral_surgery.total_price = total_price
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
@@ -3216,7 +3216,7 @@ def add_endo(request, id):
             orall.components_third = orall.components_third.replace("'", "")
         if orall.components_fourth:
             orall.components_fourth = orall.components_fourth.replace("'", "")
-        orall.total_price = orall.no_prepare * orall.price
+        orall.total_price = orall.price
         orall.save()
         # Retrieve photos associated with the current OralSurgery instance
         photos = orall.photo_set.all()
@@ -3264,7 +3264,7 @@ def delete_endo(request, id):
 
 def endo_reception(request):
     appointments = Reception.objects.all().order_by('-id')
-    p = Paginator(appointments,1) #Paginator
+    p = Paginator(appointments,25) #Paginator
     page = request.GET.get('page') #Paginator
     appointments = p.get_page(page)#Paginator
     nums = "a" * appointments.paginator.num_pages#Paginator
@@ -3291,39 +3291,64 @@ def endo_edit(request, id):
         form = EndoForm(request.POST, request.FILES, instance=orall)
         if form.is_valid():
             # Extract no_prepare and price from form cleaned data
-            no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-
             # Update the Endo instance with the new values
-            orall.no_prepare = no_prepare
             orall.price = price
 
             # Calculate and update total_price
-            total_price = no_prepare * price
+            total_price = price
             orall.total_price = total_price
-            form.save()
+            # Get the form data
+            form_data = form.cleaned_data
+
+            # Remove single quotes in certain fields
+            for field in ['ur', 'ul', 'lr', 'll']:
+                form_data[field] = form_data[field].replace("'", "") if form_data[field] else None
+
+            # Update the 'OralSurgery' instance with the cleaned form data
+            for field, value in form_data.items():
+                setattr(orall, field, value)
+
+            # Save the updated 'OralSurgery' instance
+            orall.save()
             # Handle uploaded photos
             photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(endo_instance=orall, image=photo)
             return redirect('add-endo', id=orall.idReception_id)  # Redirect to a success view after saving
     else:
-        initial_data = {
-            'first_visit': orall.first_visit,
-            'second_visit': orall.second_visit,
-            'third_visit': orall.third_visit,
-            'fourth_visit': orall.fourth_visit,
-            'ur': orall.ur[1:-1] if orall.ur else None,
-            'ul': orall.ul[1:-1] if orall.ul else None,
-            'lr': orall.lr[1:-1] if orall.lr else None,
-            'll': orall.ll[1:-1] if orall.ll else None,
-            'canal': orall.canal[1:-1] if orall.canal else None,
-            'components_first': orall.components_first[1:-1] if orall.components_first else None,
-            'components_second': orall.components_second[1:-1] if orall.components_second else None,
-            'components_third': orall.components_third[1:-1] if orall.components_third else None,
-            'components_fourth': orall.components_fourth[1:-1] if orall.components_fourth else None,
-        }
-        form = EndoForm(instance=orall, initial=initial_data)
+            first_visit = orall.first_visit if orall.first_visit is not None else None
+            components_first = orall.components_first if orall.components_first is not None else None
+            second_visit = orall.second_visit if orall.second_visit is not None else None
+            components_second = orall.components_second if orall.components_second is not None else None
+            third_visit = orall.third_visit if orall.third_visit is not None else None
+            components_third = orall.components_third if orall.components_third is not None else None
+            fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
+            components_fourth = orall.components_fourth if orall.components_fourth is not None else None
+            # Remove first and last characters from certain fields
+            ur = orall.ur[1:-1] if orall.ur else None
+            ul = orall.ul[1:-1] if orall.ul else None
+            lr = orall.lr[1:-1] if orall.lr else None
+            ll = orall.ll[1:-1] if orall.ll else None
+            canal = orall.canal[1:-1] if orall.canal else None
+
+            form = EndoForm(instance=orall, initial={
+                'first_visit': first_visit,
+                'components_first': components_first,
+                'second_visit': second_visit,
+                'components_second': components_second,
+                'third_visit': third_visit,
+                'components_third': components_third,
+                'fourth_visit': fourth_visit,
+                'components_fourth': components_fourth,
+                'ur': ur,
+                'ul': ul,
+                'lr': lr,
+                'll': ll,
+                'canal': canal,
+            })
+
+
 
     return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall})
 

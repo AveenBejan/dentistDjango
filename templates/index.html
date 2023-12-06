@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <html lang="en">
 <head>
     <title>{% block title %}Dental Clinic {% endblock %}</title>
@@ -61,7 +62,6 @@
                                 <th scope="col" style="text-align: center;">No Of Uint</th>
                                 <th scope="col" style="text-align: center;">color</th>
                                 <th scope="col" style="text-align: center;">Price</th>
-                                <th scope="col" style="text-align: center;">Total Price</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Paid</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Notes</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Exo Photo</th>
@@ -87,21 +87,13 @@
                                 <td style="text-align: center;" scope="row">{{ orall.no_unite }}</td>
                                 <td style="text-align: center;" scope="row">{{ orall.color }}</td>
 
-                                <td style="text-align: center;">
-                                    {% if orall.price is not None %}
-                                    {{ orall.price|floatformat:2 }}
-                                    {% else %}
-                                    None
-                                    {% endif %}
-                                </td>
-                                <td style="text-align: center;">
+                                <td style="text-align: center;" scope="row">
                                     {% if orall.total_price is not None %}
-                                    {{ orall.total_price|floatformat:2 }}
+                                    {{ orall.total_price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
-
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.paid }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.note }}</td>
                                 <td class="hideable">
@@ -193,7 +185,7 @@
                         <div class="accordion-body">
                             {%if user.is_authenticated%}
                             <p>{{form.initial.idReception.name}}</p>
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data"  id="oral-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
@@ -502,7 +494,11 @@
 
 
                                         <div class="card">
+
+
                                             <div class="card-body">
+<div class="alert alert-danger" role="alert"><h4 style="font-size: 22px;">Length&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diameter</h4></div>
                                                 <div class="form-row">
                                                     <div class="col">
                                                         <input type="text" class="form-control hidden lengthur1" name="lengthur1"
@@ -930,7 +926,7 @@
                                                                style="font-weight:bold;">
                                                     </div>
                                                     <div class="col">
-                                                        <input type="text" name="price" value="" class="form-control"
+                                                        <input type="text" name="price"  id="price" value="" class="form-control"
                                                                placeholder="Price:" style="font-weight:bold;" required>
                                                     </div>
                                                 </div>
@@ -965,6 +961,25 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#oral-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 <script>
   function handleCheckboxChange(checkboxes) {
     checkboxes.forEach(checkbox => {
@@ -998,7 +1013,7 @@
   const checkboxesLL = document.querySelectorAll('input[name="ll"]');
   handleCheckboxChange(checkboxesLL);
 </script>
-
+<!--
 <script>
     // Run the script after the page has loaded
     $(document).ready(function () {
@@ -1019,5 +1034,5 @@
             }
         });
     });
-</script>
+</script>-->
 {% endblock %}
