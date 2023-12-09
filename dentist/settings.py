@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'xhtml2pdf',
+    'custom_filters.py',
 
 
 
@@ -85,7 +86,6 @@ DATABASES = {
 
     )
 }
-
 
 
 # Password validation
