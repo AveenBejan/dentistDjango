@@ -110,7 +110,7 @@ class Filling(models.Model):
     ul = models.CharField('ul', max_length=120, blank=True,null=True)
     lr = models.CharField('lr', max_length=120,null=True, blank=True)
     ll = models.CharField('ll', max_length=120,null=True, blank=True)
-    no_prepare = models.IntegerField('no_prepare',null=False)
+    no_prepare = models.IntegerField('no_prepare',blank=True,null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,null=False)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=False)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)

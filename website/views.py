@@ -2676,7 +2676,6 @@ def filling(request, id):
         if form.is_valid():
             filling_instance = form.save(commit=False)
             filling_instance.idReception_id = id
-            no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
             total_price = price
             filling_instance.total_price = total_price
@@ -2787,7 +2786,6 @@ def filling_edit(request, id):
     if request.method == 'POST':
         form = FillingForm(request.POST, instance=pi)
         if form.is_valid():
-            no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
             total_price = price
 
