@@ -1,25 +1,10 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% extends 'base.html'  %}
 {% load static %}
-<html>
+{% block navbar %}
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta charset="UTF-8">
-<head>
-    <style type="">
-         @font-face {
-            font-family: Roboto;
-            src: url(static/fonts/Roboto-Regular.ttf);
-        }
-
-        @font-face {
-            font-family: Roboto;
-            src: url(static/fonts/Roboto-Bold.ttf);
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
+{% load custom_filters %}
 <br/>
 <br/><br/>
 
@@ -33,14 +18,14 @@
 <div class="container">
     <div class="row">
 
-        <h1 style="text-align:center;">Payment Invoice</h1>
+
+        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Date of Birth: {{ debts.0.date_of_birth }}
             </p>
             {% endif %}
         </div>
@@ -49,10 +34,20 @@
                             <tr>
 
                                 <th scope="col">#</th>
-                                <th scope="col">Doctor Name</th>
+                                <!--<th scope="col">Doctor Name</th>
                                 <th scope="col">Appointment Date</th>
                                 <th scope="col">Day Name</th>
                                 <th scope="col">Time</th>
+                                <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
+                                <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Teeth Type</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">angle_class</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">over_jet</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">over_bt</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">jow_shift</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">midlin_shift</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">Exo Photo</th>-->
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Right</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Left</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Right</th>
@@ -61,22 +56,14 @@
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Left NOW</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Right NOW</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Left NOW</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">Teeth Type</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">angle_class</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">over_jet</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">over_bt</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">jow_shift</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">midlin_shift</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Right S</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Left S</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Right S</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Left S</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">teeth_size</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">treatment_plan</th>
+
                                 <th scope="col">Price</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">paid</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">Notes</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">Exo Photo</th>
+
                                 <th scope="col"  style="text-align: center;">Action</th>
                                 <th scope="col" style="text-align:center;">Show Data</th>
                             </tr>
@@ -85,10 +72,19 @@
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
              <td style="text-align: center;" scope="row">{{ debt.id }}</td>
-                                <td style="center" scope="row">{{ debt.idReception.doctor.doctor_name }}</td>
+                                <!--<td style="center" scope="row">{{ debt.idReception.doctor.doctor_name }}</td>
                                 <td style="center" scope="row">{{ debt.idReception.app_data }}</td>
                                 <td style="center" scope="row">{{ debt.idReception.days }}</td>
                                 <td style="center" scope="row">{{ debt.idReception.time|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.teeth_size |slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.teeth_type|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.angle_class }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.over_jet }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.over_bt }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.jow_shift }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.midlin_shift }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.notes }}</td>
+                                <td style="text-align: center; word-wrap: break-word;" scope="row"  class="hideable">{{ debt.treatment_plan }}</td>-->
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.ur|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.ul|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lr|slice:"1:-1" }}</td>
@@ -97,29 +93,20 @@
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.uln|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lrn|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lln|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.teeth_type|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.angle_class }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.over_jet }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.over_bt }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.jow_shift }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.midlin_shift }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.urs|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.uls|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lrs|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lls|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.teeth_size |slice:"1:-1" }}</td>
-                                <td style="text-align: center; word-wrap: break-word;" scope="row"  class="hideable">{{ debt.treatment_plan }}</td>
-                                <td style="text-align: center;">{{ debt.price }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.paid }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.notes }}</td>
+                                <td style="text-align: center;">{{ debt.price|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.paid|format_with_commas }}</td>
+
             </tr>
             {% endfor %}
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff;">Total Remaining: {{ total_remaining|floatformat:2 }}</span></td>
+       <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>
-
 
 <footer id="footer">
     <hr class="border border-primary border-3 opacity-40">
@@ -127,5 +114,5 @@
         التمنيات بالشفاء العاجل</h4>
 </footer>
 
-    </body>
-</html>
+
+{% endblock %}

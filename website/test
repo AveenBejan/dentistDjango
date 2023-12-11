@@ -1527,3 +1527,8 @@ def oral_visit(request, id):
     return render(request, 'oral_visit.html', {'form': form, 'pi': pi, 'orall': orall,'photos': photos})
 
 
+<td style="text-align: center;" > {% if result.total_price == result.paid %}
+            <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-outline-info">Print
+                Invoice</a>
+            {% endif %}

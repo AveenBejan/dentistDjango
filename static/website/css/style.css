@@ -7543,7 +7543,7 @@ h1, h2, h3, h4, h5,
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
-      height: 700px;
+      height: 40px;
       position: relative; }
       .owl-carousel.home-slider .slider-item .overlay {
         position: absolute;
@@ -7556,12 +7556,12 @@ h1, h2, h3, h4, h5,
         opacity: .2; }
       .owl-carousel.home-slider .slider-item .slider-text {
         color: #fff;
-        height: 700px; }
+        height: 600px; }
         .owl-carousel.home-slider .slider-item .slider-text h1 {
           font-size: 40px;
           color: #fff;
           line-height: 1.2;
-          font-weight: 400; }
+          font-weight: 540; }
           @media (max-width: 991.98px) {
             .owl-carousel.home-slider .slider-item .slider-text h1 {
               font-size: 40px; } }

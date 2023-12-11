@@ -4,6 +4,7 @@
 
 {% endblock %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <br/><br/>
 
@@ -17,56 +18,44 @@
 <div class="container">
     <div class="row">
 
-        <h1 style="text-align:center;">Payment Invoice</h1>
+        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Date of Birth: {{ debts.0.date_of_birth }}
             </p>
             {% endif %}
         </div>
         <table class="table table-hover">
             <thead style="background-color:#555; color:#fff;">
             <tr>
-
-                <th scope="col">#</th>
-              <th scope="col">#</th>
               <th scope="col">Filling Type</th>
-              <th scope="col">Filling Place</th>
               <th scope="col">Upper Right</th>
               <th scope="col">Upper Left</th>
               <th scope="col">Lower Right</th>
               <th scope="col">Lower Left</th>
-              <th scope="col">No of Pre.Unite</th>
               <th scope="col">Price</th>
               <th scope="col">Total Price</th>
               <th scope="col">Paid</th>
-                <th scope="col">Notes</th>
             </tr>
             </thead>
             <tbody>
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-                <td >{{ debt.id }}</td>
-              <td>{{ debt.idReception_id }}</td>
               <td scope="row">{{debt.filling_type}}</td>
-              <td scope="row">{{debt.filling_place|slice:"1:-1"}}</td>
               <td scope="row">{{debt.ur|slice:"1:-1" }}</td>
               <td scope="row">{{debt.ul|slice:"1:-1"}}</td>
               <td scope="row">{{debt.lr|slice:"1:-1"}}</td>
               <td scope="row">{{debt.ll|slice:"1:-1"}}</td>
-              <td scope="row">{{debt.no_prepare}}</td>
-              <td>{{ debt.price }}</td>
-              <td>{{ debt.total_price }}</td>
-                <td >{{ debt.paid }}</td>
-                <td >{{ debt.note }}</td>
+              <td>{{ debt.price|format_with_commas }}</td>
+              <td>{{ debt.total_price|format_with_commas }}</td>
+                <td >{{ debt.paid|format_with_commas }}</td>
             </tr>
             {% endfor %}
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff;">Total Remaining: {{ total_remaining|floatformat:2 }}</span></td>
+        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>

@@ -1,11 +1,32 @@
-
 {% extends 'base.html'  %}
 {% load static %}
-{% load widget_tweaks %}
-{% load custom_filters %}
-{% block title %} Contact Page{% endblock %}
 {% block content %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <title>{% block title %}Dental Clinic {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    .hidden {
+      display: none;
+    }
+
+    </style>
+    <style>
+textarea {
+  border: none; outline: none;
+  background: repeating-linear-gradient(
+    to bottom, transparent, transparent 26px, #000 27px
+  );
+  background-attachment: local;
+}
+
+    </style>
+</head>
+<body>
 <br/>
 <div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
@@ -41,12 +62,10 @@
                                 <th style="text-align: center;" scope="col">Day Name</th>
                                 <th style="text-align: center;" scope="col">Time</th>
                                 <th style="text-align: center;" scope="col">Filling Type</th>
-                                <th style="text-align: center;" scope="col">Filling Place</th>
                                 <th style="text-align: center;" scope="col">Upper Right</th>
                                 <th style="text-align: center;" scope="col">Upper Left</th>
                                 <th style="text-align: center;" scope="col">Lower Right</th>
                                 <th style="text-align: center;" scope="col">Lower Left</th>
-                                <th style="text-align: center;" scope="col">No of Pre.Unite</th>
                                 <th style="text-align: center;" scope="col">Price</th>
                                 <th style="text-align: center;" scope="col">Total Price</th>
                                 <th style="text-align: center;" scope="col">Notes</th>
@@ -63,13 +82,11 @@
                                 <td style="text-align: center;" scope="row">{{ fill.idReception.app_data }}</td>
                                 <td style="text-align: center;" scope="row">{{ fill.idReception.days }}</td>
                                 <td style="text-align: center;" scope="row">{{ fill.idReception.time|slice:"1:-1" }}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.filling_type|slice:"1:-1"}}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.filling_place|slice:"1:-1"}}</td>
+                                <td  style="text-align: center;" scope="row">{{fill.filling_type}}</td>
                                 <td  style="text-align: center;" scope="row">{{fill.ur|slice:"1:-1" }}</td>
                                 <td  style="text-align: center;" scope="row">{{fill.ul|slice:"1:-1"}}</td>
                                 <td  style="text-align: center;" scope="row">{{fill.lr|slice:"1:-1"}}</td>
                                 <td  style="text-align: center;" scope="row">{{fill.ll|slice:"1:-1"}}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.no_prepare}}</td>
                                 <td style="text-align: center;">
                                     {% if fill.price is not None %}
                                     {{ fill.price|format_with_commas }}
@@ -146,15 +163,12 @@
                                        value="{{ form.initial.date_of_birth }}"
                                        class="form-control">
                                                                <div class="container">
+                                    <div class="col-10">
 
-                                    <div class="col-8">
-
-                                        <br/>
                                         <div class="card-header">
-                                            <h4 style="font-size: 22px; text-align:center;">Filling</h4>
 
+                                            <h4 style="font-size: 22px; text-align:center;"> Add Filling</h4>
                                         </div>
-
                                         <br/>
                                         <div class="row">
 
@@ -165,60 +179,61 @@
                                                 <div class="card">
                                                     <div class="card-body">
 
-                                                           <div class="form-check form-check-inline">
+                                                        <div class="form-check form-check-inline">
+
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR1">
+                                                                   value="UR1" data-diameter="fillingur1" >
                                                             <label class="form-check-label">UR1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR2">
+                                                                   value="UR2" data-diameter="fillingur2">
                                                             <label class="form-check-label">UR2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR3">
+                                                                   value="UR3" data-diameter="fillingur3" >
                                                             <label class="form-check-label">UR3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR4">
+                                                                   value="UR4" data-diameter="fillingur4">
                                                             <label class="form-check-label">UR4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR5">
+                                                                   value="UR5" data-diameter="fillingur5" >
                                                             <label class="form-check-label">UR5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR6">
+                                                                   value="UR6" data-diameter="fillingur6" >
                                                             <label class="form-check-label">UR6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR7">
+                                                                   value="UR7" data-diameter="fillingur7" >
                                                             <label class="form-check-label">UR7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ur"
-                                                                   value="UR8">
+                                                                   value="UR8" data-diameter="fillingur8" >
                                                             <label class="form-check-label">UR8</label>
                                                         </div>
 
@@ -235,56 +250,56 @@
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL1">
+                                                                   value="UL1" data-diameter="fillingul1" >
                                                             <label class="form-check-label">UL1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL2">
+                                                                   value="UL2" data-diameter="fillingul2" >
                                                             <label class="form-check-label">UL2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL3">
+                                                                   value="UL3" data-diameter="fillingul3" >
                                                             <label class="form-check-label">UL3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL4">
+                                                                   value="UL4" data-diameter="fillingul4" >
                                                             <label class="form-check-label">UL4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL5">
+                                                                   value="UL5" data-diameter="fillingul5" >
                                                             <label class="form-check-label">UL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL6">
+                                                                   value="UL6" data-diameter="fillingul6" >
                                                             <label class="form-check-label">UL6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL7">
+                                                                   value="UL7" data-diameter="fillingul7" >
                                                             <label class="form-check-label">UL7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ul"
-                                                                   value="UL8">
+                                                                   value="UL8" data-diameter="fillingul8">
                                                             <label class="form-check-label">UL8</label>
                                                         </div>
                                                     </div>
@@ -299,60 +314,60 @@
                                                 </div>
                                                 <div class="card">
                                                     <div class="card-body">
-                                                       <div class="form-check form-check-inline">
+                                                        <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR1">
+                                                                   value="LR1" data-diameter="fillinglr1" >
                                                             <label class="form-check-label">LR1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR2">
+                                                                   value="LR2"  data-diameter="fillinglr2" >
                                                             <label class="form-check-label">LR2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR3">
+                                                                   value="LR3" data-diameter="fillinglr3" >
                                                             <label class="form-check-label">LR3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR4">
+                                                                   value="LR4" data-diameter="fillinglr4" >
                                                             <label class="form-check-label">LR4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR5">
+                                                                   value="LR5" data-diameter="fillinglr5" >
                                                             <label class="form-check-label">LR5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR6">
+                                                                   value="LR6" data-diameter="fillinglr6" >
                                                             <label class="form-check-label">LR6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR7">
+                                                                   value="LR7" data-diameter="fillinglr7" >
                                                             <label class="form-check-label">LR7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="lr"
-                                                                   value="LR8">
+                                                                   value="LR8" data-diameter="fillinglr8" >
                                                             <label class="form-check-label">LR8</label>
                                                         </div>
 
@@ -369,56 +384,56 @@
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL1">
+                                                                   value="LL1"  data-diameter="fillingll1" >
                                                             <label class="form-check-label">LL1</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL2">
+                                                                   value="LL2" data-diameter="fillingll2">
                                                             <label class="form-check-label">LL2</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL3">
+                                                                   value="LL3" data-diameter="fillingll3" >
                                                             <label class="form-check-label">LL3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL4">
+                                                                   value="LL4" data-diameter="fillingll4" >
                                                             <label class="form-check-label">LL4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL5">
+                                                                   value="LL5" data-diameter="fillingll5">
                                                             <label class="form-check-label">LL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL6">
+                                                                   value="LL6" data-diameter="fillingll6" >
                                                             <label class="form-check-label">LL6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL7">
+                                                                   value="LL7" data-diameter="fillingll7" >
                                                             <label class="form-check-label">LL7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="checkbox"
                                                                    class="form-check-input"
                                                                    name="ll"
-                                                                   value="LL8">
+                                                                   value="LL8" data-diameter="fillingll8">
                                                             <label class="form-check-label">LL8</label>
                                                         </div>
 
@@ -426,6 +441,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <br/>
                                         <div class="card text-left">
                                             <div class="row">
@@ -442,52 +458,1059 @@
                                             </div>
                                             <br/>
                                            <div class="row">
-                                               <div class="col">
+                                               <div class="hidden fillingur1">
                                                    <br/>
-                                                   <label style="font-weight:bold">Filling Place : </label>
+                                                   <label style="font-weight:bold">Filling Class UR1: </label>
                                                    <br/>
                                             <div class="form-check form-check-inline">
-
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="Class 1">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="Class 1">
                                                     <label class="form-check-label">Class 1</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="Class 2 MO">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="Class 2 MO">
                                                     <label class="form-check-label">Class 2 MO</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="CLASS 2 DO">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="CLASS 2 DO">
                                                     <label class="form-check-label">CLASS 2 DO</label>
                                                 </div>
                                              <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="CLASS 2 MOD">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="CLASS 2 MOD">
                                                     <label class="form-check-label">CLASS 2 MOD</label>
                                                 </div>
-                                                   <br/>
                                              <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="CLASS 3">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="CLASS 3">
                                                     <label class="form-check-label">CLASS 3</label>
                                                 </div>
                                              <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="CLASS 4">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="CLASS 4">
                                                     <label class="form-check-label">CLASS 4</label>
                                                 </div>
                                              <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           name="filling_place"
-                                                           value="CLASS 5">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur1" name="fillingur1" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur2">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR2 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur2" name="fillingur2" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur3">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR3 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur3" name="fillingur3" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur4">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR4 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur4" name="fillingur4" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur5">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR5 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur5" name="fillingur5" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur6">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR6 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur6" name="fillingur6" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur7">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR7 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur7" name="fillingur7" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingur8">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR8 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingur8" name="fillingur8" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul1">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL1: </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul1" name="fillingul1" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul2">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL2 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul2" name="fillingul2" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul3">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL3 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul3" name="fillingul3" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul4">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL4 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul4" name="fillingul4" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul5">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL5 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul5" name="fillingul5" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul6">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL6 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul6" name="fillingul6" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul7">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UL7 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul7" name="fillingul7" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingul8">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class UR8 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingul8" name="fillingul8" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr1">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR1: </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr1" name="fillinglr1" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr2">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR2 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr2" name="fillinglr2" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr3">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR3 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr3" name="fillinglr3" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr4">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR4 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr4" name="fillinglr4" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr5">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR5 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr5" name="fillinglr5" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr6">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR6 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr6" name="fillinglr6" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr7">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR7 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr7" name="fillinglr7" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillinglr8">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LR8 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillinglr8" name="fillinglr8" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll1">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL1: </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll1" name="fillingll1" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll2">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL2 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll2" name="fillingll2" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll3">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL3 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll3" name="fillingll3" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll4">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL4 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll4" name="fillingll4" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll5">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL5 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll5" name="fillingll5" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll6">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL6 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll6" name="fillingll6" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll7">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL7 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll7" name="fillingll7" value="CLASS 5">
+                                                    <label class="form-check-label">CLASS 5</label>
+                                                </div>
+                                               </div>
+                                               <div class="hidden fillingll8">
+                                                   <br/>
+                                                   <label style="font-weight:bold">Filling Class LL8 : </label>
+                                                   <br/>
+                                            <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="Class 1">
+                                                    <label class="form-check-label">Class 1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="Class 2 MO">
+                                                    <label class="form-check-label">Class 2 MO</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="CLASS 2 DO">
+                                                    <label class="form-check-label">CLASS 2 DO</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="CLASS 2 MOD">
+                                                    <label class="form-check-label">CLASS 2 MOD</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="CLASS 3">
+                                                    <label class="form-check-label">CLASS 3</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="CLASS 4">
+                                                    <label class="form-check-label">CLASS 4</label>
+                                                </div>
+                                             <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input hidden fillingll8" name="fillingll8" value="CLASS 5">
                                                     <label class="form-check-label">CLASS 5</label>
                                                 </div>
                                                </div>
@@ -512,13 +1535,10 @@
                                                               class="form-control"
                                                               multiple>
                                                    </div>
-                                                   <div class="col">
-                                                       <input type="text" name="note" value=""
-                                                              class="form-control"
-                                                              placeholder="Notes:">
-                                                   </div>
+
                                                </div>
                                             </div>
+                                            <textarea name="note" placeholder="Notes" rows="3" cols="85" id="note"></textarea>
                                             <div class="card-footer text-center">
                                                 <input type="submit" value="Apply"
                                                        class="btn btn-primary">
@@ -554,6 +1574,73 @@ $(document).ready(function() {
         $(this).val(formattedValue);
     });
 });
+</script>
+<script>
+    function handleCheckboxChange(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const diameterName = this.getAttribute('data-diameter');
+            const diameterInputs = document.querySelectorAll(`.${diameterName}`);
+
+            if (this.checked) {
+                diameterInputs.forEach(input => {
+                    input.classList.remove('hidden');
+                });
+            } else {
+                diameterInputs.forEach(input => {
+                    input.classList.add('hidden');
+                });
+            }
+        });
+    }
+
+const checkboxesUR = document.querySelectorAll('input[name="ur"]');
+checkboxesUR.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+
+const checkboxesUL = document.querySelectorAll('input[name="ul"]');
+checkboxesUL.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+
+const checkboxesLR = document.querySelectorAll('input[name="lr"]');
+checkboxesLR.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+
+const checkboxesLL = document.querySelectorAll('input[name="ll"]');
+checkboxesLL.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+</script>
+<script>
+  const textarea = document.getElementById('note');
+
+  textarea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault(); // Prevent the default Tab behavior
+
+      const start = this.selectionStart;
+      const value = this.value;
+
+      // Split the text into lines
+      const lines = value.split('\n');
+
+      // Find the current line number
+      let lineNum = 0;
+      for (let i = 0; i < lines.length; i++) {
+        if (start >= lineNum && start <= lineNum + lines[i].length) {
+          break;
+        }
+        lineNum += lines[i].length + 1; // Add 1 for the newline character
+      }
+
+      // Move to the start of the next line
+      const nextLineStart = lineNum + lines[lineNum / 2].length + 1; // Add 1 for the newline character
+
+      this.selectionStart = this.selectionEnd = nextLineStart;
+    }
+  });
 </script>
 
 {% endblock %}

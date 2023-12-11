@@ -1,25 +1,10 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% extends 'base.html'  %}
 {% load static %}
-<html>
+{% block navbar %}
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta charset="UTF-8">
-<head>
-    <style type="">
-         @font-face {
-            font-family: Roboto;
-            src: url(static/fonts/Roboto-Regular.ttf);
-        }
-
-        @font-face {
-            font-family: Roboto;
-            src: url(static/fonts/Roboto-Bold.ttf);
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
+{% load custom_filters %}
 <br/>
 <br/><br/>
 
@@ -33,14 +18,14 @@
 <div class="container">
     <div class="row">
 
-        <h1 style="text-align:center;">Payment Invoice</h1>
+
+        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Date of Birth: {{ debts.0.date_of_birth }}
             </p>
             {% endif %}
         </div>
@@ -48,50 +33,50 @@
             <thead style="background-color:#555; color:#fff;">
             <tr>
 
-                <th scope="col">#</th>
-                <th scope="col">#</th>
-                <th scope="col">Upper Right</th>
-                <th scope="col">Upper Left</th>
-                <th scope="col">Lower Right</th>
-                <th scope="col">Lower Left</th>
-                <th scope="col">Price</th>
-                <th scope="col">Total Price</th>
-                <th scope="col">Paid</th>
-                <th scope="col">Notes</th>
-                <th scope="col">Exo by Surgery</th>
-                <th scope="col">Simple Exo</th>
-                <th scope="col">Complicated</th>
+                <!--<th style="text-align:center;" scope="col">#</th>
+                <th style="text-align:center;" scope="col">#</th>-->
+                <th style="text-align:center;" scope="col">Upper Right</th>
+                <th style="text-align:center;" scope="col">Upper Left</th>
+                <th style="text-align:center;" scope="col">Lower Right</th>
+                <th style="text-align:center;" scope="col">Lower Left</th>
+                <th style="text-align:center;" scope="col">Price</th>
+                <th style="text-align:center;" scope="col">Total Price</th>
+                <th style="text-align:center;" scope="col">Paid</th>
+               <!-- <th style="text-align:center;" scope="col">Notes</th>
+                <th style="text-align:center;" scope="col">Exo by Surgery</th>
+                <th style="text-align:center;" scope="col">Simple Exo</th>
+                <th style="text-align:center;" scope="col">Complicated</th>-->
             </tr>
             </thead>
             <tbody>
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-                <td>{{ debt.id }}</td>
-                <td>{{ debt.idReception_id }}</td>
-                <td>{{ debt.ur|slice:"1:-1" }}</td>
-                <td>{{ debt.ul|slice:"1:-1" }}</td>
-                <td>{{ debt.lr|slice:"1:-1" }}</td>
-                <td>{{ debt.ll|slice:"1:-1" }}</td>
-                <td>{{ debt.price }}</td>
-                <td>{{ debt.total_price }}</td>
-                <td>{{ debt.paid }}</td>
-                <td>{{ debt.note }}</td>
+                <!--<td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">{{ debt.idReception_id }}</td>-->
+                <td style="text-align:center;">{{ debt.ur|slice:"1:-1" }}</td>
+                <td style="text-align:center;">{{ debt.ul|slice:"1:-1" }}</td>
+                <td style="text-align:center;">{{ debt.lr|slice:"1:-1" }}</td>
+                <td style="text-align:center;">{{ debt.ll|slice:"1:-1" }}</td>
+                <td style="text-align:center;">{{ debt.price|format_with_commas }}</td>
+                <td style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
+                <td style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
+                <!--<td>{{ debt.note }}</td>
                 <td>{{ debt.exoby|slice:"1:-1" }}</td>
                 <td>{{ debt.simpleexo|slice:"1:-1" }}</td>
-                <td>{{ debt.complcated|slice:"1:-1" }}</td>
+                <td>{{ debt.complcated|slice:"1:-1" }}</td>-->
             </tr>
             {% endfor %}
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff;">Total Remaining: {{ total_remaining|floatformat:2 }}</span></td>
+        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>
-
 
 <footer id="footer">
     <hr class="border border-primary border-3 opacity-40">
     <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
         التمنيات بالشفاء العاجل</h4>
 </footer>
-</body>
-</html>
+
+
+{% endblock %}

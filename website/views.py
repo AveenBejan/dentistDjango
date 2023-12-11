@@ -2726,8 +2726,6 @@ def filling(request, id):
     for fill in fillingg:
         if fill.filling_type:
             fill.filling_type = fill.filling_type.replace("'", "")
-        if fill.filling_place:
-            fill.filling_place = fill.filling_place.replace("'", "")
         if fill.ur:
             fill.ur = fill.ur.replace("'", "")
         if fill.ul:
@@ -2871,10 +2869,7 @@ def print_exo_debt(request, id):
         'total_remaining': total_remaining,
     }
 
-    template_name = 'debts/print_exo_debt.html'  # Replace with your template name
-
-    # Redirect to the PDF generation view
-    return crown_pdf(request, template_name, context)
+    return render(request, 'debts/print_exo_debt.html', context)
 
 
 def add_debt_crown(request, id):
@@ -2921,10 +2916,7 @@ def print_crown_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
-    template_name = 'debts/print_crown_debt.html'  # Replace with your template name
-
-    # Redirect to the PDF generation view
-    return crown_pdf(request, template_name, context)
+    return render(request, 'debts/print_crown_debt.html', context)
 
 
 def add_debt_ortho(request, id):
@@ -2970,10 +2962,7 @@ def print_ortho_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
-    template_name = 'debts/print_ortho_debt.html'  # Replace with your template name
-
-    # Redirect to the PDF generation view
-    return crown_pdf(request, template_name, context)
+    return render(request, 'debts/print_ortho_debt.html', context)
 
 
 def add_debt_filling(request, id):
@@ -3068,10 +3057,7 @@ def print_veneer_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
-    template_name = 'debts/print_veneer_debt.html'  # Replace with your template name
-
-    # Redirect to the PDF generation view
-    return generate_pdf_view(request, template_name, context)
+    return render(request, 'debts/print_veneer_debt.html', context)
 
 
 def add_debt_oral(request, id):
@@ -3395,10 +3381,8 @@ def print_endo_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
-    template_name = 'debts/print_endo_debt.html'  # Replace with your template name
+    return render(request, 'debts/print_endo_debt.html', context)
 
-    # Redirect to the PDF generation view
-    return generate_pdf_view(request, template_name, context)
 
 
 def endo_visit(request, id):

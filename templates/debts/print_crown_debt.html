@@ -1,13 +1,12 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block navbar %}
 
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-
-<body>
+{% endblock %}
+{% block content %}
+{% load custom_filters %}
 <br/>
 <br/><br/>
-
 
 <p align="center"
    style="font-size:20px; color:#900; font-weight:bold; background-repeat:no-repeat;">
@@ -19,50 +18,46 @@
 <div class="container">
     <div class="row">
 
-        <h1 style="text-align:center;">Payment Invoice</h1>
+        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Date of Birth: {{ debts.0.date_of_birth }}
             </p>
             {% endif %}
         </div>
-        <table class="table table-hover">
-            <thead >
+          <table class="table table-hover">
+            <thead style="background-color:#555; color:#fff;">
             <tr>
-
-                <th scope="col">#</th>
-                <th scope="col">#</th>
-                <th scope="col">Shade</th>
-                <th scope="col">No of Unite</th>
-                <th scope="col">Color</th>
-                <th scope="col">No of Pre.Unite</th>
-                <th scope="col">Price</th>
-                <th scope="col">Total Price</th>
-                <th scope="col">Paid</th>
-                <th scope="col">Notes</th>
+                <!--<th scope="col">#</th>
+                <th scope="col">#</th>-->
+                <th scope="col" style="text-align:center;">Shade</th>
+                <th scope="col" style="text-align:center;">No of Unite</th>
+                <th scope="col" style="text-align:center;">Color</th>
+                <th scope="col" style="text-align:center;">No of Pre.Unite</th>
+                <th scope="col" style="text-align:center;">Price</th>
+                <th scope="col" style="text-align:center;">Total Price</th>
+                <th scope="col" style="text-align:center;">Paid</th>
             </tr>
             </thead>
             <tbody>
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-                <td >{{ debt.id }}</td>
-                <td >{{ debt.idReception_id }}</td>
-                <td >{{debt.shade}}</td>
-                <td >{{debt.no_unite}}</td>
-                <td >{{debt.color}}</td>
-                <td >{{debt.no_prepare}}</td>
-                <td >{{ debt.price }}</td>
-                <td >{{ debt.total_price }}</td>
-                <td >{{ debt.paid }}</td>
-                <td >{{ debt.note }}</td>
+               <!-- <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">{{ debt.idReception_id }}</td>-->
+                <td style="text-align:center;">{{debt.shade}}</td>
+                <td style="text-align:center;">{{debt.no_unite}}</td>
+                <td style="text-align:center;">{{debt.color}}</td>
+                <td style="text-align:center;">{{debt.no_prepare}}</td>
+                <td style="text-align:center;">{{ debt.price|format_with_commas }}</td>
+                <td style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
+                <td style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
             </tr>
             {% endfor %}
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff;">Total Remaining: {{ total_remaining|floatformat:2 }}</span></td>
+        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>
@@ -75,5 +70,4 @@
 </footer>
 
 
-</body>
-</html>
+{% endblock %}
