@@ -674,6 +674,7 @@ def reception(request):
             instance = form.save(commit=False)
             doctor_name = form.cleaned_data['doctor']
             educational_name = form.cleaned_data['educational']
+            name = form.cleaned_data['name']
             instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
             # Handle potential non-existence of the Educational object
             try:
@@ -705,7 +706,7 @@ def reception(request):
 
             # Join the list elements into a string with a comma separator
             times_str = ', '.join(selected_times)
-            messages.success(request, f'Appointment successfully booked for {app_data}, {days},  at {times_str}.')
+            messages.success(request, f'Appointment successfully booked for {name}, {app_data}, {days},  at {times_str}.')
             return redirect('home')  # Redirect after successful form submissionat {times_str}
 
     else:
@@ -1463,6 +1464,13 @@ def ortho_visit1(request, id):
         new_orall.paid = orall.paid
         new_orall.notes = orall.notes
         new_orall.exo_images = orall.exo_images
+        new_orall.exo_images = orall.exo_images
+        new_orall.exo_images = orall.exo_images
+        new_orall.exo_images = orall.exo_images
+        new_orall.exo_images = orall.exo_images
+        new_orall.exo_images = orall.exo_images
+        new_orall.exo_images = orall.exo_images
+
 
         form = OrthoForm(request.POST, request.FILES, instance=new_orall)
         if form.is_valid():

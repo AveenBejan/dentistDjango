@@ -2,25 +2,26 @@
 
 {% load static %}
 {% block content %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <section class="home-slider owl-carousel">
-      <div class="slider-item" style="background-image: url({% static 'website/images/St2.png'  %});">
-      </div>
-      <div class="slider-item" style="background-image: url({% static 'website/images/bg_1.jpg' %});">
+  <body class="nav-md">
+    <div class="container body">
+        <!-- /top navigation -->
 
-      </div>
-    </section>
+        <!-- page content -->
+        <div class="right_col" role="main">
+      <div class="product_gallery" style="background-image: url({% static 'website/images/St2.png'  %});">
 
-<section class="ftco-intro">
- <div class="container">
-	 <div class="row">
-		 <div class="col-md-8 color-3 p-4">
-			 <div class="alert alert-warning" role="alert">في حالة تغير الموعد بعد الحجز الكترونيأ يرجى الاتصال بهذا
-				 الرقم 964750000000+ لتغير الموعد
-			 </div>
+      <div class="product_gallery" style="background-image: url({% static 'website/images/bg_1.jpg' %}); background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      height: 450px;">
+<BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/>
+
+
+	 <div class="col-10">
+		 <div class="col-md-8 color-4 p-4" style="background:#2A3F54;">
              {% if messages %}
-             <div class="alert alert-danger d-flex align-items-center" role="alert">
+             <div class="alert alert-info d-flex align-items-center" role="alert" style="color: #fff;background-color: #17a2b8; font-size:20px;">
                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
                      <use xlink:href="#exclamation-triangle-fill"/>
                  </svg>
@@ -37,153 +38,127 @@
                  </div>
              </div>
              {% endif %}
-
+			 <div class="col-10" style="background:#2A3F54; color:#fff; font-size:24px; text-align: center !important;"> Appointment Form</div>
+			 <br/>
 			 <form class="appointment-form" method="POST" id="myForm">
 				 {% csrf_token %}
-				 <div class="row">
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="icon-user"></span></div>
-							 <input type="text" class="form-control" name="name"
-									placeholder="Full Name" required>
-						 </div>
-					 </div>
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="icon-phone2"></span></div>
-							 <input type="text" class="form-control" name="phone" id="phone"
-									placeholder="Phone" required>
-						 </div>
-					 </div>
+						 <div class="row">
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Full Name</label>
+									 <input type="text" class="form-control" name="name" required>
 
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="icon-user"></span></div>
-							 {{ form.gender }}
-						 </div>
-					 </div>
-
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="ion-ios-calendar"></span></div>
-							 <input type="text" name="date_of_birth" class="form-control appointment_date"
-									placeholder="Date of Birth" required>
-						 </div>
-					 </div>
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="icon-user"></span></div>
-							 <div class="form-group">
-								 {{ form.doctor }}
+								 </div>
+							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Phone Number</label>
+									 <input type="text" class="form-control" name="phone" id="phone" required>
+								 </div>
 							 </div>
 
-						 </div>
-					 </div>
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <input type="text" name="app_data" id="datepicker-3"
-									placeholder="Date of Appointment" required class="form-control">
-						 </div>
-					 </div>
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
-									class="form-control">
-						 </div>
-					 </div>
-					 {%if user.is_authenticated%}
-					 {% if user.role == 'educational_center' %}
-					 <div class="col-sm-5">
-						 <div class="form-group">
-							 <div class="icon"><span class="icon-user"></span></div>
-							 <div class="form-group">
-								 {{ form.educational }}
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Gender</label>
+									 {{ form.gender }}
+								 </div>
 							 </div>
 
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Date of Birth</label>
+									 <input type="date" name="date_of_birth" class="form-control appointment_date" required>
+								 </div>
+							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Doctor's Name</label>
+									 <div class="form-group">
+										 {{ form.doctor }}
+									 </div>
+
+								 </div>
+							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Date of Appointment</label>
+									 <input type="date" name="app_data" id="datepicker-3" required class="form-control">
+								 </div>
+							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Days</label>
+									 <input type="text" name="days" id="datepicker-4" readonly class="form-control">
+								 </div>
+							 </div>
+							 {%if user.is_authenticated%}
+							 {% if user.role == 'educational_center' %}
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Student Name</label>
+									 <div class="form-group">
+										 {{ form.educational }}
+									 </div>
+
+								 </div>
+							 </div>
+							 {% endif %}
+							 {% endif %}
+
+							 <div class="col-sm-12">
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="4:00pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">4:00pm</label>
+								 </div>
+
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="4:30pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">4:30pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="5:00pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">5:00pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="5:30pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">5:30pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="6:00pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">6:00pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="6:30pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">6:30pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="7:00pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">7:00pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="7:30pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">7:30pm</label>
+								 </div>
+								 <div class="form-check form-check-inline">
+									 <input type="checkbox" class="form-check-input" name="time" value="8:00pm"
+											onclick="handleCheckboxClick(this)">
+									 <label class="form-check-label" style="color:#fff;font-weight:bold;">8:00pm</label>
+								 </div>
+							 </div>
+							 <div class="col-10" style="text-align: center !important;">
+<br/>
+								 <input type="submit" value="&nbsp; &nbsp;Apply For Appointment!&nbsp; &nbsp;" class="btn btn-round btn-info" style="color: #fff;background-color: #17a2b8;
+  border-color: #17a2b8;" id="submitBtn">
+							 </div>
 						 </div>
-					 </div>
-					 {% endif %}
-					 {% endif %}
-
-					 <div class="col-sm-12">
-						 <div class="form-check form-check-inline">
-							 <input type="checkbox" class="form-check-input" name="time" value="4:00pm"
-									onclick="handleCheckboxClick(this)">
-							 <label class="form-check-label">4:00pm</label>
-						 </div>
-
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="4:30pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">4:30pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="5:00pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">5:00pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="5:30pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">5:30pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="6:00pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">6:00pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="6:30pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">6:30pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="7:00pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">7:00pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="7:30pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">7:30pm</label>
-					 </div>
-					 <div class="form-check form-check-inline">
-						 <input type="checkbox" class="form-check-input" name="time" value="8:00pm"
-								onclick="handleCheckboxClick(this)">
-						 <label class="form-check-label">8:00pm</label>
-					 </div>
-				 </div>
-
-<script>
-    // JavaScript function to handle checkbox click event
-    function handleCheckboxClick(checkbox) {
-        // Check if the user is logged in (you need to implement this logic)
-        var isLoggedIn = checkUserLoginStatus(); // Implement this function
-
-        if (!isLoggedIn) {
-            // If not logged in, allow only one checkbox to be checked
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i] !== checkbox) {
-                    checkboxes[i].checked = false; // Uncheck other checkboxes
-                }
-            }
-        }
-    }
-
-    // Implement a function to check user login status
-    function checkUserLoginStatus() {
-        // You need to implement this logic
-        // Return true if the user is logged in, false otherwise
-    }
-</script>
-
-
-
-				 <div class="form-group">
-					 <input type="submit" value="Make an Appointment" class="btn btn-outline-primary" id="submitBtn">
-				 </div>
-				 </div>
 			 </form>
 		 </div>
 
@@ -613,40 +588,77 @@
           </div>
 -->
 
-<script>
-    $(document).ready(function () {
-        var datePicker = $("#datepicker-3");
-        var submitBtn = $("#submitBtn");
 
-        function isThursdayOrFriday(date) {
-            return date.getDay() === 4 || date.getDay() === 5;
+      </div>
+    </div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+    // JavaScript function to handle checkbox click event
+    function handleCheckboxClick(checkbox) {
+        // Check if the user is logged in (you need to implement this logic)
+        var isLoggedIn = checkUserLoginStatus(); // Implement this function
+
+        if (!isLoggedIn) {
+            // If not logged in, allow only one checkbox to be checked
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i] !== checkbox) {
+                    checkboxes[i].checked = false; // Uncheck other checkboxes
+                }
+            }
+        }
+    }
+
+    // Implement a function to check user login status
+    function checkUserLoginStatus() {
+        // You need to implement this logic
+        // Return true if the user is logged in, false otherwise
+    }
+</script>
+	<script>
+$(document).ready(function () {
+    var datePicker = $("#datepicker-3");
+    var daysInput = $("#datepicker-4");
+    var submitBtn = $("#submitBtn");
+
+    function isThursdayOrFriday(date) {
+        return date.getDay() === 4 || date.getDay() === 5;
+    }
+
+    datePicker.change(function () {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            alert("Our Dental Center is closed on Thursday and Friday. Thank you!");
+            submitBtn.prop("enabled", true);
+        } else {
+            submitBtn.prop("enabled", false);
         }
 
-        datePicker.change(function () {
-            var selectedDate = datePicker.val();
-            var date = new Date(selectedDate);
+        // Get day name for the selected date
+        var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var selectedDayName = dayNames[date.getDay()];
 
-            if (isThursdayOrFriday(date)) {
-                alert("Our Dental Center is closed on Thursday and Friday. Thank you!");
-                submitBtn.prop("enabled", true);
-            } else {
-                submitBtn.prop("enabled", false);
-            }
-        });
-
-        submitBtn.on("click", function (event) {
-            var selectedDate = datePicker.val();
-            var date = new Date(selectedDate);
-
-            if (isThursdayOrFriday(date)) {
-                event.preventDefault();
-                alert("Please select a date other than Thursday or Friday.");
-            }
-        });
-
-        // Initial check on page load
-        datePicker.trigger("change");
+        // Update #datepicker-4 with the day name
+        daysInput.val(selectedDayName);
     });
-</script>
 
-{% endblock %}
+    submitBtn.on("click", function (event) {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            event.preventDefault();
+            alert("Please select a date other than Thursday or Friday.");
+        }
+    });
+
+    // Initial check on page load
+    datePicker.trigger("change");
+});
+	</script>
+
+	{% endblock %}
+

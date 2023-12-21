@@ -1,36 +1,43 @@
 
 <!DOCTYPE html>
-
 {% load static %}
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
+    <title>ECONOARTS-TECH </title>
 
-    <link rel="stylesheet" href="{% static 'website/css/open-iconic-bootstrap.min.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap1.min.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/animate.css'%}">
+  <!-- Bootstrap -->
+   <!-- Vendor CSS files -->
+<link href="{% static 'website/vendors/bootstrap/dist/css/bootstrap.min.css'%}" rel="stylesheet">
+<link href="{% static 'website/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/owl.theme.default.min.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css'%}">
-
-    <link rel="stylesheet" href="{% static 'website/css/aos.css'%}">
-
-    <link rel="stylesheet" href="{% static 'website/css/ionicons.min.css'%}">
-
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap-datepicker.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/jquery.timepicker.css'%}">
+<!-- Bootstrap 5 CSS -->
 
 
-    <link rel="stylesheet" href="{% static 'website/css/flaticon.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/icomoon.css'%}">
-    <link rel="stylesheet" href="{% static 'website/css/style.css'%}">
-    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
-</head>
+<!-- Your custom CSS files -->
+<link rel="stylesheet" href="{% static 'website/css/bootstrap1.min.css'%}">
+<link rel="stylesheet" href="{% static 'website/css/bootstrap-datepicker.css'%}">
+<link rel="stylesheet" href="{% static 'website/css/jquery.timepicker.css'%}">
+
+<!-- Custom Theme Style -->
+<link href="{% static 'website/build/css/custom.min.css' %}" rel="stylesheet">
+
+
+
+
+
+  </head>
+
 <body>
 
 
@@ -38,7 +45,6 @@
    {% include 'navbar.html' %}
 {% endblock %}
 {% block content %}
-
 {% endblock %}
 <!--
 <br/>
@@ -132,40 +138,55 @@
     </div>
 </div>
 
-<script src="{% static 'website/js/jquery.min.js' %}"></script>
+
+    <!-- jQuery -->
+    <script src="{% static 'website/vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'website/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'website/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'website/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- Chart.js -->
+    <script src="{% static 'website/vendors/Chart.js/dist/Chart.min.js' %}"></script>
+    <!-- gauge.js -->
+    <script src="{% static 'website/vendors/gauge.js/dist/gauge.min.js' %}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{% static 'website/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static 'website/vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- Skycons -->
+    <script src="{% static 'website/vendors/skycons/skycons.js' %}"></script>
+    <!-- Flot -->
+    <script src="{% static 'website/vendors/Flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'website/vendors/Flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'website/vendors/Flot/jquery.flot.time.js' %}"></script>
+    <script src="{% static 'website/vendors/Flot/jquery.flot.stack.js' %}"></script>
+    <script src="{% static 'website/vendors/Flot/jquery.flot.resize.js' %}"></script>
+    <!-- Flot plugins -->
+    <script src="{% static 'website/vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+    <script src="{% static 'website/vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
+    <script src="{% static 'website/vendors/flot.curvedlines/curvedLines.js' %}"></script>
+    <!-- DateJS -->
+    <script src="{% static 'website/vendors/DateJS/build/date.js' %}"></script>
+    <!-- JQVMap -->
+    <script src="{% static 'website/vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
+    <script src="{% static 'website/vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+    <script src="{% static 'website/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'website/vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'website/vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+
+    <script src="{% static 'website/js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'website/js/jquery.timepicker.min.js' %}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'website/build/js/custom.min.js' %}"></script>
+
+
+
+
+
 <script src="{% static 'website/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'website/js/jquery-migrate-3.0.1.min.js' %}"></script>
-<script src="{% static 'website/js/popper.min.js' %}"></script>
-<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'website/js/jquery.easing.1.3.js' %}"></script>
-<script src="{% static 'website/js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'website/js/jquery.stellar.min.js' %}"></script>
-<script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'website/js/jquery.magnific-popup.min.js' %}"></script>
-<script src="{% static 'website/js/aos.js' %}"></script>
-<script src="{% static 'website/js/jquery.animateNumber.min.js' %}"></script>
-<script src="{% static 'website/js/bootstrap-datepicker.js' %}"></script>
-<script src="{% static 'website/js/jquery.timepicker.min.js' %}"></script>
-<script src="{% static 'website/js/scrollax.min.js' %}"></script>
-
-<script src="{% static 'website/js/google-map.js' %}"></script>
-<script src="{% static 'website/js/main.js' %}"></script>
-
-      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
-      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
-      <!-- Javascript -->
-      <script>
-         $(function() {
-            $( "#datepicker-3" ).datepicker({
-
-               dateFormat:"yy-mm-dd",
-               altField: "#datepicker-4",
-               altFormat: "DD"
-            });
-         });
-      </script>
-
 
 
 

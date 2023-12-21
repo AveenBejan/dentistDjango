@@ -1,36 +1,22 @@
 
-<nav class="navbar navbar-expand-lg"  style="background-color: #73ccf0;">
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{% url 'home' %}" class="site_title"><i class="fa fa-paw"></i> <span>ECONOARTSTECH</span></a>
+            </div>
 
-    <div class="container" >
+            <div class="clearfix"></div>
 
-<a class="navbar-brand" href="{% url 'home' %}" style="color: #ffffff;">ECONOARTSTECH</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="oi oi-menu"></span> Menu
-        </button>
-
-        <div class="collapse navbar-collapse" id="ftco-nav" >
-            <ul class="navbar-nav ml-auto" >
-                <li class="nav-item active" ><a href="{% url 'home' %}" class="nav-link" style="color: #ffffff;">Home</a></li>
-                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">Accounts</a>
-                     <div class="dropdown-menu">
-                         {% if user.is_authenticated %}
-                           {% if user.role == 'admin' %}
-                            <a class="dropdown-item" href="{% url 'signup' %}">Register</a>
-                         <a href="{% url 'feedback_view' %}" class="dropdown-item">feedback_view</a>
-
-                           {% endif %}
-                         <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
-                         {% else %}
-                         <a class="dropdown-item" href="{% url 'login' %}">Login</a>
-                         <a href="contact.html" class="dropdown-item">Contact Us</a>
-
-                         {% endif %}
-                     </div>
-
-                </li>
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+            </div>
+<!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <ul class="nav side-menu">
 
                 <!--
                 {% if user.is_authenticated %}
@@ -40,245 +26,216 @@
                 {% endif %}
                 -->
                 {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Reception
-                    </a>
-                    <div class="dropdown-menu">
+                <li><a><i class="fa fa-home"></i> Reception <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'all-reception' %}">Reception Info</a>
-                        <a class="dropdown-item" href="{% url 'all-gave' %}">All Booked Appointment</a>
+                      <li><a  href="{% url 'all-reception' %}">Reception Info</a></li>
+                      <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
                         {% else %}
                         <!-- Disabled links with onclick alert -->
-                        <a class="dropdown-item" href=""
-                           onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">
-                            Reception Info
-                        </a>
-                        <a class="dropdown-item" href=""
-                           onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">
-                            All Booked Appointment
-                        </a>
+                        <li><a  href=""
+                           onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">Reception Info</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">All Booked Appointment</a></li>
                         {% endif %}
-                    </div>
+                    </ul>
                 </li>
                 {% endif %}
-                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Drugs
-                    </a>
-                    <div class="dropdown-menu">
+
+                <li><a><i class="fa fa-home"></i> Oral_Surgery <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'exo-reception1' %}">Add Drug Prescription</a>
-                        {% if user.role == 'admin' %}
-                        <a class="dropdown-item" href="{% url 'upload' %}">upload pdf file</a>
-                        <!--<a class="dropdown-item" href="">Add Drags</a>-->
-                        {% endif %}
+                        <li><a  href="{% url 'exo-reception' %}">Exo</a></li>
+                        <li><a  href="{% url 'oral-reception' %}">Implant</a></li>
+                        <li><a  href="{% url 'periodontology-reception' %}">Periodontology</a></li>
                         {% else %}
-                        <a class="dropdown-item" href=""
-                           onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">
-                            Add Drug Prescription
-                        </a>
-                        <a class="dropdown-item" href=""
-                           onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">
-                            upload pdf file
-                        </a>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Exo</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Implant</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Periodontology</a></li>
                         {% endif %}
-                    </div>
+                    </ul>
                 </li>
-                {% endif %}
-                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
-                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        ADDS
-                    </a>
-                    <div class="dropdown-menu">
+                 <li><a><i class="fa fa-home"></i> Conservative <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'medicine1' %}">Add New Drugs</a>
-                        <a class="dropdown-item" href="{% url 'implant' %}">Add New Type Of Implant</a>
-                        <a class="dropdown-item" href="{% url 'visit' %}">Add New Visits</a>
-                         <a class="dropdown-item" href="{% url 'doctor' %}">Add Doctors</a>
-                        <a class="dropdown-item" href="{% url 'educational' %}">Add Students</a>
-                        <a class="dropdown-item" href="{% url 'add-new-employ' %}">Add Employee</a>
-                        <a class="dropdown-item" href="{% url 'add-outcome' %}">Add OutCome</a>
-                         {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Drugs</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Type Of Implant</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Visits</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Doctors</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Students</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Employee</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add OutCome</a>
-                        {% endif %}
-                        <!--<a class="dropdown-item" href="">Add Drags</a>-->
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Reports
-                    </a>
-                    <div class="dropdown-menu">
-                        {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'search' %}">Patient Search History</a>
-                        <a class="dropdown-item" href="{% url 'search-debts' %}">Patient Search Debts</a>
-                        <a class="dropdown-item" href="{% url 'all_debts' %}"> All Patient Debts</a>
-                        <a class="dropdown-item" href="{% url 'salary_reception' %}">Add Salary</a>
-                        <a class="dropdown-item" href="{% url 'search-educational1' %}">E.C.Students Report</a>
-                        <a class="dropdown-item" href="{% url 'all-total' %}">Total Report</a>
+                        <li><a  href="{% url 'crown-reception' %}">Crown & Bridge</a></li>
+                        <li><a  href="{% url 'veneer-reception' %}">Veneer</a></li>
+                        <li><a  href="{% url 'filling-reception' %}">Filling</a></li>
+                        <li><a  href="{% url 'endo-reception' %}">Endo</a></li>
                         {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search History</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search Debts</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">All Patient Debts</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Salary</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">E.C.Students Report</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Total Report</a>
-                        {% endif %}
-
-
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Oral_Surgery
-                    </a>
-                    <div class="dropdown-menu">
-                        {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'exo-reception' %}">Exo</a>
-                        <a class="dropdown-item" href="{% url 'oral-reception' %}">Implant</a>
-                        <a class="dropdown-item" href="{% url 'periodontology-reception' %}">Periodontology</a>
-                        {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Exo</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Implant</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Periodontology</a>
-                        {% endif %}
-                    </div>
-                </li>
-                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Conservative
-                    </a>
-                    <div class="dropdown-menu">
-                        {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'crown-reception' %}">Crown & Bridge</a>
-                        <a class="dropdown-item" href="{% url 'veneer-reception' %}">Veneer</a>
-                        <a class="dropdown-item" href="{% url 'filling-reception' %}">Filling</a>
-                        <a class="dropdown-item" href="{% url 'endo-reception' %}">Endo</a>
-                        {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Crown & Bridge</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Veneer</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Filling</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Endo</a>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Crown & Bridge</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Veneer</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Filling</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Endo</a></li>
                         {% endif %}
 
 
 
-                        <!--<a class="dropdown-item" href="{% url 'oral-reception' %}">Oral Surgery Info</a>
-                        <a class="dropdown-item" href="{% url 'all-oral-surgery' %}">All Oral Surgery Info</a>
+                        <!--<li><a  href="{% url 'oral-reception' %}">Oral Surgery Info</a></li>
+                        <li><a  href="{% url 'all-oral-surgery' %}">All Oral Surgery Info</a></li>
                          -->
-                    </div>
+                    </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Orthodontic
-                    </a>
-                    <div class="dropdown-menu">
+                <li><a><i class="fa fa-home"></i> Orthodontic <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'ortho-reception' %}">Ortho</a>
+                        <li><a  href="{% url 'ortho-reception' %}">Ortho</a></li>
                         {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Ortho</a>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Ortho</a></li>
                         {% endif %}
-                    </div>
+                    </ul>
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        Prosthodontics
-                    </a>
-                    <div class="dropdown-menu">
+                <li><a><i class="fa fa-home"></i> Prosthodontics <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'prosthodontics-reception' %}">Prosthodontics</a>
+                        <li><a  href="{% url 'prosthodontics-reception' %}">Prosthodontics</a></li>
                         {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Prosthodontics</a>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Prosthodontics</a></li>
                         {% endif %}
-                    </div>
+                    </ul>
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false" style="color: #ffffff;">
-                        My Appointments
-                    </a>
-                    <div class="dropdown-menu">
+                    <li><a><i class="fa fa-home"></i> My Appointments <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <a class="dropdown-item" href="{% url 'search-doctor' %}">Doctor Appointments</a>
+                        <li><a  href="{% url 'search-doctor' %}">Doctor Appointments</a></li>
                         {% elif user.role == 'admin' or user.role == 'educational_center' %}
-                        <a class="dropdown-item" href="{% url 'search-educational' %}">Students Appointments</a>
+                        <li><a  href="{% url 'search-educational' %}">Students Appointments</a></li>
                         {% else %}
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Doctor Appointments</a>
-                        <a class="dropdown-item" href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Students Appointments</a>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Doctor Appointments</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Students Appointments</a></li>
                         {% endif %}
-                    </div>
+                    </ul>
                 </li>
+
+                     {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
+
+                    <li><a><i class="fa fa-home"></i> Drugs <span class="fa fa-chevron-down"></span></a>
+                     <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'doctor' %}
+                       <li><a  href="{% url 'exo-reception1' %}">Add Drug Prescription</a></li>
+                        {% if user.role == 'admin' %}
+                       <li><a  href="{% url 'upload' %}">upload pdf file</a></li>
+                        <!--<a  href="">Add Drags</a>-->
+                        {% endif %}
+                        {% else %}
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">Add Drug Prescription</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">upload pdf file
+                        </a></li>
+                        {% endif %}
+                     </ul>
+                    </li>
                 {% endif %}
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
+                <li><a><i class="fa fa-home"></i> ADDS <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'doctor' %}
+                        <li><a  href="{% url 'medicine1' %}">Add New Drugs</a></li>
+                        <li><a  href="{% url 'implant' %}">Add New Type Of Implant</a></li>
+                        <li><a  href="{% url 'visit' %}">Add New Visits</a></li>
+                         <li><a  href="{% url 'doctor' %}">Add Doctors</a></li>
+                        <li><a  href="{% url 'educational' %}">Add Students</a></li>
+                        <li><a  href="{% url 'add-new-employ' %}">Add Employee</a></li>
+                        <li><a  href="{% url 'add-outcome' %}">Add OutCome</a></li>
+                         {% else %}
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Drugs</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Type Of Implant</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Visits</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Doctors</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Students</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Employee</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add OutCome</a></li>
+                        {% endif %}
+                        <!--<li><a  href="">Add Drags</a></li>-->
+                    </ul>
+                </li>
+               <li><a><i class="fa fa-home"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'doctor' %}
+                        <li><a  href="{% url 'search' %}">Patient Search History</a></li>
+                        <li><a  href="{% url 'search-debts' %}">Patient Search Debts</a></li>
+                        <li><a  href="{% url 'all_debts' %}"> All Patient Debts</a></li>
+                        <li><a  href="{% url 'salary_reception' %}">Add Salary</a></li>
+                        <li><a  href="{% url 'search-educational1' %}">E.C.Students Report</a></li>
+                        <li><a  href="{% url 'all-total' %}">Total Report</a></li>
+                        {% else %}
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search History</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search Debts</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">All Patient Debts</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Salary</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">E.C.Students Report</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Total Report</a></li>
+                        {% endif %}
+                    </ul>
+               </li>
+                    {% endif %}
+                     <li><a><i class="fa fa-home"></i> Accounts <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                         {% if user.is_authenticated %}
+                           {% if user.role == 'admin' %}
+                         <li><a target="main" href="{% url 'signup' %}">Register</a></li>
+                         <li><a href="{% url 'feedback_view' %}" target="main">feedback_view</a></li>
+
+                           {% endif %}
+                         <li><a target="main" href="{% url 'logout' %}">LogOut</a></li>
+                         {% else %}
+                         <li><a target="main" href="{% url 'login' %}">Login</a></li>
+                         <li><a href="contact.html" target="main">Contact Us</a></li>
+
+                         {% endif %}
+                     </ul>
+                 </li>
 
                 <!--{% if user.role == 'admin' or user.role == 'doctor' %}
-                <li class="nav-item dropdown">
+                <ul class="nav child_menu">
                     <a class="nav-link" href="{% url 'search-doctor' %}" role="button"
                        style="color: #ffffff;">
                         My Appointments
-                    </a></li>
+                    </a></li></li>
                 {% endif %}
                 {% if user.role == 'admin' or user.role == 'educational_center' %}
-                <li class="nav-item dropdown">
+                <ul class="nav child_menu">
                     <a class="nav-link" href="{% url 'search-educational' %}" role="button"
                        style="color: #ffffff;">
                         My Appointments(E.C)
-                    </a></li>
+                    </a></li></li>
                 {% endif %}-->
                 {% if user.role == 'admin' or user.role == 'doctor' %}
-                <!--<li class="nav-item dropdown">
+                <!--<ul class="nav child_menu">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                     Patients
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'appointment1' %}">Patients</a>
+                  </a></li>
+                  <ul class="nav child_menu">
+                    <li><a  href="{% url 'appointment1' %}">Patients</a></li>
 
 
-                    <a class="dropdown-item" href="{% url 'all-details' %}">All Patient Details</a>
-                    <a class="dropdown-item" href="{% url 'all-details' %}">Search Patient Details.</a>
+                    <li><a  href="{% url 'all-details' %}">All Patient Details</a></li>
+                    <li><a  href="{% url 'all-details' %}">Search Patient Details.</a></li>
 
 
                   </div>
                 </li>
-                <li class="nav-item dropdown">
+                <ul class="nav child_menu">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                     Appointment
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'appointment1' %}">Appointment</a>
+                  </a></li>
+                  <ul class="nav child_menu">
+                    <li><a  href="{% url 'appointment1' %}">Appointment</a></li>
 
-                    <a class="dropdown-item" href="{% url 'all-appo' %}">Appointment Details.</a>
-                    <a class="dropdown-item" href="{% url 'all-appo' %}">Search Appointment Details.</a>
+                    <li><a  href="{% url 'all-appo' %}">Appointment Details.</a></li>
+                    <li><a  href="{% url 'all-appo' %}">Search Appointment Details.</a></li>
 
 
 
                   </div>
                 </li>-->
                 {% endif %}
-            </ul>
-
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-
-
+      </div>
+    </div>
+  </body>
          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#feedbackModal">
     Give Feedback
 </button>
@@ -318,10 +275,6 @@
         </div>
     </div>
 </div>
-
-    </div>
-
-</nav>
 <script>
 function submitFeedback() {
     var form = document.getElementById("feedbackForm");

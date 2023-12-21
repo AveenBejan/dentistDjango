@@ -8,16 +8,20 @@
       display: none;
     }
   </style>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
-            <div class="col-md-10 mb-10">
+            <div class="col-md-10 mb-8">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
+                <br/><br/><br/>
                 <form method="POST" enctype="multipart/form-data"  id="oral-form">
                     {% csrf_token %}
                     <input type="hidden" name="idReception" value="{{ form.initial.idReception }}">
@@ -723,6 +727,7 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
                                 <input type="text" name="note" value="{{ form.initial.note }}" class="form-control">
                             </div>
                             <div class="col">
+                                <label>Upload Photos:</label>
                                 <input type="file" name="exo_images"
                                        class="form-control"
                                        multiple>
@@ -755,14 +760,19 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
                             </div>-->
 
                         </div>
+                        <br/><br/><br/><br/>
+                        <div class="col-6" style="text-align:center;"><input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update Implant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" class="btn btn-info"></div>
 
-                          <input type="submit" value="Update Implant" class="btn btn-info">
+
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </section>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

@@ -4,12 +4,17 @@
 
 {% block title %} Contact Page{% endblock %}
 {% block content %}
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
     .hidden {
       display: none;
     }
   </style>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <form method="POST" enctype="multipart/form-data" id="filling-form">
     {% csrf_token %}
     <input type="hidden" name="idReception"
@@ -1450,6 +1455,9 @@
         </div>
     </div>
 </form>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

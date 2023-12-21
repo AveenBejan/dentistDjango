@@ -7,14 +7,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-<body>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <br/>
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
     <form method="get" action="{% url 'search' %}">
-        <input type="text" name="query" value="" PLACEHOLDER="Search Patient Name">
-        <button type="submit" class="btn btn-primary">Search</button>
+        <input class="form-control mr-sm-0" type="text" name="query" value="" PLACEHOLDER="Search Patient Name">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     {% endif %}
 </nav>
@@ -31,7 +33,7 @@
 {% if results %}
 <h2>{{ model_name }} Results</h2>
 <table class="table table-hover">
-    <thead style="background-color:#73ccf0; color:#fff;">
+    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
     <tr>
         {% if model_name == 'Exo' %}
         <th scope="col" style="text-align: center;" >#</th>
@@ -320,6 +322,8 @@
         });
     });
 </script>
+    </div>
+</div>
 </body>
 </html>
 {% endblock %}

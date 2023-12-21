@@ -3,7 +3,9 @@
 {% block title %} Contact Page{% endblock %}
 {% block content %}
 
-
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
@@ -305,25 +307,19 @@
                                 Notes</h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-control">
                                 <input type="text" name="price" value="{{ form.initial.price }}"
                                        class="form-control" id="price"
                                        placeholder="Price:"required>
-                            </div>
                             <input type="hidden" name="paid" value="{{ form.initial.paid }}"
                                        class="form-control"
                                        placeholder="paid:">
-                            <div class="form-control">
                                 <input type="text" name="note" value="{{ form.initial.note }}"
                                        class="form-control"
                                        placeholder="Notes:"required>
-                            </div>
-                            <div class="form-control">
                                 <label>Upload Photo</label>
                                 <input type="file" name="exo_images"
                                        class="form-control"
                                        multiple>
-                            </div>
                             <br/>
                             <div class="form-check form-check-inline">
                                 <input type="checkbox" class="form-check-input"
@@ -351,9 +347,9 @@
                             </div>
                         </div>
                         <br/>
-                        <div class="form-group" style="text-align: center;">
-                            <button type="submit">save</button>
-                        </div>
+                        <div class="alert alert-secondary" role="alert" align="center">
+                                    <input type="submit" value="Update Prosthodontics" class="btn btn-info">
+                                </div>
 
                     </div>
                 </form>
@@ -361,6 +357,9 @@
         </div>
     </div>
 </section>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

@@ -2,7 +2,10 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
@@ -339,15 +342,13 @@
                                                                value="5"  {% if "5" in form.initial.canal %}checked{% endif %}>
                                                         <label class="form-check-label">5</label>
                                                     </div>
-
-                                     <div class="col">
+                                                </div></div>
+                    <div class="row">
+                        <div class="col">
                             <label>work_length:</label>
                             <input type="text" name="work_length" value="{{ form.initial.work_length }}"
                                    class="form-control">
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col">
                             <label>Price:</label>
                             <input type="text" name="price" id="price" value="{{ form.initial.price }}" class="form-control">
@@ -484,6 +485,7 @@
                         <input type="submit" value="Update Endo Information"
                                class="btn btn-primary">
                     </div>
+                             </div>
                 </form>
 
 
@@ -491,6 +493,9 @@
         </div>
     </div>
 </section>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Define the toggleVisitField function first

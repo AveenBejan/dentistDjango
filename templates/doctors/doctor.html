@@ -3,6 +3,9 @@
 {% block content %}
 <br/>
 <br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -14,7 +17,7 @@
     <div class="container px-5">
         <div class="row gx-5">
             <div class="col">
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Add New Doctors</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Add New Doctors</h4></div>
                 <br/>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -40,10 +43,10 @@
                 </form>
             </div>
             <div class="col-8">
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Doctors Information</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Doctors Information</h4></div>
                 <br/>
                 <table class="table table-hover">
-                    <thead style="background-color:#73ccf0; color:#fff;">
+                    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Doctor Name</th>
@@ -60,7 +63,7 @@
                         <td scope="row">{{appointment.phone}}</td>
                         <td scope="row">{{appointment.gender}}</td>
                         <td><a href="{% url 'delete-doctor' appointment.id %}" style="display: inline;"><span
-                                class="btn btn-outline-danger">Delete</span></a></td>
+                                class="btn btn-round btn-danger">Delete</span></a></td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -69,4 +72,7 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+</body>
 {% endblock %}

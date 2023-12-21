@@ -4,6 +4,9 @@
 {% block content %}
 <br/>
 <br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -15,15 +18,14 @@
     <div class="container px-4">
         <div class="row gx-5">
             <div class="col">
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Add Durgs</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Add Durgs</h4></div>
                 <br/>
                 <form method="post" novalidate action="">
                     {% csrf_token %}
                     <div class="form row">
                         <div class="col">
-                            <input type="text" name="name_medicine" placeholder="Drugs Name">
-                        </div>
-                        <div class="col">
+                            <input type="text" name="name_medicine" placeholder="Drugs Name" required>
+                              <br/><br/>
                             <button type="submit" class="btn btn-info">Add New Drugs</button>
                         </div>
                     </div>
@@ -32,10 +34,10 @@
                 <br/><br/>
             </div>
             <div class="col">
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Durgs Information</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Durgs Information</h4></div>
                 <br/>
                 <table class="table table-hover">
-                    <thead style="background-color:#73ccf0; color:#fff;">
+                    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Drugs Name</th>
@@ -48,7 +50,7 @@
                         <td scope="row">{{appointment.id}}</td>
                         <td scope="row">{{appointment.name_medicine}}</td>
                         <td><a href="{% url 'delete-medicine1' appointment.id %}" style="display: inline;"><span
-                                class="btn btn-outline-danger">Delete</span></a></td>
+                                class="btn btn-round btn-danger">Delete</span></a></td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -57,4 +59,7 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+</body>
 {% endblock %}

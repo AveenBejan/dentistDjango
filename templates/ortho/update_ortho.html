@@ -2,7 +2,9 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
@@ -1026,28 +1028,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-3" required>
-                                <label>Do not Forget Visits</label>
-                                {{ form.visits }}
-                            </div>
 
-                            <div class="form-group col-md-3">
-                                <label>wive_size</label>
-                                <input type="text" name="wive_size"  value="{{ form.initial.wive_size }}">
-                            </div>
-                                                <div class="form-group col-md-3">
-                                                    <label>cross_sectional</label>
-                                                    <input type="text" name="cross_sectional"  value="{{ form.initial.cross_sectional }}">
-
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <label>material</label>
-                                                    <input type="text" name="material"  value="{{ form.initial.material }}"required="required">
-
-                                                </div>
-                                            </div>
-                                        </div>
+                    </div>
 
                                 <div class="col-12">
                                     <div class="alert alert-secondary" role="alert" align="center">
@@ -1063,6 +1045,9 @@
     </div>
 
 </section>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

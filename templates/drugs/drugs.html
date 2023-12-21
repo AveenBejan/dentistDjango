@@ -1,19 +1,42 @@
+
 <!DOCTYPE html>
-
 {% load static %}
-
 <html lang="en">
-<head>
-    <title>{% block title %}Dental Clinic {% endblock %}</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+    <title>Gentelella Alela!</title>
+
+  <!-- Bootstrap -->
+   <!-- Vendor CSS files -->
+<link href="{% static 'website/vendors/bootstrap/dist/css/bootstrap.min.css'%}" rel="stylesheet">
+<link href="{% static 'website/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+<link href="{% static 'website/vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+
+<!-- Bootstrap 5 CSS -->
+
+
+<!-- Your custom CSS files -->
+<link rel="stylesheet" href="{% static 'website/css/bootstrap1.min.css'%}">
+<link rel="stylesheet" href="{% static 'website/css/bootstrap-datepicker.css'%}">
+<link rel="stylesheet" href="{% static 'website/css/jquery.timepicker.css'%}">
+
+<!-- Custom Theme Style -->
+<link href="{% static 'website/build/css/custom.min.css' %}" rel="stylesheet">
+
+
     <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'website/css/bootstrap.css' %}">
 </head>
 <body>
-{% block body %}
-{% include 'navbar.html' %}
-{% endblock %}
 {% block content %}
 <br/>
 

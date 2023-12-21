@@ -2,7 +2,9 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
@@ -29,7 +31,7 @@
                 <div class="col-md-12 mb-4">
 
                     <table class="table table-hover">
-                        <thead style="background-color:#73ccf0; color:#fff;">
+                        <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                         <tr>
 
                             <th scope="col">#</th>
@@ -90,5 +92,7 @@
         </ul>
     </nav>
 </div>
-
+    </div>
+</div>
+</body>
 {% endblock %}

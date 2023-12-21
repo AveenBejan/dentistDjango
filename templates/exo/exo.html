@@ -2,14 +2,17 @@
 {% load static %}
 {% block content %}
 {% load custom_filters %}
-<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> this is to hid th and td-->
+
 <br/>
-<div class="row"
-     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
-    <div class="col-12">
-        <div class="accordion" id="accordionExample">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+        <div class="row"
+             style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+            <div class="col-12">
+                <div class="accordion" id="accordionExample">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Add Exo Information</li>
                 </ol>
@@ -19,7 +22,7 @@
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
-                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            style="text-align: justify; background-color:#17a2b8; color:#fff">
                         Patient Information
                     </button>
                 </h2>
@@ -33,7 +36,7 @@
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <table class="table table-hover">
-                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <thead style="background-color:#17a2b8; color:#fff;">
                             <tr>
 
                                 <th scope="col" style="text-align: center;">#</th>
@@ -90,15 +93,15 @@
                                 </td>
 
                                 {% if exoo %}
-                                <td style="text-align: center;" scope="row" ><a href="{% url 'exo_edit' exoo.id   %}" style="display: inline;"><span
-                                        class="btn btn-warning">&nbsp;&nbsp;Edit&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'delete-exo'  exoo.id %}" style="display: inline;"><span
-                                        class="btn btn-danger">Delete</span></a></td>
+
+                                <td>
+                                    <a href="{% url 'exo_edit' exoo.id   %}" class="btn btn-warning btn-xs">Edit</a><br/>
+                                    <a href="{% url 'delete-exo'  exoo.id %}" class="btn btn-danger btn-xs">Delete</a></td>
                                 {% endif %}
                                 <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
-                                        class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
+                                        class="btn btn-success btn-xs">Add Drugs</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-info">Add Appointment</span></a></td>
+                                        class="btn btn-success btn-xs">Add Appointment</span></a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -113,7 +116,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"
-                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                                style="text-align: justify; background-color:#17a2b8; color:#fff">
                             Add New Extracted
                         </button>
                     </h2>
@@ -485,9 +488,11 @@
                                                     </div>
                                                 </div>
                                                 <br/>
-                                                <div class="form-group" style="text-align: center;">
-                                                    <input type="submit" value="Add New Exo"
-                                                           class="btn btn-outline-primary">
+                                                <div class="col-12">
+                                                    <div class="alert alert-secondary" role="alert" align="center">
+                                                        <input type="submit" value="Add New Exo"
+                                                               class="btn btn-info">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -501,6 +506,9 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

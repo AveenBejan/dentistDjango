@@ -15,8 +15,9 @@
     }
   </style>
 </head>
-<body>
-<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <div class="row"
      style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
@@ -32,7 +33,7 @@
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
-                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            style="text-align: justify; background-color:#17a2b8; color:#fff">
                         Patient Information
                     </button>
                 </h2>
@@ -45,7 +46,7 @@
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <table class="table table-hover">
-                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                             <tr>
 
                                 <th scope="col" style="text-align: center;">#</th>
@@ -111,11 +112,10 @@
                                 {% if orall %}
                                 <!--<a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
                                         class="btn btn-warning">Add Visits</span></a><br/>-->
-                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                </a><br/><br/>
-                                <a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></td>
-                                <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">&nbsp;&nbsp;Show Visits&nbsp;&nbsp;
+                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning btn-xs">Edit</span>
+                                </a><br/>
+                                <a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-danger btn-xs">Delete</span></a></td>
+                                <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg">Show Visits
                                         </button>
 
                                         <!-- Modal -->
@@ -158,8 +158,8 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div><br/><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info">Add Appointment</span></a></td>
+                                        </div><br/><a href="{% url 'drugs' id=id %}" class="btn btn-info btn-xs">Add Drugs</a><br/>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info btn-xs">Add Appointment</span></a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -176,8 +176,8 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"
-                                style="text-align: justify; background-color:#a7e2fa; color:#000">
-                            IMPLANT
+                                style="text-align: justify; background-color:#17a2b8; color:#fff">
+                           ADD IMPLANT
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse"
@@ -218,8 +218,6 @@
                                     <div class="col-10">
 
                                         <div class="card-header">
-
-                                            <h4 style="font-size: 22px; text-align:center;"> Add Implant</h4>
                                         </div>
                                         <br/>
                                         <div class="row">
@@ -498,8 +496,8 @@
 
 
                                             <div class="card-body">
-<div class="alert alert-danger" role="alert"><h4 style="font-size: 22px;">Length&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diameter</h4></div>
+<div class="alert alert-dark" role="alert"><h4 style="font-size: 18px;">Length&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diameter</h4></div>
                                                 <div class="form-row">
                                                     <div class="col">
                                                         <input type="text" class="form-control hidden lengthur1" name="lengthur1"
@@ -962,6 +960,9 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

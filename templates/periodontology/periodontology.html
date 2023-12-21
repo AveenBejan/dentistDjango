@@ -4,6 +4,9 @@
 {% load custom_filters %}
 <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> this is to hid th and td-->
 <br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <div class="row"
      style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
@@ -18,7 +21,7 @@
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
-                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            style="text-align: justify; background-color:#17a2b8; color:#fff">
                         Patient Information
                     </button>
                 </h2>
@@ -32,7 +35,7 @@
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <table class="table table-hover">
-                            <thead style="background-color:#73ccf0; color:#fff;">
+                            <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                             <tr>
 
                                 <th style="text-align: center;"  scope="col" style="text-align: center;">#</th>
@@ -100,7 +103,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"
-                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                                style="text-align: justify; background-color:#17a2b8; color:#fff">
                             Add New Periodontology
                         </button>
                     </h2>
@@ -197,10 +200,12 @@
                                                placeholder="Paid:" required>
 
                                                 <br/>
-                                                <div class="form-group" style="text-align: center;">
-                                                    <input type="submit" value="Add New Periodontology"
-                                                           class="btn btn-outline-primary">
-                                                </div>
+
+                                                    <div class="alert alert-secondary" role="alert" align="center">
+                                                        <input type="submit" value="Add New Periodontology"
+                                                               class="btn btn-info">
+                                                    </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -213,6 +218,9 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

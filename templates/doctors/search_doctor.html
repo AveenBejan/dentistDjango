@@ -2,7 +2,9 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
@@ -28,7 +30,7 @@
             </nav>
             {% if receptions %}
             <table class="table table-hover">
-                <thead style="background-color:#73ccf0; color:#fff;">
+                <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                 <tr>
                     <th scope="row" style="text-align:center;">#</th>
                     <th scope="row" style="text-align:center;">Full Name</th>
@@ -61,13 +63,13 @@
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'exo' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Exo</span></a>
+                                        class="btn btn-round btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;Add Exo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
                                 <br/>
                                 <a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Implant</span></a>
+                                        class="btn btn-round btn-warning">&nbsp;&nbsp;&nbsp;Add Implant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
                                 <br/>
                                 <a href="{% url 'periodontology' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Periodontology</span></a>
+                                        class="btn btn-round btn-warning">Add Periodontology</span></a>
                             </div>
                         </li>
                     </td>
@@ -79,16 +81,16 @@
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'crown' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Crown</span></a>
+                                        class="btn btn-round btn-warning">Add Crown</span></a>
                                 <br/>
                                 <a href="{% url 'veneer' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Veneer</span></a>
+                                        class="btn btn-round btn-warning">Add Veneer</span></a>
                                 <br/>
                                 <a href="{% url 'filling' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Filling</span></a>
+                                        class="btn btn-round btn-warning">Add Filling</span></a>
                                 <br/>
                                 <a href="{% url 'add-endo' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Endo</span></a>
+                                        class="btn btn-round btn-warning">Add Endo</span></a>
                             </div>
                         </li>
                     </td>
@@ -100,7 +102,7 @@
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'add-ortho' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Ortho</span></a>
+                                        class="btn btn-round btn-warning">Add Ortho</span></a>
                                 <br/>
                             </div>
                         </li>
@@ -113,7 +115,7 @@
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'prosthodontics' reception.id %}" style="display: inline;"><span
-                                        class="btn btn-outline-warning">Add Prosthodontics</span></a>
+                                        class="btn btn-round btn-warning">Add Prosthodontics</span></a>
                                 <br/>
                             </div>
                         </li>
@@ -130,4 +132,7 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+</body>
 {% endblock %}

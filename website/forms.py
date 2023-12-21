@@ -155,11 +155,11 @@ class GaveAppointmentForm(forms.ModelForm):
 
 
 class ReceptionForm(forms.ModelForm):
-    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor", to_field_name='doctor_name')
-    educational = forms.ModelChoiceField(queryset=Educational.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}),empty_label="Select Educational Center",
+    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), to_field_name='doctor_name')
+    educational = forms.ModelChoiceField(queryset=Educational.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}),
                                          to_field_name='educational_name', required=False)
     GENDER_CHOICES = (
-        ('', 'Select Gender'),
+        ('', '----------'),
         ('Male', 'Male'),
         ('Female', 'Female'),
         ('Other', 'Other'),
