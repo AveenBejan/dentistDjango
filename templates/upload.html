@@ -3,7 +3,9 @@
 {% load static %}
 {% block content %}
 <br/>
-<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -17,7 +19,7 @@
         <div class="row gx-5">
             <div class="col">
                 {% if user.role == 'admin' %}
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Add New Upload Files</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Add New Upload Files</h4></div>
                 {% endif %}
                 <br/>
                  {% if user.role == 'admin' %}
@@ -31,18 +33,18 @@
                         </div>
                     </div>
                     <div class="form-group" style="text-align: center;">
-                        <input type="submit" value="Add New Files"
-                               class="btn btn-info">
+                         <br/><br/>
+                            <button type="submit" class="btn btn-info">Add New Files</button>
                     </div>
                 </form>
                 {% endif %}
             </div>
             <div class="col-8">
 
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold;">Files Information</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Files Information</h4></div>
                 <br/>
                 <table class="table table-hover">
-                    <thead style="background-color:#73ccf0; color:#fff;">
+                    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                     <tr>
 
                         <th>#</th>
@@ -74,4 +76,8 @@
     </div>
     {% endif %}
 </div>
+    </div>
+</div>
+</body>
+
 {% endblock %}
