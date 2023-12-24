@@ -6,6 +6,7 @@
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
               <a href="{% url 'home' %}" class="site_title"><i class="fa fa-paw"></i> <span>ECONOARTSTECH</span></a>
+
             </div>
 
             <div class="clearfix"></div>
@@ -75,7 +76,7 @@
                          -->
                     </ul>
                 </li>
-                <li><a><i class="fa fa-home"></i> Orthodontic <span class="fa fa-chevron-down"></span></a>
+                <li><a><i class="fa fa-home"></i> PoP <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
                         <li><a  href="{% url 'ortho-reception' %}">Ortho</a></li>
@@ -249,6 +250,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span><a target="main" href="{% url 'login' %}">Login</a></button>
+
             </div>
             <div class="modal-body">
                 <!-- Include your Django feedback form here -->
