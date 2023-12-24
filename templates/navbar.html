@@ -150,8 +150,8 @@
                <li><a><i class="fa fa-home"></i> Reports <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <li><a  href="{% url 'search' %}">Patient Search History</a></li>
-                        <li><a  href="{% url 'search-debts' %}">Patient Search Debts</a></li>
+                        <!--<li><a  href="{% url 'search' %}">Patient Search History</a></li>
+                        <li><a  href="{% url 'search-debts' %}">Patient Search Debts</a></li>-->
                         <li><a  href="{% url 'all_debts' %}"> All Patient Debts</a></li>
                         <li><a  href="{% url 'salary_reception' %}">Add Salary</a></li>
                         <li><a  href="{% url 'search-educational1' %}">E.C.Students Report</a></li>

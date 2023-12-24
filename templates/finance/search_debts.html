@@ -174,7 +174,7 @@
         <td style="text-align: center;" >{{ result.exoby|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info"><span>Print
@@ -194,7 +194,7 @@
         <td style="text-align: center;"  scope="row" align="center"> {{result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{result.paid }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_crown_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
@@ -215,7 +215,7 @@
         <td scope="row">{{result.total_price}}</td>
         <td scope="row">{{result.paid}}</td>
         <td scope="row">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_filling_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info"><SPAN>Print
@@ -233,7 +233,7 @@
         <td style="text-align: center;"  scope="row" align="center"> {{ result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_veneer_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
@@ -258,7 +258,7 @@
         <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_oral_debt'  result.idReception_id  %}" style="display: inline;"
@@ -277,7 +277,7 @@
         <td style="text-align: center;">{{ result.total_price }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
@@ -308,7 +308,7 @@
         <td style="text-align: center;">{{ result.price}}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.paid }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.notes }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"

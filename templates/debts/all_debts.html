@@ -76,7 +76,7 @@
     <tr>
         {% if model_name == 'Exo' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >Upper Right</th>
         <th scope="col" style="text-align: center;" >Upper Left</th>
         <th scope="col" style="text-align: center;" >Lower Right</th>
@@ -92,7 +92,7 @@
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Crown' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >Shade</th>
         <th scope="col" style="text-align: center;" >No of Unite</th>
         <th scope="col" style="text-align: center;" >Color</th>
@@ -105,7 +105,7 @@
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Filling' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >Filling Type</th>
         <th scope="col" style="text-align: center;" >Filling Place</th>
         <th scope="col" style="text-align: center;" >Upper Right</th>
@@ -121,7 +121,7 @@
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Veneer' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >Shade</th>
         <th scope="col" style="text-align: center;" >No of Unite</th>
         <th scope="col" style="text-align: center;" >Color</th>
@@ -134,7 +134,7 @@
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'OralSurgery' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >First Visit</th>
         <th scope="col" style="text-align: center;" >Implant</th>
         <th scope="col" style="text-align: center;" >Diameter</th>
@@ -226,7 +226,7 @@
     <tr style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}">
         {% if model_name == 'Exo' %}
         <td style="text-align: center;" >{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
+        <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" >{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.lr|slice:"1:-1" }}</td>
@@ -238,7 +238,7 @@
         <td style="text-align: center;" >{{ result.exoby|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-outline-info">Print Invoice</a>
@@ -247,7 +247,7 @@
 
         {% elif model_name == 'Crown' %}
         <td scope="row">{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
+         <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.shade}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_unite}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
@@ -256,15 +256,15 @@
         <td style="text-align: center;"  scope="row" align="center"> {{result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{result.paid }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-crown1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-crown1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_crown_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
         <!-- ... other crown-related fields ... -->
         {% elif model_name == 'Filling' %}
         <td scope="row">{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
+         <td style="text-align: center;" >{{ result.name }}</td>
         <td scope="row">{{result.filling_type}}</td>
         <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
         <td scope="row">{{result.ur|slice:"1:-1" }}</td>
@@ -276,14 +276,14 @@
         <td scope="row">{{result.total_price}}</td>
         <td scope="row">{{result.paid}}</td>
         <td scope="row">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-filling1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-filling1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_filling_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'Veneer' %}
         <td style="text-align: center;"  scope="row">{{ result.id}}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
+         <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.shade}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_unite}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
@@ -292,14 +292,14 @@
         <td style="text-align: center;"  scope="row" align="center"> {{ result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-veneer1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-veneer1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_veneer_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'OralSurgery' %}
         <td style="text-align: center;" scope="row">{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
+         <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" scope="row">{{ result.first_visit }}</td>
         <td style="text-align: center;" scope="row">{{ result.implant }}</td>
         <td style="text-align: center;" scope="row">{{ result.diameter }}</td>
@@ -316,11 +316,11 @@
         <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-oral1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-oral1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_oral_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
          {% elif model_name == 'Endo' %}
         <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
@@ -334,11 +334,11 @@
         <td style="text-align: center;">{{ result.total_price }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'Ortho' %}
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
@@ -364,11 +364,11 @@
         <td style="text-align: center;">{{ result.price}}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.paid }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.notes }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-ortho1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-ortho1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
          {% elif model_name == 'Prosthodontics' %}
         <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
@@ -383,11 +383,11 @@
         <td style="text-align: center;">{{ result.total_price }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
          {% elif model_name == 'Periodontology' %}
         <td style="text-align: center;" scope="row">{{ result.type }}</td>
@@ -395,11 +395,11 @@
         <td style="text-align: center;">{{ result.total_price }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-outline-info">Add-Debt</span></a>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
-               class="btn btn-outline-info">Print Invoice</a>
+               class="btn btn-info">Print Invoice</a>
         </td>
         {% endif %}
         <!-- ... other fields ... -->

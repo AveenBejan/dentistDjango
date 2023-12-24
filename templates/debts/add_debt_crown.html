@@ -2,7 +2,10 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
@@ -22,30 +25,19 @@
                     <input type="text" name="gender" value="{{ crown_instance.gender }}" class="form-control"  readonly>
                     <input type="text" name="date_of_birth" value="{{ crown_instance.date_of_birth }}" readonly
                            class="form-control">
-                    <div class="row">
+                   <div class="row">
 
                         <div class="col-sm-6">
-                            <div class="card-header">
-                                Upper Right
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-control">
-                                        <input type="text" id="paid" name="paid" value="{{ crown_instance.paid }}"
-                                               class="form-control"
-                                               placeholder="Paid:" required>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <br/>
-                            <div class="form-group" style="text-align: center;">
-                                <button type="submit" value="update" onclick="validateAndShowAlert()"
-                                        class="btn btn-outline-primary">Update
-                                </button>
-                            </div>
+                            <input type="text" name="price" value="{{ crown_instance.price }}" class="form-control" readonly>
+                            <h4>Paid Money</h4>
+                            <input type="text" id="paid" class="form-control" name="paid" value="{{ crown_instance.paid }}" placeholder="Paid:" required>
+                            <br/><br/>
+                            <button type="submit" value="update" onclick="validateAndShowAlert()" class="btn btn-primary">Add Debt
+                            </button>
                         </div>
-                    </div>
+
+                        </div>
+
                 </form>
                    <script>
     function validateAndShowAlert() {
@@ -76,5 +68,5 @@
         </div>
     </div>
 </section>
-
+    </div></div></body>
 {% endblock %}

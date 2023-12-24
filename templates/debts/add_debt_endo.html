@@ -3,7 +3,10 @@
 {% block title %} Contact Page{% endblock %}
 {% block content %}
 
-
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
@@ -25,27 +28,16 @@
                     <div class="row">
 
                         <div class="col-sm-6">
-                            <div class="card-header">
-                                Upper Right
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="form-control">
-                                        <input type="text" id="paid" name="paid" value="{{ endo_instance.paid }}"
-                                               class="form-control"
-                                               placeholder="Paid:" required>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <br/>
-                            <div class="form-group" style="text-align: center;">
-                                <button type="submit" value="update" onclick="validateAndShowAlert()"
-                                        class="btn btn-outline-primary">Update
-                                </button>
-                            </div>
+                            <input type="text" name="price" value="{{ endo_instance.price }}" class="form-control" readonly>
+                            <h4>Paid Money</h4>
+                            <input type="text" id="paid" class="form-control" name="paid" value="{{ endo_instance.paid }}" placeholder="Paid:" required>
+                            <br/><br/>
+                            <button type="submit" value="update" onclick="validateAndShowAlert()" class="btn btn-primary">Add Debt
+                            </button>
                         </div>
-                    </div>
+
+                        </div>
+
                 </form>
                    <script>
     function validateAndShowAlert() {
@@ -76,5 +68,6 @@
         </div>
     </div>
 </section>
+    </div></div></body>
 
 {% endblock %}

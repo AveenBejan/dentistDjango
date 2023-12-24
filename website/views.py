@@ -3111,10 +3111,7 @@ def print_oral_debt(request, id):
         'debts': debts,
         'total_remaining': total_remaining,
     }
-    template_name = 'debts/print_oral_debt.html'  # Replace with your template name
-
-    # Redirect to the PDF generation view
-    return generate_pdf_view(request, template_name, context)
+    return render(request,'debts/print_oral_debt.html', context)
 
 
 def add_endo(request, id):
