@@ -107,7 +107,6 @@
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >Filling Type</th>
-        <th scope="col" style="text-align: center;" >Filling Place</th>
         <th scope="col" style="text-align: center;" >Upper Right</th>
         <th scope="col" style="text-align: center;" >Upper Left</th>
         <th scope="col" style="text-align: center;" >Lower Right</th>
@@ -137,8 +136,6 @@
         <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" >First Visit</th>
         <th scope="col" style="text-align: center;" >Implant</th>
-        <th scope="col" style="text-align: center;" >Diameter</th>
-        <th scope="col" style="text-align: center;" >Length</th>
         <th scope="col" style="text-align: center;" >No Of Implant</th>
         <th scope="col" style="text-align: center;" >Upper Right</th>
         <th scope="col" style="text-align: center;" >Upper Left</th>
@@ -200,8 +197,8 @@
         <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
         <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
         <th scope="col" style="text-align: center;" class="hideable">Complete Denture</th>
-        <th scope="col" style="text-align: center;" class="hideable">Complete Upper Denture</th>
-        <th scope="col" style="text-align: center;" class="hideable">Complete Lower Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">C.Upper Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">C.Lower Denture</th>
         <th scope="col" style="text-align: center;" class="hideable">Partial Denture</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th style="text-align: center;" scope="col">Total Price</th>
@@ -266,7 +263,6 @@
         <td scope="row">{{ result.id }}</td>
          <td style="text-align: center;" >{{ result.name }}</td>
         <td scope="row">{{result.filling_type}}</td>
-        <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
         <td scope="row">{{result.ur|slice:"1:-1" }}</td>
         <td scope="row">{{result.ul|slice:"1:-1"}}</td>
         <td scope="row">{{result.lr|slice:"1:-1"}}</td>
@@ -302,8 +298,6 @@
          <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" scope="row">{{ result.first_visit }}</td>
         <td style="text-align: center;" scope="row">{{ result.implant }}</td>
-        <td style="text-align: center;" scope="row">{{ result.diameter }}</td>
-        <td style="text-align: center;" scope="row">{{ result.length }}</td>
         <td style="text-align: center;" scope="row">{{ result.no_Implant }}</td>
         <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
