@@ -152,6 +152,7 @@
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Endo' %}
+        <th scope="col" style="text-align: center;" >Name</th>
         <th style="text-align: center;" scope="col">Upper Right</th>
         <th style="text-align: center;" scope="col">Upper Left</th>
         <th style="text-align: center;" scope="col">Lower Right</th>
@@ -167,6 +168,7 @@
         <th scope="col" style="text-align: center;" >Print Invoice</th>
 
         {% elif model_name == 'Ortho' %}
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
         <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
         <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
@@ -193,6 +195,7 @@
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Prosthodontics' %}
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
         <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
         <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
@@ -208,6 +211,7 @@
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Periodontology' %}
+        <th scope="col" style="text-align: center;" >Name</th>
         <th scope="col" style="text-align: center;" class="hideable">Type</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th style="text-align: center;" scope="col">Total Price</th>
@@ -318,6 +322,7 @@
                class="btn btn-info">Print Invoice</a>
         </td>
          {% elif model_name == 'Endo' %}
+        <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
@@ -336,6 +341,7 @@
                class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'Ortho' %}
+        <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lr|slice:"1:-1" }}</td>
@@ -366,6 +372,7 @@
                class="btn btn-info">Print Invoice</a>
         </td>
          {% elif model_name == 'Prosthodontics' %}
+        <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
@@ -385,6 +392,7 @@
                class="btn btn-info">Print Invoice</a>
         </td>
          {% elif model_name == 'Periodontology' %}
+        <td style="text-align: center;" >{{ result.name }}</td>
         <td style="text-align: center;" scope="row">{{ result.type }}</td>
         <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
         <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
