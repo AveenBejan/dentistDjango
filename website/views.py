@@ -782,13 +782,8 @@ def search_educational(request):
 
 
 def all_reception(request):
-    # Get current time
-    current_time = datetime.now()
 
-    # Filter appointments older than 24 hours
-    appointments = Reception.objects.filter(
-        app_data__gte=current_time - timedelta(hours=24)
-    ).order_by('-id')
+    appointments = Reception.objects.all().order_by('-id')
 
     for appointment in appointments:
         if appointment.days:
