@@ -50,7 +50,8 @@
                             <tr>
 
                                 <th scope="col">#</th>
-
+                                <th scope="col">Patient Name</th>
+                                <th scope="col">Phone Number</th>
                                 <th scope="col">Doctor Name</th>
                                 <th scope="col">Appointment Date</th>
                                 <th scope="col">Day Name</th>
@@ -63,6 +64,8 @@
                             {% for appointment in appointments %}
                             <tr>
                                 <td text-align="center" scope="row">{{ appointment.id }}</td>
+                                <td text-align="center" scope="row">{{ appointment.name }}</td>
+                                <td text-align="center" scope="row">{{ appointment.phone }}</td>
                                 <td text-align="center" scope="row">{{ appointment.doctor }}</td>
                                 <td text-align="center" scope="row">{{ appointment.app_data }}</td>
                                 <td text-align="center" scope="row">{{ appointment.days}}</td>

@@ -18,7 +18,8 @@
 <div class="col-8">
     <div class="card-body">
         {% for drug in drugs %}
-
+        <h3><p>Doctor Name:&nbsp;- &nbsp;{{ drug.name }}</p></h3>
+        <h3><p>Doctor Name:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>
         <h3><p>Doctor Name:&nbsp;- &nbsp;{{ drug.doctor }}</p></h3>
         <h3><p>Appointment Date:&nbsp;- &nbsp;{{ drug.app_data }}</p></h3>
         <h3><p>Day Name&nbsp;- &nbsp;{{ drug.days }}</p></h3>
