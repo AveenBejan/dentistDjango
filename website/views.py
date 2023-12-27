@@ -25,6 +25,7 @@ from xhtml2pdf import pisa
 from django.http import Http404
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponseRedirect
+from decimal import Decimal
 
 
 def feedback_view(request):
@@ -344,8 +345,10 @@ def search_educational1(request):
 
 
 def all_debts(request):
+
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+
 
     exos = Exo.objects.none()  # Initialize as an empty queryset
     fillings = Filling.objects.none()
@@ -357,19 +360,20 @@ def all_debts(request):
     periodontologys = Periodontology.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
 
+
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
         end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
-
-        exos = Exo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        fillings = Filling.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        crowns = Crown.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        veneers = Veneer.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        endos = Endo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        orthos = Ortho.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        periodontologys = Periodontology.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        prosthodonticss = Prosthodontics.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        end_datetime = end_datetime + timedelta(days=1)
+        exos = Exo.objects.filter(regdate__range=(start_datetime, end_datetime))
+        fillings = Filling.objects.filter(regdate__range=(start_datetime, end_datetime))
+        crowns = Crown.objects.filter(regdate__range=(start_datetime, end_datetime))
+        veneers = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime))
+        oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime))
+        endos = Endo.objects.filter(regdate__range=(start_datetime, end_datetime))
+        orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime))
+        periodontologys = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime))
+        prosthodonticss = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime))
 
     search_results = []
 
@@ -395,6 +399,7 @@ def all_debts(request):
         'start_date': start_date,
         'end_date': end_date,
         'search_results': search_results,
+
     }
 
     return render(request, 'debts/all_debts.html', context)
@@ -2389,7 +2394,7 @@ def crown(request, id):
             oral_surgery.idReception_id = id
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
             oral_surgery.total_price = total_price
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
@@ -2478,7 +2483,7 @@ def crown_edit(request, id):
         if form.is_valid():
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()
@@ -2546,7 +2551,7 @@ def veneer(request, id):
             oral_surgery.idReception_id = id
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
             oral_surgery.total_price = total_price
             reception = Reception.objects.get(id=id)
             oral_surgery.name = reception.name
@@ -2635,7 +2640,7 @@ def veneer_edit(request, id):
         if form.is_valid():
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = no_prepare * price
+            total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             form.save()
@@ -2832,16 +2837,37 @@ def add_debt(request, id):
     except Exo.DoesNotExist:
         return HttpResponse("Exo instance not found")
 
+    previous_date = exo_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = exo_instance.paid  # Store previous paid amount
+    total_price = exo_instance.total_price  # Retrieve the total price
+
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        exo_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if exo_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            exo_instance.paid = total_price
+        else:
+            exo_instance.paid += paid  # Increment the paid amount
+
+        exo_instance.date = date
         exo_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter        'start_date': start_date,
-        #         'end_date': end_date,
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt.html', {'id': id, 'exo_instance': exo_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt.html', {
+            'id': id,
+            'exo_instance': exo_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt1(request, id):
@@ -2850,15 +2876,37 @@ def add_debt1(request, id):
     except Exo.DoesNotExist:
         return HttpResponse("Exo instance not found")
 
+    previous_date = exo_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = exo_instance.paid  # Store previous paid amount
+    total_price = exo_instance.total_price  # Retrieve the total price
+
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        exo_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if exo_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            exo_instance.paid = total_price
+        else:
+            exo_instance.paid += paid  # Increment the paid amount
+
+        exo_instance.date = date
         exo_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt.html', {'id': id, 'exo_instance': exo_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt.html', {
+            'id': id,
+            'exo_instance': exo_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def print_exo_debt(request, id):
@@ -2881,15 +2929,37 @@ def add_debt_crown(request, id):
     except Crown.DoesNotExist:
         return HttpResponse("Crown instance not found")
 
+    previous_date = crown_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = crown_instance.paid  # Store previous paid amount
+    total_price = crown_instance.total_price  # Retrieve the total price
+
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        crown_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if crown_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            crown_instance.paid = total_price
+        else:
+            crown_instance.paid += paid  # Increment the paid amount
+
+        crown_instance.date = date
         crown_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_crown.html', {'id': id, 'crown_instance': crown_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_crown.html', {
+            'id': id,
+            'crown_instance': crown_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt_crown1(request, id):
@@ -2898,15 +2968,37 @@ def add_debt_crown1(request, id):
     except Crown.DoesNotExist:
         return HttpResponse("Crown instance not found")
 
+    previous_date = crown_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = crown_instance.paid  # Store previous paid amount
+    total_price = crown_instance.total_price  # Retrieve the total price
+
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        crown_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if crown_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            crown_instance.paid = total_price
+        else:
+            crown_instance.paid += paid  # Increment the paid amount
+
+        crown_instance.date = date
         crown_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_crown.html', {'id': id, 'crown_instance': crown_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_crown.html', {
+            'id': id,
+            'crown_instance': crown_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def print_crown_debt(request, id):
@@ -2926,40 +3018,85 @@ def add_debt_ortho(request, id):
     try:
         ortho_instance = Ortho.objects.get(id=id)
     except Ortho.DoesNotExist:
-        return HttpResponse("Ortho instance not found")
+        return HttpResponse("Crown instance not found")
+
+    previous_date = ortho_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = ortho_instance.paid  # Store previous paid amount
+    price = ortho_instance.price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        ortho_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if ortho_instance.paid + paid >= price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            ortho_instance.paid = price
+        else:
+            ortho_instance.paid += paid  # Increment the paid amount
+
+        ortho_instance.date = date
         ortho_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_ortho.html', {'id': id, 'ortho_instance': ortho_instance})
+        remaining_amount = price - previous_paid
+
+        return render(request, 'debts/add_debt_ortho.html', {
+            'id': id,
+            'ortho_instance': ortho_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt_ortho1(request, id):
     try:
         ortho_instance = Ortho.objects.get(id=id)
     except Ortho.DoesNotExist:
-        return HttpResponse("Ortho instance not found")
+        return HttpResponse("Crown instance not found")
+
+    previous_date = ortho_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = ortho_instance.paid  # Store previous paid amount
+    price = ortho_instance.price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        ortho_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if ortho_instance.paid + paid >= price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            ortho_instance.paid = price
+        else:
+            ortho_instance.paid += paid  # Increment the paid amount
+
+        ortho_instance.date = date
         ortho_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_ortho.html', {'id': id, 'ortho_instance': ortho_instance})
+        remaining_amount = price - previous_paid
+
+        return render(request, 'debts/add_debt_ortho.html', {
+            'id': id,
+            'ortho_instance': ortho_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
+
 
 def print_ortho_debt(request, id):
     debts = Ortho.objects.filter(idReception=id)
 
     # Calculate the total remaining amount for idReception
-    total_remaining = sum(debt.total_price - debt.paid for debt in debts)
+    total_remaining = sum(debt.price - debt.paid for debt in debts)
 
     context = {
         'debts': debts,
@@ -2972,34 +3109,78 @@ def add_debt_filling(request, id):
     try:
         filling_instance = Filling.objects.get(id=id)
     except Filling.DoesNotExist:
-        return HttpResponse("Filling instance not found")
+        return HttpResponse("Endo instance not found")
+
+    previous_date = filling_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = filling_instance.paid  # Store previous paid amount
+    total_price = filling_instance.total_price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        filling_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if filling_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            filling_instance.paid = total_price
+        else:
+            filling_instance.paid += paid  # Increment the paid amount
+
+        filling_instance.date = date
         filling_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_filling.html', {'id': id, 'filling_instance': filling_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_filling.html', {
+            'id': id,
+            'filling_instance': filling_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt_filling1(request, id):
     try:
         filling_instance = Filling.objects.get(id=id)
     except Filling.DoesNotExist:
-        return HttpResponse("Filling instance not found")
+        return HttpResponse("Endo instance not found")
+
+    previous_date = filling_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = filling_instance.paid  # Store previous paid amount
+    total_price = filling_instance.total_price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        filling_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if filling_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            filling_instance.paid = total_price
+        else:
+            filling_instance.paid += paid  # Increment the paid amount
+
+        filling_instance.date = date
         filling_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_filling.html', {'id': id, 'filling_instance': filling_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_filling.html', {
+            'id': id,
+            'filling_instance': filling_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def print_filling_debt(request, id):
@@ -3020,34 +3201,78 @@ def add_debt_veneer(request, id):
     try:
         veneer_instance = Veneer.objects.get(id=id)
     except Veneer.DoesNotExist:
-        return HttpResponse("Veneer instance not found")
+        return HttpResponse("Endo instance not found")
+
+    previous_date = veneer_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = veneer_instance.paid  # Store previous paid amount
+    total_price = veneer_instance.total_price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        veneer_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if veneer_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            veneer_instance.paid = total_price
+        else:
+            veneer_instance.paid += paid  # Increment the paid amount
+
+        veneer_instance.date = date
         veneer_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_veneer.html', {'id': id, 'veneer_instance': veneer_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_veneer.html', {
+            'id': id,
+            'veneer_instance': veneer_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt_veneer1(request, id):
     try:
         veneer_instance = Veneer.objects.get(id=id)
     except Veneer.DoesNotExist:
-        return HttpResponse("Veneer instance not found")
+        return HttpResponse("Endo instance not found")
+
+    previous_date = veneer_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = veneer_instance.paid  # Store previous paid amount
+    total_price = veneer_instance.total_price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        veneer_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if veneer_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            veneer_instance.paid = total_price
+        else:
+            veneer_instance.paid += paid  # Increment the paid amount
+
+        veneer_instance.date = date
         veneer_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_veneer.html', {'id': id, 'veneer_instance': veneer_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_veneer.html', {
+            'id': id,
+            'veneer_instance': veneer_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def print_veneer_debt(request, id):
@@ -3067,33 +3292,77 @@ def add_debt_oral(request, id):
     try:
         oral_surgery_instance = OralSurgery.objects.get(id=id)
     except OralSurgery.DoesNotExist:
-        return HttpResponse("OralSurgery instance not found")
+        return HttpResponse("Endo instance not found")
+
+    previous_date = oral_surgery_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = oral_surgery_instance.paid  # Store previous paid amount
+    total_price = oral_surgery_instance.total_price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        oral_surgery_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if oral_surgery_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            oral_surgery_instance.paid = total_price
+        else:
+            oral_surgery_instance.paid += paid  # Increment the paid amount
+
+        oral_surgery_instance.date = date
         oral_surgery_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_oral.html', {'id': id, 'oral_surgery_instance': oral_surgery_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_oral.html', {
+            'id': id,
+            'oral_surgery_instance': oral_surgery_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 def add_debt_oral1(request, id):
     try:
         oral_surgery_instance = OralSurgery.objects.get(id=id)
     except OralSurgery.DoesNotExist:
-        return HttpResponse("OralSurgery instance not found")
+        return HttpResponse("Endo instance not found")
+
+    previous_date = oral_surgery_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = oral_surgery_instance.paid  # Store previous paid amount
+    total_price = oral_surgery_instance.total_price  # Retrieve the total price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        oral_surgery_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if oral_surgery_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            oral_surgery_instance.paid = total_price
+        else:
+            oral_surgery_instance.paid += paid  # Increment the paid amount
+
+        oral_surgery_instance.date = date
         oral_surgery_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_oral.html', {'id': id, 'oral_surgery_instance': oral_surgery_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_oral.html', {
+            'id': id,
+            'oral_surgery_instance': oral_surgery_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def print_oral_debt(request, id):
@@ -3343,15 +3612,37 @@ def add_debt_endo(request, id):
     except Endo.DoesNotExist:
         return HttpResponse("Endo instance not found")
 
+    previous_date = endo_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = endo_instance.paid  # Store previous paid amount
+    total_price = endo_instance.total_price  # Retrieve the total price
+
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        endo_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if endo_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            endo_instance.paid = total_price
+        else:
+            endo_instance.paid += paid  # Increment the paid amount
+
+        endo_instance.date = date
         endo_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_endo.html', {'id': id, 'endo_instance': endo_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_endo.html', {
+            'id': id,
+            'crown_instance': endo_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt_endo1(request, id):
@@ -3360,15 +3651,37 @@ def add_debt_endo1(request, id):
     except Endo.DoesNotExist:
         return HttpResponse("Endo instance not found")
 
+    previous_date = endo_instance.date  # Assuming 'date' is the field containing the date
+    previous_paid = endo_instance.paid  # Store previous paid amount
+    total_price = endo_instance.total_price  # Retrieve the total price
+
     if request.method == 'POST':
-        paid = request.POST.get('paid')
-        endo_instance.paid = paid
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if endo_instance.paid + paid >= total_price:
+            # If the sum of current paid amount and existing paid amount is greater than or equal to the total price
+            # Freeze further additions and set the paid amount to the total price
+            endo_instance.paid = total_price
+        else:
+            endo_instance.paid += paid  # Increment the paid amount
+
+        endo_instance.date = date
         endo_instance.save()
 
-        # Redirect back to the 'search-debts' page with the same query parameter
-        return redirect(reverse('all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        return render(request, 'debts/add_debt_endo.html', {'id': id, 'endo_instance': endo_instance})
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_endo.html', {
+            'id': id,
+            'endo_instance': endo_instance,
+            'previous_date': previous_date,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def print_endo_debt(request, id):

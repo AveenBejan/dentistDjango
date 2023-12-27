@@ -17,15 +17,15 @@
     ددانا<br/>B.D.S/M.SC.Ortho</br>
     <br/>عطلة العيادة الخميس والجمعة </p>
 <hr class="border border-primary border-3 opacity-40">
-<div class="container">
-    <div class="row">
+<div class="col-8">
+    <div class="row" >
 
         <h1 style="text-align:center;">Payment Invoice For Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
+               <!-- Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
             </p>
             {% endif %}
@@ -34,11 +34,11 @@
             <thead style="background-color:#555; color:#fff;">
             <tr>
                 <!--<th scope="col">#</th>
-                <th scope="col">#</th>-->
+                <th scope="col">#</th>
                 <th scope="col" style="text-align:center;">Shade</th>
                 <th scope="col" style="text-align:center;">No of Unite</th>
                 <th scope="col" style="text-align:center;">Color</th>
-                <th scope="col" style="text-align:center;">No of Pre.Unite</th>
+                <th scope="col" style="text-align:center;">No of Pre.Unite</th>-->
                 <th scope="col" style="text-align:center;">Price</th>
                 <th scope="col" style="text-align:center;">Total Price</th>
                 <th scope="col" style="text-align:center;">Paid</th>
@@ -48,11 +48,11 @@
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
                <!-- <td style="text-align:center;">{{ debt.id }}</td>
-                <td style="text-align:center;">{{ debt.idReception_id }}</td>-->
+                <td style="text-align:center;">{{ debt.idReception_id }}</td>
                 <td style="text-align:center;">{{debt.shade}}</td>
                 <td style="text-align:center;">{{debt.no_unite}}</td>
                 <td style="text-align:center;">{{debt.color}}</td>
-                <td style="text-align:center;">{{debt.no_prepare}}</td>
+                <td style="text-align:center;">{{debt.no_prepare}}</td>-->
                 <td style="text-align:center;">{{ debt.price|format_with_commas }}</td>
                 <td style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
                 <td style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
@@ -65,11 +65,11 @@
 </div>
 
 
-<footer id="footer">
+
     <hr class="border border-primary border-3 opacity-40">
     <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
         التمنيات بالشفاء العاجل</h4>
-</footer>
+
     </div></div></body>
 
 {% endblock %}

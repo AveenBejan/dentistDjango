@@ -19,7 +19,7 @@
     ددانا<br/>B.D.S/M.SC.Ortho</br>
     <br/>عطلة العيادة الخميس والجمعة </p>
 <hr class="border border-primary border-3 opacity-40">
-<div class="container">
+<div class="col-8">
     <div class="row">
 
 
@@ -28,16 +28,16 @@
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
+                <!--Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
             </p>
             {% endif %}
         </div>
         <table class="table table-hover">
-          <thead style="background-color:#73ccf0; color:#fff;">
-                            <tr>
+            <thead style="background-color:#555; color:#fff;">
+            <tr>
 
-                                <th scope="col">#</th>
+                                <th scope="col" style="text-align: center;" >#</th>
                                 <!--<th scope="col">Doctor Name</th>
                                 <th scope="col">Appointment Date</th>
                                 <th scope="col">Day Name</th>
@@ -51,7 +51,7 @@
                                 <th scope="col"  style="text-align: center;" class="hideable">over_bt</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">jow_shift</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">midlin_shift</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">Exo Photo</th>-->
+                                <th scope="col"  style="text-align: center;" class="hideable">Exo Photo</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Right</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Left</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Right</th>
@@ -63,13 +63,13 @@
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Right S</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Upper Left S</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Lower Right S</th>
-                                <th scope="col"  style="text-align: center;" class="hideable">Lower Left S</th>
+                                <th scope="col"  style="text-align: center;" class="hideable">Lower Left S</th>-->
 
-                                <th scope="col">Price</th>
+                                <th scope="col" style="text-align: center;" >Price</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">paid</th>
 
-                                <th scope="col"  style="text-align: center;">Action</th>
-                                <th scope="col" style="text-align:center;">Show Data</th>
+                                <!--<th scope="col"  style="text-align: center;">Action</th>
+                                <th scope="col" style="text-align:center;">Show Data</th>-->
                             </tr>
                             </thead>
                             <tbody>
@@ -88,7 +88,7 @@
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.jow_shift }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.midlin_shift }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.notes }}</td>
-                                <td style="text-align: center; word-wrap: break-word;" scope="row"  class="hideable">{{ debt.treatment_plan }}</td>-->
+                                <td style="text-align: center; word-wrap: break-word;" scope="row"  class="hideable">{{ debt.treatment_plan }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.ur|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.ul|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lr|slice:"1:-1" }}</td>
@@ -100,7 +100,7 @@
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.urs|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.uls|slice:"1:-1" }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lrs|slice:"1:-1" }}</td>
-                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lls|slice:"1:-1" }}</td>
+                                <td style="text-align: center;" scope="row"  class="hideable">{{ debt.lls|slice:"1:-1" }}</td>-->
                                 <td style="text-align: center;">{{ debt.price|format_with_commas }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{ debt.paid|format_with_commas }}</td>
 
@@ -112,11 +112,11 @@
     </div>
 </div>
 
-<footer id="footer">
+
     <hr class="border border-primary border-3 opacity-40">
     <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
         التمنيات بالشفاء العاجل</h4>
-</footer>
+
     </div></div></body>
 
 {% endblock %}

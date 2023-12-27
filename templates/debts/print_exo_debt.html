@@ -19,7 +19,7 @@
     ددانا<br/>B.D.S/M.SC.Ortho</br>
     <br/>عطلة العيادة الخميس والجمعة </p>
 <hr class="border border-primary border-3 opacity-40">
-<div class="container">
+<div class="col-8">
     <div class="row">
 
 
@@ -28,7 +28,7 @@
             {% if debts %}
             <p>
                 Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
-                Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;
+                <!--Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
                 Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
             </p>
             {% endif %}
@@ -38,11 +38,11 @@
             <tr>
 
                 <!--<th style="text-align:center;" scope="col">#</th>
-                <th style="text-align:center;" scope="col">#</th>-->
+                <th style="text-align:center;" scope="col">#</th>
                 <th style="text-align:center;" scope="col">Upper Right</th>
                 <th style="text-align:center;" scope="col">Upper Left</th>
                 <th style="text-align:center;" scope="col">Lower Right</th>
-                <th style="text-align:center;" scope="col">Lower Left</th>
+                <th style="text-align:center;" scope="col">Lower Left</th>-->
                 <th style="text-align:center;" scope="col">Price</th>
                 <th style="text-align:center;" scope="col">Total Price</th>
                 <th style="text-align:center;" scope="col">Paid</th>
@@ -56,11 +56,11 @@
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
                 <!--<td style="text-align:center;">{{ debt.id }}</td>
-                <td style="text-align:center;">{{ debt.idReception_id }}</td>-->
+                <td style="text-align:center;">{{ debt.idReception_id }}</td>
                 <td style="text-align:center;">{{ debt.ur|slice:"1:-1" }}</td>
                 <td style="text-align:center;">{{ debt.ul|slice:"1:-1" }}</td>
                 <td style="text-align:center;">{{ debt.lr|slice:"1:-1" }}</td>
-                <td style="text-align:center;">{{ debt.ll|slice:"1:-1" }}</td>
+                <td style="text-align:center;">{{ debt.ll|slice:"1:-1" }}</td>-->
                 <td style="text-align:center;">{{ debt.price|format_with_commas }}</td>
                 <td style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
                 <td style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
@@ -76,11 +76,11 @@
     </div>
 </div>
 
-<footer id="footer">
+
     <hr class="border border-primary border-3 opacity-40">
     <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
         التمنيات بالشفاء العاجل</h4>
-</footer>
+
     </div></div>
 </body>
 

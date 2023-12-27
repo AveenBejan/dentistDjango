@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 <br/>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main" style="width: 100%">
 <div class="row"
      style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-12">
@@ -16,7 +20,7 @@
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
-                            style="text-align: justify; background-color:#a7e2fa; color:#000">
+                            style="text-align: justify; background-color:#17a2b8; color:#fff">
                         Appointment Information
                     </button>
                      {% if messages %}
@@ -42,7 +46,7 @@
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <table class="table table-hover">
-                            <thead style="background-color:#73ccf0; color:#fff;">
+                             <thead style="background-color:#17a2b8; color:#fff;">
                             <tr>
 
                                 <th scope="col">#</th>
@@ -78,7 +82,7 @@
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"
-                                style="text-align: justify; background-color:#a7e2fa; color:#000">
+                                   style="text-align: justify; background-color:#17a2b8; color:#fff">
                             Add New Appointment
                         </button>
                     </h2>
@@ -111,19 +115,18 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <div class="form-group">
-                                            <input type="text" name="app_data" id="datepicker-3"
-                                                   placeholder="Date of Appointment" required class="form-control">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <div class="form-group">
-                                            <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
-                                                   class="form-control">
-                                        </div>
-                                    </div>
+                                     <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Date of Appointment</label>
+									 <input type="date" name="app_data" id="datepicker-3" required class="form-control">
+								 </div>
+							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Days</label>
+									 <input type="text" name="days" id="datepicker-4" readonly class="form-control">
+								 </div>
+							 </div>
                                     <div class="col-sm-12">
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" name="time" value="4:00pm">
@@ -178,6 +181,51 @@
         </div>
     </div>
 </div>
+    </div></div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+$(document).ready(function () {
+    var datePicker = $("#datepicker-3");
+    var daysInput = $("#datepicker-4");
+    var submitBtn = $("#submitBtn");
 
+    function isThursdayOrFriday(date) {
+        return date.getDay() === 4 || date.getDay() === 5;
+    }
+
+    datePicker.change(function () {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            alert("Our Dental Center is closed on Thursday and Friday. Thank you!");
+            submitBtn.prop("enabled", true);
+        } else {
+            submitBtn.prop("enabled", false);
+        }
+
+        // Get day name for the selected date
+        var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var selectedDayName = dayNames[date.getDay()];
+
+        // Update #datepicker-4 with the day name
+        daysInput.val(selectedDayName);
+    });
+
+    submitBtn.on("click", function (event) {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            event.preventDefault();
+            alert("Please select a date other than Thursday or Friday.");
+        }
+    });
+
+    // Initial check on page load
+    datePicker.trigger("change");
+});
+	</script>
+</body>
 
 {% endblock %}

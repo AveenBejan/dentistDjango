@@ -2,11 +2,11 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
 <br/>
 <body class="nav-md">
 <div class="container body">
     <div class="right_col" role="main">
+
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
         <div class="row d-flex mb-5 contact-info">
@@ -17,6 +17,14 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
+                <p>Previous Paid Amount: {{ previous_paid }}</p>
+
+
+    <p>Previous Date: {{ previous_date }}</p>
+
+
+<!-- Display Remaining Amount to be Paid -->
+<p>Remaining Amount: {{ remaining_amount }}</p>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="text" name="idReception" value="{{ veneer_instance.idReception_id  }}" class="form-control"  readonly>
@@ -31,6 +39,8 @@
                             <input type="text" name="price" value="{{ veneer_instance.price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="{{ veneer_instance.paid }}" placeholder="Paid:" required>
+                            <h4> Date Paid </h4>
+                            <input type="date" class="form-control" name="date" value="{{ veneer_instance.date }}" placeholder="" required>
                             <br/><br/>
                             <button type="submit" value="update" onclick="validateAndShowAlert()" class="btn btn-primary">Add Debt
                             </button>
