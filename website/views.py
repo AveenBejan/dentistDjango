@@ -3601,8 +3601,6 @@ def endo_edit(request, id):
                 'canal': canal,
             })
 
-
-
     return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall})
 
 

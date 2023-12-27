@@ -10,20 +10,20 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add New Educational Center</li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Student Center</li>
         </ol>
     </nav>
     <br/><br/>
     <div class="container px-5">
         <div class="row gx-5">
             <div class="col">
-                <div class="p-3 border bg-light"><h4  style="font-weight: bold; color:#17a2b8;">Add New Educational Center</h4></div>
+                <div class="p-3 border bg-light"><h4  style="font-weight: bold; color:#17a2b8;">Add New Student Center</h4></div>
                 <br/>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <input type="text" name="educational_name"
-                           class="form-control" placeholder="Educational Center Name">
+                           class="form-control" placeholder="Student Center Name">
                     <input type="text" name="phone" placeholder="Phone Number"
                            class="form-control">
                     <select name="gender" placeholder="Gender"
@@ -35,7 +35,7 @@
                     </select>
                     <br/>
                     <div class="form-group" style="text-align: center;">
-                        <input type="submit" value="Add New Educational Center"
+                        <input type="submit" value="Add New Student Center"
                                class="btn btn-info">
                     </div>
 
@@ -43,13 +43,13 @@
                 </form>
             </div>
             <div class="col-8">
-                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Educational Center Information</h4></div>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Student Center Information</h4></div>
                 <br/>
                 <table class="table table-hover">
                     <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Educational Center Name</th>
+                        <th scope="col">Student Name</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Other</th>
