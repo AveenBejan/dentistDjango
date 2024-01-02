@@ -19,8 +19,8 @@
                     </ol>
                 </nav>
                 <div class="col-6">
-                <h4 style="color:#000;">Patient Name:{{ crown_instance.name }}</h4>
-                <h5 style="color:#000;">Total Price: {{ crown_instance.price|format_with_commas  }}</h5>
+                <h4 style="color:#000;">Patient Name:{{ periodontology_instance.name }}</h4>
+                <h5 style="color:#000;">Total Price: {{ periodontology_instance.price|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Previous Paid Amount Total: {{ previous_paid|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Remaining Amount: {{ remaining_amount|format_with_commas  }}</h5>
 
@@ -43,32 +43,59 @@
                 </div>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception" value="{{ crown_instance.idReception_id  }}" class="form-control" readonly>
-                    <input type="hidden" name="name" value="{{ crown_instance.name }}" class="form-control"readonly>
-                    <input type="hidden" name="phone" value="{{ crown_instance.phone }}" class="form-control" readonly>
-                    <input type="hidden" name="gender" value="{{ crown_instance.gender }}" class="form-control"  readonly>
-                    <input type="hidden" name="date_of_birth" value="{{ crown_instance.date_of_birth }}" readonly
+                    <input type="hidden" name="idReception" value="{{ periodontology_instance.idReception_id  }}" class="form-control"  readonly>
+                    <input type="hidden" name="name" value="{{ periodontology_instance.name }}" class="form-control"readonly>
+                    <input type="hidden" name="phone" value="{{ periodontology_instance.phone }}" class="form-control"readonly>
+                    <input type="hidden" name="gender" value="{{ periodontology_instance.gender }}" class="form-control"readonly>
+                    <input type="hidden" name="date_of_birth" value="{{ periodontology_instance.date_of_birth }}"  readonly
                            class="form-control">
                    <div class="row">
 
+                        <div class="col-sm-6">
+                            <input type="hidden" id="price" name="price" value="{{ periodontology_instance.price }}" class="form-control" readonly>
+                            <h4>Paid Money</h4>
+                            <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
+                            <h4> Date Paid </h4>
+                            <input type="date" class="form-control" name="date" value="" placeholder="" required>
+                            <br/><br/>
+                            <button type="submit" value="update"  class="btn btn-primary">Add Debt
+                            </button>
+                        </div>
 
-    <div class="col-sm-6">
-    <input type="text" id="price" name="price" value="{{ crown_instance.price }}" class="form-control" readonly>
-    <h4>Paid Money</h4>
-    <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
-    <br/>
-    <h4>Date Paid</h4>
-    <input type="date" class="form-control" name="date" value="" placeholder="" required>
-    <br/><br/>
-    <button type="submit" class="btn btn-primary">Add Debt</button>
+                        </div>
 
-</div></div>
                 </form>
+                   <script>
+    function validateAndShowAlert() {
+        var requiredFields = document.querySelectorAll('[required]');
+        var allFieldsFilled = true;
+
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            showAlert();
+        } else {
+            alert("Please fill out all required fields.");
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Are you sure you want to update?")) {
+            document.getElementById("updateForm").submit();
+        }
+    }
+</script>
             </div>
         </div>
     </div>
 </section>
-    </div></div>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function () {
@@ -108,6 +135,6 @@ $(document).ready(function () {
         $(this).val(formattedValue);
     });
 });
-</script>
-</body>
+</script></body>
+
 {% endblock %}

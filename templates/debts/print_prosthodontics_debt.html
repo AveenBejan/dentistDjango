@@ -1,0 +1,80 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block navbar %}
+
+{% endblock %}
+{% block content %}
+{% load custom_filters %}
+<br/>
+<br/><br/>
+<br/>
+<br/><br/>
+<body class="">
+<div class="container body">
+    <div class="right_col" role="main">
+<p align="center"
+   style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+    نوژدار
+    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>
+    <br/>عطلة العيادة الخميس والجمعة </p>
+<hr class="border border-primary border-3 opacity-40">
+<div class="col-8">
+    <div class="row">
+
+
+        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
+        <div style="font-weight: bold;">
+            {% if debts %}
+            <p>
+                Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
+                <!--Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
+                Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
+            </p>
+            {% endif %}
+        </div>
+        <table class="table table-hover">
+            <thead style="background-color:#555; color:#fff;">
+            <tr>
+
+                <th scope="col" style="text-align:center;">#</th>
+                <!--<th scope="col" style="text-align:center;">#</th>
+                <th scope="col" style="text-align:center;">Shade</th>
+                <th scope="col" style="text-align:center;">No of Unite</th>
+                <th scope="col" style="text-align:center;">Color</th>
+                <th scope="col" style="text-align:center;">No of Pre.Unite</th>
+                 <th scope="col" style="text-align:center;">Notes</th>-->
+                <th scope="col" style="text-align:center;">Price</th>
+                <th scope="col" style="text-align:center;">Total Price</th>
+                <th scope="col" style="text-align:center;">Paid</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for debt in debts %}
+            <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
+                <td scope="col" style="text-align:center;">{{ debt.id }}</td>
+                <!--<td scope="col" style="text-align:center;">{{ debt.idReception_id }}</td>
+                <td scope="col" style="text-align:center;">{{debt.shade}}</td>
+                <td scope="col" style="text-align:center;">{{debt.no_unite}}</td>
+                <td scope="col" style="text-align:center;">{{debt.color}}</td>
+                <td scope="col" style="text-align:center;">{{debt.no_prepare}}</td>-->
+                <td scope="col" style="text-align:center;">{{ debt.price|format_with_commas }}</td>
+                <td scope="col" style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
+                <td scope="col" style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
+                <!--<td scope="col" style="text-align:center;">{{ debt.note }}</td>-->
+            </tr>
+            {% endfor %}
+        </table>
+            <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
+
+    </div>
+</div>
+
+
+    <hr class="border border-primary border-3 opacity-40">
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
+        التمنيات بالشفاء العاجل</h4>
+
+    </div></div></body>
+
+{% endblock %}

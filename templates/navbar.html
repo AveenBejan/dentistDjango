@@ -151,11 +151,21 @@
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
                         <!--<li><a  href="{% url 'search' %}">Patient Search History</a></li>-->
+                        <li><a><i class="fa fa-table"></i>Finance Reports <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
                         <li><a  href="{% url 'search-debts' %}">Patient Search Debts</a></li>
                         <li><a  href="{% url 'all_debts' %}"> All Patient Debts</a></li>
+                            <li><a  href="{% url 'search-debts-history' %}">Patient History Debts</a></li>
+                            <li><a  href="{% url 'all-total' %}">Total Report</a></li>
+                        </ul></li>
+                        <li><a><i class="fa fa-table"></i>Patient Reports <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                        <li><a  href="{% url 'search-debts1' %}">Patient Search Details</a></li>
+                        <li><a  href="{% url 'all_debts1' %}"> All Patient Details</a></li>
+                        </ul></li>
                         <li><a  href="{% url 'salary_reception' %}">Add Salary</a></li>
                         <li><a  href="{% url 'search-educational1' %}">E.C.Students Report</a></li>
-                        <li><a  href="{% url 'all-total' %}">Total Report</a></li>
+
                         {% else %}
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search History</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search Debts</a></li>

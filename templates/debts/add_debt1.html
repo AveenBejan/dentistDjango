@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <body class="nav-md">
 <div class="container body">
@@ -17,14 +18,29 @@
                         <li class="breadcrumb-item active" aria-current="page">Update Information</li>
                     </ol>
                 </nav>
-                <p>Previous Paid Amount: {{ previous_paid }}</p>
+                <div class="col-6">
+                <h4 style="color:#000;">Patient Name:{{ exo_instance.name }}</h4>
+                <h5 style="color:#000;">Total Price: {{ exo_instance.price|format_with_commas  }}</h5>
+                <h5 style="color:#000;">Previous Paid Amount Total: {{ previous_paid|format_with_commas  }}</h5>
+                <h5 style="color:#000;">Remaining Amount: {{ remaining_amount|format_with_commas  }}</h5>
 
-
-    <p>Previous Date: {{ previous_date }}</p>
-
-
-<!-- Display Remaining Amount to be Paid -->
-<p>Remaining Amount: {{ remaining_amount }}</p>
+                    <table class="table table-hover">
+                        <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+                        <tr>
+                            <th>Paid Amount</th>
+                            <th>Previous Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for history in previous_dates %}
+                        <tr>
+                            <td>{{ history.paid_amount|format_with_commas  }}</td>
+                            <td>{{ history.previous_date }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="text" name="idReception" value="{{ exo_instance.idReception_id  }}" class="form-control" readonly>
@@ -36,13 +52,13 @@
                     <div class="row">
 
                         <div class="col-sm-6">
-                            <input type="text" name="price" value="{{ exo_instance.price }}" class="form-control" readonly>
+                            <input type="text" id="price" name="price" value="{{ exo_instance.price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="{{ exo_instance.paid }}" placeholder="Paid:" required>
                             <br/><h4> Date Paid </h4>
                             <input type="date" class="form-control" name="date" value="{{ exo_instance.date }}" placeholder="" required>
                             <br/><br/>
-                            <button type="submit" value="update" onclick="validateAndShowAlert()" class="btn btn-primary">Add Debt
+                            <button type="submit" value="update" class="btn btn-primary">Add Debt
                             </button>
                         </div>
 
@@ -78,5 +94,45 @@
         </div>
     </div>
 </section>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#updateForm').submit(function (event) {
+        event.preventDefault(); // Prevent the form from submitting by default
+
+        // Remove commas from the paid value before submission
+        var paidInput = $('#paid');
+        var numericValue = paidInput.val().replace(/,/g, '');
+        paidInput.val(numericValue);
+
+        // Extracting values
+        var remainingAmount = parseFloat('{{ remaining_amount }}');
+        var previousPaid = parseFloat('{{ previous_paid }}');
+        var totalPrice = parseFloat($('#price').val());
+        var paidAmount = parseFloat(numericValue); // Use the cleaned numericValue for paidAmount
+
+        // Calculate the total paid by adding previous paid with current paid amount
+        var totalPaid = previousPaid + paidAmount;
+
+        // Check if the total paid amount reaches the total price or covers the remaining amount
+        if (totalPaid > totalPrice) {
+            alert("Total paid amount must equal the total price or cover the remaining amount.");
+        } else if (paidAmount > remainingAmount) {
+            alert("Paid amount cannot exceed the remaining amount.");
+        } else {
+            // If validation passes, submit the form
+            this.submit();
+        }
+    });
+
+    $('#paid').on('input', function () {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
     </div></div></body>
 {% endblock %}

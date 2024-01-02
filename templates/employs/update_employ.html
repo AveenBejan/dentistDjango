@@ -2,7 +2,11 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+<br/>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 
 <section class="ftco-section contact-section ftco-degree-bg">
     <div class="container">
@@ -10,7 +14,7 @@
             <div class="col-md-12 mb-4">
                 <h2 class="h4">Update Information for Patient </h2>
 
-                <h4 class="text-center alert alert-info">Update Information</h4>
+                <h4 class="text-center alert alert-info" style="text-align: justify; background-color:#17a2b8; color:#fff">Update Information</h4>
                 <form method="POST" id="updateForm">
                     {% csrf_token %}
                     {{ form.fullname }}
@@ -78,5 +82,7 @@
         </div>
     </div>
 </section>
+    </div></div>
 
+</body>
 {% endblock %}

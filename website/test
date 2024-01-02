@@ -1531,4 +1531,17 @@ def oral_visit(request, id):
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-outline-info">Print
                 Invoice</a>
-            {% endif %}
+
+            {% endif %}\
+
+
+
+            {% if search_results %}
+{% for model_name, results in search_results %}
+{% if results %}
+<h4>{{ model_name }} Report For Patient {% if results %}
+    <span style="font-weight: bold; text-align:right;">
+        Name: {{ results.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
+        Phone Number: {{ results.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
+    </span>
+    {% endif %}</h4>

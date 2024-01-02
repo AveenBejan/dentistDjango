@@ -142,6 +142,7 @@ urlpatterns = [
     path('search/', views.search_view, name='search'),
 
     path('search_debts', views.search_debts, name='search-debts'),
+    path('search_debts1', views.search_debts1, name='search-debts1'),
     path('search_educational1', views.search_educational1, name='search-educational1'),
     path('print_exo_debt/<int:id>', views.print_exo_debt, name='print_exo_debt'),
     path('print_crown_debt/<int:id>', views.print_crown_debt, name='print_crown_debt'),
@@ -150,6 +151,10 @@ urlpatterns = [
     path('print_oral_debt/<int:id>', views.print_oral_debt, name='print_oral_debt'),
     path('print_endo_debt/<int:id>', views.print_endo_debt, name='print_endo_debt'),
     path('print_ortho_debt/<int:id>', views.print_ortho_debt, name='print_ortho_debt'),
+    path('print_periodontology_debt/<int:id>', views.print_periodontology_debt, name='print_periodontology_debt'),
+    path('print_prosthodontics_debt/<int:id>', views.print_prosthodontics_debt, name='print_prosthodontics_debt'),
+
+
 
     path('add_debt/<int:id>', views.add_debt, name='add-debt'),
     path('add_debt_crown/<int:id>', views.add_debt_crown, name='add-debt-crown'),
@@ -165,8 +170,13 @@ urlpatterns = [
     path('add_debt_oral1/<int:id>', views.add_debt_oral1, name='add-debt-oral1'),
     path('add_debt_endo1/<int:id>', views.add_debt_endo1, name='add-debt-endo1'),
     path('add_debt_ortho1/<int:id>', views.add_debt_ortho1, name='add-debt-ortho1'),
-    path('all_debts', views.all_debts, name='all_debts'),
+    path('add_debt_periodontology1/<int:id>', views.add_debt_periodontology1, name='add-debt-periodontology1'),
+    path('add_debt_periodontology/<int:id>', views.add_debt_periodontology, name='add-debt-periodontology'),
+    path('add_debt_prosthodontics1/<int:id>', views.add_debt_prosthodontics1, name='add-debt-prosthodontics1'),
+    path('add_debt_prosthodontics/<int:id>', views.add_debt_prosthodontics, name='add-debt-prosthodontics'),
 
+    path('all_debts', views.all_debts, name='all_debts'),
+    path('all_debts1', views.all_debts1, name='all_debts1'),
     path('add_new_employ', views.add_new_employ, name='add-new-employ'),
     path('delete_employ/<int:id>', views.delete_employ, name='delete-employ'),
     path('add_salary/<int:id>', views.add_salary, name='add-salary'),
@@ -176,6 +186,7 @@ urlpatterns = [
 
     path('add_outcome', views.add_outcome, name='add-outcome'),
     path('delete_outcome/<int:id>', views.delete_outcome, name='delete-outcome'),
+    path('search_debts_history', views.search_debts_history, name='search-debts-history'),
 
     path('all_total', views.all_total, name='all-total'),
     path('feedback_view', views.feedback_view, name='feedback_view'),

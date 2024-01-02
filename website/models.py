@@ -440,6 +440,13 @@ class Prosthodontics(models.Model):
         return self.name
 
 
+
+
+
+class Aveen(models.Model):
+    crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE)
+
+
 class Ortho(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
@@ -579,5 +586,23 @@ class Debts(models.Model):
 
     def __str__(self):
         return f"Debt for Reception: {self.idReception}, Remaining: {self.remaining}"
+
+
+class PaymentHistory(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=True)
+    crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE, blank=True,null=True)
+    endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, blank=True,null=True)
+    filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, blank=True, null=True)
+    oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, blank=True, null=True)
+    ortho_instance = models.ForeignKey(Ortho, on_delete=models.CASCADE, blank=True, null=True)
+    veneer_instance = models.ForeignKey(Veneer, on_delete=models.CASCADE, blank=True, null=True)
+    periodontology_instance = models.ForeignKey(Periodontology, on_delete=models.CASCADE, blank=True, null=True)
+    prosthodontics_instance = models.ForeignKey(Prosthodontics, on_delete=models.CASCADE, blank=True, null=True)
+    exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE, blank=True, null=True)
+    previous_date = models.DateField(null=True)
+    paid_amount= models.DecimalField('paid', max_digits=20, decimal_places=0,null=True)
+    price = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
+    name = models.CharField('Name', max_length=120, blank=True, null=True)
+    phone = models.CharField('Phone', max_length=120, blank=True, null=True)
 
 

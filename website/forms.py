@@ -770,7 +770,7 @@ class EndoForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'note': '',
-    'date': '',
+            'date': '',
             'second_visit': '',
             'components_second': '',
             'third_visit': '',

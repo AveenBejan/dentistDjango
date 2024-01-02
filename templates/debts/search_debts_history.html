@@ -1,0 +1,82 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand"></a>
+    {%if user.is_authenticated%}
+    <form method="get" action="{% url 'search-debts-history' %}">
+        <input class="form-control mr-sm-0" type="text" name="query" value="" placeholder="Search for Patient Debts">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    {% endif %}
+</nav>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Search for Patient Debts</li>
+    </ol>
+</nav>
+<!--<h1>Search Results for "{{ query }}"</h1> you can find it in test file-->
+
+{% if search_results %}
+{% for model_name, results in search_results %}
+{% if results %}
+<h4>{{ model_name }} Report For Patient {% if results %}
+    <span style="font-weight: bold; text-align:right;">
+
+    </span>
+    {% endif %}</h4>
+<table class="table table-hover">
+    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+    <tr>
+        {% if model_name == 'PaymentHistory' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" >Sections</th>
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;" >Paid</th>
+        <th scope="col" style="text-align: center;" >Previous Date Paid</th>
+        {% endif %}
+        <!-- ... other header columns ... -->
+    </tr>
+    </thead>
+    <tbody>
+    {% for result in results %}
+    <tr style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}">
+        {% if model_name == 'PaymentHistory' %}
+        <td style="text-align: center;" >{{ result.id }}</td>
+        <td style="text-align: center;" >{{ result.name }}</td>
+        <td style="text-align: center;" >{{ result.phone }}</td>
+        <td style="text-align: center;" >{% if result.crown_instance_id %} Crown {% endif %}
+        {% if result.exo_instance_id %} Exo  {% endif %}
+        {% if result.endo_instance_id %} Endo {% endif %}
+        {% if result.filling_instance_id %} Filling  {% endif %}
+       {% if result.oral_surgery_instance_id %} Implant {% endif %}
+        {% if result.ortho_instance_id %} Ortho {% endif %}
+        {% if result.veneer_instance_id %} Veneer {% endif %}
+        {% if result.periodontology_instance_id %} Periodontology {% endif %}
+        {% if result.prosthodontics_instance_id %} Prosthodontics {% endif %}</td>
+        <td style="text-align: center;" >{{ result.price }}</td>
+        <td style="text-align: center;" >{{ result.paid_amount  }}</td>
+        <td style="text-align: center;" >{{ result.previous_date }}</td>
+        {% endif %}
+        <!-- ... other fields ... -->
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No {{ model_name }} results found.</p>
+{% endif %}
+{% endfor %}
+{% else %}
+<p>No results found.</p>
+{% endif %}
+    </div></div></body>
+{% endblock %}

@@ -397,7 +397,8 @@
                              <div class="form-group">
                                  <div class="col">
                                  <br/>
-                                <h6 style="font-weight: bold;">Date Of Second Visit</h6><input type="text" class="datepicker" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:" Y-m-d" }}{% else %}{% endif %}">
+                                <h6 style="font-weight: bold;">Date Of Second Visit</h6>
+                                     <input type="text" name="second_visit" id="second_visit" value="{{ form.initial.second_visit }}" readonly>
                                      <div class="form-check form-check-inline">
                                          <input type="checkbox"
                                                 class="form-check-input"
@@ -480,12 +481,15 @@
                         </div>
                     </div>
                            </div>
+                             <input type="date" name="date">
                     <input type="file" name="exo_images" class="form-control" multiple>
                     <div class="card-footer text-center">
                         <input type="submit" value="Update Endo Information"
                                class="btn btn-primary">
                     </div>
                              </div>
+                     </div>
+                    </div>
                 </form>
 
 
@@ -497,6 +501,25 @@
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#endo-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 <script>
     // Define the toggleVisitField function first
     function toggleVisitField(visitField, enable) {
@@ -560,31 +583,14 @@
         });
     });
 </script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $( function() {
   $( "#first_visit" ).datepicker();
-  $( "#secondVisitValue" ).datepicker();
+  $( "#second_visit" ).datepicker();
   $( "#third_visit" ).datepicker();
   $( "#fourth_visit" ).datepicker();
 } );
 </script>
-<script>
-$(document).ready(function() {
-    $('#endo-form').submit(function() {
-        // Remove commas from the price value before submission
-        var priceInput = $('#price');
-        var numericValue = priceInput.val().replace(/,/g, '');
-        priceInput.val(numericValue);
-    });
 
-    $('#price').on('input', function() {
-        // Remove non-numeric characters except dots (keeping decimals)
-        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
-        // Format with commas for thousands separators
-        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
-        $(this).val(formattedValue);
-    });
-});
-</script>
 {% endblock %}

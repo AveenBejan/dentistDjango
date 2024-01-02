@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <body class="nav-md">
 <div class="container body">
@@ -20,15 +21,14 @@
         <li class="breadcrumb-item active" aria-current="page">Search for Patient Debts</li>
     </ol>
 </nav>
-<!--<h1>Search Results for "{{ query }}"</h1>-->
+<!--<h1>Search Results for "{{ query }}"</h1> you can find it in test file-->
 
 {% if search_results %}
 {% for model_name, results in search_results %}
 {% if results %}
-<h4>{{ model_name }} Report For Patient {% if results %}
+<h4>{{ model_name }} Report {% if results %}
     <span style="font-weight: bold; text-align:right;">
-        Name: {{ results.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
-        Phone Number: {{ results.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
+
     </span>
     {% endif %}</h4>
 <table class="table table-hover">
@@ -36,66 +36,73 @@
     <tr>
         {% if model_name == 'Exo' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >Upper Right</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" >Upper Right</th>
         <th scope="col" style="text-align: center;" >Upper Left</th>
         <th scope="col" style="text-align: center;" >Lower Right</th>
         <th scope="col" style="text-align: center;" >Lower Left</th>
-        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
         <th scope="col" style="text-align: center;" >Total Price</th>
         <th scope="col" style="text-align: center;" >Paid</th>
-        <th scope="col" style="text-align: center;" >Notes</th>
+        <!--<th scope="col" style="text-align: center;" >Notes</th>
         <th scope="col" style="text-align: center;" >Exo by Surgery</th>
         <th scope="col" style="text-align: center;" >Simple Exo</th>
-        <th scope="col" style="text-align: center;" >Complicated</th>
+        <th scope="col" style="text-align: center;" >Complicated</th>-->
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Crown' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >Shade</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" >Shade</th>
         <th scope="col" style="text-align: center;" >No of Unite</th>
         <th scope="col" style="text-align: center;" >Color</th>
         <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
-        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
         <th scope="col" style="text-align: center;" >Total Price</th>
         <th scope="col" style="text-align: center;" >Paid</th>
-        <th scope="col" style="text-align: center;" >Notes</th>
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Filling' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >Filling Type</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" >Filling Type</th>
         <th scope="col" style="text-align: center;" >Filling Place</th>
         <th scope="col" style="text-align: center;" >Upper Right</th>
         <th scope="col" style="text-align: center;" >Upper Left</th>
         <th scope="col" style="text-align: center;" >Lower Right</th>
         <th scope="col" style="text-align: center;" >Lower Left</th>
         <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
-        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
         <th scope="col" style="text-align: center;" >Total Price</th>
         <th scope="col" style="text-align: center;" >Paid</th>
-        <th scope="col" style="text-align: center;" >Notes</th>
+
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Veneer' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >Shade</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" >Shade</th>
         <th scope="col" style="text-align: center;" >No of Unite</th>
         <th scope="col" style="text-align: center;" >Color</th>
         <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
-        <th scope="col" style="text-align: center;" >Price</th>
+      th scope="col" style="text-align: center;" >Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
         <th scope="col" style="text-align: center;" >Total Price</th>
         <th scope="col" style="text-align: center;" >Paid</th>
-        <th scope="col" style="text-align: center;" >Notes</th>
+
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'OralSurgery' %}
         <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >#</th>
-        <th scope="col" style="text-align: center;" >First Visit</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" >First Visit</th>
         <th scope="col" style="text-align: center;" >Implant</th>
         <th scope="col" style="text-align: center;" >Diameter</th>
         <th scope="col" style="text-align: center;" >Length</th>
@@ -107,28 +114,35 @@
         <th scope="col" style="text-align: center;" >Shade</th>
         <th scope="col" style="text-align: center;" >No Of Uint</th>
         <th scope="col" style="text-align: center;" >color</th>
-        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" >Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
         <th scope="col" style="text-align: center;" >Total Price</th>
         <th scope="col" style="text-align: center;" >Paid</th>
-        <th scope="col" style="text-align: center;" >Notes</th>
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Endo' %}
-        <th style="text-align: center;" scope="col">Upper Right</th>
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th style="text-align: center;" scope="col">Upper Right</th>
         <th style="text-align: center;" scope="col">Upper Left</th>
         <th style="text-align: center;" scope="col">Lower Right</th>
         <th style="text-align: center;" scope="col">Lower Left</th>
         <th style="text-align: center;" scope="col">Canal</th>
         <th style="text-align: center;" scope="col">Work Length</th>
         <th style="text-align: center;" scope="col">no_prepare</th>
-        <th style="text-align: center;" scope="col">Price</th>
+        <th style="text-align: center;" scope="col">Notes</th>
+        <th style="text-align: center;" scope="col">Price</th>-->
         <th style="text-align: center;" scope="col">Total Price</th>
         <th style="text-align: center;" scope="col">Paid</th>
-        <th style="text-align: center;" scope="col">Notes</th>
+
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Ortho' %}
-        <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
         <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
         <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
         <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
@@ -148,9 +162,40 @@
         <th scope="col" style="text-align: center;" class="hideable">Lower Left S</th>
         <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
         <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
-        <th scope="col" style="text-align: center;" >Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>-->
+        <th scope="col" style="text-align: center;" >Total Price</th>
         <th scope="col" style="text-align: center;" class="hideable">paid</th>
+        <th scope="col" style="text-align: center;" >Add Debts</th>
+        <th scope="col" style="text-align: center;" >Print Invoice</th>
+        {% elif model_name == 'Prosthodontics' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Complete Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">C.Upper Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">C.Lower Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">Partial Denture</th>
         <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
+        <th style="text-align: center;" scope="col">Total Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+
+        <th scope="col" style="text-align: center;" >Add Debts</th>
+        <th scope="col" style="text-align: center;" >Print Invoice</th>
+        {% elif model_name == 'Periodontology' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" class="hideable">Type</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
+        <th style="text-align: center;" scope="col">Total Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% endif %}
@@ -162,18 +207,20 @@
     <tr style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}">
         {% if model_name == 'Exo' %}
         <td style="text-align: center;" >{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
-        <td style="text-align: center;" >{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.name }}</td>
+        <td style="text-align: center;" >{{ result.phone }}</td>
+       <!-- <td style="text-align: center;" >{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.lr|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.ll|slice:"1:-1" }}</td>
-        <td style="text-align: center;" >{{ result.price }}</td>
-        <td style="text-align: center;" >{{ result.total_price }}</td>
-        <td style="text-align: center;" >{{ result.paid }}</td>
         <td style="text-align: center;" >{{ result.note }}</td>
         <td style="text-align: center;" >{{ result.exoby|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
+        <td style="text-align: center;" >{{ result.price }}</td>-->
+        <td style="text-align: center;" >{{ result.total_price }}</td>
+        <td style="text-align: center;" >{{ result.paid }}</td>
+
         <td style="text-align: center;" ><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
@@ -185,15 +232,17 @@
 
         {% elif model_name == 'Crown' %}
         <td scope="row">{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.shade}}</td>
+        <td style="text-align: center;" >{{ result.name }}</td>
+        <td style="text-align: center;" >{{ result.phone }}</td>
+       <!-- <td style="text-align: center;"  scope="row" align="center">{{result.shade}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_unite}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>
+        <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
+        <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>-->
         <td style="text-align: center;"  scope="row" align="center"> {{result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{result.paid }}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
+
         <td style="text-align: center;" ><a href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_crown_debt'  result.idReception_id  %}" style="display: inline;"
@@ -202,21 +251,21 @@
         </td>
         <!-- ... other crown-related fields ... -->
         {% elif model_name == 'Filling' %}
-        <td scope="row">{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
-        <td scope="row">{{result.filling_type}}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td scope="row">{{result.filling_type}}</td>
         <td scope="row">{{result.filling_place|slice:"1:-1"}}</td>
         <td scope="row">{{result.ur|slice:"1:-1" }}</td>
         <td scope="row">{{result.ul|slice:"1:-1"}}</td>
         <td scope="row">{{result.lr|slice:"1:-1"}}</td>
         <td scope="row">{{result.ll|slice:"1:-1"}}</td>
         <td scope="row">{{result.no_prepare}}</td>
-        <td scope="row">{{result.price}}</td>
-        <td scope="row">{{result.total_price}}</td>
-        <td scope="row">{{result.paid}}</td>
-        <td scope="row">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
-        <td style="text-align: center;" >
+        <td scope="row">{{result.price}}</td>-->
+        <td style="text-align: center;"  scope="row" align="center">{{result.total_price}}</td>
+        <td style="text-align: center;"  scope="row" align="center">{{result.paid}}</td>
+        <td style="text-align: center;"  scope="row" align="center"> <a href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
+        <td style="text-align: center;"  scope="row" align="center">
             <a href="{% url 'print_filling_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info"><SPAN>Print
                 Invoice</SPAN></a>
@@ -224,25 +273,26 @@
         </td>
         {% elif model_name == 'Veneer' %}
         <td style="text-align: center;"  scope="row">{{ result.id}}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.shade}}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td style="text-align: center;"  scope="row" align="center">{{result.shade}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_unite}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>
+        <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>-->
         <td style="text-align: center;"  scope="row" align="center"> {{ result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
-        <td style="text-align: center;" >
+        <td style="text-align: center;"  scope="row" align="center"> <a href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a></td>
+        <td style="text-align: center;"  scope="row" align="center">
             <a href="{% url 'print_veneer_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
         </td>
         {% elif model_name == 'OralSurgery' %}
         <td style="text-align: center;" scope="row">{{ result.id }}</td>
-        <td style="text-align: center;" >{{ result.idReception_id }}</td>
-        <td style="text-align: center;" scope="row">{{ result.first_visit }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td style="text-align: center;" scope="row">{{ result.first_visit }}</td>
         <td style="text-align: center;" scope="row">{{ result.implant }}</td>
         <td style="text-align: center;" scope="row">{{ result.diameter }}</td>
         <td style="text-align: center;" scope="row">{{ result.length }}</td>
@@ -254,38 +304,42 @@
         <td style="text-align: center;" scope="row">{{ result.shade }}</td>
         <td style="text-align: center;" scope="row">{{ result.no_unite }}</td>
         <td style="text-align: center;" scope="row">{{ result.color }}</td>
-        <td style="text-align: center;" scope="row">{{ result.price }}</td>
+        <td style="text-align: center;" scope="row">{{ result.price }}</td>-->
         <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
+        <td style="text-align: center;"  scope="row" align="center"> <a href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
-        <td style="text-align: center;" >
+        <td style="text-align: center;"  scope="row" align="center">
             <a href="{% url 'print_oral_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
         </td>
          {% elif model_name == 'Endo' %}
-        <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.ll|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.canal|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row">{{ result.work_length }}</td>
         <td style="text-align: center;" scope="row">{{ result.no_prepare }}</td>
-        <td style="text-align: center;">{{ result.price }}</td>
+        <td style="text-align: center;">{{ result.price }}</td>-->
         <td style="text-align: center;">{{ result.total_price }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid }}</td>
-        <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
+        <td style="text-align: center;"  scope="row" align="center"> <a href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
-        <td style="text-align: center;" >
+        <td style="text-align: center;"  scope="row" align="center">
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
         </td>
         {% elif model_name == 'Ortho' %}
-        <td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.id }}</td>
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.name }}</td>
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.phone }}</td>
+        <!--<td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lr|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ll|slice:"1:-1" }}</td>
@@ -304,16 +358,51 @@
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lrs|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lls|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.teeth_size |slice:"1:-1" }}</td>
-        <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>
-        <td style="text-align: center;">{{ result.price}}</td>
-        <td style="text-align: center;" scope="row" class="hideable">{{ result.paid }}</td>
-        <td style="text-align: center;" scope="row" class="hideable">{{ result.notes }}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
+        <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>-->
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.price}}</td>
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.paid }}</td>
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > <a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
-        <td style="text-align: center;" >
+        <td style="text-align: center;"  scope="row" align="center">
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
+        </td>
+        {% elif model_name == 'Prosthodontics' %}
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ll|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.denture|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.upper }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lower }}</td>
+        <td style="text-align: center;" scope="row">{{ result.partial }}</td>
+        <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
+        <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> <a href="{% url 'add-debt-prosthodontics' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
+        </td>
+        <td style="text-align: center;"  scope="row" align="center">
+            <a href="{% url 'print_prosthodontics_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-info">Print Invoice</a>
+        </td>
+         {% elif model_name == 'Periodontology' %}
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
+        <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
+        <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
+
+        <td style="text-align: center;"  scope="row" align="center"> <a href="{% url 'add-debt-periodontology' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
+        </td>
+        <td style="text-align: center;"  scope="row" align="center">
+            <a href="{% url 'print_periodontology_debt'  result.idReception_id  %}" style="display: inline;"
+               class="btn btn-info">Print Invoice</a>
         </td>
         {% endif %}
         <!-- ... other fields ... -->
