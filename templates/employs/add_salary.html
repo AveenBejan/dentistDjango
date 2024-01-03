@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <br/>
 <body class="nav-md">
@@ -44,19 +45,31 @@
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
 
-                                <input type="text" name="idBasicInfo"
+                                <input type="hidden" name="idBasicInfo"
                                        class="form-control" value="{{ form.initial.idBasicInfo }}">
                                 <input type="text" name="fullname"
                                        class="form-control" value="{{ form.initial.fullname }}" readonly>
 
-                                <input type="text" name="salaryPaid"
-                                       class="form-control"   value="{{ form.initial.salaryPaid }}" readonly>
-                                <input type="text" name="days" placeholder="days" value="30"
-                                       class="form-control" required>
+                                <input type="text" name="salaryPaid" class="form-control"   value="{{ form.initial.salaryPaid }}" readonly>
+                                <input type="text" name="days" placeholder="days" value="30" class="form-control" required>
                                 <div class="form-group">
-                                    <input type="text" name="{{ form.month.name }}"
-                                           class="form-control" value="{{ form.month.value }}"
-                                           placeholder="Enter the month (e.g., January)" readonly>
+                                    <select name="{{ form.month.name }}" class="form-control">
+                                        <option>Select Month</option>
+                                        <option>January</option>
+                                        <option>February</option>
+                                        <option>March</option>
+                                        <option>April</option>
+                                        <option>May</option>
+                                        <option>June</option>
+                                        <option>July</option>
+                                        <option>August</option>
+                                        <option>Septemper</option>
+                                        <option>October</option>
+                                        <option>November</option>
+                                        <option>December</option>
+
+                                    </select>
+
                                 </div>
 
                                 <br/>

@@ -563,15 +563,15 @@ def all_total(request):
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
         end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
 
-        exos = Exo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        fillings = Filling.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        crowns = Crown.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        veneers = Veneer.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        oralSurgery = OralSurgery.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        endos = Endo.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        orthos = Ortho.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        outcomes = Outcome.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
-        salaries = Salary.objects.filter(Q(regdate__gte=start_datetime, regdate__lte=end_datetime))
+        exos = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        fillings = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        crowns = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        veneers = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        outcomes = Outcome.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        salaries = Salary.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
 
     search_results = []
 
@@ -874,6 +874,9 @@ def search_doctor(request):
     form = SearchForm()  # Always instantiate the form
     receptions = Reception.objects.none()  # Initialize as empty queryset
 
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -886,7 +889,15 @@ def search_doctor(request):
             if not is_admin and request.user.username != selected_doctor.doctor_name:
                 return redirect(reverse('login'))  # Redirect to the login page for non-admin users
 
-            receptions = Reception.objects.filter(doctor=selected_doctor).order_by('-app_data')
+            receptions = Reception.objects.filter(doctor=selected_doctor)
+
+    if start_date and end_date:
+        # Convert start_date and end_date to datetime objects
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+
+        # Filter receptions by app_date within the date range
+        receptions = Reception.objects.filter(app_data__range=(start_datetime, end_datetime))
 
     # Clean appointments data before rendering
     for reception in receptions:
@@ -895,7 +906,7 @@ def search_doctor(request):
         if reception.time:
             reception.time = reception.time.replace("'", "")
 
-    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': receptions})
+    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': receptions, 'start_date': start_date,'end_date': end_date})
 
 
 def search_educational(request):

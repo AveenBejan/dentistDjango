@@ -48,7 +48,7 @@
         <th scope="col" style="text-align: center;" >Simple Exo</th>
         <th scope="col" style="text-align: center;" >Complicated</th>
 
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
+        <!--<th scope="col" style="text-align: center;" >Print Invoice</th>-->
         {% elif model_name == 'Crown' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -59,7 +59,6 @@
         <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" >Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Filling' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -73,7 +72,6 @@
         <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" >Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Veneer' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -84,7 +82,6 @@
         <th scope="col" style="text-align: center;" >No of Pre.Unite</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" >Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'OralSurgery' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -101,8 +98,6 @@
         <th scope="col" style="text-align: center;" >color</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" >Notes</th>
-
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Endo' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -116,7 +111,6 @@
         <th style="text-align: center;" scope="col">no_prepare</th>
         <th style="text-align: center;" scope="col">Price</th>
         <th style="text-align: center;" scope="col">Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Ortho' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -143,7 +137,6 @@
         <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" class="hideable">Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Prosthodontics' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -158,7 +151,6 @@
         <th scope="col" style="text-align: center;" class="hideable">Partial Denture</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" class="hideable">Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% elif model_name == 'Periodontology' %}
         <th scope="col" style="text-align: center;" >#</th>
         <th scope="col" style="text-align: center;" >Name</th>
@@ -166,7 +158,6 @@
         <th scope="col" style="text-align: center;" class="hideable">Type</th>
         <th scope="col" style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" class="hideable">Notes</th>
-        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% endif %}
         <!-- ... other header columns ... -->
     </tr>
@@ -187,12 +178,12 @@
         <td style="text-align: center;" >{{ result.exoby|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info"><span>Print
                 Invoice</span></a>
 
-        </td>
+        </td>-->
 
 
         {% elif model_name == 'Crown' %}
@@ -205,11 +196,11 @@
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_crown_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
-        </td>
+        </td>-->
         <!-- ... other crown-related fields ... -->
         {% elif model_name == 'Filling' %}
         <td style="text-align: center;" >{{ result.id }}</td>
@@ -224,12 +215,12 @@
         <td style="text-align: center;" >{{result.no_prepare}}</td>
         <td style="text-align: center;" >{{result.price}}</td>
         <td style="text-align: center;" >{{result.note}}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_filling_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info"><SPAN>Print
                 Invoice</SPAN></a>
 
-        </td>
+        </td>-->
         {% elif model_name == 'Veneer' %}
         <td style="text-align: center;"  scope="row">{{ result.id}}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -240,11 +231,11 @@
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_veneer_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
-        </td>
+        </td>-->
         {% elif model_name == 'OralSurgery' %}
         <td style="text-align: center;" scope="row">{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -262,11 +253,11 @@
         <td style="text-align: center;" scope="row">{{ result.price }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
         </td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_oral_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
-        </td>
+        </td>-->
          {% elif model_name == 'Endo' %}
         <td style="text-align: center;" >{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -281,11 +272,11 @@
         <td style="text-align: center;">{{ result.price }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
         </td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
-        </td>
+        </td>-->
         {% elif model_name == 'Ortho' %}
         <td style="text-align: center;" >{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -312,11 +303,11 @@
         <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>
         <td style="text-align: center;">{{ result.price}}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.notes }}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
 
-        </td>
+        </td>-->
         {% elif model_name == 'Prosthodontics' %}
         <td style="text-align: center;" >{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -331,10 +322,10 @@
         <td style="text-align: center;" scope="row">{{ result.partial }}</td>
         <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_prosthodontics_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
-        </td>
+        </td>-->
          {% elif model_name == 'Periodontology' %}
         <td style="text-align: center;" >{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -342,10 +333,10 @@
         <td style="text-align: center;" scope="row">{{ result.type }}</td>
         <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
-        <td style="text-align: center;" >
+        <!--<td style="text-align: center;" >
             <a href="{% url 'print_periodontology_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
-        </td>
+        </td>-->
         {% endif %}
         <!-- ... other fields ... -->
     </tr>
