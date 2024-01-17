@@ -25,12 +25,17 @@
                 <li class="nav-item"><a href="contact.html" class="nav-link" style="color: #ffffff;">Contact</a></li>
                 {% endif %}
                 -->
-                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' or user.role == 'patient'  %}
                 <li><a><i class="fa fa-home"></i> Reception <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'patient' %}
+                        <li><a  href="{% url 'user_all' %}">Patient Appoint</a></li>
+                        {% endif %}
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' %}
                       <li><a  href="{% url 'all-reception' %}">Reception Info</a></li>
                       <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
+                        <li><a  href="{% url 'all_customer' %}">All Customer</a></li>
+
                         {% else %}
                         <!-- Disabled links with onclick alert -->
                         <li><a  href=""
@@ -93,6 +98,7 @@
                         {% endif %}
                     </ul>
                 </li>
+                    {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' %}
                     <li><a><i class="fa fa-home"></i> Drugs <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
@@ -108,7 +114,8 @@
                         {% endif %}
                      </ul>
                     </li>
-                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
+                    {% endif %}
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' %}
                 <li><a><i class="fa fa-home"></i> ADDS <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
@@ -149,12 +156,14 @@
                         </ul></li>
                         <li><a  href="{% url 'salary_reception' %}">Add Salary</a></li>
                         <li><a  href="{% url 'search-educational1' %}">E.C.Students Report</a></li>
+                        <li><a  href="{% url 'search-education' %}">All Students Report</a></li>
 
                         {% else %}
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search History</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Patient Search Debts</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">All Patient Debts</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Salary</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">E.C.Students Report</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">E.C.Students Report</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Total Report</a></li>
                         {% endif %}
@@ -177,18 +186,22 @@
                          {% endif %}
                      </ul>
                  </li>
+                    {% if user.is_authenticated %}
                     {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' %}
                      <li><a><i class="fa fa-home"></i> My Appointments <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        {% if user.role == 'admin' or user.role == 'doctor' or user.role == 'educational_center' %}
+                        {% if user.role == 'admin' or user.role == 'doctor' %}
                         <li><a  href="{% url 'search-doctor' %}">Doctor Appointments</a></li>
+                        {% endif %}
+                        {% if user.role == 'admin' or user.role == 'educational_center' %}
                         <li><a  href="{% url 'search-educational' %}">Students Appointments</a></li>
+                        {% endif %}
                         {% else %}
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Doctor Appointments</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Students Appointments</a></li>
-                        {% endif %}
+
                     </ul>
-                </li>{% endif %}
+                </li>{% endif %}{% endif %}
 
                 <!--{% if user.role == 'admin' or user.role == 'doctor' %}
                 <ul class="nav child_menu">

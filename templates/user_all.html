@@ -7,14 +7,6 @@
     <div class="right_col" role="main">
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
-    {%if user.is_authenticated%}
-    <form class="form-inline" method="POST" action="{% url 'search-reception' %}">
-        {% csrf_token %}
-        <input class="form-control mr-sm-4" type="search" placeholder="Search For Patient" aria-label="Search"
-               name="searched">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    {% endif %}
 </nav>
     <div class="col-12">
         <nav aria-label="breadcrumb">
@@ -33,12 +25,8 @@
                         <th scope="col">Patient Phone</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Date of Birth</th>
-                        <th scope="col">Doctor Name</th>
-                        <th scope="col">Date of Appointment</th>
-                        <th scope="col">Days</th>
-                        <th scope="col">Time</th>
-                        <!--<th scope="col" colspan="">Update</th>-->
-                        <th scope="col" colspan="">Delete</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Date of Birth</th>
 
                     </tr>
                     </thead>
@@ -50,14 +38,9 @@
                         <td> {{appointment.phone}}</td>
                         <td> {{appointment.gender}}</td>
                         <td> {{appointment.date_of_birth}}</td>
-                        <td scope="row">{{appointment.doctor}}</td>
-                        <td scope="row">{{ appointment.app_data }}</td>
-                        <td scope="row">{{appointment.days}}</td>
-                        <td scope="row">{{appointment.time|slice:"1:-1"}}</td>
-                        <td><a href="{% url 'update-reception' appointment.id %}" style="display: inline;"><span class="btn btn-outline-warning">Update</span></a></td>
-                        <td><a href="{% url 'delete-reception'  appointment.id  %}" style="display: inline;"><span class="btn btn-outline-danger">Delete</span></a></td>
-                        <!-- <th scope="col" colspan="">Send Reminder</th><td><a href="{% url 'send_appointment_reminders' %}">Send Reminder</a></td>-->
-
+                        <td> {{appointment.user.role}}</td>
+                        <a href="{% url 'gave-appointment' id=appointment.id %}" style="display: inline;"><span
+                                        class="btn btn-success btn-xs">Add Appointment</span></a></td>
                     </tr>
                     {% endfor %}
                     </tbody>

@@ -2,22 +2,25 @@
 {% load static %}
 {% block content %}
 {% load custom_filters %}
-<br/>
 <body class="nav-md">
 <div class="container body">
     <div class="right_col" role="main">
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
-    <form method="get" action="{% url 'all_debts' %}">
+    {% if user.role == 'admin' or user.role == 'doctor' %}
+    <form class="form-inline" method="get" action="" id="searchForm">
+        {% csrf_token %}
         <label for="start_date" style="font-size:20px; font-weight: bold;">Start Date:</label>
         <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
-
+ &nbsp&nbsp&nbsp&nbsp
         <label for="start_date" style="font-size:20px; font-weight: bold;">End Date:</label>
             <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
-
+         &nbsp&nbsp&nbsp&nbsp{{ form.doctor }}<BR>
+        &nbsp&nbsp&nbsp&nbsp
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
+    {% endif %}
     {% endif %}
 </nav>
 <nav aria-label="breadcrumb">
@@ -26,6 +29,113 @@
         <li class="breadcrumb-item active" aria-current="page">Search for All Patients From Start Date To End Date</li>
     </ol>
 </nav>
+        <div class="col-6">
+            <table class="table table-hover">
+                <thead style="background-color:#555; color:#fff;">
+                <tr>
+                    <th scope="row" style="text-align: center;"> Total Price</th>
+                    <th scope="row" style="text-align: center;"> Total Paid</th>
+                    <th scope="row" style="text-align: center;"> Remaining</th>
+                    <th>Display Details </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="text-align: center;">{{total_price_t}}</td>
+                    <td style="text-align: center;">{{total_paid_t}}</td>
+                    <td style="text-align: center;">{{remaining}}</td>
+                    <td><button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Show Information</button></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+
+    <!-- Modal -->
+    <div class="col-10">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+
+                        <h3>From: {{ start_date }} To {{ end_date }}</h3>
+                        <table class="table table-hover">
+                            <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+                            <tr>
+                                <th scope="row"> Exo T.Price</th>
+                                <th scope="row"> Filling T.Price</th>
+                                <th scope="row"> Crown T.Price</th>
+                                <th scope="row"> Veneer T.Price</th>
+                                <th scope="row"> Implant T.Price</th>
+                                <th scope="row"> Endo T.Price</th>
+                                <th scope="row"> Ortho T.Price</th>
+                                <th scope="row"> Periodo T.Price</th>
+                                <th scope="row"> Prostho T.Price</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;">{{total_exo}}</td>
+                                <td style="text-align: center;">{{total_filling}}</td>
+                                <td style="text-align: center;">{{total_crown}}</td>
+                                <td style="text-align: center;">{{total_veneer}}</td>
+                                <td style="text-align: center;">{{total_oralSurgery}}</td>
+                                <td style="text-align: center;">{{total_endo}}</td>
+                                <td style="text-align: center;">{{total_ortho}}</td>
+                                <td style="text-align: center;">{{ total_periodontology }}</td>
+                                <td style="text-align: center;">{{total_prosthodontics}}</td>
+
+                            </tr>
+                            </tbody>
+                            <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+                            <tr>
+                                <th scope="row"> Exo Paid</th>
+                                <th scope="row"> Filling Paid</th>
+                                <th scope="row"> Crown Paid</th>
+                                <th scope="row"> Veneer Paid</th>
+                                <th scope="row"> Implant Paid</th>
+                                <th scope="row"> Endo Paid</th>
+                                <th scope="row"> Ortho Paid</th>
+                                <th scope="row"> Periodo Paid</th>
+                                <th scope="row"> Prostho Paid</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;">{{paid_exo}}</td>
+                                <td style="text-align: center;">{{paid_filling}}</td>
+                                <td style="text-align: center;">{{paid_crown}}</td>
+                                <td style="text-align: center;">{{paid_veneer}}</td>
+                                <td style="text-align: center;">{{paid_oralSurgery}}</td>
+                                <td style="text-align: center;">{{paid_endo}}</td>
+                                <td style="text-align: center;">{{paid_ortho}}</td>
+                                <td style="text-align: center;">{{ paid_periodontology }}</td>
+                                <td style="text-align: center;">{{paid_prosthodontics}}</td>
+
+
+                            </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
 <!--
 <div class="col-4">
 <h1>Search Results for "{{ query }}"</h1>
@@ -261,11 +371,14 @@
         <td style="text-align: center;" >{{ result.price }}</td>-->
         <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;" >{{ result.paid|format_with_commas}}</td>
+
         <td style="text-align: center;" ><a href="{% url 'add-debt1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-outline-info">Print Invoice</a>
         </td>
+
+
 
 
         {% elif model_name == 'Crown' %}

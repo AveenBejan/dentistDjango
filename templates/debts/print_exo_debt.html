@@ -19,11 +19,11 @@
     ددانا<br/>B.D.S/M.SC.Ortho</br>
     <br/>عطلة العيادة الخميس والجمعة </p>
 <hr class="border border-primary border-3 opacity-40">
-<div class="col-8">
+<div class="col-6">
     <div class="row">
 
 
-        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
+        <h1 style="text-align:center;">Payment Invoice For Exo Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
@@ -37,41 +37,25 @@
             <thead style="background-color:#555; color:#fff;">
             <tr>
 
-                <!--<th style="text-align:center;" scope="col">#</th>
                 <th style="text-align:center;" scope="col">#</th>
-                <th style="text-align:center;" scope="col">Upper Right</th>
-                <th style="text-align:center;" scope="col">Upper Left</th>
-                <th style="text-align:center;" scope="col">Lower Right</th>
-                <th style="text-align:center;" scope="col">Lower Left</th>-->
-                <th style="text-align:center;" scope="col">Price</th>
-                <th style="text-align:center;" scope="col">Total Price</th>
+                <th style="text-align:center;" scope="col">Previous Date</th>
                 <th style="text-align:center;" scope="col">Paid</th>
-               <!-- <th style="text-align:center;" scope="col">Notes</th>
-                <th style="text-align:center;" scope="col">Exo by Surgery</th>
-                <th style="text-align:center;" scope="col">Simple Exo</th>
-                <th style="text-align:center;" scope="col">Complicated</th>-->
+
+
             </tr>
             </thead>
             <tbody>
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-                <!--<td style="text-align:center;">{{ debt.id }}</td>
-                <td style="text-align:center;">{{ debt.idReception_id }}</td>
-                <td style="text-align:center;">{{ debt.ur|slice:"1:-1" }}</td>
-                <td style="text-align:center;">{{ debt.ul|slice:"1:-1" }}</td>
-                <td style="text-align:center;">{{ debt.lr|slice:"1:-1" }}</td>
-                <td style="text-align:center;">{{ debt.ll|slice:"1:-1" }}</td>-->
-                <td style="text-align:center;">{{ debt.price|format_with_commas }}</td>
-                <td style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
-                <td style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
-                <!--<td>{{ debt.note }}</td>
-                <td>{{ debt.exoby|slice:"1:-1" }}</td>
-                <td>{{ debt.simpleexo|slice:"1:-1" }}</td>
-                <td>{{ debt.complcated|slice:"1:-1" }}</td>-->
+                <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">{{ debt.previous_date }}</td>
+                <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
             </tr>
             {% endfor %}
+
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
+        <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Price: {{ total_price|format_with_commas }}</span></td>
+<td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>

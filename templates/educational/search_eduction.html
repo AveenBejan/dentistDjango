@@ -3,21 +3,11 @@
 {% block content %}
 <br/>
 <body class="nav-md">
+    {%if user.is_authenticated%}
+    {% if user.role == 'admin' %}
 <div class="container body">
     <div class="right_col" role="main">
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand"></a>
-    {%if user.is_authenticated%}
-    {% if user.role == 'admin' or user.role == 'educational_center' %}
-    <form class="form-inline" method="POST" action="">
-        {% csrf_token %}
-        {{ form.educational }}<BR>
-        &nbsp&nbsp&nbsp&nbsp
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    {% endif %}
-    {% endif %}
-</nav>
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
@@ -371,5 +361,7 @@
 {% else %}
 <p>No results found.</p>
 {% endif %}
-    </div></div></body>
+    </div></div>
+{% endif %}
+    {% endif %}</body>
 {% endblock %}

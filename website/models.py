@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.conf import settings
+from accounts.models import CustomUser # Import the CustomUser model from the account app
 
 
 class WebsiteFeedback(models.Model):
@@ -68,6 +69,8 @@ class Educational(models.Model):
 
 
 class Reception(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=False, blank=True,null=True)
+    name1 = models.CharField('Name', max_length=120, blank=True,null=True)
     name = models.CharField('Name',max_length=120)
     phone = models.CharField('phone',max_length=120)
     gender = models.CharField('Gender',max_length=20)

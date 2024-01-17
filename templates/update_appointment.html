@@ -1,0 +1,137 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+
+<section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12 mb-4">
+                <h2 class="h4">Update Information for Patient </h2>
+
+                <h4 class="text-center alert alert-info">Update Information</h4>
+                <form method="POST" id="updateForm">
+                    {% csrf_token %}
+					<p>{{form.name}}</p>
+					<p>{{ form.phone }}</p>
+					<p>{{ form.date_of_birth }}</p>
+					<p>{{ form.gender }}</p>
+                    {{ form.doctor }}
+                    {{ form.user_id }}
+                      <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Date of Appointment</label>
+									 <input type="date" name="app_data" id="datepicker-3" required class="form-control">
+								 </div>
+							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Days</label>
+									 <input type="text" name="days" id="datepicker-4" readonly class="form-control">
+								 </div>
+							 </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="4:00pm">
+                                            <label class="form-check-label">4:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="4:30pm">
+                                            <label class="form-check-label">4:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="5:00pm">
+                                            <label class="form-check-label">5:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="5:30pm">
+                                            <label class="form-check-label">5:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="6:00pm">
+                                            <label class="form-check-label">6:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="6:30pm">
+                                            <label class="form-check-label">6:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="7:00pm">
+                                            <label class="form-check-label">7:00pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="7:30pm">
+                                            <label class="form-check-label">7:30pm</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" name="time" value="8:00pm">
+                                            <label class="form-check-label">8:00pm</label>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    <div class="form-group" style="text-align: center;">
+                                        <input type="submit" value="Add New Appointment"
+                                               class="btn btn-outline-primary">
+                                    </div>
+
+                            </form>
+                        </div>
+
+
+
+            </div>
+
+
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+$(document).ready(function () {
+    var datePicker = $("#datepicker-3");
+    var daysInput = $("#datepicker-4");
+    var submitBtn = $("#submitBtn");
+
+    function isThursdayOrFriday(date) {
+        return date.getDay() === 4 || date.getDay() === 5;
+    }
+
+    datePicker.change(function () {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            alert("Our Dental Center is closed on Thursday and Friday. Thank you!");
+            submitBtn.prop("enabled", true);
+        } else {
+            submitBtn.prop("enabled", false);
+        }
+
+        // Get day name for the selected date
+        var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var selectedDayName = dayNames[date.getDay()];
+
+        // Update #datepicker-4 with the day name
+        daysInput.val(selectedDayName);
+    });
+
+    submitBtn.on("click", function (event) {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            event.preventDefault();
+            alert("Please select a date other than Thursday or Friday.");
+        }
+    });
+
+    // Initial check on page load
+    datePicker.trigger("change");
+});
+	</script>
+    </div></section></div></div></body>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm  # Assuming you have a custom form for user creation
 from django.contrib.auth import login as auth_login
+from .models import CustomUser
 
 # Create your views here.
 
@@ -14,5 +15,10 @@ def signup(request):
             auth_login(request, user)
             return redirect('login')
     return render(request, 'accounts/signup.html', {'form': form})
+
+
+def all_customer(request):
+    appointments = CustomUser.objects.all().order_by('-id')
+    return render(request, 'accounts/all_customer.html', {'appointments': appointments})
 
 

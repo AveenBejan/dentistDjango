@@ -22,7 +22,7 @@
     <div class="row">
 
 
-        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
+        <h1 style="text-align:center;">Payment Invoice For Implant Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
@@ -36,53 +36,25 @@
             <thead style="background-color:#555; color:#fff;">
             <tr>
 
-              <!--<th scope="col">#</th>
-              <th scope="col">#</th>
-              <th scope="col">First Visit</th>
-              <th scope="col">Implant</th>
-              <th scope="col">Diameter</th>
-              <th scope="col">Length</th>
-              <th scope="col">No Of Implant</th>
-              <th scope="col">Shade</th>
-              <th scope="col">No Of Uint</th>
-              <th scope="col">color</th>
-              <th scope="col">Notes</th>
-              <th scope="col" style="text-align:center;">Upper Right</th>
-              <th scope="col" style="text-align:center;">Upper Left</th>
-              <th scope="col" style="text-align:center;">Lower Right</th>
-              <th scope="col" style="text-align:center;">Lower Left</th>-->
-              <th scope="col" style="text-align:center;">Price</th>
-              <th scope="col" style="text-align:center;">Total Price</th>
-                <th scope="col" style="text-align:center;">Paid</th>
+                <th style="text-align:center;" scope="col">#</th>
+                <th style="text-align:center;" scope="col">Previous Date</th>
+                <th style="text-align:center;" scope="col">Paid</th>
+
 
             </tr>
             </thead>
             <tbody>
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-                <!--<td>{{ debt.id }}</td>
-                <td>{{ debt.idReception_id }}</td>
-                <td >{{ debt.first_visit }}</td>
-                <td >{{ debt.implant }}</td>
-                <td >{{ debt.diameter }}</td>
-                <td >{{ debt.length }}</td>
-                <td >{{ debt.no_Implant }}</td>
-                <td >{{ debt.shade }}</td>
-                <td >{{ debt.no_unite }}</td>
-                <td >{{ debt.color }}</td>
-                <td >{{ debt.note }}</td>
-              <td style="text-align:center;" scope="col">{{ debt.ur|slice:"1:-1" }}</td>
-              <td style="text-align:center;" scope="col">{{ debt.ul|slice:"1:-1" }}</td>
-              <td style="text-align:center;" scope="col">{{ debt.lr|slice:"1:-1" }}</td>
-              <td style="text-align:center;" scope="col">{{ debt.ll|slice:"1:-1" }}</td>-->
-              <td style="text-align:center;" scope="col">{{ debt.price|format_with_commas }}</td>
-              <td style="text-align:center;" scope="col">{{ debt.total_price|format_with_commas }}</td>
-                <td style="text-align:center;" scope="col">{{ debt.paid|format_with_commas }}</td>
-
+                <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">{{ debt.previous_date }}</td>
+                <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
             </tr>
             {% endfor %}
+
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
+        <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Price: {{ total_price|format_with_commas }}</span></td>
+<td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>

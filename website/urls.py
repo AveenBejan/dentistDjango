@@ -14,6 +14,11 @@ urlpatterns = [
     path('doctors.html', views.doctors, name='doctors'),
     path('exo_reception.html', views.reception, name='reception'),
     path('all-reception', views.all_reception, name='all-reception'),
+
+    path('user_all', views.user_all, name='user_all'),
+    path('custom_login', views.custom_login, name='custom_login'),
+    path('update_appointment/<int:id>/', views.update_appointment, name='update_appointment'),
+
     path('oral_reception.html', views.oral_reception, name='oral-reception'),
     path('delete_reception/<int:id>', views.delete_reception, name='delete-reception'),
     path('search_reception', views.search_reception, name='search-reception'),
@@ -41,6 +46,7 @@ urlpatterns = [
     path('educational/educational.html', views.educational, name='educational'),
     path('delete-educational/<int:id>', views.delete_educational, name='delete-educational'),
     path('search_educational', views.search_educational, name='search-educational'),
+    path('search_education', views.search_education, name='search-education'),
 
 
     path('exo/<int:id>',views.exo, name='exo'),

@@ -41,6 +41,7 @@
              {% endif %}
 			 <div class="col-10" style="background:#2A3F54; color:#fff; font-size:24px; text-align: center !important;"> Appointment Form</div>
 			 <br/>
+			 {%if user.is_authenticated%}
 			 <form class="appointment-form" method="POST" id="myForm">
 				 {% csrf_token %}
 						 <div class="row">
@@ -161,6 +162,7 @@
 							 </div>
 						 </div>
 			 </form>
+			 {% endif %}
 		 </div>
 
 		 <div class="col-lg-6 color-11 p-4">
@@ -590,7 +592,7 @@
 -->
 
 
-      </div>
+     </div>
     </div>
 	</div>
 	</div>
@@ -663,4 +665,3 @@ $(document).ready(function () {
 	</script>
 
 	{% endblock %}
-

@@ -172,7 +172,7 @@ class ReceptionForm(forms.ModelForm):
 
     class Meta:
         model = Reception
-        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time')
+        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time','user')
         labels = {
             'name': 'Full Name',
             'phone': 'Phone Number',
@@ -183,6 +183,7 @@ class ReceptionForm(forms.ModelForm):
             'app_data': '',
             'days': '',
             'time': 'Time',
+
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
@@ -196,7 +197,7 @@ class ReceptionForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor")
+    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor", required=False)
 
 
 class SearchForm1(forms.Form):

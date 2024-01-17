@@ -20,7 +20,7 @@
 <div class="col-8">
     <div class="row" >
 
-        <h1 style="text-align:center;">Payment Invoice For Patient </h1>
+        <h1 style="text-align:center;">Payment Invoice For Crown Patient </h1>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
@@ -33,37 +33,29 @@
           <table class="table table-hover">
             <thead style="background-color:#555; color:#fff;">
             <tr>
-                <!--<th scope="col">#</th>
-                <th scope="col">#</th>
-                <th scope="col" style="text-align:center;">Shade</th>
-                <th scope="col" style="text-align:center;">No of Unite</th>
-                <th scope="col" style="text-align:center;">Color</th>
-                <th scope="col" style="text-align:center;">No of Pre.Unite</th>-->
-                <th scope="col" style="text-align:center;">Price</th>
-                <th scope="col" style="text-align:center;">Total Price</th>
-                <th scope="col" style="text-align:center;">Paid</th>
+
+                <th style="text-align:center;" scope="col">#</th>
+                <th style="text-align:center;" scope="col">Previous Date</th>
+                <th style="text-align:center;" scope="col">Paid</th>
+
+
             </tr>
             </thead>
             <tbody>
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-               <!-- <td style="text-align:center;">{{ debt.id }}</td>
-                <td style="text-align:center;">{{ debt.idReception_id }}</td>
-                <td style="text-align:center;">{{debt.shade}}</td>
-                <td style="text-align:center;">{{debt.no_unite}}</td>
-                <td style="text-align:center;">{{debt.color}}</td>
-                <td style="text-align:center;">{{debt.no_prepare}}</td>-->
-                <td style="text-align:center;">{{ debt.price|format_with_commas }}</td>
-                <td style="text-align:center;">{{ debt.total_price|format_with_commas }}</td>
-                <td style="text-align:center;">{{ debt.paid|format_with_commas }}</td>
+                <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">{{ debt.previous_date }}</td>
+                <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
             </tr>
             {% endfor %}
+
         </table>
-        <td colspan="6"><span style="font-weight: bold; background-color:#e0ad11; color:#fff; text-align:right;">Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
+        <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Price: {{ total_price|format_with_commas }}</span></td>
+<td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
 
     </div>
 </div>
-
 
 
     <hr class="border border-primary border-3 opacity-40">
