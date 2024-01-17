@@ -990,10 +990,10 @@ def reception(request):
         form = ReceptionForm(request.POST)
         if form.is_valid():
             # Get the currently logged-in user
-            user = request.user
+            #user = request.user
 
             instance = form.save(commit=False)
-            instance.user = user  # Associate the Reception instance with the logged-in user
+            #instance.user = user  # Associate the Reception instance with the logged-in user
 
             doctor_name = form.cleaned_data['doctor']
             educational_name = form.cleaned_data['educational']
@@ -1011,7 +1011,7 @@ def reception(request):
             days = request.POST.get('days')
             selected_times = request.POST.getlist('time')
 
-            if Reception.objects.filter(user=user, doctor=instance.doctor, educational=instance.educational,
+            if Reception.objects.filter(doctor=instance.doctor, educational=instance.educational,
                                         app_data=app_data, days=days, time=selected_times).exists():
                 messages.error(request, f'This date, days, and time are already booked for {doctor_name}.<br/> You Can Choose another Time')
                 return redirect('home')
