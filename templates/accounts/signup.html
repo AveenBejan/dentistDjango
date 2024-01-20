@@ -1,30 +1,45 @@
 {% load static %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'accounts/css/bootstrap.css'%}">
+<link rel="stylesheet" href="{% static 'accounts/css/bootstrap.css'%}">
 {% endblock %}
 
 {% block ss %}
-  <div class="container">
+<div class="container">
     <h1 class="text-center logo my-4">
-      <a href="">Dentist Login</a>
+        <a href="">Dentist Login</a>
     </h1>
     <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10 col-sm-12">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Sign up</h3>
-            <form method="post" novalidate>
-              {% csrf_token %}
-              {% include 'includes/form.html' %}
-              <button type="submit" class="btn btn-primary btn-block">Create an account</button>
-            </form>
-          </div>
-          <div class="card-footer text-muted text-center">
-            Already have an account? <a href="{% url 'login' %}">Log in</a>
-          </div>
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Sign up</h3>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% include 'includes/form.html' %}
+                        <div class="form-group">
+                            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()"> Show Password
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Create an account</button>
+                    </form>
+                </div>
+                <div class="card-footer text-muted text-center">
+                    Already have an account? <a href="{% url 'login' %}">Log in</a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("password");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+        } else {
+            passwordField.type = "password";
+        }
+    }
+
+</script>
 {% endblock %}
