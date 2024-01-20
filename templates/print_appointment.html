@@ -3,9 +3,6 @@
 
 {% block content %}
 <br/>
-<br/><br/>
-<br/>
-<br/>
 
 <div class="container body">
     <div class="right_col" role="main" style="width: 100%">
@@ -18,12 +15,12 @@
 <div class="col-8">
     <div class="card-body">
         {% for drug in drugs %}
-        <h3><p>Patient Name:&nbsp;- &nbsp;{{ drug.name }}</p></h3>
-        <h3><p>Patient Phone Number:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>
-        <h3><p>Doctor Name:&nbsp;- &nbsp;{{ drug.doctor }}</p></h3>
-        <h3><p>Appointment Date:&nbsp;- &nbsp;{{ drug.app_data }}</p></h3>
-        <h3><p>Day Name&nbsp;- &nbsp;{{ drug.days }}</p></h3>
-        <h3><p>Time&nbsp;- &nbsp;{{ drug.time|slice:"1:-1" }}</p></h3>
+        <h3><p style="font-size:16px;">Patient Name:&nbsp;- &nbsp;{{ drug.name }}</p></h3>
+        <h3><p style="font-size:16px;">Patient Phone Number:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>
+        <h3><p style="font-size:16px;">Doctor Name:&nbsp;- &nbsp;{{ drug.doctor }}</p></h3>
+        <h3><p style="font-size:16px;">Appointment Date:&nbsp;- &nbsp;{{ drug.app_data }}</p></h3>
+        <h3><p style="font-size:16px;">Day Name&nbsp;- &nbsp;{{ drug.days }}</p></h3>
+        <h3><p style="font-size:16px;">Time&nbsp;- &nbsp;{{ drug.time|slice:"1:-1" }}</p></h3>
 
         {% endfor %}
     </div>
