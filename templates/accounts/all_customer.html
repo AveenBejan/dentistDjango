@@ -49,8 +49,10 @@
 
                         <th scope="row">{{appointment.id}}</th>
                         <td> {{appointment.username}}</td>
-                        <td> {{appointment.password|safe}}</td>
+                        <td> {{appointment.custom_password}}</td>
                         <td> {{appointment.role}}</td>
+                        <td><a href="{% url 'print-appointment'  appointment.id  %}" style="display: inline;" class="btn btn-outline-info">Print Appointment</a></td>
+
 
                     </tr>
                     {% endfor %}

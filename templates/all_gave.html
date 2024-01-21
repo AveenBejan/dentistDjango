@@ -27,6 +27,7 @@
 					 <th scope="col">App.Date</th>
 					 <th scope="col">Day Name</th>
 					 <th scope="col">Time</th>
+					 <th scope="col">Print</th>
 				 </tr>
 				 </thead>
 				 <tbody>
@@ -41,6 +42,12 @@
 					 <td>{{gave.app_data}}</td>
 					 <td>{{gave.days}}</td>
 					 <td>{{gave.time|slice:"1:-1"}}</td>
+					 {% if user.is_authenticated %}
+					 {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' or user.role == 'patient'  %}
+					 <td><a href="{% url 'print-appointment'  gave.id  %}" style="display: inline;" class="btn btn-outline-info">Print Appointment</a></td>
+					 {% endif %}
+					 {% endif %}
+
 
 				 </tr>
 				 {% endfor %}

@@ -31,7 +31,7 @@
                         {% if user.role == 'admin' or user.role == 'patient' %}
                         <li><a  href="{% url 'user_all' %}">Patient Appoint</a></li>
                         {% endif %}
-                        {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' %}
+                        {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
                       <li><a  href="{% url 'all-reception' %}">Reception Info</a></li>
                       <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
                         <li><a  href="{% url 'all_customer' %}">All Customer</a></li>

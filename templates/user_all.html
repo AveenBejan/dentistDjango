@@ -15,41 +15,29 @@
                 <li class="breadcrumb-item active" aria-current="page">Patient Information</li>
             </ol>
         </nav>
-        <div class="row d-flex mb-5 contact-info">
-            <div class="col-md-12 mb-4">
-                <table class="table table-hover">
-                    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Patient Name</th>
-                        <th scope="col">Patient Phone</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Date of Birth</th>
-                        <th scope="col">Date of Birth</th>
-                        <th scope="col">Date of Birth</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
+         <div class="row d-flex mb-5 contact-info">
+        <div class="col-md-12 mb-4">
+            {% if alert_message %}
+                <script>alert("{{ alert_message }}");</script>
+            {% else %}
+                <h2>User Appointments</h2>
+                <ul>
                     {% for appointment in appointments %}
-                    <tr>
-                        <td scope="row">{{appointment.id}}</td>
-                        <td scope="row">{{appointment.name}}</td>
-                        <td> {{appointment.phone}}</td>
-                        <td> {{appointment.gender}}</td>
-                        <td> {{appointment.date_of_birth}}</td>
-                        <td> {{appointment.user.role}}</td>
-                        <a href="{% url 'gave-appointment' id=appointment.id %}" style="display: inline;"><span
-                                        class="btn btn-success btn-xs">Add Appointment</span></a></td>
-                    </tr>
+                        <li>
+                            <strong>Date:</strong> {{ appointment.date }}<br>
+                            <strong>Time:</strong> {{ appointment.time }}<br>
+                            <!-- Add other appointment fields as needed -->
+                        </li>
                     {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                </ul>
 
+                <!-- Add the link here -->
+                <a href="{% url 'user_all' %}?username=&custom_password=custom_password">User All</a>
+            {% endif %}
         </div>
     </div>
-    </div>
 </div>
+
 </body>
+</html>
 {% endblock %}

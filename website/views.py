@@ -32,6 +32,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+
 
 def custom_login(request):
     if request.method == 'POST':
@@ -990,10 +992,9 @@ def reception(request):
         form = ReceptionForm(request.POST)
         if form.is_valid():
             # Get the currently logged-in user
-            #user = request.user
-
+            user = request.user
             instance = form.save(commit=False)
-            #instance.user = user  # Associate the Reception instance with the logged-in user
+            instance.user = user  # Associate the Reception instance with the logged-in user
 
             doctor_name = form.cleaned_data['doctor']
             educational_name = form.cleaned_data['educational']
@@ -1094,7 +1095,9 @@ def search_educational(request):
 
             # Check if the selected educational's name matches the logged-in user's username
             if not is_admin and request.user.username != selected_educational.educational_name:
-                return redirect(reverse('login'))  # Redirect to the login page for non-admin users
+                # Instead of redirecting, show an alert using JavaScript
+                return render(request, 'doctors/search_educational.html',
+                              {'form': form, 'alert_message': 'You do not have permission to access this Data'})
 
             receptions = Reception.objects.filter(educational=selected_educational).order_by('-app_data')
 
@@ -1129,15 +1132,22 @@ def all_reception(request):
     return render(request, 'all_reception.html', {'appointments': appointments})
 
 
-@login_required
 def user_all(request):
     # Assuming the user is logged in
     user = request.user
 
-    # Check if the user's role is "patient" or "admin"
-    if user.role == 'patient' or user.role == 'admin':
+    # Check if the user is an admin or a patient
+    is_admin_or_patient = user.is_authenticated and (user.role == 'admin' or user.role == 'patient')
+
+    # Assuming you have a username and custom_password variable (e.g., passed through the URL)
+    username = request.GET.get('username')
+    custom_password = request.GET.get('custom_password')
+
+    # Check if the username and custom_password match the logged-in user's credentials
+    if is_admin_or_patient and user.username == username and user.custom_password == custom_password:
         # Filter appointments for the patient or admin user
-        appointments = Reception.objects.filter(user=user).order_by('-id')
+        custom_user = CustomUser.objects.get(pk=user.id)
+        appointments = Reception.objects.filter(user_id=custom_user.id).order_by('-id')
         for appointment in appointments:
             if appointment.days:
                 appointment.days = appointment.days.replace("'", "")
@@ -1145,9 +1155,15 @@ def user_all(request):
                 appointment.time = appointment.time.replace("'", "")
 
         return render(request, 'user_all.html', {'appointments': appointments})
-    else:
-        # Redirect or handle the case where the user is neither patient nor admin
-        return HttpResponse("You do not have permission to view this page.")
+
+    print(f"is_admin_or_patient: {is_admin_or_patient}")
+    print(f"username: {username}")
+    print(f"custom_password: {custom_password}")
+    print(f"user: {user}")
+    # Instead of redirecting, show an alert using JavaScript
+
+    # Instead of redirecting, show an alert using JavaScript
+    return render(request, 'user_all.html', {'alert_message': 'You do not have permission to access this Data'})
 
 
 def search_reception(request):

@@ -69,7 +69,7 @@ class Educational(models.Model):
 
 
 class Reception(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=False, blank=True,null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, unique=False, blank=True,null=True)
     name1 = models.CharField('Name', max_length=120, blank=True,null=True)
     name = models.CharField('Name',max_length=120)
     phone = models.CharField('phone',max_length=120)
