@@ -12,18 +12,16 @@
     <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
     ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>
 <hr class="border border-primary border-3 opacity-40">
-        <img src="{% static 'website/images/img.jpg'  %}" alt="..." class="img-circle profile_img">
+        <img style="text-align: center;" src="{% static 'website/images/img.jpg'  %}" alt="..." class="img-circle profile_img">
         <br/>
-        <h4 style="font-weight:bold;">Website: https://dentistsite.herokuapp.com</h4>
-        <br/>
-
+        <h4 style="font-weight:bold;">Website: https://cosmolightgroup.org</h4>
 <div class="col-8">
     <div class="card-body">
 
         {% for drug in drugs %}
          <h3><p style="font-size:16px;">Username&nbsp;- &nbsp;{{ drug.user.username }}</p></h3>
         <h3><p style="font-size:16px;">Password&nbsp;- &nbsp;{{ drug.user.custom_password }}</p></h3>
-        <br/>
+
         <h3><p style="font-size:16px;">Patient Name:&nbsp;- &nbsp;{{ drug.name }}</p></h3>
         <h3><p style="font-size:16px;">Patient Phone Number:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>
         <h3><p style="font-size:16px;">Doctor Name:&nbsp;- &nbsp;{{ drug.doctor }}</p></h3>
@@ -36,12 +34,12 @@
     </div>
 </div>
 
-
+<!--
 <footer id="footer">
     <hr class="border border-primary border-3 opacity-40">
     <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
         التمنيات بالشفاء العاجل</h4>
-</footer>
+</footer>-->
     </div>
 </div>
 
