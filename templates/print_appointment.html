@@ -9,12 +9,12 @@
 <p align="center"
    style="font-size:16px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
     نوژدار
-    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
-    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>
+    <br/>COSMOLIGHT DENTAL CENTER<!--<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>-->
 <hr class="border border-primary border-3 opacity-40">
         <img style="text-align: center;" src="{% static 'website/images/img.jpg'  %}" alt="..." class="img-circle profile_img">
         <br/>
-        <h4 style="font-weight:bold;">Website: https://cosmolightgroup.org</h4>
+        <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
 <div class="col-8">
     <div class="card-body">
 
@@ -26,8 +26,8 @@
         <h3><p style="font-size:16px;">Patient Phone Number:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>
         <h3><p style="font-size:16px;">Doctor Name:&nbsp;- &nbsp;{{ drug.doctor }}</p></h3>
         <h3><p style="font-size:16px;">Appointment Date:&nbsp;- &nbsp;{{ drug.app_data }}</p></h3>
-        <h3><p style="font-size:16px;">Day Name&nbsp;- &nbsp;{{ drug.days }}</p></h3>
-        <h3><p style="font-size:16px;">Time&nbsp;- &nbsp;{{ drug.time|slice:"1:-1" }}</p></h3>
+        <h3><p style="font-size:16px;">{{ drug.days }} &nbsp;- &nbsp;{{ drug.time|slice:"1:-1" }}</p></h3>
+
 
 
         {% endfor %}
