@@ -1043,10 +1043,13 @@ def reception(request):
 
 def search_doctor(request):
     form = SearchForm()  # Always instantiate the form
-    receptions = Reception.objects.none()  # Initialize as empty queryset
+    receptions = Reception.objects.none()  # Initialize as an empty queryset
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    doctor_id = request.GET.get('doctor')
+
+    is_admin = request.user.is_authenticated and request.user.role == 'admin'
 
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -1054,21 +1057,26 @@ def search_doctor(request):
             selected_doctor = form.cleaned_data['doctor']
 
             # Check if the user is an admin
-            is_admin = request.user.is_authenticated and request.user.role == 'admin'
-
-            # Check if the selected doctor's name matches the logged-in user's username
             if not is_admin and request.user.username != selected_doctor.doctor_name:
                 return redirect(reverse('login'))  # Redirect to the login page for non-admin users
 
+            # Filter receptions by the selected doctor
             receptions = Reception.objects.filter(doctor=selected_doctor)
 
-    if start_date and end_date:
-        # Convert start_date and end_date to datetime objects
-        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
-        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+    else:
+        # If start_date and end_date are provided, filter receptions by the date range
+        if start_date and end_date:
+            # Convert start_date and end_date to datetime objects
+            start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+            end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
 
-        # Filter receptions by app_date within the date range
-        receptions = Reception.objects.filter(app_data__range=(start_datetime, end_datetime))
+            # If a doctor is selected, further filter by both doctor and date range
+            if doctor_id:
+                selected_doctor = get_object_or_404(Doctors, id=doctor_id)
+                receptions = Reception.objects.filter(doctor=selected_doctor, app_data__range=(start_datetime, end_datetime))
+            else:
+                # If no doctor is selected, filter by the date range only
+                receptions = Reception.objects.filter(app_data__range=(start_datetime, end_datetime))
 
     # Clean appointments data before rendering
     for reception in receptions:
@@ -1077,7 +1085,7 @@ def search_doctor(request):
         if reception.time:
             reception.time = reception.time.replace("'", "")
 
-    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': receptions, 'start_date': start_date,'end_date': end_date})
+    return render(request, 'doctors/search_doctor.html', {'form': form, 'receptions': receptions, 'start_date': start_date, 'end_date': end_date})
 
 
 def search_educational(request):

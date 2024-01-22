@@ -1,28 +1,27 @@
-{% extends 'base.html'  %}
 {% load static %}
-{% block navbar %}
 
-{% endblock %}
 {% block content %}
 {% load custom_filters %}
 <br/>
-<br/><br/>
-<br/>
-<br/><br/>
-<body class="">
+
 <div class="container body">
-    <div class="right_col" role="main">
+    <div class="right_col" role="main" style="width: 100%">
 <p align="center"
-   style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
-    نوژدار
-    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
-    ددانا<br/>B.D.S/M.SC.Ortho</br>
-    <br/>عطلة العيادة الخميس والجمعة </p>
+   style="font-size:16px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+
+    <br/>COSMOLIGHT DENTAL CENTER<!--<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>-->
+<hr class="border border-primary border-3 opacity-40">
+        <p style="text-align: right;" ><img src="{% static 'website/images/img.jpg'  %}"
+                                             alt="..." class="img-circle profile_img"> &nbsp; &nbsp;<img src="{% static 'website/images/bar.png'  %}"
+                                             alt="..." class="img-circle profile_img"></p>
+        <br/>
+        <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
 <hr class="border border-primary border-3 opacity-40">
 <div class="col-8">
     <div class="row">
 
-       <h1 style="text-align:center;">Payment Invoice For Endo Patient </h1>
+       <h4 style="text-align:center;">Payment Invoice For Endo Patient </h4>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
@@ -59,11 +58,12 @@
     </div>
 </div>
 
+<hr class="border border-primary border-3 opacity-40">
+<!--
 
-    <hr class="border border-primary border-3 opacity-40">
-    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
-        التمنيات بالشفاء العاجل</h4>
-
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--></h4>
+مع
+        التمنيات بالشفاء العاجل
     </div></div></body>
 
 {% endblock %}
