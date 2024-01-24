@@ -20,10 +20,8 @@
 					<p>{{ form.date_of_birth }}</p>
 					<p>{{ form.gender }}</p>
                     {{ form.doctor }}
-                     <input type="text" name="app_data" id="datepicker-3"
-									placeholder="Date of Appointment" required class="form-control">
-                    <input type="text" name="days" id="datepicker-4" placeholder="Days" readonly
-										class="form-control">
+                     <input type="date" name="app_data" id="datepicker-3" required class="form-control">
+                    <input type="text" name="days" id="datepicker-4" readonly class="form-control">
                     <div class="form-check form-check-inline">
 								 <input type="checkbox" class="form-check-input"  name="time" value="4:00pm" >
 								 <label class="form-check-label">4:00pm</label>
@@ -65,32 +63,50 @@
 
                     <button type="submit" class="btn btn-success" onclick="validateAndShowAlert()">Update</button>
                 </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    var datePicker = $("#datepicker-3");
+    var daysInput = $("#datepicker-4");
+    var submitBtn = $("#submitBtn");
 
-                <script>
-    function validateAndShowAlert() {
-        var requiredFields = document.querySelectorAll('[required]');
-        var allFieldsFilled = true;
+    function isThursdayOrFriday(date) {
+        return date.getDay() === 4 || date.getDay() === 5;
+    }
 
-        for (var i = 0; i < requiredFields.length; i++) {
-            if (!requiredFields[i].value) {
-                allFieldsFilled = false;
-                break;
-            }
-        }
+    datePicker.change(function () {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
 
-        if (allFieldsFilled) {
-            showAlert();
+        if (isThursdayOrFriday(date)) {
+            alert("Our Dental Center is closed on Thursday and Friday. Thank you!");
+            submitBtn.prop("enabled", true);
         } else {
-            alert("Please fill out all required fields.");
+            submitBtn.prop("enabled", false);
         }
-    }
 
-    function showAlert() {
-        if (confirm("Are you sure you want to update?")) {
-            document.getElementById("updateForm").submit();
+        // Get day name for the selected date
+        var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var selectedDayName = dayNames[date.getDay()];
+
+        // Update #datepicker-4 with the day name
+        daysInput.val(selectedDayName);
+    });
+
+    submitBtn.on("click", function (event) {
+        var selectedDate = datePicker.val();
+        var date = new Date(selectedDate);
+
+        if (isThursdayOrFriday(date)) {
+            event.preventDefault();
+            alert("Please select a date other than Thursday or Friday.");
         }
-    }
-</script>
+    });
+
+    // Initial check on page load
+    datePicker.trigger("change");
+});
+	</script>
 
             </div>
         </div>
