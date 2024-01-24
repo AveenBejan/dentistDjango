@@ -2,47 +2,10 @@
 {% load static %}
 
 {% block content %}
-<br/>
-
-<div class="container body">
-    <div class="right_col" role="main" style="width: 100%">
-<p align="center"
-   style="font-size:16px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
-
-    <br/>COSMOLIGHT DENTAL CENTER<!--<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
-    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>-->
-<hr class="border border-primary border-3 opacity-40">
-        <p style="text-align: center;" ><img src="{% static 'website/images/img.jpg'  %}"
-                                             alt="..." class="img-circle profile_img"></p>
-        <br/>
-        <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
-        <hr class="border border-primary border-3 opacity-40">
-<div class="col-8">
-    <div class="card-body">
-
         {% for drug in drugs %}
-         <h3><p style="font-size:16px;">Username&nbsp;- &nbsp;{{ drug.user.username }}</p></h3>
-        <h3><p style="font-size:16px;">Password&nbsp;- &nbsp;{{ drug.user.custom_password }}</p></h3>
-
+         <h3><p style="font-size:16px;">Participants Name&nbsp;- &nbsp;{{ drug.user.username }}</p></h3>
         <h3><p style="font-size:16px;">Patient Name:&nbsp;- &nbsp;{{ drug.name }}</p></h3>
-        <h3><p style="font-size:16px;">Patient Phone Number:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>
-        <h3><p style="font-size:16px;">Doctor Name:&nbsp;- &nbsp;{{ drug.doctor }}</p></h3>
-        <h3><p style="font-size:16px;">Appointment Date:&nbsp;- &nbsp;{{ drug.app_data }}</p></h3>
-        <h3><p style="font-size:16px;">{{ drug.days }} &nbsp;- &nbsp;{{ drug.time|slice:"1:-1" }}</p></h3>
-
-
 
         {% endfor %}
-    </div>
-</div>
-
-<!--
-<footer id="footer">
-    <hr class="border border-primary border-3 opacity-40">
-    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
-        التمنيات بالشفاء العاجل</h4>
-</footer>-->
-    </div>
-</div>
 
 {% endblock %}
