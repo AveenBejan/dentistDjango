@@ -1021,12 +1021,12 @@
                                                     <td>32.3 ± 4.7</td>
                                                 </tr>
                                             </table>
-<label>Paid</label>
-                                        <input type="text" name="uper_date" id="uper_date" {% if form.initial.uper_date %}readonly{% endif %} value="{% if form.initial.uper_date %}{{ form.initial.uper_date|date:" Y-m-d" }}{% endif %}">
 
-                                        <input type="text" name="lower_date" id="lower_date" {% if form.initial.lower_date %}readonly{% endif %} value="{% if form.initial.lower_date %}{{ form.initial.lower_date|date:" Y-m-d" }}{% endif %}">
-                                        <input type="text" name="both_date" id="both_date" {% if form.initial.both_date %}readonly{% endif %} value="{% if form.initial.both_date %}{{ form.initial.both_date|date:" Y-m-d" }}{% endif %}">
-                                        <input type="text" name="paid" value="{{ form.initial.paid }}">
+                                        <label>Date of Upper</label><input type="text" name="uper_date" id="uper_date" {% if form.initial.uper_date %}readonly{% endif %} value="{% if form.initial.uper_date %}{{ form.initial.uper_date|date:" Y-m-d" }}{% endif %}">
+
+                                        <label>Date of Lower</label><input type="text" name="lower_date" id="lower_date" {% if form.initial.lower_date %}readonly{% endif %} value="{% if form.initial.lower_date %}{{ form.initial.lower_date|date:" Y-m-d" }}{% endif %}">
+                                         <label>Date of Both</label><input type="text" name="both_date" id="both_date" {% if form.initial.both_date %}readonly{% endif %} value="{% if form.initial.both_date %}{{ form.initial.both_date|date:" Y-m-d" }}{% endif %}">
+                                         <br/><label>Paid</label><input type="text" name="paid" value="{{ form.initial.paid }}">
 
                                     </div>
                                 </div>
