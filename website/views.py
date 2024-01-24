@@ -1115,7 +1115,7 @@ def search_educational(request):
             # Debug statements
             print("Selected Educational:", selected_educational)
             print("Receptions:", receptions)
-            print("Oralls:", oralls)
+
 
     # Clean appointments data before rendering
     for reception in receptions:
