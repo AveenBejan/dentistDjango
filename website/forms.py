@@ -906,7 +906,7 @@ class OrthoForm(forms.ModelForm):
         fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
                   'over_jet','over_bt', 'jow_shift', 'midlin_shift','urs', 'uls','lrs', 'lls','teeth_size','SNA_before','SNA_after','SNB_before','SNB_after','ANB_before','ANB_after',
                   'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid', 'date', 'notes','exo_images','visits',
-                  'wive_size','cross_sectional','material','brackets','visit_date')
+                  'wive_size','cross_sectional','material','brackets','visit_date','uper_date','lower_date','both_date')
         labels = {
             'idReception': '',
             'name': '',
@@ -955,6 +955,9 @@ class OrthoForm(forms.ModelForm):
             'material': '',
             'brackets': '',
             'visit_date': '',
+            'uper_date': '',
+            'lower_date': '',
+            'both_date': '',
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
@@ -1003,6 +1006,9 @@ class OrthoForm(forms.ModelForm):
             'material': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
             'brackets': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
             'visit_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'uper_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'lower_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'both_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
 
         }
 

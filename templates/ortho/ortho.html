@@ -88,6 +88,9 @@ textarea {
                                 <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
                                 <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
                                 <th scope="col" style="text-align: center;" >Price</th>
+                                <th scope="col" style="text-align: center;" class="hideable">D.Upper</th>
+                                <th scope="col" style="text-align: center;" class="hideable">D.Lower</th>
+                                <th scope="col" style="text-align: center;" class="hideable">D.Both</th>
                                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Notes</th>
                                 <th scope="col" style="text-align: center;" class="hideable">Exo Photo</th>
@@ -147,6 +150,9 @@ textarea {
                                     None
                                     {% endif %}
                                 </td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.uper_date }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.lower_date }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ orall.both_date }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.paid }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.notes }}</td>
 
@@ -373,12 +379,44 @@ textarea {
 
                                     <div class="card-header">
 
-                                        <h4 style="font-size: 22px; text-align:center;"> Teeth Need Filling</h4>
+                                        <h4 style="font-size: 22px; text-align:center;"> Bonding</h4>
+                                    </div>
+                                    <br/>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-3">
+                                            <label>Date of Upper</label>
+                                            <input type="date" name="uper_date"
+                                                   class="form-control"
+                                                   placeholder="Date of Visit"
+                                                   id="datepicker-3" >
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label>Date of Lower</label>
+                                            <input type="date" name="lower_date"
+                                                   class="form-control"
+                                                   placeholder="Date of Visit"
+                                                   id="datepicker-3" >
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label>Date of Both</label>
+                                            <input type="date" name="both_date"
+                                                   class="form-control"
+                                                   placeholder="Date of Visit"
+                                                   id="datepicker-3">
+                                        </div>
+
                                     </div>
                                     <br/>
                                     <div class="row">
+                                         <div class="card-header">
 
-                                        <div class="col-sm-6">
+                                        <h4 style="font-size: 22px; text-align:center;"> Teeth Need Filling</h4>
+                                    </div>
+
+                                    <div class="col-sm-6">
                                             <div class="card-header">
                                                 Upper Right
                                             </div>
@@ -1222,6 +1260,7 @@ textarea {
                                                             </div>
                                                         </div>
                                                         <br/>
+
                                                         <div class="form-row">
                                                             <div class="form-group col-md-6">
                                                                 <select name="angle_class" class="form-control">
@@ -1250,6 +1289,8 @@ textarea {
                                                                 </div>
                                                             </div>
                                                             <br/>
+
+                                                        <br/>
                                                             <div class="form-row">
                                                                 <div class="form-group col-md-3">
                                                                     <input type="text" class="form-control"

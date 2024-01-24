@@ -503,6 +503,9 @@ class Ortho(models.Model):
     exo_images = models.ImageField(null=True, blank=True, upload_to='')
     regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
     visit_date = models.DateField('Visit Date', null=True, blank=True)
+    uper_date = models.DateField('Visit Date', null=True, blank=True)
+    lower_date = models.DateField('Visit Date', null=True, blank=True)
+    both_date = models.DateField('Visit Date', null=True, blank=True)
 
     def __str__(self):
         return self.idReception
