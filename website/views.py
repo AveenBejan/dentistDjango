@@ -670,11 +670,9 @@ def all_debts1(request):
             oralSurgery = OralSurgery.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            periodontologys = Periodontology.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            prosthodonticss = Prosthodontics.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor) & Q(visits_id__isnull=True))
+            periodontologys = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            prosthodonticss = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
         else:
             # No matter if selected_doctor is None, perform the query without doctor filter
             exos = Exo.objects.filter(regdate__range=(start_datetime, end_datetime))
@@ -683,7 +681,7 @@ def all_debts1(request):
             veneers = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime))
             oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime))
             endos = Endo.objects.filter(regdate__range=(start_datetime, end_datetime))
-            orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime))
+            orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime), visits_id__isnull=True)
             periodontologys = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime))
             prosthodonticss = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime))
 
