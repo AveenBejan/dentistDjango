@@ -463,10 +463,37 @@ def search_educational1(request):
 
 
 def search_education(request):
-    oralls = Ortho.objects.all()  # Retrieve all objects from the Ortho model
+    # Query all models directly
+    exos = Exo.objects.filter(educational_id__isnull=False)
+    fillings = Filling.objects.filter(educational_id__isnull=False)
+    crowns = Crown.objects.filter(educational_id__isnull=False)
+    veneers = Veneer.objects.filter(educational_id__isnull=False)
+    oral_surgeries = OralSurgery.objects.filter(educational_id__isnull=False)
+    endos = Endo.objects.filter(educational_id__isnull=False)
+    orthos = Ortho.objects.filter(educational_id__isnull=False, visits_id__isnull=True)
 
+    # Combine the querysets into a list for easy iteration in the template
+    search_results = [
+        ('Exo', exos),
+        ('Filling', fillings),
+        ('Crown', crowns),
+        ('Veneer', veneers),
+        ('OralSurgery', oral_surgeries),
+        ('Endo', endos),
+        ('Ortho', orthos),
+    ]
+    # Retrieve Ortho objects where visits_id is not null
+    orthos_with_visits = Ortho.objects.filter(educational_id__isnull=False, visits_id__isnull=False)
+
+    # Clean data before rendering (if needed)
+    for orall_instance in orthos_with_visits:
+        # Perform any necessary data cleaning for each instance
+        # For example:
+        # orall_instance.some_field = orall_instance.some_field.replace("'", "")
+        orall_instance.save()
     context = {
-        'oralls': oralls,  # Pass the retrieved objects to the template
+        'search_results': search_results,
+        'orthos_with_visits': orthos_with_visits,
     }
 
     return render(request, 'educational/search_eduction.html', context)
@@ -643,9 +670,7 @@ def all_debts1(request):
             oralSurgery = OralSurgery.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            orthos = Ortho.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor) & Q(visits_id__isnull=True)
-                )
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             periodontologys = Periodontology.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             prosthodonticss = Prosthodontics.objects.filter(
@@ -658,7 +683,7 @@ def all_debts1(request):
             veneers = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime))
             oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime))
             endos = Endo.objects.filter(regdate__range=(start_datetime, end_datetime))
-            orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime), visits_id__isnull=True)
+            orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime))
             periodontologys = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime))
             prosthodonticss = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime))
 
@@ -682,29 +707,7 @@ def all_debts1(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
-    total_exo = Exo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_filling = Filling.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_crown = Crown.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_endo = Endo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_ortho = Ortho.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_periodontology = Periodontology.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_prosthodontics = Prosthodontics.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    paid_exo = Exo.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_filling = Filling.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_crown = Crown.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_veneer = Veneer.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_oralSurgery = OralSurgery.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_endo = Endo.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_ortho = Ortho.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_periodontology = Periodontology.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_prosthodontics = Prosthodontics.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    total_price_t = (
-                total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
-    total_paid_t = (
-                paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
-    remaining = total_price_t - total_paid_t
+
 
     context = {
         'start_date': start_date,
@@ -712,27 +715,6 @@ def all_debts1(request):
         'selected_doctor': selected_doctor,
         'search_results': search_results,
         'form': form,  # Pass the form to the template for display
-        'total_exo': total_exo,  # Add total_salary to the context
-        'total_filling': total_filling,  # Add total_salary to the context
-        'total_crown': total_crown,  # Add total_salary to the context
-        'total_veneer': total_veneer,  # Add total_salary to the context
-        'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
-        'total_endo': total_endo,  # Add total_salary to the context
-        'total_ortho': total_ortho,  # Add total_salary to the context
-        'total_periodontology': total_periodontology,  # Add total_salary to the context
-        'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
-        'paid_exo': paid_exo,  # Add total_salary to the context
-        'paid_filling': paid_filling,  # Add total_salary to the context
-        'paid_crown': paid_crown,  # Add paid_salary to the context
-        'paid_veneer': paid_veneer,  # Add paid_salary to the context
-        'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
-        'paid_endo': paid_endo,  # Add paid_salary to the context
-        'paid_ortho': paid_ortho,  # Add paid_salary to the context
-        'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
-        'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
-        'total_price_t': total_price_t,  # Add total_salary to the context
-        'total_paid_t': total_paid_t,  # Add total_salary to the context
-        'remaining': remaining,  # Add total_salary to the context
     }
 
     return render(request, 'debts/all_debts1.html', context)
@@ -1133,6 +1115,7 @@ def search_educational(request):
             # Debug statements
             print("Selected Educational:", selected_educational)
             print("Receptions:", receptions)
+
 
     # Clean appointments data before rendering
     for reception in receptions:
