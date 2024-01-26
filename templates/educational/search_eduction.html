@@ -1,285 +1,34 @@
-{% extends 'base.html'  %}
-{% load static %}
-{% block content %}
-{% load custom_filters %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}Dental Clinic {% endblock %}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-textarea {
-  border: none; outline: none;
-  background: repeating-linear-gradient(
-    to bottom, transparent, transparent 26px, #000 27px
-  );
-  background-attachment: local;
-}
-
-
-
-
-
-    </style>
-    <style>
-  #myAccordionItem {
-    display: none;
-  }
-
-
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Ortho Information</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
+    <script>
+        $(document).ready(function() {
+            $(".idReception-link").click(function(e) {
+                e.preventDefault();
+                var idReceptionId = $(this).data("id");
+                $(".visits").hide(); // Hide all visit lists
+                $("#visits-" + idReceptionId).show(); // Show visit list for the clicked idReception
+            });
+        });
+    </script>
 </head>
-<body class="nav-md">
-<div class="container body">
-    <div class="right_col" role="main" style="width: 100%">
-        <br/>
-        <div class="row"
-             style="padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
-            <div class="col-12">
-                <div class="accordion" id="accordionExample">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Add Ortho</li>
-                        </ol>
-                    </nav>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
-                                    style="text-align: justify; background-color:#17a2b8; color:#fff">
-                                Patient Information
-                            </button>
-                        </h2>
-                        <p><span style="font-weight: bold;">Full Name:  </span>{{ form.initial.name }}&nbsp;&nbsp;
-                            <span style="font-weight: bold;">Phone Number:  </span> {{ form.initial.phone }}&nbsp;&nbsp;
-                            <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
-                            <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
-                        </p>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                             data-bs-parent="#accordionExample">
-                            <table class="table table-hover">
-                                <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
-                                <tr>
-
-                                    <th scope="col">#</th>
-                                    <th scope="col">Doctor Name</th>
-                                    <th scope="col">Appointment Date</th>
-                                    <th scope="col">Day Name</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Upper Right NOW</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Upper Left NOW</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Lower Right NOW</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Lower Left NOW</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Teeth Type</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">angle_class</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">over_jet</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">over_bt</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">jow_shift</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">midlin_shift</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Upper Right S</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Upper Left S</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Lower Right S</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Lower Left S</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
-                                    <th scope="col" style="text-align: center;">Price</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">D.Upper</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">D.Lower</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">D.Both</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">paid</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Notes</th>
-                                    <th scope="col" style="text-align: center;" class="hideable">Exo Photo</th>
-                                    <th scope="col" style="text-align: center;">Action</th>
-                                    <th scope="col" style="text-align:center;">Show Data</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% if orall %}
-                                <tr>
-                                    <td style="text-align: center;" scope="row">{{ orall.id }}</td>
-                                    <td style="center" scope="row">{{ orall.idReception.doctor.doctor_name }}</td>
-                                    <td style="center" scope="row">{{ orall.idReception.app_data }}</td>
-                                    <td style="center" scope="row">{{ orall.idReception.days }}</td>
-                                    <td style="center" scope="row">{{ orall.idReception.time|slice:"1:-1" }}</td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.ur|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.ul|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.lr|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.ll|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.urn|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.uln|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.lrn|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.lln|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.teeth_type|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.angle_class }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.over_jet }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.over_bt }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.jow_shift }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.midlin_shift
-                                        }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.urs|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.uls|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.lrs|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.lls|slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.teeth_size
-                                        |slice:"1:-1" }}
-                                    </td>
-                                    <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">
-                                        {{ orall.treatment_plan }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row">
-                                        {% if orall.price is not None %}
-                                        {{ orall.price|format_with_commas }}
-                                        {% else %}
-                                        None
-                                        {% endif %}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.uper_date }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.lower_date
-                                        }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.both_date }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{
-                                        orall.paid|format_with_commas }}
-                                    </td>
-                                    <td style="text-align: center;" scope="row" class="hideable">{{ orall.notes }}</td>
-
-                                    <td>
-                                        {% for orall in oralls %}
-                                        {% for photos in photos_list %}
-                                        {% if forloop.counter0 == forloop.parentloop.counter0 %}
-                                        {% for photo in photos %}
-                                        <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                        <a href="{% url 'remove-photo-ortho' photo.id %}">Remove</a>
-                                        {% endfor %}
-                                        {% endif %}
-                                        {% endfor %}
-                                        {% endfor %}
-
-                                    </td>
-
-                                    {% if orall %}
-
-
-                                    <!--<td><a href="{% url 'ortho-visit' orall.id %}" style="display: inline;"><span class="btn btn-warning">Add first visit</span></a></td>-->
-                                    <td style="text-align: center;" scope="row"><!-- Example split danger button -->
-                                        <div class="list-group">
-
-
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="btn btn-info" data-toggle="modal"
-                                                    data-target=".bd-example-modal-lg">Show Visits
-                                            </button>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-                                                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        {% if orall.idReception %}
-                                                        <h2># of Visits for Patient {{ orall.idReception.name }}</h2>
-                                                        <table border="1" class="table table-hover">
-                                                            <thead style="background-color:#73ccf0; color:#fff;">
-                                                            <tr>
-                                                                <th>Visit No.</th>
-                                                                <th>Wire Size</th>
-                                                                <th>Cross Sectional</th>
-                                                                <th>Materials</th>
-                                                                <th>Type of Brackets</th>
-                                                                <th>Date Visit</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {% for visit in orall.visits.all %}
-                                                            <tr>
-                                                                <td>{{ visit.visit_name }}</td>
-                                                                <td>{{ visit.wive_size }}</td>
-                                                                <td>{{ visit.cross_sectional }}</td>
-                                                                <td>{{ visit.material }}</td>
-                                                                <td>{{ visit.brackets }}</td>
-                                                                <td>{{ visit.visit_date }}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                            </tbody>
-                                                        </table>
-                                                        {% else %}
-                                                        <p>No associated ID Reception data found.</p>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br/>
-                                        </div>
-                                    </td>
-                                    {% endif %}
-                                </tr>
-                                {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<body>
+    <h1>Ortho Information</h1>
+    <ul>
+        {% for ortho in oralls %}
+            <li>
+                <a href="#" class="idReception-link" data-id="{{ ortho.idReception.id }}">{{ ortho.idReception.name }}</a> <!-- Display idReception name as a link -->
+                <ul class="visits" id="visits-{{ ortho.idReception.id }}" style="display: none;"> <!-- Container for visits -->
+                    {% for visit in ortho.idReception.visit_set.all %}
+                        <li>{{ visit.visit_name }}</li> <!-- Display visit details -->
+                        <!-- Display other visit fields as needed -->
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
-
-{% endblock %}

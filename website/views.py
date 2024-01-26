@@ -463,42 +463,13 @@ def search_educational1(request):
 
 
 def search_education(request):
-    oralls = Ortho.objects.all()
-
-    # Clean data
-    for orall in oralls:
-        if orall.ur:
-            orall.ur = orall.ur.replace("'", "")
-        if orall.ul:
-            orall.ul = orall.ul.replace("'", "")
-        orall.save()
-
-    formatted_prices = ["{:,}".format(orall.price) if orall.price is not None else None for orall in oralls]
-
-    # Retrieve the first Ortho object where visits_id is null or 1 (Not sure what this comment means)
-    orall = oralls.first()
-
-    # Get the selected idReception from the request
-    selected_idReception = request.GET.get('idReception')
-
-    # Filter visits based on the selected idReception
-    visits = None
-    if selected_idReception:
-        selected_orall = Ortho.objects.filter(idReception=selected_idReception).first()
-        if selected_orall:
-            visits = selected_orall.visits.all()
+    oralls = Ortho.objects.all()  # Retrieve all objects from the Ortho model
 
     context = {
-        'medicine': medicine,  # Assuming 'medicine' is defined elsewhere in your view
-        'oralls': oralls,
-        'id': id,  # Assuming 'id' is defined elsewhere in your view
-        'formatted_prices': formatted_prices,
-        'orall': orall,
-        'visits': visits,  # Pass the filtered visits to the template
+        'oralls': oralls,  # Pass the retrieved objects to the template
     }
 
     return render(request, 'educational/search_eduction.html', context)
-
 
 
 def all_debts(request):
