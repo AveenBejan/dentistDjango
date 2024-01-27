@@ -583,7 +583,7 @@ def all_debts(request):
     total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_endo = Endo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_ortho = Ortho.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho = Ortho.objects.aggregate(price=Sum('price'))['price'] or 0
     total_periodontology = Periodontology.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_prosthodontics = Prosthodontics.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     paid_exo = Exo.objects.aggregate(paid=Sum('paid'))['paid'] or 0
