@@ -583,7 +583,7 @@ def all_debts(request):
     total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_endo = Endo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_ortho = Ortho.objects.aggregate(price=Sum('price'))['price'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).aggregate(price=Sum('price'))['price'] or 0
     total_periodontology = Periodontology.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_prosthodontics = Prosthodontics.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     paid_exo = Exo.objects.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -595,7 +595,7 @@ def all_debts(request):
     paid_ortho = Ortho.objects.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_periodontology = Periodontology.objects.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = Prosthodontics.objects.aggregate(paid=Sum('paid'))['paid'] or 0
-    total_price_t = (total_ortho)
+    total_price_t = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
     total_paid_t = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
     remaining = total_price_t - total_paid_t
 
