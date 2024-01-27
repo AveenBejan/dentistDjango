@@ -539,7 +539,7 @@ def all_debts(request):
             oralSurgery = OralSurgery.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=True)
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=False)
             )
             periodontologys = Periodontology.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
