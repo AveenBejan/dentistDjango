@@ -539,7 +539,7 @@ def all_debts(request):
             oralSurgery = OralSurgery.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=False)
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=True)
             )
             periodontologys = Periodontology.objects.filter(
                 Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
@@ -3571,14 +3571,20 @@ def print_ortho_debt(request, id):
 
     # Calculate the total remaining amount for idReception
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = Ortho.objects.get(idReception=id).price
-    total_remaining = total_price - total_paid
+
+    ortho_instance = Ortho.objects.filter(idReception=id).first()
+    if ortho_instance:
+        total_price = ortho_instance.price
+        total_remaining = total_price - total_paid
+    else:
+        # Handle the case when no Ortho instance is found for the given idReception
+        total_price = 0
+        total_remaining = 0
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
         'total_price': total_price,
-
     }
     return render(request, 'debts/print_ortho_debt.html', context)
 
