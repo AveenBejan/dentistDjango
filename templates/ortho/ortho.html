@@ -176,6 +176,8 @@ textarea {
                                 <!--<td><a href="{% url 'ortho-visit' orall.id %}" style="display: inline;"><span class="btn btn-warning">Add first visit</span></a></td>-->
                                 <td style="text-align: center;" scope="row">
                                     <a href="{% url 'ortho-visit1' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Add Visits</span></a><br/>
+                                    {% if user.is_authenticated %}
+                                    {% if user.role == 'admin' %}
                                     <a href="{% url 'ortho-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
                                     <a href="{% url 'delete-ortho'  orall.idReception_id %}"
                                        style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a>
@@ -254,6 +256,8 @@ textarea {
                                         <button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target=".bd-example-modal-lg">Show Visits
                                         </button>
+                                        {% endif %}
+                                {% endif %}
 
                                         <!-- Modal -->
                                         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
@@ -325,11 +329,16 @@ textarea {
                                             </div>
                                         </div>
                                         <br/>
+                                        {% if user.is_authenticated %}
+                                        {% if user.role == 'admin' %}
                                         <a href="{% url 'drugs' id=id %}"><span class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
                                         <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
                                                 class="btn btn-info">&nbsp;Add Appointment&nbsp;</span></a>
+                                        {% endif %}
+                                        {% endif %}
                                     </div>
                                 </td>
+                                
                                 {% endif %}
                             </tr>
                             {% endif %}
