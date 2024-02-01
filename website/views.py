@@ -772,7 +772,7 @@ def all_total(request):
     total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_endo = Endo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_ortho = Ortho.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho = Ortho.objects.aggregate(price=Sum('price'))['price'] or 0
     total_salary = salaries.aggregate(total_final_salary=Sum('finalSalary'))['total_final_salary'] or 0
     total_outcome = Outcome.objects.aggregate(total_price=Sum('price'))['total_price'] or 0
     remaining = ((total_exo+total_filling+total_crown+total_veneer+total_oralSurgery)-(total_salary+total_outcome))
