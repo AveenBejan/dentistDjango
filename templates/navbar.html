@@ -28,7 +28,8 @@
                 {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' or user.role == 'patient'  %}
                 <li><a><i class="fa fa-home"></i> Reception <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        {% if user.role == 'admin' or user.role == 'patient' %}
+
+                        {% if user.role == 'patient' %}
                         <li><a  href="{% url 'user_all' %}">Patient Appoint</a></li>
                         {% endif %}
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
