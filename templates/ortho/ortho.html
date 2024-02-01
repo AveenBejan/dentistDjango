@@ -177,7 +177,11 @@ textarea {
                                 <td style="text-align: center;" scope="row">
                                     <a href="{% url 'ortho-visit1' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Add Visits</span></a><br/>
                                     {% if user.is_authenticated %}
+<<<<<<< HEAD
                                     {% if user.role == 'admin' or user.role == 'doctor' %}
+=======
+                                    {% if user.role == 'admin' %}
+>>>>>>> 75b065eea6705f6e465eacac1f9f228b646780e3
                                     <a href="{% url 'ortho-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
                                     {% if messages %}
     <div id="message-modal" class="modal fade">
@@ -287,11 +291,16 @@ textarea {
                                                 </div>
                                             </div>
                                         </div>
+<<<<<<< HEAD
                                         {% endif %}
+=======
+                                          {% endif %}
+>>>>>>> 75b065eea6705f6e465eacac1f9f228b646780e3
                                 {% endif %}
                                         <button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target=".bd-example-modal-lg">Show Visits
                                         </button>
+                                      
 
                                         <!-- Modal -->
                                         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
@@ -372,6 +381,7 @@ textarea {
                                         {% endif %}
                                     </div>
                                 </td>
+                                
                                 {% endif %}
                             </tr>
                             {% endif %}
