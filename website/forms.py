@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
-    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback
+    Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,\
+    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory
 from django.forms import formset_factory
 
 
@@ -1085,3 +1086,9 @@ class ProsthodonticsForm(forms.ModelForm):
             'partial': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
 
         }
+
+
+class PaymentHistoryForm(forms.ModelForm):
+    class Meta:
+        model = PaymentHistory
+        fields = ['idReception', 'crown_instance', 'endo_instance', 'filling_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']

@@ -198,6 +198,8 @@ urlpatterns = [
     path('feedback_view', views.feedback_view, name='feedback_view'),
 
 
+    path('edit_payment_history/<int:id>', views.edit_payment_history, name='edit_payment_history'),
+
 
 
 ]

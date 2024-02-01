@@ -176,10 +176,46 @@ textarea {
                                 <!--<td><a href="{% url 'ortho-visit' orall.id %}" style="display: inline;"><span class="btn btn-warning">Add first visit</span></a></td>-->
                                 <td style="text-align: center;" scope="row">
                                     <a href="{% url 'ortho-visit1' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Add Visits</span></a><br/>
+                                    {% if user.is_authenticated %}
+                                    {% if user.role == 'admin' or user.role == 'doctor' %}
                                     <a href="{% url 'ortho-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
-                                    <a href="{% url 'delete-ortho'  orall.idReception_id %}"
-                                       style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a>
+                                    {% if messages %}
+    <div id="message-modal" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#message-modal').modal('show');
+        });
+    </script>
+{% endif %}
+
+                                    <a href="{% url 'delete-ortho' orall.idReception_id %}"
+                                       class="btn btn-danger delete-link"
+                                       {% if not user.is_authenticated
+                                       %}onclick="return confirm('You need to log in to delete this record.');" {% endif
+                                       %}>
+                                        <span>&nbsp;&nbsp;Delete&nbsp;&nbsp;</span>
+                                    </a>
                                 </td>
+
                                 <td style="text-align: center;" scope="row"><!-- Example split danger button -->
                                     <div class="list-group">
                                         <button type="button" class="btn btn-info" data-toggle="modal"
@@ -251,6 +287,8 @@ textarea {
                                                 </div>
                                             </div>
                                         </div>
+                                        {% endif %}
+                                {% endif %}
                                         <button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target=".bd-example-modal-lg">Show Visits
                                         </button>
@@ -325,9 +363,13 @@ textarea {
                                             </div>
                                         </div>
                                         <br/>
+                                        {% if user.is_authenticated %}
+                                        {% if user.role == 'admin' %}
                                         <a href="{% url 'drugs' id=id %}"><span class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
                                         <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
                                                 class="btn btn-info">&nbsp;Add Appointment&nbsp;</span></a>
+                                        {% endif %}
+                                        {% endif %}
                                     </div>
                                 </td>
                                 {% endif %}
@@ -1495,6 +1537,9 @@ $(document).ready(function() {
     });
 
 </script>
+
+
+
 </body>
 </html>
 

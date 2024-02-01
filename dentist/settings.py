@@ -53,6 +53,8 @@ MIDDLEWARE = [
 
 ]
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 ROOT_URLCONF = 'dentist.urls'
 
 
@@ -153,3 +155,6 @@ LOGOUT_REDIRECT_URL='home'
 LOGIN_REDIRECT_URL ='home'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Set session cookie age to 30 minutes (1800 seconds)
+SESSION_COOKIE_AGE = 1800  # 30 minutes in seconds

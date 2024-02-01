@@ -30,6 +30,7 @@
                         <tr>
                             <th>Paid Amount</th>
                             <th>Previous Date</th>
+                            <th>Edit</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -37,6 +38,8 @@
                         <tr>
                             <td>{{ history.paid_amount|format_with_commas }}</td>
                             <td>{{ history.previous_date }}</td>
+                            <td style="text-align: center;" ><a href="{% url 'edit_payment_history' id=history.id  %}"><span class="btn btn-danger">Edit-Debt</span></a>
+        </td>
                         </tr>
                         {% endfor %}
                         </tbody>

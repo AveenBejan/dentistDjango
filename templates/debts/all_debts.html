@@ -507,6 +507,8 @@
         <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-ortho1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
+        <!--<td style="text-align: center;" ><a href="{% url 'edit_payment_history' id=result.id %}"><span class="btn btn-danger">Edit-Debt</span></a>
+        </td>-->
         <td style="text-align: center;" >
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>

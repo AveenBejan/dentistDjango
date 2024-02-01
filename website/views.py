@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
-    ImplantForm,GaveAppointmentForm,DebtsForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,WebsiteFeedbackForm
+    ImplantForm,GaveAppointmentForm,DebtsForm,PaymentHistoryForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,WebsiteFeedbackForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,\
     UploadedFile,WebsiteFeedback,PaymentHistory
@@ -33,6 +33,7 @@ from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 
 def custom_login(request):
@@ -742,7 +743,7 @@ def all_total(request):
         veneers = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
-        orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)), visits_id__isnull=True)
         outcomes = Outcome.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         salaries = Salary.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
 
@@ -772,7 +773,7 @@ def all_total(request):
     total_veneer = Veneer.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_oralSurgery = OralSurgery.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_endo = Endo.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_ortho = Ortho.objects.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).aggregate(price_sum=Sum('price'))['price_sum'] or 0
     total_salary = salaries.aggregate(total_final_salary=Sum('finalSalary'))['total_final_salary'] or 0
     total_outcome = Outcome.objects.aggregate(total_price=Sum('price'))['total_price'] or 0
     remaining = ((total_exo+total_filling+total_crown+total_veneer+total_oralSurgery)-(total_salary+total_outcome))
@@ -1296,7 +1297,7 @@ def all_gave(request):
     current_time = datetime.now()
 
     # Retrieve 'gave' records within the last 24 hours
-    gaves = Reception.objects.filter(app_data__gte=current_time - timedelta(hours=24)).order_by('-id')
+    gaves = Reception.objects.filter(app_data__gte=current_time - timedelta(hours=120)).order_by('-id')
 
     # Clean 'gave' data if needed
     for gave in gaves:
@@ -1915,15 +1916,24 @@ def remove_photo_ortho(request, photo_id):
     photo.delete()
     return redirect('ortho-edit', id=ortho_instance.id)
 
-
+@login_required
 def delete_ortho(request, idReception_id):
+    # Ensure that the user has the role of "admin"
+    if request.user.role != 'admin':
+        # If the user does not have the role of "admin", display an alert message
+        messages.error(request, "You do not have permission to perform this action.")
+        # Render the same page with the alert message
+        return redirect('add-ortho', id=idReception_id)
+
     # Find all Ortho objects with the specified idReception_id
     ortho_objects = Ortho.objects.filter(idReception_id=idReception_id)
 
     # Delete all Ortho objects in the queryset
     ortho_objects.delete()
 
-    # Redirect to a specific page, for example, the 'add-ortho' page for the idReception_id
+    # If deletion is successful, display a success alert message
+    messages.success(request, "Orthodontic records deleted successfully.")
+    # Render the same page with the success message
     return redirect('add-ortho', id=idReception_id)
 
 
@@ -4581,3 +4591,24 @@ def endo_visit(request, id):
     return render(request, 'conservation/endo/endo_visit.html', {'form': form, 'orall': orall, 'first_visit': first_visit})
 
 
+def edit_payment_history(request, id):
+    payment_history = get_object_or_404(PaymentHistory, id=id)
+    ortho_instance = payment_history.ortho_instance  # Assuming ortho_instance is related to payment_history
+    if request.method == 'POST':
+        form = PaymentHistoryForm(request.POST, instance=payment_history)
+        if form.is_valid():
+            form.save()
+            return redirect('all_debts', id=id)  # Redirect to detail view
+    else:
+        form = PaymentHistoryForm(instance=payment_history)
+    context = {
+        'form': form,
+        'idReception': ortho_instance.idReception_id,
+        'name': ortho_instance.name,
+        'phone': ortho_instance.phone,
+        'gender': ortho_instance.gender,
+        'date_of_birth': ortho_instance.date_of_birth,
+        'price': ortho_instance.price,
+        'paid': ortho_instance.paid
+    }
+    return render(request, 'debts/edit_payment_history.html', context)
