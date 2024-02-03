@@ -3,6 +3,23 @@
 {% block content %}
 {% load custom_filters %}
 <body class="nav-md">
+<style type="text/css">
+		body
+		{
+		    counter-reset: Serial;
+		}
+
+		table
+		{
+		    border-collapse: separate;
+		}
+
+		tr td:first-child:before
+		{
+		  counter-increment: Serial;
+		  content: counter(Serial);
+		}
+	</style>
 <div class="container body">
     <div class="right_col" role="main">
 <nav class="navbar navbar-light bg-light">
@@ -480,7 +497,8 @@
                class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'Ortho' %}
-        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.id }}</td>
+        <td class="count"></td>
+
         <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.name }}</td>
         <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.phone }}</td>
         <!--<td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
