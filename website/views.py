@@ -1297,7 +1297,7 @@ def all_gave(request):
     current_time = datetime.now()
 
     # Retrieve 'gave' records within the last 24 hours
-    gaves = Reception.objects.filter(app_data__gte=current_time - timedelta(hours=120)).order_by('-id')
+    gaves = Reception.objects.filter(app_data__gte=current_time - timedelta(hours=360)).order_by('-id')
 
     # Clean 'gave' data if needed
     for gave in gaves:

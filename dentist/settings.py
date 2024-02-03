@@ -77,6 +77,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dentist.wsgi.application'
 
 
+
 DATABASES = {
 
     'default': dj_database_url.config(
