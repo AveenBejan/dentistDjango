@@ -506,6 +506,7 @@ class Ortho(models.Model):
     uper_date = models.DateField('Visit Date', null=True, blank=True)
     lower_date = models.DateField('Visit Date', null=True, blank=True)
     both_date = models.DateField('Visit Date', null=True, blank=True)
+    type_arch = models.CharField('Name', max_length=120, blank=True,null=True)
 
     def __str__(self):
         return self.idReception

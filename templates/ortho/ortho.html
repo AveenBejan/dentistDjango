@@ -209,11 +209,12 @@ textarea {
 
                                     <a href="{% url 'delete-ortho' orall.idReception_id %}"
                                        class="btn btn-danger delete-link"
-                                       {% if not user.is_authenticated
-                                       %}onclick="return confirm('You need to log in to delete this record.');" {% endif
-                                       %}>
+                                       {% if not user.is_authenticated %}
+                                       onclick="return confirm('You need to log in to delete this record. Are you sure you want to delete?');"
+                                       {% else %} onclick="return confirm('Are you sure you want to delete?');" {% endif %}>
                                         <span>&nbsp;&nbsp;Delete&nbsp;&nbsp;</span>
                                     </a>
+
                                 </td>
 
                                 <td style="text-align: center;" scope="row"><!-- Example split danger button -->
@@ -304,6 +305,7 @@ textarea {
                                                         <thead style="background-color:#73ccf0; color:#fff;">
                                                         <tr>
                                                             <th>Visit No.</th>
+                                                            <th>Type of Arch</th>
                                                             <th>Wire Size</th>
                                                             <th>Cross Sectional</th>
                                                             <th>Materials</th>
@@ -316,6 +318,12 @@ textarea {
                                                         <tr>
                                                             {% if orall.visits.visit_name is not None %}
                                                             <td>{{ orall.visits.visit_name }}</td>
+                                                            {% else %}
+                                                            <td></td>
+                                                            {% endif %}
+
+                                                            {% if orall.type_arch is not None %}
+                                                            <td>{{ orall.type_arch }}</td>
                                                             {% else %}
                                                             <td></td>
                                                             {% endif %}

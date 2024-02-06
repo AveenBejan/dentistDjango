@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block ss %}
+<div class="alert alert-danger" role="alert">
+  You Do Not Have Permission To Register
+</div>
+
+{% if user.is_authenticated %}
+{% if user.role == 'admin' %}
 <div class="container">
     <h1 class="text-center logo my-4">
         <a href="">Dentist Login</a>
@@ -30,7 +36,8 @@
         </div>
     </div>
 </div>
-
+ {% endif %}
+ {% endif %}
 <script>
     function togglePasswordVisibility() {
         var passwordField = document.getElementById("password");

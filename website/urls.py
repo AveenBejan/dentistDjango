@@ -161,7 +161,7 @@ urlpatterns = [
     path('print_prosthodontics_debt/<int:id>', views.print_prosthodontics_debt, name='print_prosthodontics_debt'),
 
 
-
+    path('edit_payment_history/<int:id>', views.edit_payment_history, name='edit_payment_history'),
     path('add_debt/<int:id>', views.add_debt, name='add-debt'),
     path('add_debt_crown/<int:id>', views.add_debt_crown, name='add-debt-crown'),
     path('add_debt_filling/<int:id>', views.add_debt_filling, name='add-debt-filling'),
@@ -198,7 +198,7 @@ urlpatterns = [
     path('feedback_view', views.feedback_view, name='feedback_view'),
 
 
-    path('edit_payment_history/<int:id>', views.edit_payment_history, name='edit_payment_history'),
+
 
 
 

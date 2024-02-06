@@ -2,7 +2,12 @@
 {% load static %}
 {% block title %} Contact Page{% endblock %}
 {% block content %}
-
+{% load custom_filters %}
+<br/>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 
 <div class="container">
 
@@ -52,11 +57,12 @@
                     No Patient Record found.
                 </div>
                 {% endif %}
-
             </div>
   </div>
 </div>
-
+    </div>
+</div>
+</body>
 
 
 {% endblock %}

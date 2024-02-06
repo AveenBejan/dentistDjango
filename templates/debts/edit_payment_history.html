@@ -1,34 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Payment History</title>
-</head>
-<body>
-    <h2>Edit Payment History</h2>
-<form method="POST" action="" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="text" name="idReception" value="{{ idReception  }}" class="form-control"  readonly>
-                    <input type="text" name="name" value="{{ name }}" class="form-control" readonly>
-                    <input type="text" name="phone" value="{{ phone }}" class="form-control" readonly>
-                    <input type="text" name="gender" value="{{ gender }}" class="form-control"  readonly>
-                    <input type="text" name="date_of_birth" value="{{ date_of_birth }}"  readonly
-                           class="form-control">
-                    <div class="row">
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+{% load custom_filters %}
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+        <section class="ftco-section contact-section ftco-degree-bg">
+    <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-8 mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                    </ol>
+                </nav>
+            </div></div></div></section>
 
-                        <div class="col-sm-6">
-                            <input type="text" id="price" name="price" value="{{ price }}" class="form-control" readonly>
-                            <h4>Paid Money</h4>
-                            <input type="text" id="paid" class="form-control" name="paid" value="{{ paid }}" placeholder="Paid:" required>
-                            <h4> Date Paid </h4>
-                            <input type="date" class="form-control" name="date" value="" placeholder="" required>
-                            <br/><br/>
-                            <button type="submit" class="btn btn-primary">Add Debt</button>
-                        </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+                <input type="hidden" name="idReception" value="{{ idReception  }}" class="form-control" readonly>
+                <div class="col-sm-2">
+                <label>Name</label>
+                <input type="text" name="name" value="{{ name }}" class="form-control" readonly>
+                </div>
+                <div class="col-sm-2">
+                <label>Phone Number</label>
+                <input type="text" name="phone" value="{{ phone }}" class="form-control" readonly>
+            </div>
+                <input type="hidden" id="ortho_instance" name="ortho_instance" value="{{ ortho_instance }}"
+                       class="form-control" readonly>
 
-                        </div>
-
-                </form>
-
+            <div class="col-sm-2">
+                <label>Total Price</label>
+                <input type="text" id="price" name="price" value="{{ price }}" class="form-control" readonly>
+            </div>
+            <br/><br/><br/><br/>
+            <div class="col-sm-2">
+                <h4>Paid Amount</h4>
+                <input type="text" id="paid_amount" class="form-control" name="paid_amount" value="{{ paid_amount }}"
+                       placeholder="Paid:" required>
+            </div>
+            <div class="col-sm-2">
+                <h4> Date of Paid Amount </h4>
+                <input type="date" class="form-control" name="previous_date" value="" placeholder="" required>
+            </div>
+            <br/><br/>
+            <button type="submit" class="btn btn-info">Edit Debt</button>
+        </form>
+    </div>
+</div>
 </body>
-</html>
+{% endblock %}
+

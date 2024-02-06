@@ -1857,7 +1857,6 @@ def ortho_visit1(request, id):
         new_orall.exo_images = orall.exo_images
         new_orall.exo_images = orall.exo_images
 
-
         form = OrthoForm(request.POST, request.FILES, instance=new_orall)
         if form.is_valid():
             form.save()
@@ -4592,23 +4591,46 @@ def endo_visit(request, id):
 
 
 def edit_payment_history(request, id):
-    payment_history = get_object_or_404(PaymentHistory, id=id)
-    ortho_instance = payment_history.ortho_instance  # Assuming ortho_instance is related to payment_history
+    payment_history = get_object_or_404(PaymentHistory, pk=id)
+    old_paid_amount = payment_history.paid_amount  # Get the old paid amount
+
     if request.method == 'POST':
         form = PaymentHistoryForm(request.POST, instance=payment_history)
         if form.is_valid():
             form.save()
-            return redirect('all_debts', id=id)  # Redirect to detail view
+
+            # Update the paid amount in the related ortho instance
+            ortho_instance = payment_history.ortho_instance
+            new_paid_amount = ortho_instance.paid - (old_paid_amount - payment_history.paid_amount)
+            ortho_instance.paid = new_paid_amount
+            ortho_instance.save()
+
+            ortho_instance_id = ortho_instance.id
+            # Store the previous date from the form in PaymentHistory
+            date_str = request.POST.get('date')
+            date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+            # Redirect back to the same date with start_date and end_date parameters
+            return redirect(reverse('add-debt-ortho1', args=[
+                ortho_instance_id]) + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+
     else:
         form = PaymentHistoryForm(instance=payment_history)
+
+    remaining_amount = payment_history.price - payment_history.paid_amount
+
     context = {
         'form': form,
-        'idReception': ortho_instance.idReception_id,
-        'name': ortho_instance.name,
-        'phone': ortho_instance.phone,
-        'gender': ortho_instance.gender,
-        'date_of_birth': ortho_instance.date_of_birth,
-        'price': ortho_instance.price,
-        'paid': ortho_instance.paid
+        'idReception': payment_history.idReception_id,
+        'name': payment_history.name,
+        'phone': payment_history.phone,
+        'price': payment_history.price,
+        'paid_amount': payment_history.paid_amount,
+        'crown_instance': payment_history.crown_instance_id,
+        'veneer_instance': payment_history.veneer_instance_id,
+        'ortho_instance': payment_history.ortho_instance_id,
+        'remaining_amount': remaining_amount,
+        'start_date': request.GET.get('start_date'),  # Include start_date parameter in the context
+        'end_date': request.GET.get('end_date'),  # Include end_date parameter in the context
     }
     return render(request, 'debts/edit_payment_history.html', context)

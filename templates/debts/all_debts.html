@@ -3,23 +3,6 @@
 {% block content %}
 {% load custom_filters %}
 <body class="nav-md">
-<style type="text/css">
-		body
-		{
-		    counter-reset: Serial;
-		}
-
-		table
-		{
-		    border-collapse: separate;
-		}
-
-		tr td:first-child:before
-		{
-		  counter-increment: Serial;
-		  content: counter(Serial);
-		}
-	</style>
 <div class="container body">
     <div class="right_col" role="main">
 <nav class="navbar navbar-light bg-light">
@@ -497,8 +480,7 @@
                class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'Ortho' %}
-        <td class="count"></td>
-
+        <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.id }}</td>
         <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.name }}</td>
         <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.phone }}</td>
         <!--<td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
@@ -525,8 +507,6 @@
         <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-ortho1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
-        <!--<td style="text-align: center;" ><a href="{% url 'edit_payment_history' id=result.id %}"><span class="btn btn-danger">Edit-Debt</span></a>
-        </td>-->
         <td style="text-align: center;" >
             <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>

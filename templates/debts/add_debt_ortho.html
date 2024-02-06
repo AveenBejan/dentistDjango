@@ -38,8 +38,13 @@
                         <tr>
                             <td>{{ history.paid_amount|format_with_commas }}</td>
                             <td>{{ history.previous_date }}</td>
-                            <td style="text-align: center;" ><a href="{% url 'edit_payment_history' id=history.id  %}"><span class="btn btn-danger">Edit-Debt</span></a>
-        </td>
+       <td style="text-align: center;">
+    <a href="{% url 'edit_payment_history' id=history.id %}?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">
+        <span class="btn btn-danger">Edit-Debt</span>
+    </a>
+</td>
+
+
                         </tr>
                         {% endfor %}
                         </tbody>
