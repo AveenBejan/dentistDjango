@@ -1789,7 +1789,8 @@ def ortho_visit(request, id):
 
 
 def ortho_edit(request, id):
-    orall = get_object_or_404(Ortho, id=id)
+    orall = Ortho.objects.get(id=id)
+    photos = Photo.objects.filter(ortho_instance=orall)
 
     if request.method == 'POST':
         form = OrthoForm(request.POST, instance=orall)
@@ -1798,11 +1799,15 @@ def ortho_edit(request, id):
             total_price = price
             form.instance.total_price = total_price
             form.save()
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(ortho_instance=orall, image=photo)
             return redirect('add-ortho', id=orall.idReception_id)
     else:
         form = OrthoForm(instance=orall)
 
-    return render(request, 'ortho/update_ortho.html', {'form': form, 'orall': orall})
+    return render(request, 'ortho/update_ortho.html', {'form': form, 'orall': orall, 'photos': photos})
 
 
 def ortho_visit1(request, id):
