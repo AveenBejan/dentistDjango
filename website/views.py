@@ -1598,6 +1598,12 @@ def add_ortho(request, id):
             ortho.save()
             # Set disable_submit flag to True after successful form processing
             disable_submit = True
+            photos = request.FILES.getlist('exo_images')
+            ortho_instance = form.save(commit=False)
+            ortho_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(ortho_instance=ortho_instance, image=photo)
             return redirect('add-ortho', id=id)
         else:
             reception = Reception.objects.get(id=id)
@@ -1638,7 +1644,6 @@ def add_ortho(request, id):
     except AttributeError:
         orall = None
         photos = None
-
     try:
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
