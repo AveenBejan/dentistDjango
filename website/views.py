@@ -276,7 +276,7 @@ def search_view(request):
 
 
 def search_debts(request):
-    query = request.GET.get('query')  # Get the search query
+    query = request.GET.get('query')  # Get the value of the 'query' parameter from the GET request
     exos = Exo.objects.none()  # Initialize as an empty queryset
     fillings = Filling.objects.none()
     crowns = Crown.objects.none()
@@ -288,15 +288,15 @@ def search_debts(request):
     periodontologys = Periodontology.objects.none()
 
     if query:
-        exos = Exo.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        fillings = Filling.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        crowns = Crown.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        veneers = Veneer.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        oralSurgery = OralSurgery.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        endos = Endo.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        orthos = Ortho.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        prosthodonticss = Prosthodontics.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        periodontologys = Periodontology.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
+        exos = Exo.objects.filter(Q(name=query[0]) | Q(phone=query))
+        fillings = Filling.objects.filter(Q(name=query[0]) | Q(phone=query))
+        crowns = Crown.objects.filter(Q(name=query[0]) | Q(phone=query))
+        veneers = Veneer.objects.filter(Q(name=query[0]) | Q(phone=query))
+        oralSurgery = OralSurgery.objects.filter(Q(name=query[0]) | Q(phone=query))
+        endos = Endo.objects.filter(Q(name=query[0]) | Q(phone=query))
+        orthos = Ortho.objects.filter(Q(name=query[0]) | Q(phone=query), visits_id__isnull=True)
+        prosthodonticss = Prosthodontics.objects.filter(Q(name=query[0]) | Q(phone=query))
+        periodontologys = Periodontology.objects.filter(Q(name=query[0]) | Q(phone=query))
 
     search_results = []
 
@@ -368,7 +368,7 @@ def search_debts1(request):
         veneers = Veneer.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
         oralSurgery = OralSurgery.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
         endos = Endo.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
-        orthos = Ortho.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
+        orthos = Ortho.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query), visits_id__isnull=True)
         prosthodonticss = Prosthodontics.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
         periodontologys = Periodontology.objects.filter(Q(name__istartswith=query[0]) | Q(phone=query))
 

@@ -1,9 +1,10 @@
 {% extends 'base.html'  %}
 {% load static %}
-{% block title %} Contact Page{% endblock %}
 {% block content %}
-
-<br/><br/>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -16,7 +17,7 @@
             {% if searched and orals %}
             <!--<h2>Search Results:{{ searched }}</h2>-->
             <table class="table table-hover">
-                <thead style="background-color:#73ccf0; color:#fff;">
+                <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Full Name</th>
@@ -55,5 +56,5 @@
     </div>
 </div>
 
-
+    </div></div></body>
 {% endblock %}
