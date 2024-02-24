@@ -42,43 +42,6 @@
                     </div>
                     {% endif %}
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                     data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <table class="table table-hover">
-                             <thead style="background-color:#17a2b8; color:#fff;">
-                            <tr>
-
-                                <th scope="col">#</th>
-                                <th scope="col">Patient Name</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Doctor Name</th>
-                                <th scope="col">Appointment Date</th>
-                                <th scope="col">Day Name</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Other</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for appointment in appointments %}
-                            <tr>
-                                <td text-align="center" scope="row">{{ appointment.id }}</td>
-                                <td text-align="center" scope="row">{{ appointment.name }}</td>
-                                <td text-align="center" scope="row">{{ appointment.phone }}</td>
-                                <td text-align="center" scope="row">{{ appointment.doctor }}</td>
-                                <td text-align="center" scope="row">{{ appointment.app_data }}</td>
-                                <td text-align="center" scope="row">{{ appointment.days}}</td>
-                                <td text-align="center" scope="row">{{ appointment.time|slice:"1:-1" }}</td>
-                                <td><a href="{% url 'print-appointment'  appointment.id  %}" style="display: inline;" class="btn btn-outline-info">Print Appointment</a></td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button collapsed" type="button"
@@ -98,39 +61,46 @@
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception }}"
                                        class="form-control">
-                                <input type="hidden" name="name" value="{{ form.initial.name }}"
-                                       class="form-control">
-                                <input type="hidden" name="phone" value="{{ form.initial.phone }}"
-                                       class="form-control">
-                                 <input type="hidden" class="form-control" name="gender" required="required" value="{{ form.initial.gender }}">
 
-                                <input type="hidden" name="date_of_birth" class="form-control appointment_date" placeholder="Date of Birth" value="8/3/2023">
+                                <div class="col-sm-2">
+                                <label>Name</label>
+                                <input type="text" name="name" value="{{ form.initial.name }}" class="form-control" readonly>
+                                </div>
+                                <div class="col-sm-2">
+                                <label>Phone</label>
+                                <input type="text" name="phone" value="{{ form.initial.phone }}" class="form-control"  readonly>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>Gender</label>
+                                    <input type="text" class="form-control" name="gender" required="required"
+                                           value="{{ form.initial.gender }}" readonly>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>Date of Birth</label>
+                                    <input type="text" name="date_of_birth" class="form-control appointment_date"
+                                           placeholder="Date of Birth" value="8/3/2023" readonly>
+                                </div>
 
-                                <div class="container">
+                                <input type="hidden" name="user_id" value="{{ form.initial.user_id }}"
+                                       class="form-control appointment_date">
 
-                                    <div class="col-10">
 
-                                        <div class="form-group">
-                                            <div class="icon"></div>
-                                            <div class="form-group">
-                                                {{ form.doctor }}
-                                            </div>
+                                <div class="col-sm-5">
+                                    <label>Doctor Name</label>
+                                    {{ form.doctor }}
+                                </div>
 
-                                        </div>
-                                    </div>
-                                     <div class="col-sm-5">
-								 <div class="form-group">
-									 <label style="color:#fff; font-size:16px;">Date of Appointment</label>
-									 <input type="date" name="app_data" id="datepicker-3" required class="form-control">
-								 </div>
-							 </div>
-							 <div class="col-sm-5">
-								 <div class="form-group">
-									 <label style="color:#fff; font-size:16px;">Days</label>
-									 <input type="text" name="days" id="datepicker-4" readonly class="form-control">
-								 </div>
-							 </div>
-                                    <div class="col-sm-12">
+                                <div class="col-sm-3">
+                                    <label>Date of Appointment</label>
+                                    <input type="date" name="app_data" id="datepicker-3" required class="form-control">
+                                </div>
+                                <div class="col-sm-3">
+
+                                    <label>Days</label>
+                                    <input type="text" name="days" id="datepicker-4" readonly class="form-control">
+<br/>
+                                </div>
+                                    <div class="col-sm-5">
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" name="time" value="4:00pm">
                                             <label class="form-check-label">4:00pm</label>
@@ -170,9 +140,10 @@
                                     </div>
 
                                     <br/>
+                                 <div class="col-sm-5">
                                     <div class="form-group" style="text-align: center;">
                                         <input type="submit" value="Add New Appointment"
-                                               class="btn btn-outline-primary">
+                                               class="btn btn-outline-info">
                                     </div>
                                 </div>
                             </form>
@@ -180,6 +151,44 @@
 
                     </div>
                 </div>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table table-hover">
+                             <thead style="background-color:#17a2b8; color:#fff;">
+                            <tr>
+
+                                <th scope="col">#</th>
+                                <th scope="col">Patient Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Appointment Date</th>
+                                <th scope="col">Day Name</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Other</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td text-align="center" scope="row">{{ appointment.id }}</td>
+                                <td text-align="center" scope="row">{{ appointment.name }}</td>
+                                <td text-align="center" scope="row">{{ appointment.phone }}</td>
+                                <td text-align="center" scope="row">{{ appointment.doctor }}</td>
+                                <td text-align="center" scope="row">{{ appointment.app_data }}</td>
+                                <td text-align="center" scope="row">{{ appointment.days}}</td>
+                                <td text-align="center" scope="row">{{ appointment.time|slice:"1:-1" }}</td>
+                                <td><a href="{% url 'print-appointment'  appointment.id  %}" style="display: inline;" class="btn btn-outline-info">Print Appointment</a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
             </div>
         </div>
     </div>

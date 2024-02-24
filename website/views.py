@@ -1183,6 +1183,16 @@ def search_reception(request):
         return render(request, 'search_reception.html', {})
 
 
+def search_gave(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        gaves = Reception.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception.objects.all()
+        return render(request, 'search_gave.html', {'searched': searched, 'gaves': gaves, 'receptions': receptions})
+    else:
+        return render(request, 'search_gave.html', {})
+
+
 def delete_reception(request, id):
     appointments = Reception.objects.get(pk=id)
     appointments.delete()
@@ -1207,7 +1217,7 @@ def update_appointment(request, id):
         return redirect('user_all')
     return render(request, 'update_appointment.html', {'form': form, 'pi': pi})
 
-@login_required
+
 def gave_appointment(request, id):
     # Check if the request method is POST
     if request.method == 'POST':
@@ -1246,6 +1256,7 @@ def gave_appointment(request, id):
             instance.app_data = app_data
             instance.days = days
             instance.time = selected_times
+            instance.user_id = existing_reception.user_id
 
             # Save the new instance to the database
             instance.save()
@@ -1295,6 +1306,7 @@ def print_appointment(request, id):
 def all_gave(request):
     # Get current time
     current_time = datetime.now()
+    gaves = Reception.objects.all().order_by('-id')
 
     # Retrieve 'gave' records within the last 24 hours
     gaves = Reception.objects.filter(app_data__gte=current_time - timedelta(hours=360)).order_by('-id')
@@ -1810,6 +1822,36 @@ def ortho_edit(request, id):
     return render(request, 'ortho/update_ortho.html', {'form': form, 'orall': orall, 'photos': photos})
 
 
+def ortho_edit_visit(request, id):
+    orall = Ortho.objects.get(id=id)
+    photos = Photo.objects.filter(ortho_instance=orall)
+
+    if request.method == 'POST':
+        form = OrthoForm(request.POST, instance=orall)
+        if form.is_valid():
+            price = form.cleaned_data['price']
+            visits = form.cleaned_data['visits']
+            total_price = price
+            form.instance.total_price = total_price
+            form.instance.visits = visits
+            form.save()
+
+            # Update associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(ortho_instance=orall, image=photo)
+
+            print("Form submission successful. Redirecting...")
+            return redirect('add-ortho', id=orall.idReception_id)
+        else:
+            print("Form is not valid. Errors:", form.errors)
+    else:
+        form = OrthoForm(instance=orall)
+
+    print("Rendering ortho_edit_visit template...")
+    return render(request, 'ortho/ortho_edit_visit.html', {'form': form, 'orall': orall, 'photos': photos})
+
+
 def ortho_visit1(request, id):
     orall = get_object_or_404(Ortho, id=id)
     if request.method == 'POST':
@@ -1865,7 +1907,9 @@ def ortho_visit1(request, id):
         new_orall.exo_images = orall.exo_images
         new_orall.exo_images = orall.exo_images
         new_orall.exo_images = orall.exo_images
-        new_orall.exo_images = orall.exo_images
+        new_orall.uper_date = orall.uper_date
+        new_orall.lower_date = orall.lower_date
+        new_orall.both_date = orall.both_date
 
         form = OrthoForm(request.POST, request.FILES, instance=new_orall)
         if form.is_valid():

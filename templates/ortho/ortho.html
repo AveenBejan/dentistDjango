@@ -311,6 +311,7 @@ textarea {
                                                             <th>Materials</th>
                                                             <th>Type of Brackets</th>
                                                             <th>Date Visit</th>
+                                                            <th>Update Visit</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -355,9 +356,16 @@ textarea {
                                                             {% else %}
                                                             <td></td>
                                                             {% endif %}
+                                                            {% if orall.visits %}
+                                                            <td><a href="{% url 'ortho-edit-visit' orall.id   %}"
+                                                                   style="display: inline;"><span
+                                                                    class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                                            </td>
+                                                            {% endif %}
                                                         </tr>
                                                         {% endfor %}
                                                         </tbody>
+
                                                     </table>
                                                     {% else %}
                                                     <p>No associated ID Reception data found.</p>

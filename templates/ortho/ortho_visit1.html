@@ -74,6 +74,10 @@
                     <input type="hidden" name="paid" value="0">
                     <input type="hidden" name="notes" value="{{ form.initial.notes }}">
                     <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}">
+<label>Date of Upper</label><input type="text" name="uper_date" id="uper_date" {% if form.initial.uper_date %}readonly{% endif %} value="{% if form.initial.uper_date %}{{ form.initial.uper_date|date:" Y-m-d" }}{% endif %}">
+
+                                        <label>Date of Lower</label><input type="text" name="lower_date" id="lower_date" {% if form.initial.lower_date %}readonly{% endif %} value="{% if form.initial.lower_date %}{{ form.initial.lower_date|date:" Y-m-d" }}{% endif %}">
+                                         <label>Date of Both</label><input type="text" name="both_date" id="both_date" {% if form.initial.both_date %}readonly{% endif %} value="{% if form.initial.both_date %}{{ form.initial.both_date|date:" Y-m-d" }}{% endif %}">
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             {{ form.visits }}
@@ -224,6 +228,73 @@
             alert('Please select a visit!');
             // You can modify this to display an error message in a specific location on your page
         }
+    });
+</script>
+<script>'uper_date','lower_date','both_date'
+    // Define the toggleVisitField function first
+    function toggleVisitField(visitField, enable) {
+        visitField.disabled = !enable;
+        if (enable) {
+            visitField.value = "";  // Clear the field if enabling
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var firstVisitField = document.getElementById("uper_date");
+        var secondVisitField = document.getElementById("lower_date");
+        var thirdVisitField = document.getElementById("both_date");
+
+
+        // Function to make an input field readonly if it has a value
+        function makeReadonlyIfValueExists(inputField) {
+            if (inputField.value !== "") {
+                inputField.readOnly = true;
+            }
+        }
+
+        // Call the function for each input field
+        makeReadonlyIfValueExists(secondVisitField);
+        makeReadonlyIfValueExists(thirdVisitField);
+        makeReadonlyIfValueExists(fourthVisitField);
+        makeReadonlyIfValueExists(fifthVisitField);
+
+        // Initially, check if there is a date in the first visit
+        if (firstVisitField.value !== "") {
+            toggleVisitField(secondVisitField, true);  // Enable the second visit field
+        } else {
+            // If the first visit is empty, disable all subsequent visits
+            toggleVisitField(secondVisitField, false);
+            toggleVisitField(thirdVisitField, false);
+            toggleVisitField(fourthVisitField, false);
+            toggleVisitField(fifthVisitField, false);
+        }
+
+        // Add event listeners to enable/disable fields based on the previous visit
+        firstVisitField.addEventListener("change", function() {
+            if (firstVisitField.value !== "") {
+                toggleVisitField(secondVisitField, true);
+                toggleVisitField(thirdVisitField, false);
+                toggleVisitField(fourthVisitField, false);
+                toggleVisitField(fifthVisitField, false);
+            } else {
+                toggleVisitField(secondVisitField, false);
+                toggleVisitField(thirdVisitField, false);
+                toggleVisitField(fourthVisitField, false);
+                toggleVisitField(fifthVisitField, false);
+            }
+        });
+
+        // Add an event listener for the second visit
+        secondVisitField.addEventListener("change", function() {
+            var secondVisitValue = secondVisitField.value;
+            console.log("Second Visit Value:", secondVisitValue);
+
+            if (secondVisitValue !== "") {
+                toggleVisitField(thirdVisitField, true);
+            } else {
+                toggleVisitField(thirdVisitField, false);
+            }
+        });
     });
 </script>
 {% endblock %}

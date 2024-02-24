@@ -8,6 +8,7 @@ urlpatterns = [
     path('gave_appointment/<int:id>', views.gave_appointment, name='gave-appointment'),
     path('print_appointment/<int:id>', views.print_appointment, name='print-appointment'),
     path('all_gave.html', views.all_gave, name='all-gave'),
+    path('search_gave', views.search_gave, name='search-gave'),
     path('contact.html', views.contact, name='contact'),
     path('about.html', views.about, name='about'),
     path('services.html', views.services, name='services'),
@@ -134,6 +135,7 @@ urlpatterns = [
     path('remove_photo_ortho/<int:photo_id>/', views.remove_photo_ortho, name='remove-photo-ortho'),
     path('visit.html', views.visit, name='visit'),
     path('delete_visit/<int:id>', views.delete_visit, name='delete-visit'),
+    path('ortho_edit_visit/<int:id>', views.ortho_edit_visit, name='ortho-edit-visit'),
 
 
     path('search_appo', views.search_appo, name='search-appo'),
