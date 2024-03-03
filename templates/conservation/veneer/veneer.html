@@ -99,7 +99,7 @@
                                 </td>
                                 {% if veneer %}
                                 <td style="text-align: center;"><a href="{% url 'veneer_edit' veneer.id %}"
-                                                                   style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
+                                                                   style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/><br/>
                                     <a href="{% url 'delete-veneer'  veneer.id %}" style="display: inline;"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 <td style="text-align: center;"><a href="{% url 'drugs' id=id %}"
                                                                    style="display: inline;"><span

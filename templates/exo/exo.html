@@ -96,7 +96,7 @@
                                 {% if exoo %}
 
                                 <td>
-                                    <a href="{% url 'exo_edit' exoo.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
+                                    <a href="{% url 'exo_edit' exoo.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/><br/>
                                     <a href="{% url 'delete-exo'  exoo.id %}" ><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 {% endif %}
                                 <td style="text-align: center; " scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span

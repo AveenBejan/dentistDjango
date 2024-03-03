@@ -80,10 +80,8 @@
                                 </td>
 
                                 {% if exoo %}
-                                <td style="text-align: center;" scope="row" ><a href="{% url 'periodontology_edit' exoo.id   %}" style="display: inline;"><span
-                                        class="btn btn-warning">&nbsp;&nbsp;Edit&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'delete-periodontology'  exoo.id %}" style="display: inline;"><span
-                                        class="btn btn-danger">Delete</span></a></td>
+                                <td style="text-align: center;" scope="row" ><a href="{% url 'periodontology_edit' exoo.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/><br/>
+                                <a href="{% url 'delete-periodontology'  exoo.id %}" style="display: inline;"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 {% endif %}
                                 <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
                                         class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>

@@ -116,7 +116,7 @@ textarea {
                                     {% endfor %}
                                 </td>
                                 {% if fill %}
-                                <td  style="text-align: center;" scope="row"><a href="{% url 'filling_edit' fill.id %}" style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
+                                <td  style="text-align: center;" scope="row"><a href="{% url 'filling_edit' fill.id %}" style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/><br/>
                                 <a href="{% url 'delete-filling'  fill.id %}"
                                                    style="display: inline;"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 <td style="text-align: center;" scope="row"><a href="{% url 'drugs' id=id %}"

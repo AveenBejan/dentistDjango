@@ -84,14 +84,15 @@
 
                                 <input type="hidden" name="user_id" value="{{ form.initial.user_id }}"
                                        class="form-control appointment_date">
+                                <div class="col-10">
+								 <div class="col-sm-3">
+									 <label>Doctor's Name</label>
+									 <div class="form-group">
+										 {{ form.doctor }}
+									 </div>
 
-
-                                <div class="col-sm-5">
-                                    <label>Doctor Name</label>
-                                    {{ form.doctor }}
-                                </div>
-
-                                <div class="col-sm-3">
+								 </div>
+                                     <div class="col-sm-3">
                                     <label>Date of Appointment</label>
                                     <input type="date" name="app_data" id="datepicker-3" required class="form-control">
                                 </div>
@@ -101,6 +102,9 @@
                                     <input type="text" name="days" id="datepicker-4" readonly class="form-control">
 <br/>
                                 </div>
+							 </div>
+
+
                                     <div class="col-sm-5">
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" name="time" value="4:00pm">
