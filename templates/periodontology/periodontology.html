@@ -88,7 +88,9 @@
                                 <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
                                         class="btn btn-info">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-info">Add Appointment</span></a></td>
+                                        class="btn btn-info">Add Appoint</span></a><br/>
+                                <a href="{% url 'print_periodontology_debt'  id=id  %}" style="display: inline;"
+                                       class="btn btn-info">Print UnPaid</a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -112,8 +114,11 @@
                         <div class="accordion-body">
                             <form method="POST" enctype="multipart/form-data" id="per-form">
                                 {% csrf_token %}
-                                <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                               <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="hidden" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                 <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

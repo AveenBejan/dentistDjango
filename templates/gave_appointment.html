@@ -58,9 +58,10 @@
                         <div class="accordion-body">
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                <input type="text" name="idReception"
+                                       value="{{ form.initial.idReception}}"
                                        class="form-control">
+
 
                                 <div class="col-sm-2">
                                 <label>Name</label>

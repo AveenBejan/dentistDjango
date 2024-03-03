@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <body class="nav-md">
 <div class="container body">
@@ -43,9 +44,12 @@
                             <th scope="row"> OralSurgery Total Price</th>
                             <th scope="row"> Endo Total Price</th>
                             <th scope="row"> Ortho Total Price</th>
+                            <th scope="row"> Periodontology Total Price</th>
+                            <th scope="row"> Prosthodontics Total Price</th>
                             <th scope="row"> Salary Total Price</th>
                             <th scope="row"> OutCome Total Price</th>
                             <th scope="row"> Benefit</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -57,6 +61,8 @@
                             <td style="text-align: center;" >{{total_oralSurgery}}</td>
                             <td style="text-align: center;" >{{total_endo}}</td>
                             <td style="text-align: center;" >{{total_ortho}}</td>
+                            <td style="text-align: center;" >{{total_periodontology}}</td>
+                            <td style="text-align: center;" >{{total_prosthodontics}}</td>
                             <td style="text-align: center;" >{{total_salary }}</td>
                             <td style="text-align: center;" >{{total_outcome}}</td>
                             <td style="text-align: center;" >{{remaining}}</td>
@@ -203,22 +209,47 @@
         <th scope="col"  style="text-align: center;" >Price</th>
         <th scope="col" style="text-align: center;" class="hideable">paid</th>
         <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+         {% elif model_name == 'Prosthodontics' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
+        <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
+        <th scope="col" style="text-align: center;" class="hideable">Complete Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">C.Upper Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">C.Lower Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">Partial Denture</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th style="text-align: center;" scope="col">Total Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+         {% elif model_name == 'Periodontology' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <th scope="col" style="text-align: center;" class="hideable">Type</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>
+        <th style="text-align: center;" scope="col">Total Price</th>
+                                <th scope="col" style="text-align: center;" class="hideable">paid</th>
                                 {% elif model_name == 'Salary' %}
-                                <th scope="col"  style="text-align: center;" >#</th>
-                                <th scope="col"  style="text-align: center;" >#</th>
-                                <th scope="col"  style="text-align: center;" >Employ Name</th>
-                                <th scope="col"  style="text-align: center;" > salaryPaid</th>
-                                <th scope="col"  style="text-align: center;" >days</th>
-                                <th scope="col"  style="text-align: center;" >finalSalary</th>
-                                <th scope="col"  style="text-align: center;" >Month</th>
+                                <th scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">Employ Name</th>
+                                <th scope="col" style="text-align: center;"> salaryPaid</th>
+                                <th scope="col" style="text-align: center;">days</th>
+                                <th scope="col" style="text-align: center;">finalSalary</th>
+                                <th scope="col" style="text-align: center;">Month</th>
                                 {% elif model_name == 'Outcome' %}
-                                <th scope="col"  style="text-align: center;" >#</th>
-                                <th scope="col"  style="text-align: center;" >invoice_num</th>
-                                <th scope="col"  style="text-align: center;" >invoice_date</th>
-                                <th scope="col"  style="text-align: center;" >type</th>
-                                <th scope="col"  style="text-align: center;" >description</th>
-                                <th scope="col"  style="text-align: center;" >price</th>
-                                <th scope="col"  style="text-align: center;" >Reg.Date</th>
+                                <th scope="col" style="text-align: center;">#</th>
+                                <th scope="col" style="text-align: center;">invoice_num</th>
+                                <th scope="col" style="text-align: center;">invoice_date</th>
+                                <th scope="col" style="text-align: center;">type</th>
+                                <th scope="col" style="text-align: center;">description</th>
+                                <th scope="col" style="text-align: center;">price</th>
+                                <th scope="col" style="text-align: center;">Reg.Date</th>
                                 {% endif %}
                                 <!-- ... other header columns ... -->
                             </tr>
@@ -227,15 +258,15 @@
                             {% for result in results %}
                             <tr>
                                 {% if model_name == 'Exo' %}
-        <td style="text-align: center;" >{{ result.id }}</td>
+                                <td style="text-align: center;">{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.idReception_id }}</td>
         <td style="text-align: center;" >{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.lr|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.ll|slice:"1:-1" }}</td>
-        <td style="text-align: center;" >{{ result.price }}</td>
-        <td style="text-align: center;" >{{ result.total_price }}</td>
-        <td style="text-align: center;" >{{ result.paid }}</td>
+        <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;" >{{ result.note }}</td>
         <td style="text-align: center;" >{{ result.exoby|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
@@ -247,9 +278,9 @@
         <td style="text-align: center;"  scope="row" align="center">{{result.no_unite}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>
-        <td style="text-align: center;"  scope="row" align="center"> {{result.total_price }}</td>
-        <td style="text-align: center;"  scope="row" align="center"> {{result.paid }}</td>
+        <td style="text-align: center;"  scope="row" align="center">{{result.price|format_with_commas}}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{result.paid|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
         <!-- ... other crown-related fields ... -->
         {% elif model_name == 'Filling' %}
@@ -262,9 +293,9 @@
         <td scope="row" style="text-align: center;" >{{result.lr|slice:"1:-1"}}</td>
         <td scope="row" style="text-align: center;" >{{result.ll|slice:"1:-1"}}</td>
         <td scope="row" style="text-align: center;" >{{result.no_prepare}}</td>
-        <td scope="row" style="text-align: center;" >{{result.price}}</td>
-        <td scope="row" style="text-align: center;" >{{result.total_price}}</td>
-        <td scope="row" style="text-align: center;" >{{result.paid}}</td>
+        <td scope="row" style="text-align: center;" >{{result.price|format_with_commas}}</td>
+        <td scope="row" style="text-align: center;" >{{result.total_price|format_with_commas}}</td>
+        <td scope="row" style="text-align: center;" >{{result.paid|format_with_commas}}</td>
         <td scope="row" style="text-align: center;" >{{result.note}}</td>
         {% elif model_name == 'Veneer' %}
         <td style="text-align: center;"  scope="row">{{ result.id}}</td>
@@ -273,9 +304,9 @@
         <td style="text-align: center;"  scope="row" align="center">{{result.no_unite}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
-        <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>
-        <td style="text-align: center;"  scope="row" align="center"> {{ result.total_price }}</td>
-        <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
+        <td style="text-align: center;"  scope="row" align="center">{{result.price|format_with_commas}}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
         {% elif model_name == 'OralSurgery' %}
         <td style="text-align: center;" scope="row">{{ result.id }}</td>
@@ -292,9 +323,9 @@
         <td style="text-align: center;" scope="row">{{ result.shade }}</td>
         <td style="text-align: center;" scope="row">{{ result.no_unite }}</td>
         <td style="text-align: center;" scope="row">{{ result.color }}</td>
-        <td style="text-align: center;" scope="row">{{ result.price }}</td>
-        <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
-        <td style="text-align: center;"  scope="row" align="center"> {{ result.paid }}</td>
+        <td style="text-align: center;" scope="row">{{ result.price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
          {% elif model_name == 'Endo' %}
         <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
@@ -305,8 +336,8 @@
         <td style="text-align: center;" scope="row">{{ result.work_length }}</td>
         <td style="text-align: center;" scope="row">{{ result.no_prepare }}</td>
         <td style="text-align: center;">{{ result.price }}</td>
-        <td style="text-align: center;">{{ result.total_price }}</td>
-        <td style="text-align: center;" scope="row">{{ result.paid }}</td>
+        <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;" scope="row">{{ result.note }}</td>
         {% elif model_name == 'Ortho' %}
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
@@ -329,16 +360,39 @@
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lls|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.teeth_size |slice:"1:-1" }}</td>
         <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>
-        <td style="text-align: center;">{{ result.price}}</td>
-        <td style="text-align: center;" scope="row" class="hideable">{{ result.paid }}</td>
+        <td style="text-align: center;">{{ result.price|format_with_commas}}</td>
+        <td style="text-align: center;" scope="row" class="hideable">{{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.notes }}</td>
+        {% elif model_name == 'Prosthodontics' %}
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ur|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ul|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lr|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.ll|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.denture|slice:"1:-1" }}</td>
+        <td style="text-align: center;" scope="row">{{ result.upper }}</td>
+        <td style="text-align: center;" scope="row">{{ result.lower }}</td>
+        <td style="text-align: center;" scope="row">{{ result.partial }}</td>
+        <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
+        <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
+         {% elif model_name == 'Periodontology' %}
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <td style="text-align: center;" scope="row">{{ result.type }}</td>
+        <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
+        <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
                                 {% elif model_name == 'Salary' %}
                                 <td scope="row" style="text-align: center;" >{{result.id}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.idBasicInfo_id}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.fullname}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.salaryPaid}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.days}}</td>
-                                <td scope="row" style="text-align: center;" >{{result.finalSalary}}</td>
+                                <td scope="row" style="text-align: center;" >{{result.finalSalary|format_with_commas}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.month}}</td>
                                 {% elif model_name == 'Outcome' %}
                                 <td scope="row" style="text-align: center;" >{{result.id}}</td>
@@ -346,7 +400,7 @@
                                 <td scope="row" style="text-align: center;" >{{result.invoice_date}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.type}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.description}}</td>
-                                <td scope="row" style="text-align: center;" >{{result.price}}</td>
+                                <td scope="row" style="text-align: center;" >{{result.price|format_with_commas}}</td>
                                 <td scope="row" style="text-align: center;" >{{result.regdate}}</td>
                                 {% endif %}
                                 <!-- ... other fields ... -->

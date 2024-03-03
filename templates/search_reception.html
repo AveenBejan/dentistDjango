@@ -22,7 +22,7 @@
 
 
             <table class="table table-hover">
-                <thead style="background-color:#73ccf0; color:#fff;">
+                <thead style="background-color:#17a2b8; color:#fff;">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Patient Name</th>
@@ -33,7 +33,7 @@
                     <th scope="col">Date of Appointment</th>
                     <th scope="col">Days</th>
                     <th scope="col">Time</th>
-                    <!--<th scope="col" colspan="">Update</th>-->
+                    <th scope="col" colspan="">Update</th>
                     <th scope="col" colspan="">Delete</th>
 
                 </tr>
@@ -52,9 +52,9 @@
                     <td scope="row">{{oral.days}}</td>
                     <td scope="row">{{oral.time|slice:"1:-1"}}</td>
                     <td><a href="{% url 'update-reception' oral.id %}" style="display: inline;"><span
-                            class="btn btn-outline-warning">Update</span></a></td>
+                            class="btn btn-warning">Update</span></a></td>
                     <td><a href="{% url 'delete-reception'  oral.id  %}" style="display: inline;"><span
-                            class="btn btn-outline-danger">Delete</span></a></td>
+                            class="btn btn-danger">Delete</span></a></td>
                     <!-- <th scope="col" colspan="">Send Reminder</th><td><a href="{% url 'send_appointment_reminders' %}">Send Reminder</a></td>-->
 
                 </tr>

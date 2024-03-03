@@ -92,13 +92,17 @@
                                 </td>
 
                                 {% if exoo %}
-                                <td style="text-align: center;" scope="row" ><a href="{% url 'prosthodontics_edit' exoo.id   %}"class="btn btn-warning btn-xs">&nbsp;&nbsp;Edit&nbsp;&nbsp;</a><br/>
-                                <a href="{% url 'delete-prosthodontics'  exoo.id %}" class="btn btn-danger btn-xs">Delete</a></td>
+                                <td style="text-align: center;" scope="row" ><a href="{% url 'prosthodontics_edit' exoo.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
+                                <a href="{% url 'delete-prosthodontics'  exoo.id %}"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 {% endif %}
                                 <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
-                                        class="btn btn-info  btn-xs">&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;</span></a><br/>
+                                        class="btn btn-info  btn-xs">Add Drugs</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-info btn-xs">Add Appointment</span></a></td>
+                                        class="btn btn-info btn-xs">Add Appoint</span></a>
+                                <br/>
+
+                                <a href="{% url 'print_prosthodontics_debt'  id=id  %}" style="display: inline;"
+               class="btn btn-info">Print UnPaid</a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -121,8 +125,11 @@
                         <div class="accordion-body">
                             <form method="POST" enctype="multipart/form-data" id="pro-form">
                                 {% csrf_token %}
-                                <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                 <input type="text" name="idReception"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="text" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                 <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

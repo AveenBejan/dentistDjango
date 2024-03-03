@@ -42,7 +42,7 @@
                     <span style="font-weight: bold;">Gender:  </span>{{ form.initial.gender }}&nbsp;&nbsp;
                     <span style="font-weight: bold;">Date of Birth:   </span>{{ form.initial.date_of_birth }}
                 </p>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                <p id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
 
                         <table class="table table-hover">
@@ -112,9 +112,12 @@
                                 {% if orall %}
                                 <!--<a href="{% url 'oral-visit' orall.id %}" style="display: inline;"><span
                                         class="btn btn-warning">Add Visits</span></a><br/>-->
-                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning btn-xs">Edit</span>
+                                <td style="text-align: center;" scope="row"><a href="{% url 'oral-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning btn-xs">Add Visits</span>
                                 </a><br/>
-                                <a href="{% url 'delete-oral'  orall.id %}" style="display: inline;"><span class="btn btn-danger btn-xs">Delete</span></a></td>
+                                <a href="{% url 'oral-edit' orall.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;">
+                                </a><br/><br/>
+                                <a href="{% url 'delete-oral'  orall.id %}" > <img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
+                                <div style="display: inline;background-image: url({% static 'website/images/delete.png' %});"></div>
                                 <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg">Show Visits
                                         </button>
 
@@ -158,8 +161,15 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div><br/><a href="{% url 'drugs' id=id %}" class="btn btn-info btn-xs">Add Drugs</a><br/>
-                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info btn-xs">Add Appointment</span></a></td>
+                                        </div>
+                                    <br/><a href="{% url 'drugs' id=id %}" class="btn btn-info btn-xs">Add
+                                        Drugs</a><br/>
+                                    <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                            class="btn btn-info btn-xs">Add Appoint</span></a>
+                                    <br/>
+                                    <a href="{% url 'print_oral_debt'  id=id  %}" style="display: inline;"
+                                       class="btn btn-info">Print UnPaid</a></td>
+
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -188,8 +198,11 @@
                             <p>{{form.initial.idReception.name}}</p>
                             <form method="POST" enctype="multipart/form-data"  id="oral-form">
                                 {% csrf_token %}
-                                <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                 <input type="hidden" name="idReception"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="hidden" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                          <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

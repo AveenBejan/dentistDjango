@@ -86,6 +86,25 @@ class Reception(models.Model):
         return self.name
 
 
+class Reception1(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, unique=False, blank=True,null=True)
+    name1 = models.CharField('Name', max_length=120, blank=True,null=True)
+    name = models.CharField('Name',max_length=120)
+    phone = models.CharField('phone',max_length=120)
+    gender = models.CharField('Gender',max_length=20)
+    date_of_birth = models.DateField(null=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
+    app_data = models.DateField(null=True)
+    days = models.CharField('Days',max_length=20,null=True)
+    time = models.CharField(null=True,max_length=200)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.name
+
+
 class GaveAppointment(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=True)
     name = models.CharField('Name',max_length=120,null=True)
@@ -101,6 +120,7 @@ class GaveAppointment(models.Model):
 
 class Filling(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -156,6 +176,7 @@ class Filling(models.Model):
 
 class Crown(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -177,6 +198,7 @@ class Crown(models.Model):
 
 class Veneer(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -198,6 +220,7 @@ class Veneer(models.Model):
 
 class Endo(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -241,6 +264,7 @@ class UploadedFile(models.Model):
 
 class Drug(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     name_medicine = models.CharField(max_length=200, blank=True,null=False)  # This should be a CharField, not ForeignKey
     name = models.CharField('Name', max_length=120,blank=True,null=False)
     phone = models.CharField('Phone', max_length=120,blank=True,null=False)
@@ -256,6 +280,7 @@ class Drug(models.Model):
 
 class Exo(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -291,6 +316,7 @@ class Implant(models.Model):
 
 class OralSurgery(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120, blank=True,null=True)
@@ -399,6 +425,7 @@ class Visits(models.Model):
 
 class Periodontology(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -417,6 +444,7 @@ class Periodontology(models.Model):
 
 class Prosthodontics(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120,null=False)
@@ -452,6 +480,7 @@ class Aveen(models.Model):
 
 class Ortho(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE,blank=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
     educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField('Name',max_length=120, blank=True,null=True)
@@ -597,6 +626,7 @@ class Debts(models.Model):
 
 class PaymentHistory(models.Model):
     idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
     crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE, blank=True,null=True)
     endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, blank=True,null=True)
     filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, blank=True, null=True)

@@ -110,10 +110,8 @@
                                 {% if orall %}
                                <!-- <a href="{% url 'endo-visit' orall.id %}" style="display: inline;"><span
                                         class="btn btn-warning">Add Visits</span></a><br/>-->
-                                <td style="text-align: center;" scope="row"><a href="{% url 'endo-edit' orall.id   %}" style="display: inline;"><span
-                                        class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'delete-endo'  orall.id %}" style="display: inline;"><span
-                                        class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a></td>
+                                <td style="text-align: center;" scope="row"><a href="{% url 'endo-edit' orall.id   %}" style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
+                                <a href="{% url 'delete-endo'  orall.id %}" style="display: inline;"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 <td style="text-align: center;" scope="row"><button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target=".bd-example-modal-lg">Show Visits
                                         </button>
@@ -168,7 +166,10 @@
                                         </div><br/><a href="{% url 'drugs' id=id %}" style="display: inline;"><span
                                         class="btn btn-info">Add Drugs</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-info">Gave-Appointment</span></a></td>
+                                        class="btn btn-info">Add Appoint</span></a>
+                                <br/>
+                                <a href="{% url 'print_endo_debt'  id=id  %}" style="display: inline;"
+                                       class="btn btn-info">Print UnPaid</a></td></td>
 
 
                                 {% endif %}
@@ -198,7 +199,10 @@
                             <form method="POST" enctype="multipart/form-data" id="endo-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="hidden" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                  <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

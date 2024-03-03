@@ -116,15 +116,18 @@ textarea {
                                     {% endfor %}
                                 </td>
                                 {% if fill %}
-                                <td  style="text-align: center;" scope="row"><a href="{% url 'filling_edit' fill.id %}" style="display: inline;"><span
-                                        class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                <td  style="text-align: center;" scope="row"><a href="{% url 'filling_edit' fill.id %}" style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
                                 <a href="{% url 'delete-filling'  fill.id %}"
-                                                   style="display: inline;"><span
-                                        class="btn btn-danger">&nbsp;&nbsp;Delete&nbsp;&nbsp;</span></a></td>
-                                <td  style="text-align: center;" scope="row"><a href="{% url 'drugs' id=id %}" style="display: inline;"><span
+                                                   style="display: inline;"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
+                                <td style="text-align: center;" scope="row"><a href="{% url 'drugs' id=id %}"
+                                                                               style="display: inline;"><span
                                         class="btn btn-info">Add Drugs</span></a><br/>
-                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-info">Gave-Appointment</span></a></td>
+                                    <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
+                                            class="btn btn-info">Add Appoint</span></a>
+                                    <br/>
+                                    <a href="{% url 'print_filling_debt'  id=id  %}" style="display: inline;"
+                                       class="btn btn-info">Print UnPaid</a></td>
+                                </td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -148,7 +151,10 @@ textarea {
                             <form method="POST" enctype="multipart/form-data" id="filling-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="hidden" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                  <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

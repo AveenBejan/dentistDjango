@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
     Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,\
-    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory
+    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1
 from django.forms import formset_factory
 
 
@@ -197,6 +197,34 @@ class ReceptionForm(forms.ModelForm):
         }
 
 
+class ReceptionForm1(forms.ModelForm):
+    class Meta:
+        model = Reception1
+        fields = ('idReception','name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time','user')
+        labels = {
+            'idReception': 'idReception',
+            'name': 'Full Name',
+            'phone': 'Phone Number',
+            'gender': 'Gender',
+            'date_of_birth': 'Date of Birth',
+            'doctor': '',
+            'educational': '',
+            'app_data': '',
+            'days': '',
+            'time': 'Time',
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control', 'style': 'display: none;'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'app_data': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'days': forms.TextInput(attrs={'class': 'form-control'}),
+            'time': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Appointment Time'}),
+        }
+
+
 class SearchForm(forms.Form):
     doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Doctor", required=False)
 
@@ -266,9 +294,10 @@ class DrugForm(forms.ModelForm):
 
     class Meta:
         model = Drug
-        fields = ['idReception', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times','tablet','dispense']
+        fields = ['idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth', 'name_medicine', 'doze', 'type', 'times','tablet','dispense']
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -282,6 +311,7 @@ class DrugForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control', 'style': 'display: none;'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control', 'style': 'display: none;'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name', 'type': 'hidden'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone', 'type': 'hidden'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender', 'type': 'hidden'}),
@@ -329,7 +359,7 @@ class FillingForm(forms.ModelForm):
 
     class Meta:
         model = Filling
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','filling_type','fillingur1','fillingur2','fillingur3','fillingur4','fillingur5','fillingur6','fillingur7',
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','filling_type','fillingur1','fillingur2','fillingur3','fillingur4','fillingur5','fillingur6','fillingur7',
                   'fillingur8','fillingul1','fillingul2','fillingul3','fillingul4','fillingul5','fillingul6','fillingul7',
                   'fillingul8','fillinglr1','fillinglr2','fillinglr3','fillinglr4','fillinglr5','fillinglr6','fillinglr7',
                   'fillinglr8','fillingll1','fillingll2','fillingll3','fillingll4','fillingll5','fillingll6','fillingll7',
@@ -337,6 +367,7 @@ class FillingForm(forms.ModelForm):
                   'ur', 'ul', 'lr', 'll',  'no_prepare', 'price','paid','date', 'note','exo_images')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -387,6 +418,7 @@ class FillingForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -441,9 +473,10 @@ class ExoForm(forms.ModelForm):
 
     class Meta:
         model = Exo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid','date', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid','date', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
         labels = {
-            'idReception': '',
+            'idReception1': '',
+            'idExo': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -464,7 +497,8 @@ class ExoForm(forms.ModelForm):
 
         }
         widgets = {
-            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
+            'idExo': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -491,9 +525,10 @@ class PeriodontologyForm(forms.ModelForm):
 
     class Meta:
         model = Periodontology
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','type','price', 'paid', 'date', 'note', 'exo_images')
+        fields = ('idReception', 'idReception1', 'name', 'phone', 'gender', 'date_of_birth','type','price', 'paid', 'date', 'note', 'exo_images')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -507,6 +542,7 @@ class PeriodontologyForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -525,9 +561,10 @@ class CrownForm(forms.ModelForm):
 
     class Meta:
         model = Crown
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price',  'paid','date', 'note', 'exo_images')
+        fields = ('idReception', 'idReception1', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price',  'paid','date', 'note', 'exo_images')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -544,6 +581,7 @@ class CrownForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -565,9 +603,10 @@ class VeneerForm(forms.ModelForm):
 
     class Meta:
         model = Veneer
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'paid', 'date', 'note', 'exo_images')
+        fields = ('idReception',  'idReception1', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'paid', 'date', 'note', 'exo_images')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -584,6 +623,7 @@ class VeneerForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -617,7 +657,7 @@ class OralSurgeryForm(forms.ModelForm):
 
     class Meta:
         model = OralSurgery
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','implant',
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','implant',
                   'diameterur1', 'lengthur1', 'diameterur2', 'lengthur2', 'diameterur3', 'lengthur3', 'diameterur4', 'lengthur4',
                   'diameterur5', 'lengthur5', 'diameterur6', 'lengthur6', 'diameterur7', 'lengthur7', 'diameterur8', 'lengthur8',
                   'diameterul1', 'lengthul1', 'diameterul2', 'lengthul2', 'diameterul3', 'lengthul3', 'diameterul4', 'lengthul4',
@@ -630,7 +670,7 @@ class OralSurgeryForm(forms.ModelForm):
                   'color', 'price', 'paid','date', 'note', 'exo_images', 'first_visit','second_visit','third_visit',
                   'fourth_visit','fifth_visit')
         labels = {
-            'idReception': '','name': '','phone': '','gender': '','date_of_birth': '','first_visit': '','implant': '',
+            'idReception': '','idReception1': '','name': '','phone': '','gender': '','date_of_birth': '','first_visit': '','implant': '',
             'diameterur1': '', 'lengthur1': '','diameterur2': '', 'lengthur2': '','diameterur3': '','lengthur3': '', 'diameterur4': '', 'lengthur4': '',
             'diameterur5': '', 'lengthur5': '', 'diameterur6': '', 'lengthur6': '', 'diameterur7': '', 'lengthur7': '','diameterur8': '', 'lengthur8': '',
             'diameterul1': '', 'lengthul1': '','diameterul2': '', 'lengthul2': '', 'diameterul3': '', 'lengthul3': '', 'diameterul4': '','lengthul4': '',
@@ -660,6 +700,7 @@ class OralSurgeryForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -753,10 +794,11 @@ class EndoForm(forms.ModelForm):
 
     class Meta:
         model = Endo
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length',
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length',
                   'price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -784,6 +826,7 @@ class EndoForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -904,12 +947,13 @@ class OrthoForm(forms.ModelForm):
 
     class Meta:
         model = Ortho
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
                   'over_jet','over_bt', 'jow_shift', 'midlin_shift','urs', 'uls','lrs', 'lls','teeth_size','SNA_before','SNA_after','SNB_before','SNB_after','ANB_before','ANB_after',
                   'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid',  'notes','exo_images','visits',
                   'wive_size','cross_sectional','material','brackets','visit_date','uper_date','lower_date','both_date','type_arch')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -963,6 +1007,7 @@ class OrthoForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -1047,9 +1092,10 @@ class DebtsForm(forms.ModelForm):
 class ProsthodonticsForm(forms.ModelForm):
     class Meta:
         model = Prosthodontics
-        fields = ('idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid', 'date', 'note', 'denture', 'upper','lower', 'partial','exo_images')
+        fields = ('idReception','idReception1', 'idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid', 'date', 'note', 'denture', 'upper','lower', 'partial','exo_images')
         labels = {
             'idReception': '',
+            'idReception1': '',
             'name': '',
             'phone': '',
             'gender': '',
@@ -1070,6 +1116,7 @@ class ProsthodonticsForm(forms.ModelForm):
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
@@ -1093,4 +1140,4 @@ class ProsthodonticsForm(forms.ModelForm):
 class PaymentHistoryForm(forms.ModelForm):
     class Meta:
         model = PaymentHistory
-        fields = ['idReception', 'crown_instance', 'endo_instance', 'filling_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']
+        fields = ['idReception','idReception1', 'crown_instance', 'endo_instance', 'filling_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']

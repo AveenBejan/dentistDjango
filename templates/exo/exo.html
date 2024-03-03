@@ -61,6 +61,7 @@
                             <tbody>
                             {% for exoo in exooes %}
                             <tr>
+
                                 <td style="text-align: center;" scope="row" >{{ exoo.id }}</td>
                                 <td style="text-align: center;" scope="row">{{ exoo.idReception.doctor.doctor_name }}</td>
                                 <td style="text-align: center;" scope="row">{{ exoo.idReception.app_data }}</td>
@@ -98,10 +99,12 @@
                                     <a href="{% url 'exo_edit' exoo.id   %}" class="btn btn-warning btn-xs">Edit</a><br/>
                                     <a href="{% url 'delete-exo'  exoo.id %}" class="btn btn-danger btn-xs">Delete</a></td>
                                 {% endif %}
-                                <td style="text-align: center;" scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
-                                        class="btn btn-success btn-xs">Add Drugs</span></a><br/>
+                                <td style="text-align: center; " scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
+                                        class="btn btn-info btn-xs">Add Drugs</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
-                                        class="btn btn-success btn-xs">Add Appointment</span></a></td>
+                                        class="btn btn-info btn-xs">Add Appointment</span></a><br/>
+                                <a href="{% url 'print_exo_debt'  id=id  %}" style="display: inline;"
+               class="btn btn-info">Print UnPaid</a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -124,7 +127,10 @@
                             <form method="POST" enctype="multipart/form-data" id="exo-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="hidden" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                 <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

@@ -18,9 +18,14 @@
 					<p>{{form.name}}</p>
 					<p>{{ form.phone }}</p>
 					<p>{{ form.date_of_birth }}</p>
-					<p>{{ form.gender }}</p>
+					<p>{{ form.gender }}
+					{% if user.is_authenticated %}
+					{% if user.role == 'admin' or user.role == 'educational_center' %}
 					<p>{{ form.educational }}</p>
+					{% endif %}
+					{% endif %}
 					<p>{{ form.user }}</p>
+					{{ form.idReception }}
 
                     {{ form.doctor }}
                      <input type="date" name="app_data" id="datepicker-3" required class="form-control">

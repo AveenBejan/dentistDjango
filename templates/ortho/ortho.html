@@ -178,7 +178,7 @@ textarea {
                                     <a href="{% url 'ortho-visit1' orall.id   %}" style="display: inline;"><span class="btn btn-warning">Add Visits</span></a><br/>
                                     {% if user.is_authenticated %}
                                     {% if user.role == 'admin' or user.role == 'doctor' %}
-                                    <a href="{% url 'ortho-edit' orall.id   %}" style="display: inline;"><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
+                                    <a href="{% url 'ortho-edit' orall.id   %}" style="display: inline;"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
                                     {% if messages %}
     <div id="message-modal" class="modal fade">
         <div class="modal-dialog modal-dialog-centered">
@@ -208,11 +208,11 @@ textarea {
 {% endif %}
 
                                     <a href="{% url 'delete-ortho' orall.idReception_id %}"
-                                       class="btn btn-danger delete-link"
+
                                        {% if not user.is_authenticated %}
                                        onclick="return confirm('You need to log in to delete this record. Are you sure you want to delete?');"
                                        {% else %} onclick="return confirm('Are you sure you want to delete?');" {% endif %}>
-                                        <span>&nbsp;&nbsp;Delete&nbsp;&nbsp;</span>
+                                        <span><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></span>
                                     </a>
 
                                 </td>
@@ -387,7 +387,9 @@ textarea {
                                         {% endif %}
                                         {% endif %}
                                     </div>
-                                </td>
+                                <a href="{% url 'print_ortho_debt'  id=id  %}" style="display: inline;"
+               class="btn btn-info">Print UnPaid</a></td>
+
                                 {% endif %}
                             </tr>
                             {% endif %}
@@ -413,9 +415,12 @@ textarea {
                         <p>{{form.initial.idReception.name}}</p>
                         <form id="ortho-form"  method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <input type="hidden" name="idReception"
-                                   value="{{ form.initial.idReception }}"
-                                   class="form-control">
+                            <input type="text" name="idReception"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="text" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
+                                       class="form-control">
                             <input type="hidden" name="doctor"
                                    value="{{ form.initial.doctor }}"
                                    class="form-control">

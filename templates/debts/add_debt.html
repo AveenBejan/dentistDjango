@@ -29,6 +29,7 @@
                         <tr>
                             <th>Paid Amount</th>
                             <th>Previous Date</th>
+                            <th>Previous Date</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,6 +37,12 @@
                         <tr>
                             <td>{{ history.paid_amount|format_with_commas  }}</td>
                             <td>{{ history.previous_date }}</td>
+                     <td style="text-align: center;">
+    <a href="{% url 'edit_payment_history' id=history.id %}?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">
+        <span class="btn btn-danger">Edit-Debt</span>
+    </a>
+</td>
+
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -43,7 +50,8 @@
                 </div>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception" value="{{ exo_instance.idReception_id  }}" class="form-control" readonly>
+                    <input type="text" name="idReception" value="{{ exo_instance.idReception_id  }}" class="form-control" readonly>
+                    <input type="text" name="idReception1" value="{{ exo_instance.idReception1_id  }}" class="form-control" readonly>
                     <input type="hidden" name="name" value="{{ exo_instance.name }}" class="form-control"readonly>
                     <input type="hidden" name="phone" value="{{ exo_instance.phone }}" class="form-control"readonly>
                     <input type="hidden" name="gender" value="{{ exo_instance.gender }}" class="form-control"readonly>

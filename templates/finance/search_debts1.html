@@ -10,7 +10,7 @@
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
     <form method="get" action="{% url 'search-debts1' %}">
-        <input class="form-control mr-sm-0" type="text" name="query" value="" placeholder="Search for Patient Debts">
+        <input class="form-control mr-sm-0" type="text" name="query" id="query" value="" placeholder="Search for Patient Debts">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     {% endif %}
@@ -350,5 +350,34 @@
 {% else %}
 <p>No results found.</p>
 {% endif %}
-    </div></div></body>
+    </div></div>
+<div id="suggestions-container"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#query').on('input', function() {
+        var query = $(this).val().toLowerCase(); // Get the value of the input field and convert to lowercase
+        $('#suggestions-container').empty(); // Clear previous suggestions
+
+        // Fetch suggestions from the server based on the first letter of the query
+        if (query.length > 0) {
+            $.ajax({
+                url: '/get_suggestions/', // URL to fetch suggestions from (replace with your actual endpoint)
+                method: 'GET',
+                data: {query: query[0]}, // Send the first letter of the query to the server
+                success: function(response) {
+                    // Display suggestions in the suggestions container
+                    response.suggestions.forEach(function(suggestion) {
+                        $('#suggestions-container').append('<div>' + suggestion + '</div>');
+                    });
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(errmsg); // Log any errors
+                }
+            });
+        }
+    });
+});
+</script></body>
 {% endblock %}

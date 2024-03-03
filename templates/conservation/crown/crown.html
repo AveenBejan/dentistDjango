@@ -92,10 +92,14 @@
                                     {% endfor %}
                                 </td>
                                 {% if crown %}
-                                <td  style="text-align: center;<a href="><a href="{% url 'crown_edit' crown.id %}" style="display: inline;" ><span class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'delete-crown'  crown.id %}" style="display: inline;"><span class="btn btn-danger">&nbsp;&nbsp;Deletet&nbsp;&nbsp;</span></a><br/>
+                                <td  style="text-align: center;<a href="><a href="{% url 'crown_edit' crown.id %}" style="display: inline;" ><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/>
+                                <br/>
+                                    <a href="{% url 'delete-crown'  crown.id %}" style="display: inline;"><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a><br/>
                                 <td style="text-align: center;<a href="><a href="{% url 'drugs' id=id %}"style="display: inline;"><span class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Drugs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><br/>
-                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info">Add Appoint</span></a></td>
+                                <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span class="btn btn-info">Add Appoint</span></a>
+                            <br/>
+                                <a href="{% url 'print_crown_debt'  id=id  %}" style="display: inline;"
+                                       class="btn btn-info">Print UnPaid</a></td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -119,7 +123,10 @@
                             <form method="POST" enctype="multipart/form-data" id="crown-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
-                                       value="{{ form.initial.idReception }}"
+                                       value="{{ form.initial.idReception}}"
+                                       class="form-control">
+                                <input type="hidden" name="idExo"
+                                       value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                    <input type="hidden" name="doctor"
                                        value="{{ form.initial.doctor }}"

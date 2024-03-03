@@ -24,7 +24,12 @@
                 <br/><br/><br/>
                 <form method="POST" enctype="multipart/form-data"  id="oral-form">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception" value="{{ form.initial.idReception }}">
+                     <input type="hidden" name="idReception"
+                                   value="{{ form.initial.idReception }}"
+                                   class="form-control">
+                            <input type="hidden" name="idReception1"
+                                   value="{{ form.initial.idReception1 }}"
+                                   class="form-control">
                     <input type="hidden" name="name" value="{{ form.initial.name }}" readonly>
                     <input type="hidden" name="phone" value="{{ form.initial.phone }}" readonly>
                     <input type="hidden" name="gender" value="{{ form.initial.gender }}" readonly>

@@ -128,7 +128,7 @@ function deleteRows(){
             <td scope="row" align="center">{{ medicin.dispense }}</td>
             <td>
                 {% if medicin.id %}
-                <a href="{% url 'print-drugs'  medicin.idReception_id  %}" style="display: inline;"
+                <a href="{% url 'print-drugs'  medicin.idReception1_id  %}" style="display: inline;"
                    class="btn btn-outline-info">Print
                     Drugs</a>
                 {% endif %}
@@ -146,9 +146,8 @@ function deleteRows(){
 
     <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form" r>
         {% csrf_token %}
-        <input type="hidden" name="idReception"
-               value="{{ form.initial.idReception }}"
-               class="form-control">
+         <input type="text" name="idReception" value="{{ form.initial.idReception}}" class="form-control">
+        <input type="text" name="idReception1" value="{{ form.initial.idReception1}}" class="form-control">
         <input type="hidden" name="name" value="{{ form.initial.name }}"
                class="form-control">
         <input type="hidden" name="phone" value="{{ form.initial.phone }}"
