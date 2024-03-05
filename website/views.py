@@ -277,7 +277,7 @@ def search_view(request):
 
 
 def search_debts(request):
-    query = request.GET.get('query')  # Get the value of the 'query' parameter from the GET request
+    query = request.GET.get('query', '').lower()  # Get the value of the 'query' parameter from the GET request
     exos = Exo.objects.none()  # Initialize as an empty queryset
     fillings = Filling.objects.none()
     crowns = Crown.objects.none()
@@ -289,15 +289,16 @@ def search_debts(request):
     periodontologys = Periodontology.objects.none()
 
     if query:
-        exos = Exo.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        fillings = Filling.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        crowns = Crown.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        veneers = Veneer.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        oralSurgery = OralSurgery.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        endos = Endo.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        orthos = Ortho.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'),visits_id__isnull=True)
-        prosthodonticss = Prosthodontics.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
-        periodontologys = Periodontology.objects.filter(Q(name=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        exos = Exo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+
+        fillings = Filling.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        crowns = Crown.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        veneers = Veneer.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        oralSurgery = OralSurgery.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        endos = Endo.objects.filter(Q(name=query) | Q(name__istartswith=query),idReception__in=Reception1.objects.values('idReception'))
+        orthos = Ortho.objects.filter(Q(name=query) | Q(name__istartswith=query),idReception__in=Reception1.objects.values('idReception'),visits_id__isnull=True)
+        prosthodonticss = Prosthodontics.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        periodontologys = Periodontology.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
 
     search_results = []
 
@@ -1146,7 +1147,7 @@ def search_educational(request):
             receptions = Reception1.objects.filter(educational=selected_educational).order_by('-app_data')
 
             # Assuming idReception is the correct field to link Ortho objects to Reception
-            oralls = Ortho.objects.filter(idReception__in=receptions).order_by('-id')
+            oralls = Ortho.objects.filter(idReception1__in=receptions).order_by('-id')
 
             # Debug statements
             print("Selected Educational:", selected_educational)
