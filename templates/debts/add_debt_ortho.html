@@ -53,6 +53,7 @@
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="hidden" name="idReception" value="{{ ortho_instance.idReception_id  }}" class="form-control"  readonly>
+                    <input type="text" name="idReception1" value="{{ ortho_instance.idReception1_id  }}" class="form-control" readonly>
                     <input type="hidden" name="name" value="{{ ortho_instance.name }}" class="form-control" readonly>
                     <input type="hidden" name="phone" value="{{ ortho_instance.phone }}" class="form-control" readonly>
                     <input type="hidden" name="gender" value="{{ ortho_instance.gender }}" class="form-control"  readonly>

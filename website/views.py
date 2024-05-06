@@ -3465,49 +3465,33 @@ def add_debt_crown(request, id):
     total_price = crown_instance.total_price
 
     if request.method == 'POST':
-        paid = request.POST.get('paid', '0')
-        print("Received Paid Value:", paid)  # Debug line: print received value
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        try:
-            paid = Decimal(paid)  # Convert to Decimal
+        if crown_instance.paid + paid >= total_price:
+            crown_instance.paid = total_price
+        else:
+            crown_instance.paid += paid  # Increment the paid amount
 
-            if crown_instance.paid + paid >= total_price:
-                crown_instance.paid = total_price
-            else:
-                crown_instance.paid += paid  # Increment the paid amount (both are Decimal now)
+        crown_instance.save()
 
-            crown_instance.save()
+        # Store the previous date from the form in PaymentHistory
+        payment_history = PaymentHistory(crown_instance=crown_instance, previous_date=date, paid_amount=paid,
+                                         idReception1=crown_instance.idReception1, idReception=crown_instance.idReception, name=crown_instance.name, phone=crown_instance.phone, price=crown_instance.price)
+        payment_history.save()
 
-            # Store the previous date from the form in PaymentHistory
-            date_str = request.POST.get('date')
-            date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        remaining_amount = total_price - previous_paid
 
-            payment_history = PaymentHistory(
-                crown_instance=crown_instance,
-                previous_date=date,
-                paid_amount=paid,
-                idReception=crown_instance.idReception,
-                name=crown_instance.name,
-                phone=crown_instance.phone,
-                price=crown_instance.price
-            )
-            payment_history.save()
-
-            return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
-
-        except Exception as e:
-            print("Conversion Error:", e)  # Debug line: print any conversion errors
-            # Handle the error appropriately or log it for further investigation
-
-    # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = total_price - previous_paid
-    return render(request, 'debts/add_debt_crown.html', {
-        'id': id,
-        'crown_instance': crown_instance,
-        'previous_dates': previous_dates,
-        'previous_paid': previous_paid,
-        'remaining_amount': remaining_amount
-    })
+        return render(request, 'debts/add_debt_crown.html', {
+            'id': id,
+            'crown_instance': crown_instance,
+            'previous_dates': previous_dates,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 
 def add_debt_crown1(request, id):

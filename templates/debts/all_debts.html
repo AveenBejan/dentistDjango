@@ -8,7 +8,7 @@
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand"></a>
     {%if user.is_authenticated%}
-    {% if user.role == 'admin' or user.role == 'doctor' %}
+    {% if user.role == 'admin' or user.role == 'doctor' or user.role == 'user' %}
     <form class="form-inline" method="get" action="" id="searchForm">
         {% csrf_token %}
         <label for="start_date" style="font-size:20px; font-weight: bold;">Start Date:</label>

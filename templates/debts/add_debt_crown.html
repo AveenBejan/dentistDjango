@@ -41,28 +41,30 @@
                         </tbody>
                     </table>
                 </div>
-                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
+                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception" value="{{ crown_instance.idReception_id  }}" class="form-control" readonly>
-                    <input type="hidden" name="name" value="{{ crown_instance.name }}" class="form-control"readonly>
-                    <input type="hidden" name="phone" value="{{ crown_instance.phone }}" class="form-control" readonly>
-                    <input type="hidden" name="gender" value="{{ crown_instance.gender }}" class="form-control"  readonly>
-                    <input type="hidden" name="date_of_birth" value="{{ crown_instance.date_of_birth }}" readonly
-                           class="form-control">
-                   <div class="row">
+                    <input type="text" name="idReception" value="{{ crown_instance.idReception_id  }}" class="form-control" readonly>
+                    <input type="text" name="idReception1" value="{{ crown_instance.idReception1_id  }}" class="form-control" readonly>
+                    <input type="text" name="name" value="{{ crown_instance.name }}" class="form-control"readonly>
+                    <input type="text" name="phone" value="{{ crown_instance.phone }}" class="form-control"readonly>
+                    <input type="text" name="gender" value="{{ crown_instance.gender }}" class="form-control"readonly>
+                    <input type="text" name="date_of_birth" value="{{ crown_instance.date_of_birth }}"
+                           class="form-control"readonly>
+                       <div class="row">
 
+                        <div class="col-sm-6">
+                            <input type="hidden" id="price" name="price" value="{{ crown_instance.price }}" class="form-control" readonly>
+                            <h4>Paid Money</h4>
+                            <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
+                            <br/><h4> Date Paid </h4>
+                            <input type="date" class="form-control" name="date" value="" placeholder="" required>
+                            <br/><br/>
+                            <button type="submit" value="update" class="btn btn-primary">Add Debt
+                            </button>
+                        </div>
 
-    <div class="col-sm-6">
-    <input type="text" id="price" name="price" value="{{ crown_instance.price }}" class="form-control" readonly>
-    <h4>Paid Money</h4>
-    <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
-    <br/>
-    <h4>Date Paid</h4>
-    <input type="date" class="form-control" name="date" value="" placeholder="" required>
-    <br/><br/>
-    <button type="submit" class="btn btn-primary">Add Debt</button>
+                        </div>
 
-</div></div>
                 </form>
             </div>
         </div>

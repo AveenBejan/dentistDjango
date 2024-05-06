@@ -52,10 +52,10 @@
                     {% csrf_token %}
                     <input type="text" name="idReception" value="{{ exo_instance.idReception_id  }}" class="form-control" readonly>
                     <input type="text" name="idReception1" value="{{ exo_instance.idReception1_id  }}" class="form-control" readonly>
-                    <input type="hidden" name="name" value="{{ exo_instance.name }}" class="form-control"readonly>
-                    <input type="hidden" name="phone" value="{{ exo_instance.phone }}" class="form-control"readonly>
-                    <input type="hidden" name="gender" value="{{ exo_instance.gender }}" class="form-control"readonly>
-                    <input type="hidden" name="date_of_birth" value="{{ exo_instance.date_of_birth }}"
+                    <input type="text" name="name" value="{{ exo_instance.name }}" class="form-control"readonly>
+                    <input type="text" name="phone" value="{{ exo_instance.phone }}" class="form-control"readonly>
+                    <input type="text" name="gender" value="{{ exo_instance.gender }}" class="form-control"readonly>
+                    <input type="text" name="date_of_birth" value="{{ exo_instance.date_of_birth }}"
                            class="form-control"readonly>
                        <div class="row">
 

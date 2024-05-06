@@ -44,6 +44,7 @@
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="hidden" name="idReception" value="{{ oral_surgery_instance.idReception_id  }}" class="form-control"  readonly>
+                    <input type="hidden" name="idReception1" value="{{ oral_surgery_instance.idReception1_id  }}" class="form-control" readonly>
                     <input type="hidden" name="name" value="{{ oral_surgery_instance.name }}" class="form-control" readonly>
                     <input type="hidden" name="phone" value="{{ oral_surgery_instance.phone }}" class="form-control" readonly>
                     <input type="hidden" name="gender" value="{{ oral_surgery_instance.gender }}" class="form-control"  readonly>

@@ -44,6 +44,8 @@
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="hidden" name="idReception" value="{{ endo_instance.idReception_id  }}" class="form-control"  readonly>
+                    <input type="hidden" name="idReception1" value="{{ endo_instance.idReception1_id  }}" class="form-control" readonly>
+
                     <input type="hidden" name="name" value="{{ endo_instance.name }}" class="form-control" readonly>
                     <input type="hidden" name="phone" value="{{ endo_instance.phone }}" class="form-control" readonly>
                     <input type="hidden" name="gender" value="{{ endo_instance.gender }}" class="form-control"  readonly>
