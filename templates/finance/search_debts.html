@@ -232,7 +232,7 @@
                 <td style="text-align: center;"><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a></td>
                 <td style="text-align: center;">
-                    <a href="{% url 'print_exo_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_exo_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info"><span>Print
                 Invoice</span></a>
 
@@ -256,7 +256,7 @@
                         href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;">
-                    <a href="{% url 'print_crown_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_crown_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
                 </td>
@@ -279,7 +279,7 @@
                         href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_filling_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_filling_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info"><SPAN>Print
                 Invoice</SPAN></a>
 
@@ -299,7 +299,7 @@
                         href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_veneer_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_veneer_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
                 </td>
@@ -326,7 +326,7 @@
                         href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_oral_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_oral_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
                 </td>
@@ -348,7 +348,7 @@
                         href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_endo_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_endo_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
                 </td>
@@ -392,7 +392,7 @@
                     <a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_ortho_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_ortho_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
                 </td>
@@ -416,7 +416,7 @@
                         class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_prosthodontics_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_prosthodontics_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
                 </td>
                 {% elif model_name == 'Periodontology' %}
@@ -433,7 +433,7 @@
                         class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_periodontology_debt'  result.idReception_id  %}" style="display: inline;"
+                    <a href="{% url 'print_periodontology_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
                 </td>
                 {% endif %}

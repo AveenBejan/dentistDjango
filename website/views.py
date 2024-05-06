@@ -3857,6 +3857,20 @@ def print_filling_debt(request, id):
     return render(request, 'debts/print_filling_debt.html', context)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def add_debt_veneer(request, id):
     try:
         veneer_instance = Veneer.objects.get(id=id)
