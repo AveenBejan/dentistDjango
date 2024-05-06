@@ -11,7 +11,7 @@
             {%if user.is_authenticated%}
             <form id="search-form" method="get" action="{% url 'search-debts' %}">
                 <div style="position: relative;">
-                    <input class="form-control mr-sm-0" type="text" name="query" id="searchInput" value=""
+                    <input class="form-control mr-sm-0" type="text" name="query" value=""
                            placeholder="Search for Patient Debts">
                     <!-- Suggestions container -->
                     <div id="suggestions-container"

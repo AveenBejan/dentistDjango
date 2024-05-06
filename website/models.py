@@ -637,7 +637,7 @@ class PaymentHistory(models.Model):
     prosthodontics_instance = models.ForeignKey(Prosthodontics, on_delete=models.CASCADE, blank=True, null=True)
     exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE, blank=True, null=True)
     previous_date = models.DateField(null=True)
-    paid_amount= models.DecimalField('paid', max_digits=20, decimal_places=0,null=True)
+    paid_amount = models.DecimalField('paid', max_digits=20, decimal_places=0,null=True)
     price = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     name = models.CharField('Name', max_length=120, blank=True, null=True)
     phone = models.CharField('Phone', max_length=120, blank=True, null=True)
