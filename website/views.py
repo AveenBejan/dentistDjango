@@ -1233,8 +1233,16 @@ def search_gave(request):
 
 
 def delete_reception(request, id):
-    appointments = Reception1.objects.get(pk=id)
-    appointments.delete()
+    # Get the Reception instance
+    reception_instance = get_object_or_404(Reception, pk=id)
+
+    # Get the corresponding Reception1 instance (assuming you have a shared identifier)
+    reception1_instance = get_object_or_404(Reception1, pk=id)
+
+    # Delete both instances
+    reception_instance.delete()
+    reception1_instance.delete()
+
     return redirect('all-reception')
 
 
@@ -2788,13 +2796,13 @@ def delete_exo(request, id):
     exo = get_object_or_404(Exo, id=id)
 
     # Store the idReception before deleting the drug
-    idReception = exo.idReception_id
+    idReception = exo.idReception1_id
 
     # Delete the drug
     exo.delete()
 
     # Redirect to the 'drugs' view with the same idReception
-    return redirect('exo', id=id)
+    return redirect('exo', id=idReception)
 
 
 def drugs(request, id):
