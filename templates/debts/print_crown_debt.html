@@ -46,6 +46,61 @@
             {% for debt in debts %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
                 <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">
+    {% if debt.crown_instance %}
+        Crown - Total Paid: {{ paid_crown }}, Total Debt: {{ total_crown }}
+    {% endif %}
+    {% if debt.crown_instance and debt.endo_instance %}
+        ,
+    {% endif %}
+    {% if debt.endo_instance %}
+        Endo - Total Paid: {{ paid_endo }}, Total Debt: {{ total_endo }}
+    {% endif %}
+    {% if debt.endo_instance and debt.filling_instance %}
+        ,
+    {% endif %}
+    {% if debt.filling_instance %}
+        Filling - Total Paid: {{ paid_filling }}, Total Debt: {{ total_filling }}
+    {% endif %}
+    {% if debt.filling_instance and debt.oral_surgery_instance %}
+        ,
+    {% endif %}
+    {% if debt.oral_surgery_instance %}
+        Oral Surgery - Total Paid: {{ paid_oral_surgery }}, Total Debt: {{ total_oralSurgery }}
+    {% endif %}
+    {% if debt.oral_surgery_instance and debt.ortho_instance %}
+        ,
+    {% endif %}
+    {% if debt.ortho_instance %}
+        Ortho - Total Paid: {{ paid_ortho }}, Total Debt: {{ total_ortho }}
+    {% endif %}
+    {% if debt.ortho_instance and debt.veneer_instance %}
+        ,
+    {% endif %}
+    {% if debt.veneer_instance %}
+        Veneer - Total Paid: {{ paid_veneer }}, Total Debt: {{ total_veneer }}
+    {% endif %}
+    {% if debt.veneer_instance and debt.periodontology_instance %}
+        ,
+    {% endif %}
+    {% if debt.periodontology_instance %}
+        Periodontology - Total Paid: {{ paid_periodontology }}, Total Debt: {{ total_periodontology }}
+    {% endif %}
+    {% if debt.periodontology_instance and debt.prosthodontics_instance %}
+        ,
+    {% endif %}
+    {% if debt.prosthodontics_instance %}
+        Prosthodontics - Total Paid: {{ paid_prosthodontics }}, Total Debt: {{ total_prosthodontics }}
+    {% endif %}
+    {% if debt.prosthodontics_instance and debt.exo_instance %}
+        ,
+    {% endif %}
+    {% if debt.exo_instance %}
+        Exo - Total Paid: {{ paid_exo }}, Total Debt: {{ total_exo }}
+    {% endif %}
+</td>
+
+
                 <td style="text-align:center;">{{ debt.previous_date }}</td>
                 <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
             </tr>

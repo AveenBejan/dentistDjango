@@ -30,6 +30,20 @@
             </ol>
         </nav>
         <!--<h1>Search Results for "{{ query }}"</h1> you can find it in test file-->
+{% if search_results %}
+    {% for model_name, results in search_results %}
+        {% if results %}
+            <!-- Display model report -->
+        {% endif %}
+    {% endfor %}
+    <!-- Display "Print" button outside the loop -->
+    <div class="float-end">
+        <a href="{% url 'print_exo_debt' search_results.0.1.0.idReception1_id %}" class="btn btn-info" style="color:#fff;">
+            Print
+        </a>
+    </div>
+    <br>
+{% endif %}
 
         {% if search_results %}
         {% for model_name, results in search_results %}
@@ -58,7 +72,7 @@
                 <th scope="col" style="text-align: center;" >Simple Exo</th>
                 <th scope="col" style="text-align: center;" >Complicated</th>-->
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Crown' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -72,7 +86,7 @@
                 <th scope="col" style="text-align: center;">Total Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Filling' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -90,7 +104,7 @@
                 <th scope="col" style="text-align: center;">Paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Veneer' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -105,7 +119,7 @@
                 <th scope="col" style="text-align: center;">Paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'OralSurgery' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -127,7 +141,7 @@
                 <th scope="col" style="text-align: center;">Total Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Endo' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -145,7 +159,7 @@
                 <th style="text-align: center;" scope="col">Paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Ortho' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -174,7 +188,7 @@
                 <th scope="col" style="text-align: center;">Total Price</th>
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Prosthodontics' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -193,7 +207,7 @@
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% elif model_name == 'Periodontology' %}
                 <th scope="col" style="text-align: center;">#</th>
                 <th scope="col" style="text-align: center;">Name</th>
@@ -205,7 +219,7 @@
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
-                <th scope="col" style="text-align: center;">Print Invoice</th>
+
                 {% endif %}
                 <!-- ... other header columns ... -->
             </tr>
@@ -231,12 +245,7 @@
 
                 <td style="text-align: center;"><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a></td>
-                <td style="text-align: center;">
-                    <a href="{% url 'print_exo_debt'  result.idReception1_id  %}" style="display: inline;"
-                       class="btn btn-info"><span>Print
-                Invoice</span></a>
 
-                </td>
 
 
                 {% elif model_name == 'Crown' %}
@@ -255,11 +264,11 @@
                 <td style="text-align: center;"><a
                         href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;">
+                <!--<td style="text-align: center;">
                     <a href="{% url 'print_crown_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
-                </td>
+                </td>-->
                 <!-- ... other crown-related fields ... -->
                 {% elif model_name == 'Filling' %}
                 <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
@@ -278,12 +287,12 @@
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;" scope="row" align="center">
+                <!--<td style="text-align: center;" scope="row" align="center">
                     <a href="{% url 'print_filling_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info"><SPAN>Print
                 Invoice</SPAN></a>
 
-                </td>
+                </td>-->
                 {% elif model_name == 'Veneer' %}
                 <td style="text-align: center;" scope="row">{{ result.id}}</td>
                 <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
@@ -298,11 +307,11 @@
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;" scope="row" align="center">
+                <!--<td style="text-align: center;" scope="row" align="center">
                     <a href="{% url 'print_veneer_debt'  result.idReception1_id  %}" style="display: inline;"
                        class="btn btn-info">Print Invoice</a>
 
-                </td>
+                </td>-->
                 {% elif model_name == 'OralSurgery' %}
                 <td style="text-align: center;" scope="row">{{ result.id }}</td>
                 <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
@@ -325,11 +334,7 @@
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_oral_debt'  result.idReception1_id  %}" style="display: inline;"
-                       class="btn btn-info">Print Invoice</a>
 
-                </td>
                 {% elif model_name == 'Endo' %}
                 <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
                 <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
@@ -347,11 +352,7 @@
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_endo_debt'  result.idReception1_id  %}" style="display: inline;"
-                       class="btn btn-info">Print Invoice</a>
 
-                </td>
                 {% elif model_name == 'Ortho' %}
                 <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
                     {{ result.id }}
@@ -391,11 +392,6 @@
                 <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
                     <a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_ortho_debt'  result.idReception1_id  %}" style="display: inline;"
-                       class="btn btn-info">Print Invoice</a>
-
-                </td>
                 {% elif model_name == 'Prosthodontics' %}
                 <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
                 <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
@@ -415,10 +411,6 @@
                         href="{% url 'add-debt-prosthodontics' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a>
                 </td>
-                <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_prosthodontics_debt'  result.idReception1_id  %}" style="display: inline;"
-                       class="btn btn-info">Print Invoice</a>
-                </td>
                 {% elif model_name == 'Periodontology' %}
                 <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
                 <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
@@ -431,10 +423,6 @@
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-periodontology' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a>
-                </td>
-                <td style="text-align: center;" scope="row" align="center">
-                    <a href="{% url 'print_periodontology_debt'  result.idReception1_id  %}" style="display: inline;"
-                       class="btn btn-info">Print Invoice</a>
                 </td>
                 {% endif %}
                 <!-- ... other fields ... -->

@@ -41,25 +41,25 @@
                         </tbody>
                     </table>
                 </div>
-                <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
+               <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception" value="{{ periodontology_instance.idReception_id  }}" class="form-control"  readonly>
-                    <input type="hidden" name="idReception1" value="{{ periodontology_instance.idReception1_id  }}" class="form-control" readonly>
-                    <input type="hidden" name="name" value="{{ periodontology_instance.name }}" class="form-control"readonly>
-                    <input type="hidden" name="phone" value="{{ periodontology_instance.phone }}" class="form-control"readonly>
-                    <input type="hidden" name="gender" value="{{ periodontology_instance.gender }}" class="form-control"readonly>
-                    <input type="hidden" name="date_of_birth" value="{{ periodontology_instance.date_of_birth }}"  readonly
-                           class="form-control">
-                   <div class="row">
+                    <input type="text" name="idReception" value="{{ periodontology_instance.idReception_id  }}" class="form-control" readonly>
+                    <input type="text" name="idReception1" value="{{ periodontology_instance.idReception1_id  }}" class="form-control" readonly>
+                    <input type="text" name="name" value="{{ periodontology_instance.name }}" class="form-control"readonly>
+                    <input type="text" name="phone" value="{{ periodontology_instance.phone }}" class="form-control"readonly>
+                    <input type="text" name="gender" value="{{ periodontology_instance.gender }}" class="form-control"readonly>
+                    <input type="text" name="date_of_birth" value="{{ periodontology_instance.date_of_birth }}"
+                           class="form-control"readonly>
+                       <div class="row">
 
                         <div class="col-sm-6">
                             <input type="hidden" id="price" name="price" value="{{ periodontology_instance.price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
-                            <h4> Date Paid </h4>
+                            <br/><h4> Date Paid </h4>
                             <input type="date" class="form-control" name="date" value="" placeholder="" required>
                             <br/><br/>
-                            <button type="submit" value="update"  class="btn btn-primary">Add Debt
+                            <button type="submit" value="update" class="btn btn-primary">Add Debt
                             </button>
                         </div>
 

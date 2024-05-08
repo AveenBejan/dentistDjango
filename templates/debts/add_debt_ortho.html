@@ -52,23 +52,24 @@
                 </div>
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
-                    <input type="hidden" name="idReception" value="{{ ortho_instance.idReception_id  }}" class="form-control"  readonly>
+                    <input type="text" name="idReception" value="{{ ortho_instance.idReception_id  }}" class="form-control" readonly>
                     <input type="text" name="idReception1" value="{{ ortho_instance.idReception1_id  }}" class="form-control" readonly>
-                    <input type="hidden" name="name" value="{{ ortho_instance.name }}" class="form-control" readonly>
-                    <input type="hidden" name="phone" value="{{ ortho_instance.phone }}" class="form-control" readonly>
-                    <input type="hidden" name="gender" value="{{ ortho_instance.gender }}" class="form-control"  readonly>
-                    <input type="hidden" name="date_of_birth" value="{{ ortho_instance.date_of_birth }}"  readonly
-                           class="form-control">
-                    <div class="row">
+                    <input type="text" name="name" value="{{ ortho_instance.name }}" class="form-control"readonly>
+                    <input type="text" name="phone" value="{{ ortho_instance.phone }}" class="form-control"readonly>
+                    <input type="text" name="gender" value="{{ ortho_instance.gender }}" class="form-control"readonly>
+                    <input type="text" name="date_of_birth" value="{{ ortho_instance.date_of_birth }}"
+                           class="form-control"readonly>
+                       <div class="row">
 
                         <div class="col-sm-6">
                             <input type="hidden" id="price" name="price" value="{{ ortho_instance.price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
-                            <h4> Date Paid </h4>
+                            <br/><h4> Date Paid </h4>
                             <input type="date" class="form-control" name="date" value="" placeholder="" required>
                             <br/><br/>
-                            <button type="submit" class="btn btn-primary">Add Debt</button>
+                            <button type="submit" value="update" class="btn btn-primary">Add Debt
+                            </button>
                         </div>
 
                         </div>

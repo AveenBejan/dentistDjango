@@ -19,4 +19,3 @@ def format_with_commas(value):
     if value is not None:
         return "{:,}".format(value)
     return None
-

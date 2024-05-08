@@ -3,7 +3,16 @@
 {% block content %}
 {% load custom_filters %}
 <br/>
-
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+</style>
 <div class="container body">
     <div class="right_col" role="main" style="width: 100%">
 <p align="center"
@@ -24,14 +33,19 @@
 
         <h4 style="text-align:center;">Payment Invoice For Periodontology Patient </h4>
         <div style="font-weight: bold;">
-            {% if debts %}
-            <p>
-                Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
-                <!--Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
-                Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
-            </p>
+
+            {% if patient_name %}
+            <p>Patient Name: {{ patient_name }}</p>
+            {% else %}
+            <p>No patient name available</p>
+            {% endif %}
+            {% if patient_phone %}
+            <p>Patient Name: {{ patient_phone }}</p>
+            {% else %}
+            <p>No patient name available</p>
             {% endif %}
         </div>
+        <div class="col-2">
         <table class="table table-hover">
             <thead style="background-color:#555; color:#fff;">
             <tr>
@@ -53,8 +67,12 @@
             {% endfor %}
 
         </table>
-        <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Price: {{ total_price|format_with_commas }}</span></td>
-<td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
+        </div>
+   <div class="col-2" style="max-width:40.333333%">
+                <h4 style="text-align: justify; background-color:#fff; color:#000">Total IQD Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+                <h4 style="text-align: justify; background-color:#fff; color:#000">Total Paid Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+                <h4 style="text-align: justify; background-color:#fff; color:#000">Remaining Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+</div>
 
     </div>
 </div>

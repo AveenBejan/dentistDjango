@@ -4,7 +4,16 @@
 {% block content %}
 {% load custom_filters %}
 <br/>
-
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+</style>
 <div class="container body">
     <div class="right_col" role="main" style="width: 100%">
 <p align="center"
@@ -21,24 +30,111 @@
 <hr class="border border-primary border-3 opacity-40">
 <div class="col-6">
     <div class="row">
-
-
-        <h4 style="text-align:center;">Payment Invoice For Exo Patient </h4>
         <div style="font-weight: bold;">
             {% if debts %}
             <p>
-                Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
+                Name: {{ debtss.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
                 <!--Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
                 <br/>
-                Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
+                Phone Number: {{ debtss.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
             </p>
             {% endif %}
         </div>
+      <table class="table table-hover">
+            <thead style="background-color:#555; color:#fff; border: 1px solid #000;">
+            <h3 style="text-align:left; ">Payment Invoice</h3>
+    <tr >
+      <th>Model</th>
+      <th>Total Price</th>
+      <th>Total Paid</th>
+    </tr>
+  </thead>
+  <tbody>
+
+
+    {% for debt in debt1 %}
+    <tr style="border: 1px solid #000;">
+      <td>Exo</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+
+    {% for debt in debt2 %}
+    <tr>
+      <td>Crown</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+
+    {% for debt in debt3 %}
+    <tr>
+
+      <td>Filling</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+
+
+        {% for debt in debt4 %}
+    <tr>
+      <td>Endo</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+    {% for debt in debt5 %}
+    <tr>
+      <td>Ortho</td>
+      <td>{{ debt.price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+        {% for debt in debt6 %}
+    <tr>
+      <td>OralSurgery</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+     {% for debt in debt7 %}
+    <tr>
+      <td>Prosthodontist</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+    {% for debt in debt8 %}
+    <tr>
+      <td>Periodontology</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+    {% for debt in debt9 %}
+    <tr>
+      <td>Veneer</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+
+    <!-- Repeat similar blocks for debt4 to debt9 -->
+  </tbody>
+          <td  style="background-color:#555; color:#fff;">Total</td>
+          <td style="background-color:#555; color:#fff;">{{ total_price|format_with_commas }}</td>
+          <td  style="background-color:#555; color:#fff;">{{ total_paid|format_with_commas }}</td>
+      </table>
+        <BR/>
         <table class="table table-hover">
             <thead style="background-color:#555; color:#fff;">
+            <h3 style="text-align:left; ">Invoice Paid</h3>
             <tr>
 
                 <th style="text-align:center;" scope="col">#</th>
+                <th style="text-align:center;" scope="col">Model</th>
                 <th style="text-align:center;" scope="col">Previous Date</th>
                 <th style="text-align:center;" scope="col">Paid</th>
 
@@ -46,20 +142,85 @@
             </tr>
             </thead>
             <tbody>
-            {% for debt in debts %}
+            {% for debt in debtss %}
             <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
                 <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">
+    {% if debt.crown_instance %}
+        Crown
+    {% endif %}
+    {% if debt.crown_instance and debt.endo_instance %}
+        ,
+    {% endif %}
+    {% if debt.endo_instance %}
+        Endo
+    {% endif %}
+    {% if debt.endo_instance and debt.filling_instance %}
+        ,
+    {% endif %}
+    {% if debt.filling_instance %}
+        Filling
+    {% endif %}
+    {% if debt.filling_instance and debt.oral_surgery_instance %}
+        ,
+    {% endif %}
+    {% if debt.oral_surgery_instance %}
+        Oral Surgery
+    {% endif %}
+    {% if debt.oral_surgery_instance and debt.ortho_instance %}
+        ,
+    {% endif %}
+    {% if debt.ortho_instance %}
+        Ortho
+    {% endif %}
+    {% if debt.ortho_instance and debt.veneer_instance %}
+        ,
+    {% endif %}
+    {% if debt.veneer_instance %}
+        Veneer
+    {% endif %}
+    {% if debt.veneer_instance and debt.periodontology_instance %}
+        ,
+    {% endif %}
+    {% if debt.periodontology_instance %}
+        Periodontology
+    {% endif %}
+    {% if debt.periodontology_instance and debt.prosthodontics_instance %}
+        ,
+    {% endif %}
+    {% if debt.prosthodontics_instance %}
+        Prosthodontics
+    {% endif %}
+    {% if debt.prosthodontics_instance and debt.exo_instance %}
+        ,
+    {% endif %}
+    {% if debt.exo_instance %}
+        Exo
+    {% endif %}
+</td>
+
+
+
                 <td style="text-align:center;">{{ debt.previous_date }}</td>
                 <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
             </tr>
             {% endfor %}
-
+          <td colspan="2" style="background-color:#555; color:#fff;">Total</td>
+          <td style="background-color:#555; color:#fff;">{{ total_price|format_with_commas }}</td>
+          <td  style="background-color:#555; color:#fff;">{{ total_paid|format_with_commas }}</td>
         </table>
+        <br/>
+         <div class="col-2" style="max-width:40.333333%">
+                <h3 style="text-align: justify; background-color:#fff; color:#000">Total IQD Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h3>
+                <h3 style="text-align: justify; background-color:#fff; color:#000">Total Paid Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h3>
+                <h3 style="text-align: justify; background-color:#fff; color:#000">Remaining Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h3>
+</div>
+        <!--
         <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Price: {{ total_price|format_with_commas }}</span></td>
         <br/>
         <br/>
 <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
-
+-->
     </div>
 </div>
 <hr class="border border-primary border-3 opacity-40">

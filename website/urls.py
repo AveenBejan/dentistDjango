@@ -155,12 +155,14 @@ urlpatterns = [
     path('print_exo_debt/<int:id>', views.print_exo_debt, name='print_exo_debt'),
     path('print_crown_debt/<int:id>', views.print_crown_debt, name='print_crown_debt'),
     path('print_filling_debt/<int:id>', views.print_filling_debt, name='print_filling_debt'),
+    path('print_exo_debt1/<int:id>', views.print_exo_debt1, name='print_exo_debt1'),
     path('print_veneer_debt/<int:id>', views.print_veneer_debt, name='print_veneer_debt'),
     path('print_oral_debt/<int:id>', views.print_oral_debt, name='print_oral_debt'),
     path('print_endo_debt/<int:id>', views.print_endo_debt, name='print_endo_debt'),
     path('print_ortho_debt/<int:id>', views.print_ortho_debt, name='print_ortho_debt'),
     path('print_periodontology_debt/<int:id>', views.print_periodontology_debt, name='print_periodontology_debt'),
     path('print_prosthodontics_debt/<int:id>', views.print_prosthodontics_debt, name='print_prosthodontics_debt'),
+    path('print_crown_debt1/<int:id>', views.print_crown_debt1, name='print_crown_debt1'),
 
 
     path('edit_payment_history/<int:id>', views.edit_payment_history, name='edit_payment_history'),

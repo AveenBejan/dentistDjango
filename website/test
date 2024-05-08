@@ -1674,3 +1674,60 @@ def oral_visit(request, id):
 
     # Render the template with the form and appointments data
     return render(request, 'gave_appointment.html', {'form': form, 'appointments': cleaned_appointments})
+
+
+
+
+
+      {% for debt in debt3 %}
+    <tr>
+
+      <td>Filling</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+
+
+        {% for debt in debt4 %}
+    <tr>
+      <td>Endo</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+    {% for debt in debt5 %}
+    <tr>
+      <td>Ortho</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+        {% for debt in debt6 %}
+    <tr>
+      <td>OralSurgery</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+     {% for debt in debt7 %}
+    <tr>
+      <td>Prosthodontist</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+    {% for debt in debt8 %}
+    <tr>
+      <td>Periodontology</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+    {% for debt in debt9 %}
+    <tr>
+      <td>Veneer</td>
+      <td>{{ debt.total_price|format_with_commas }}</td>
+      <td>{{ debt.paid|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
