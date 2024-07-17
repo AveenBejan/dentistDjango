@@ -48,14 +48,62 @@ class Outcome(models.Model):
     regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
 
 
+class Store(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, unique=False, blank=True, null=True)
+    material_name = models.CharField(max_length=200, blank=True, null=False)
+    barcode = models.CharField('fullname', max_length=120)
+    quantity = models.IntegerField(default=0)
+    shelf_Num = models.CharField('fullname', max_length=120)
+    price = models.DecimalField('finalSalary',max_digits=8,decimal_places=0,null=False)
+    expire_date = models.DateField('Regdate', editable=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True, editable=False)
+
+    def __str__(self):
+        return f"{self.material_name} - {self.barcode}"
+
+
 class Doctors(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True,null=True)
     doctor_name = models.CharField('doctor_name',max_length=120)
     phone = models.CharField('phone',max_length=120)
     gender = models.CharField('Gender',max_length=20)
+    proportion_doctor = models.DecimalField('price',max_digits=8,decimal_places=0,null=True, blank=True)
+    proportion_center = models.DecimalField('price',max_digits=8,decimal_places=0,null=True, blank=True)
+    salary = models.DecimalField('price',max_digits=8,decimal_places=0,null=True, blank=True)
     regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
 
     def __str__(self):
         return self.doctor_name
+
+
+class MaterialOutput(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+    barcode = models.CharField(max_length=120)
+    output_date = models.DateTimeField(auto_now_add=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    material_out = models.CharField(max_length=200, blank=True, null=True)
+    quantity_in = models.IntegerField(default=0)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Output of {self.quantity} from {self.store.material_name} - Barcode: {self.barcode}"
+
+
+class Material(models.Model):
+    material_name = models.CharField('material_name',max_length=120)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.material_name
+
+
+class Lab(models.Model):
+    lab_name = models.CharField('lab_name',max_length=120)
+    regdate = models.DateTimeField('Regdate',auto_now_add=True,editable=False)
+
+    def __str__(self):
+        return self.lab_name
 
 
 class Educational(models.Model):
@@ -167,6 +215,60 @@ class Filling(models.Model):
     no_prepare = models.IntegerField('no_prepare',blank=True,null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,null=False)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=False)
+    discount_option = models.CharField('Gender', max_length=20, null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True, null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True, null=True)
+    doctor_share = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
+    center_share = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
+    paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
+    date = models.DateField(blank=True, null=True)
+    note = models.CharField('Name', max_length=120, blank=True, null=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+
+
+class Pedo(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True,null=False)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True,null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField('Name',max_length=120,null=False)
+    phone = models.CharField('Phone', max_length=120,null=False)
+    gender = models.CharField('Gender', max_length=20,null=False)
+    date_of_birth = models.CharField('date_of_birth', max_length=20,null=False)
+    filling_type = models.CharField('filling_type', max_length=120, blank=True,null=False)
+    fillingurA = models.CharField('filling_place',max_length=120, blank=True,null=True)
+    fillingurB = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingurC = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingurD = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingurE = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingulA = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingulB = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingulC = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingulD = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingulE = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillinglrA = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillinglrB = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillinglrC = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillinglrD = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillinglrE = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingllA = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingllB = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingllC = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingllD = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    fillingllE = models.CharField('filling_place', max_length=120, blank=True, null=True)
+    ur = models.CharField('ur', max_length=120, blank=True,null=True)
+    ul = models.CharField('ul', max_length=120, blank=True,null=True)
+    lr = models.CharField('lr', max_length=120,null=True, blank=True)
+    ll = models.CharField('ll', max_length=120,null=True, blank=True)
+    no_prepare = models.IntegerField('no_prepare',blank=True,null=True)
+    price = models.DecimalField('price',max_digits=8,decimal_places=0,null=False)
+    total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=False)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     date = models.DateField(blank=True, null=True)
     note = models.CharField('Name', max_length=120, blank=True, null=True)
@@ -189,6 +291,11 @@ class Crown(models.Model):
     no_prepare = models.IntegerField('no_prepare',  blank=True,null=False)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,null=False)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0,null=False)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     date = models.DateField(blank=True, null=True)
     note = models.CharField('Name', max_length=120, blank=True, null=True)
@@ -211,6 +318,11 @@ class Veneer(models.Model):
     no_prepare = models.IntegerField('no_prepare', blank=True,null=False)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,null=False)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0,null=False)
+    discount_option = models.CharField('Gender', max_length=20, null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True, null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True, null=True)
+    doctor_share = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
+    center_share = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     date = models.DateField(blank=True, null=True)
     note = models.CharField('Name', max_length=120, blank=True, null=True)
@@ -238,6 +350,11 @@ class Endo(models.Model):
     no_prepare = models.IntegerField('no_prepare',null=True,blank=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,null=False)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=False)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     date = models.DateField(blank=True, null=True)
     note = models.CharField('Name', max_length=120, blank=True, null=True)
@@ -249,6 +366,7 @@ class Endo(models.Model):
     components_third = models.CharField('components_third', max_length=120, blank=True, null=True)
     fourth_visit = models.DateField(blank=True, null=True)
     components_fourth = models.CharField('components_fourth', max_length=120, blank=True, null=True)
+    filling_type = models.CharField('filling_type', max_length=120, blank=True, null=False)
 
 
 class Medicine1(models.Model):
@@ -291,9 +409,14 @@ class Exo(models.Model):
     ul = models.CharField('Name', max_length=120, blank=True,null=True)
     lr = models.CharField('Name', max_length=120, blank=True,null=True)
     ll = models.CharField('Name', max_length=120, blank=True,null=True)
-    price = models.DecimalField('price',max_digits=20,decimal_places=0,null=True)
-    total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=True)
-    paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
+    price = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    total_price = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
+    paid = models.DecimalField('paid', max_digits=8, decimal_places=0, null=True)
     date = models.DateField(blank=True,null=True)
     note = models.CharField('Name', max_length=120, blank=True,null=True)
     exoby = models.CharField('Name', max_length=120, blank=True,null=True)
@@ -301,8 +424,6 @@ class Exo(models.Model):
     complcated = models.CharField('Name', max_length=120, blank=True,null=True)
     regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
     exo_images = models.ImageField(null=True, blank=True,upload_to='')
-
-
 
 
 class Implant(models.Model):
@@ -397,6 +518,11 @@ class OralSurgery(models.Model):
     no_unite = models.IntegerField('no_unite', blank=True,null=True)
     no_prepare = models.IntegerField('no_prepare',  blank=True,null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     date = models.DateField(blank=True,null=True)
@@ -431,6 +557,11 @@ class Periodontology(models.Model):
     type = models.CharField('Name',max_length=120, blank=True,null=True)
     price = models.DecimalField('price',max_digits=20,decimal_places=0,null=True)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=True)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
     date = models.DateField(blank=True, null=True)
     note = models.CharField('Name', max_length=120, blank=True, null=True)
@@ -454,6 +585,11 @@ class Prosthodontics(models.Model):
     price = models.DecimalField('price',max_digits=20,decimal_places=0,null=True)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, null=True)
+    discount_option = models.CharField('Gender', max_length=20, null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True, null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True, null=True)
+    doctor_share = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
+    center_share = models.DecimalField('price', max_digits=8, decimal_places=0, null=True)
     date = models.DateField(blank=True, null=True)
     note = models.CharField('Name', max_length=120, blank=True, null=True)
     denture = models.CharField('Name', max_length=120, blank=True,null=True)
@@ -462,11 +598,6 @@ class Prosthodontics(models.Model):
     partial = models.CharField('Name', max_length=120, blank=True, null=True)
     regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
     exo_images = models.ImageField(null=True, blank=True,upload_to='')
-
-
-
-
-
 
 
 class Aveen(models.Model):
@@ -521,6 +652,11 @@ class Ortho(models.Model):
     brackets = models.CharField('Name', max_length=120, blank=True, null=True)
     price = models.DecimalField('price',max_digits=8,decimal_places=0,blank=True,null=True)
     total_price = models.DecimalField('price', max_digits=20, decimal_places=0, null=True)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
     paid = models.DecimalField('paid', max_digits=20, decimal_places=0, blank=True,null=True)
     date = models.DateField(blank=True, null=True)
     notes = models.CharField('Name', max_length=120, blank=True, null=True)
@@ -538,6 +674,7 @@ class Photo(models.Model):
     crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE,null=True)
     veneer_instance = models.ForeignKey(Veneer, on_delete=models.CASCADE, null=True)
     filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, null=True)
+    pedo_instance = models.ForeignKey(Pedo, on_delete=models.CASCADE, null=True)
     oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, null=True)
     endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, null=True)
     ortho_instance = models.ForeignKey(Ortho, on_delete=models.CASCADE, null=True)
@@ -622,6 +759,7 @@ class PaymentHistory(models.Model):
     crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE, blank=True,null=True)
     endo_instance = models.ForeignKey(Endo, on_delete=models.CASCADE, blank=True,null=True)
     filling_instance = models.ForeignKey(Filling, on_delete=models.CASCADE, blank=True, null=True)
+    pedo_instance = models.ForeignKey(Pedo, on_delete=models.CASCADE, blank=True, null=True)
     oral_surgery_instance = models.ForeignKey(OralSurgery, on_delete=models.CASCADE, blank=True, null=True)
     ortho_instance = models.ForeignKey(Ortho, on_delete=models.CASCADE, blank=True, null=True)
     veneer_instance = models.ForeignKey(Veneer, on_delete=models.CASCADE, blank=True, null=True)

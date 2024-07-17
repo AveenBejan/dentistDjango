@@ -1,0 +1,53 @@
+{% load static %}
+
+{% block content %}
+{% load custom_filters %}
+<body>
+    <h1>Price Calculation</h1>
+
+    <form method="GET" action="{% url 'calculate_price_view' %}">
+        <label for="doctor_id">Enter Doctor ID:</label>
+        <input type="text" id="doctor_id" name="doctor_id" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
+    {% if error %}
+    <p>{{ error }}</p>
+    {% else %}
+    {% if prices %}
+    <h2>Price Calculation for Doctor ID: {{ doctor_id }}</h2>
+    <table>
+        <thead>
+        <th>Doctor Name:</th>
+        <th>Total Price:</th>
+        <th>Discount Value's Doctor:</th>
+        <th>Discount Amount  Doctor:</th>
+        <th>Discount Value's Center:</th>
+        <th>Discount Amount Center:</th>
+
+        <th></th>
+        </thead>
+        <tbody>
+        {% for price in prices %}
+        <tr>
+            <td>{{ doctor_name }}</td>
+        <td> {{ price.total_price|format_with_commas }}</td>
+        <td> {{ price.discount_value }}</td>
+        <td> {{ price.remaining_amount|format_with_commas }}</td>
+         <td>{{ price.remaining_value }}</td>
+        <td> {{ price.discounted_price|format_with_commas}}</td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <li>Total Total Price: {{ total_prices.total_total_price|format_with_commas }}</li>
+                <li>Total Discounted Price: {{ total_prices.total_discounted_price|format_with_commas }}</li>
+                <li>Total Remaining Amount: {{ total_prices.total_remaining_amount|format_with_commas }}</li>
+            </ul>
+    {% endif %}
+    {% endif %}
+</body>
+{% endblock %}

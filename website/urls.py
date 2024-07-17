@@ -40,7 +40,7 @@ urlpatterns = [
     path('upload/', views.upload_file, name='upload'),
     path('delete_upload_file/<int:id>', views.delete_upload_file, name='delete-upload_file'),
 
-    path('doctors/doctor.html', views.doctor, name='doctor'),
+    path('doctor/<int:user_id>', views.doctor, name='doctor'),
     path('delete-doctor/<int:id>', views.delete_doctor, name='delete-doctor'),
     path('search_doctor', views.search_doctor, name='search-doctor'),
 
@@ -114,6 +114,14 @@ urlpatterns = [
     path('remove_photo_filling/<int:photo_id>/', views.remove_photo_filling, name='remove_photo_filling'),
     path('delete_filling/<int:id>', views.delete_filling, name='delete-filling'),
 
+    path('pedo/pedo_reception.html', views.pedo_reception, name='pedo-reception'),
+    path('pedo/<int:id>', views.pedo, name='pedo'),
+    path('search_pedo', views.search_pedo, name='search-pedo'),
+    path('pedo_edit/<int:id>', views.pedo_edit, name='pedo_edit'),
+    path('delete_pedo/<int:id>', views.delete_pedo, name='delete-pedo'),
+    path('remove_photo_pedo/<int:photo_id>/', views.remove_photo_pedo, name='remove_photo_pedo'),
+
+
     path('add-endo/<int:id>', views.add_endo, name='add-endo'),
     path('conservation/endo/endo_reception.html', views.endo_reception, name='endo-reception'),
     path('conservation/endo/endo.html', views.add_endo, name='add-endo'),
@@ -155,6 +163,7 @@ urlpatterns = [
     path('print_exo_debt/<int:id>', views.print_exo_debt, name='print_exo_debt'),
     path('print_crown_debt/<int:id>', views.print_crown_debt, name='print_crown_debt'),
     path('print_filling_debt/<int:id>', views.print_filling_debt, name='print_filling_debt'),
+    path('print_pedo_debt/<int:id>', views.print_pedo_debt, name='print_pedo_debt'),
     path('print_exo_debt1/<int:id>', views.print_exo_debt1, name='print_exo_debt1'),
     path('print_veneer_debt/<int:id>', views.print_veneer_debt, name='print_veneer_debt'),
     path('print_oral_debt/<int:id>', views.print_oral_debt, name='print_oral_debt'),
@@ -176,6 +185,7 @@ urlpatterns = [
     path('add_debt1/<int:id>', views.add_debt1, name='add-debt1'),
     path('add_debt_crown1/<int:id>', views.add_debt_crown1, name='add-debt-crown1'),
     path('add_debt_filling1/<int:id>', views.add_debt_filling1, name='add-debt-filling1'),
+    path('add_debt_pedo/<int:id>', views.add_debt_pedo, name='add-debt-pedo'),
     path('add_debt_veneer1/<int:id>', views.add_debt_veneer1, name='add-debt-veneer1'),
     path('add_debt_oral1/<int:id>', views.add_debt_oral1, name='add-debt-oral1'),
     path('add_debt_endo1/<int:id>', views.add_debt_endo1, name='add-debt-endo1'),
@@ -201,7 +211,18 @@ urlpatterns = [
     path('all_total', views.all_total, name='all-total'),
     path('feedback_view', views.feedback_view, name='feedback_view'),
 
-
+    path('calculate_price_view', views.calculate_price_view, name='calculate_price_view'),
+    path('earnings', views.earnings, name='earnings'),
+    path('add_store', views.add_store, name='add_store'),
+    path('store/material.html', views.material, name='material'),
+    path('delete_store/<int:id>', views.delete_store, name='delete_store'),
+    path('delete_material/<int:id>', views.delete_material, name='delete_material'),
+    path('store_search', views.store_search, name='store_search'),
+    path('store/lab.html', views.lab, name='lab'),
+    path('delete_lab/<int:id>', views.delete_lab, name='delete_lab'),
+    path('add_material_output/', views.add_material_output, name='add_material_output'),
+    path('print_material_output/<int:id>/', views.print_material_output, name='print_material_output'),
+    path('earnings_print', views.earnings_print, name='earnings_print'),
 
 
 

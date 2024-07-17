@@ -956,6 +956,35 @@
                                         <input type="text" class="form-control" name="price" required
                                                placeholder="price" id="price" style="font-weight:bold;" value="{{ form.initial.price }}">
                                     </div>
+                                     <div class="col-md-3 mb-3">
+    <select id="discount_option" name="discount_option" class="form-control">
+        <option>Select Discount Option  * </option>
+        <option value="None">None (where no proportion for doctors just salary)</option>
+        <option value="Without discount">Without discount (1/3 for doctor and 2/3 for center)</option>
+        <option value="Quota discount">Quota discount (0 for doctor and 2/3 for center)</option>
+        <option value="Full discount">Full discount (-2/3 for doctor and 0 for center)</option>
+    </select>
+</div>
+                                    <!-- Display lab_name as readonly -->
+   <div class="form-group">
+    <label for="id_lab_name">Lab Name</label>
+    <select id="id_lab_name" name="lab_name" class="form-control">
+        {% for lab in form.fields.lab_name.queryset %}
+            <option value="{{ lab.id }}" {% if lab.id == form.instance.lab.id %}selected{% endif %}>
+                {{ lab.lab_name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+        <!-- Hidden input to ensure lab_name is submitted with the form -->
+        <input type="hidden" name="lab_name_hidden" value="{{ form.instance.lab_name.id }}">
+    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"  value="{{ form.initial.price_lab }}"
+                                                               placeholder="Price of Lab">
+                                                    </div>
                                     <div class="form-group col-md-4">
                                         <label>Notes</label>
                                         <input type="text" class="form-control" name="notes"
@@ -1058,14 +1087,19 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#ortho-form').submit(function() {
+    $('#exo-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
-        var numericValue = priceInput.val().replace(/,/g, '');
-        priceInput.val(numericValue);
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+        // Remove commas from the price_lab value before submission
+        var priceLabInput = $('#price_lab');
+        var numericPriceLabValue = priceLabInput.val().replace(/,/g, '');
+        priceLabInput.val(numericPriceLabValue);
     });
 
-    $('#price').on('input', function() {
+    $('#price, #price_lab').on('input', function() {
         // Remove non-numeric characters except dots (keeping decimals)
         var numericValue = $(this).val().replace(/[^0-9.]/g, '');
         // Format with commas for thousands separators

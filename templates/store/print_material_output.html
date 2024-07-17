@@ -1,0 +1,70 @@
+{% load static %}
+
+{% block content %}
+{% load custom_filters %}
+<br/>
+
+<div class="container body">
+    <div class="right_col" role="main" style="width: 100%">
+<p align="center"
+   style="font-size:16px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+
+    <br/>COSMOLIGHT DENTAL CENTER<!--<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>-->
+<hr class="border border-primary border-3 opacity-40">
+        <p style="text-align: right;" ><img src="{% static 'website/images/img.jpg'  %}"
+                                             alt="..." class="img-circle profile_img"> &nbsp; &nbsp;<img src="{% static 'website/images/bar.png'  %}"
+                                             alt="..." class="img-circle profile_img"></p>
+        <br/>
+        <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
+<hr class="border border-primary border-3 opacity-40">
+<div class="col-8">
+    <div class="row" >
+    <h3>Material Output Details</h3>
+
+        <table>
+            <thead style="background-color:#555; color:#fff;">
+            <tr>
+                <th scope="col" style="text-align: center;">Barcode</th>
+                <th scope="col" style="text-align: center;">Output Date</th>
+                <th scope="col" style="text-align: center;">Doctor Name</th>
+                <th scope="col" style="text-align: center;">Material Name</th>
+                <th scope="col" style="text-align: center;">Quantity Out</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td scope="row" style="text-align: center; font-size:24px;">{{ output.barcode }}</td>
+                <td scope="row" style="text-align: center;">{{ output.output_date }}</td>
+                <td scope="row" style="text-align: center;">{{ output.doctor.doctor_name }}</td>
+                <td scope="row" style="text-align: center;">{{ output.material_out }}</td>
+                <td scope="row" style="text-align: center;">{{ output.quantity }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <p style="font-size:24px;">
+
+    <script>
+        // Optional: Add JavaScript for print-specific behaviors
+        window.onload = function() {
+            window.print();
+        }
+    </script>
+    <br/><br/>
+            <h4 style="font-size:20px; direction:ltr;">Signature</h4>-
+            <h5 style="font-size:20px; direction:ltr;">Receiver Name:</h5>
+
+<hr class="border border-primary border-3 opacity-40">
+<!--
+
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--></h4>
+مع
+        التمنيات بالشفاء العاجل
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -46,8 +46,12 @@
                                 <th style="text-align: center;"  scope="col">No of Unite</th>
                                 <th style="text-align: center;"  scope="col">Color</th>
                                 <th style="text-align: center;"  scope="col">No of Pre.Unite</th>
+                                <th scope="col" style="text-align: center;">Discount Type</th>
                                 <th style="text-align: center;"  scope="col">Price</th>
-                                <th style="text-align: center;"  scope="col">Total Price</th>
+                                <th scope="col" style="text-align: center;">Doctor Dis.</th>
+                                <th scope="col" style="text-align: center;">Center Dis.</th>
+                                <th scope="col" style="text-align: center;">Lab Name</th>
+                                <th scope="col" style="text-align: center;">Lab Price</th>
                                 <th style="text-align: center;"  scope="col">Notes</th>
                                 <th style="text-align: center;"  scope="col">Crown Photo</th>
                                 <th scope="col"  style="text-align: center;">Action</th>
@@ -62,20 +66,18 @@
                                 <td style="text-align: center;" scope="row" align="center">{{crown.no_unite}}</td>
                                 <td style="text-align: center;" scope="row" align="center">{{crown.color}}</td>
                                 <td style="text-align: center;" scope="row" align="center">{{crown.no_prepare}}</td>
-                                  <td style="text-align: center;">
+                                <td style="text-align: center;" scope="row">{{crown.discount_option}}</td>
+                                <td style="text-align: center;">
                                     {% if crown.price is not None %}
                                     {{ crown.price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
-                                <td style="text-align: center;">
-                                    {% if crown.total_price is not None %}
-                                    {{ crown.total_price|format_with_commas  }}
-                                    {% else %}
-                                    None
-                                    {% endif %}
-                                </td>
+                                <td style="text-align: center;" scope="row">{{ crown.doctor_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ crown.center_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ crown.lab_name }}</td>
+                                <td style="text-align: center;" scope="row">{{ crown.price_lab|format_with_commas }}</td>
 
                                 <td style="text-align: center;" scope="row" align="center">{{crown.note}}</td>
 
@@ -198,6 +200,23 @@
                                                     <input type="text" name="price" id="price" value="" class="form-control"
                                                            placeholder="Price:" required>
                                                 </div>
+                                                <div class="col-md-3 mb-3">
+                                                        <select id="discount_option" name="discount_option" class="form-select" required>
+                                                            <option>Select Discount Option</option>
+                                                            <option value="None">None (where no proportion for doctors just salary)</option>
+                                                            <option value="Without discount">Without discount</option>
+                                                            <option value="Quota discount">Quota discount</option>
+                                                            <option value="Full discount">Full discount</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        {{ form.lab_name }}
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"
+                                                               placeholder="Price of Lab:">
+                                                    </div>
 
                                                 <div class="form-group">
                                                     <input type="text" name="note" value="" class="form-control"
@@ -240,11 +259,16 @@ $(document).ready(function() {
     $('#crown-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
-        var numericValue = priceInput.val().replace(/,/g, '');
-        priceInput.val(numericValue);
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+        // Remove commas from the price_lab value before submission
+        var priceLabInput = $('#price_lab');
+        var numericPriceLabValue = priceLabInput.val().replace(/,/g, '');
+        priceLabInput.val(numericPriceLabValue);
     });
 
-    $('#price').on('input', function() {
+    $('#price, #price_lab').on('input', function() {
         // Remove non-numeric characters except dots (keeping decimals)
         var numericValue = $(this).val().replace(/[^0-9.]/g, '');
         // Format with commas for thousands separators

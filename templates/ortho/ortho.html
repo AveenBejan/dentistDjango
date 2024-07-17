@@ -87,7 +87,12 @@ textarea {
                                 <th scope="col" style="text-align: center;" class="hideable">Lower Left S</th>
                                 <th scope="col" style="text-align: center;" class="hideable">teeth_size</th>
                                 <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
-                                <th scope="col" style="text-align: center;" >Price</th>
+                                <th scope="col" style="text-align: center;">Discount Type</th>
+                                <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" style="text-align: center;">Doctor Dis.</th>
+                                <th scope="col" style="text-align: center;">Center Dis.</th>
+                                <th scope="col" style="text-align: center;">Lab Name</th>
+                                <th scope="col" style="text-align: center;">Lab Price</th>
                                 <th scope="col" style="text-align: center;" class="hideable">D.Upper</th>
                                 <th scope="col" style="text-align: center;" class="hideable">D.Lower</th>
                                 <th scope="col" style="text-align: center;" class="hideable">D.Both</th>
@@ -143,6 +148,7 @@ textarea {
                                 </td>
                                 <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ orall.treatment_plan }}
                                 </td>
+                                <td style="text-align: center;" scope="row">{{orall.discount_option}}</td>
                                 <td style="text-align: center;" scope="row">
                                     {% if orall.price is not None %}
                                     {{ orall.price|format_with_commas }}
@@ -150,6 +156,11 @@ textarea {
                                     None
                                     {% endif %}
                                 </td>
+
+                                <td style="text-align: center;" scope="row">{{ orall.doctor_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.center_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.lab_name }}</td>
+                                <td style="text-align: center;" scope="row">{{ orall.price_lab|format_with_commas }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.uper_date }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.lower_date }}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{ orall.both_date }}</td>
@@ -1387,6 +1398,23 @@ textarea {
                                                                 <div class="form-group col-md-4">
                                                                     <input type="text" class="form-control" name="price" id="price" required placeholder="Price" style="font-weight:bold;">
                                                                 </div>
+                                                                <div class="col-md-3 mb-3">
+                                                        <select id="discount_option" name="discount_option" class="form-select" required>
+                                                            <option>Select Discount Option</option>
+                                                            <option value="None">None (where no proportion for doctors just salary)</option>
+                                                            <option value="Without discount">Without discount</option>
+                                                            <option value="Quota discount">Quota discount</option>
+                                                            <option value="Full discount">Full discount</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        {{ form.lab_name }}
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"
+                                                               placeholder="Price of Lab:">
+                                                    </div>
                                                                 <div class="form-group col-md-4">
                                                                     <input type="text" class="form-control" name="notes"
                                                                            placeholder="notes" value=""
@@ -1506,11 +1534,16 @@ $(document).ready(function() {
     $('#ortho-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
-        var numericValue = priceInput.val().replace(/,/g, '');
-        priceInput.val(numericValue);
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+        // Remove commas from the price_lab value before submission
+        var priceLabInput = $('#price_lab');
+        var numericPriceLabValue = priceLabInput.val().replace(/,/g, '');
+        priceLabInput.val(numericPriceLabValue);
     });
 
-    $('#price').on('input', function() {
+    $('#price, #price_lab').on('input', function() {
         // Remove non-numeric characters except dots (keeping decimals)
         var numericValue = $(this).val().replace(/[^0-9.]/g, '');
         // Format with commas for thousands separators
@@ -1537,26 +1570,23 @@ $(document).ready(function() {
     });
 </script>
 <script>
-    // Run the script after the page has loaded
     $(document).ready(function () {
-        // Find all elements with the 'hideable' class
         $('.hideable').each(function() {
             var content = $(this).text().trim();
+            console.log("Content: ", content);  // Debugging: Print content
 
-            // Check the content of each element
-            if (content === "None") {
-                // Hide the current element
+            // Check if the content is "None" or "[None]"
+            if (content === "None" || content === "[None]") {
                 $(this).hide();
 
-                // If it's a <td> or <th>, find the corresponding <th> by index
-                if ($(this).is('td,th')) {
+                // Hide the corresponding <th> element if <td> or <th> is hidden
+                if ($(this).is('td')) {
                     var index = $(this).index();
                     $('table th:eq(' + index + ')').hide();
                 }
             }
         });
     });
-
 </script>
 
 

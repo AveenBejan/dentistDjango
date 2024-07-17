@@ -21,7 +21,7 @@
                 </nav>
                 <div class="col-6">
                 <h4 style="color:#000;">Patient Name:{{ filling_instance.name }}</h4>
-                <h5 style="color:#000;">Total Price: {{ filling_instance.price|format_with_commas  }}</h5>
+                <h5 style="color:#000;">Total Price: {{ filling_instance.center_share|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Previous Paid Amount Total: {{ previous_paid|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Remaining Amount: {{ remaining_amount|format_with_commas  }}</h5>
 
@@ -54,7 +54,7 @@
                        <div class="row">
 
                         <div class="col-sm-6">
-                            <input type="hidden" id="price" name="price" value="{{ filling_instance.price }}" class="form-control" readonly>
+                            <input type="hidden" id="price" name="price" value="{{ filling_instance.center_share }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
                             <br/><h4> Date Paid </h4>
@@ -67,37 +67,28 @@
                         </div>
 
                 </form>
-                   <script>
-    function validateAndShowAlert() {
-        var requiredFields = document.querySelectorAll('[required]');
-        var allFieldsFilled = true;
-
-        for (var i = 0; i < requiredFields.length; i++) {
-            if (!requiredFields[i].value) {
-                allFieldsFilled = false;
-                break;
-            }
-        }
-
-        if (allFieldsFilled) {
-            showAlert();
-        } else {
-            alert("Please fill out all required fields.");
-        }
-    }
-
-    function showAlert() {
-        if (confirm("Are you sure you want to update?")) {
-            document.getElementById("updateForm").submit();
-        }
-    }
-</script>
             </div>
         </div>
     </div>
 </section>
-    </div>
-</div>
+                 <script>
+$(document).ready(function() {
+    $('#updateForm').submit(function() {
+        // Remove commas from the paid value before submission
+        var paidInput = $('#paid');
+        var numericValue = paidInput.val().replace(/,/g, '');
+        paidInput.val(numericValue);
+    });
+
+    $('#paid').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function () {
@@ -112,14 +103,14 @@ $(document).ready(function () {
         // Extracting values
         var remainingAmount = parseFloat('{{ remaining_amount }}');
         var previousPaid = parseFloat('{{ previous_paid }}');
-        var totalPrice = parseFloat($('#price').val());
+        var center_share = parseFloat($('#price').val());
         var paidAmount = parseFloat(numericValue); // Use the cleaned numericValue for paidAmount
 
         // Calculate the total paid by adding previous paid with current paid amount
         var totalPaid = previousPaid + paidAmount;
 
         // Check if the total paid amount reaches the total price or covers the remaining amount
-        if (totalPaid > totalPrice) {
+        if (totalPaid > center_share) {
             alert("Total paid amount must equal the total price or cover the remaining amount.");
         } else if (paidAmount > remainingAmount) {
             alert("Paid amount cannot exceed the remaining amount.");
@@ -138,5 +129,7 @@ $(document).ready(function () {
     });
 });
 </script>
+    </div>
+</div>
 </body>
 {% endblock %}

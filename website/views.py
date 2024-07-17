@@ -5,10 +5,10 @@ from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
     ImplantForm,GaveAppointmentForm,DebtsForm,PaymentHistoryForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,\
-    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1
+    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,\
-    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1
+    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -36,6 +36,10 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime, timedelta
+from django.db.models import Sum, F, Q, Value, IntegerField
+from django.db.models.functions import Coalesce
+from decimal import Decimal, InvalidOperation
 
 
 def custom_login(request):
@@ -147,6 +151,12 @@ def delete_outcome(request,id):
     appointments = Outcome.objects.get(pk=id)
     appointments.delete()
     return redirect('add-outcome')
+
+
+def delete_store(request,id):
+    appointments = Store.objects.get(pk=id)
+    appointments.delete()
+    return redirect('add_store')
 
 
 def add_new_employ(request):
@@ -288,6 +298,7 @@ def search_debts(request):
     orthos = Ortho.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
     periodontologys = Periodontology.objects.none()
+    pedos = Pedo.objects.none()
 
     if query:
         exos = Exo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
@@ -300,6 +311,7 @@ def search_debts(request):
         orthos = Ortho.objects.filter(Q(name=query) | Q(name__istartswith=query),idReception__in=Reception1.objects.values('idReception'),visits_id__isnull=True)
         prosthodonticss = Prosthodontics.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         periodontologys = Periodontology.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        pedos = Pedo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
 
     search_results = []
 
@@ -321,7 +333,8 @@ def search_debts(request):
         search_results.append(('Prosthodontics', prosthodonticss))
     if periodontologys.exists():
         search_results.append(('Periodontology', periodontologys))
-
+    if pedos.exists():
+        search_results.append(('Pedo', pedos))
     context = {
         'query': query,
         'search_results': search_results,
@@ -520,6 +533,7 @@ def all_debts(request):
 
     exos = Exo.objects.none()  # Initialize as an empty queryset
     fillings = Filling.objects.none()
+    pedos = Pedo.objects.none()
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
     oralSurgery = OralSurgery.objects.none()
@@ -536,24 +550,20 @@ def all_debts(request):
         # Apply doctor filter only if selected_doctor has a value
         if selected_doctor is not None:
             exos = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            fillings = Filling.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            fillings = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            pedos = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             crowns = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            veneers = Veneer.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            oralSurgery = OralSurgery.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            veneers = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
             endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=True)
-            )
-            periodontologys = Periodontology.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
-            prosthodonticss = Prosthodontics.objects.filter(
-                Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=True))
+            periodontologys = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            prosthodonticss = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
         else:
             # No matter if selected_doctor is None, perform the query without doctor filter
             exos = Exo.objects.filter(regdate__range=(start_datetime, end_datetime))
             fillings = Filling.objects.filter(regdate__range=(start_datetime, end_datetime))
+            pedos = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime))
             crowns = Crown.objects.filter(regdate__range=(start_datetime, end_datetime))
             veneers = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime))
             oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime))
@@ -568,6 +578,8 @@ def all_debts(request):
         search_results.append(('Exo', exos))
     if fillings.exists():
         search_results.append(('Filling', fillings))
+    if pedos.exists():
+        search_results.append(('Pedo', pedos))
     if crowns.exists():
         search_results.append(('Crown', crowns))
     if veneers.exists():
@@ -582,17 +594,19 @@ def all_debts(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
-    total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(price=Sum('price'))['price'] or 0
-    total_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
-    total_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
     paid_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
     paid_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
     paid_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
     paid_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
@@ -600,8 +614,8 @@ def all_debts(request):
     paid_ortho = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
     paid_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    total_price_t = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
-    total_paid_t = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
+    total_price_t = (total_exo + total_filling + total_pedo + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
+    total_paid_t = (paid_exo + paid_filling + paid_pedo + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
     remaining = total_price_t - total_paid_t
 
     context = {
@@ -612,6 +626,7 @@ def all_debts(request):
         'form': form,  # Pass the form to the template for display
         'total_exo': total_exo,  # Add total_salary to the context
         'total_filling': total_filling,  # Add total_salary to the context
+        'total_pedo': total_filling,  # Add total_salary to the context
         'total_crown': total_crown,  # Add total_salary to the context
         'total_veneer': total_veneer,  # Add total_salary to the context
         'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
@@ -621,6 +636,7 @@ def all_debts(request):
         'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
         'paid_exo': paid_exo,  # Add total_salary to the context
         'paid_filling': paid_filling,  # Add total_salary to the context
+        'paid_pedo': paid_filling,  # Add total_salary to the context
         'paid_crown': paid_crown,  # Add paid_salary to the context
         'paid_veneer': paid_veneer,  # Add paid_salary to the context
         'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
@@ -634,6 +650,331 @@ def all_debts(request):
     }
 
     return render(request, 'debts/all_debts.html', context)
+
+
+def earnings(request):
+    form = SearchForm(request.GET or None)  # Instantiate the form
+
+    # Initialize selected_doctor with None
+    selected_doctor = None
+
+    if request.method == 'GET':
+        if form.is_valid():
+            # Use the correct parameter name based on your URL
+            selected_doctor = form.cleaned_data['doctor']
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    start_datetime = None  # Initialize start_datetime variable
+    end_datetime = None  # Initialize end_datetime variable
+
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    pedos = Pedo.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
+    periodontologys = Periodontology.objects.none()
+    prosthodonticss = Prosthodontics.objects.none()
+
+    if start_date and end_date:
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+        end_datetime = end_datetime + timedelta(days=1)
+
+        # Apply doctor filter only if selected_doctor has a value
+        if selected_doctor is not None:
+            exos = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            fillings = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            pedos = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            crowns = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            veneers = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=True))
+            periodontologys = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            prosthodonticss = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+        else:
+            # No matter if selected_doctor is None, perform the query without doctor filter
+            exos = Exo.objects.filter(regdate__range=(start_datetime, end_datetime))
+            fillings = Filling.objects.filter(regdate__range=(start_datetime, end_datetime))
+            pedos = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime))
+            crowns = Crown.objects.filter(regdate__range=(start_datetime, end_datetime))
+            veneers = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime))
+            oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime))
+            endos = Endo.objects.filter(regdate__range=(start_datetime, end_datetime))
+            orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime), visits_id__isnull=True)
+            periodontologys = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime))
+            prosthodonticss = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime))
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if pedos.exists():
+        search_results.append(('Pedo', pedos))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
+    if periodontologys.exists():
+        search_results.append(('Periodontology', periodontologys))
+    if prosthodonticss.exists():
+        search_results.append(('Prosthodontics', prosthodonticss))
+    total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+
+    total_exo1 = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_filling1 = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_pedo1 = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_crown1 = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_veneer1 = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_oralSurgery1 = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_endo1 = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_ortho1 = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_periodontology1 = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_prosthodontics1 = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+
+    paid_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_ortho = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    total_price_t = (total_exo + total_filling + total_pedo + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
+    total_price_t1 = (total_exo1 + total_filling1 + total_pedo1 + total_crown1 + total_veneer1 + total_oralSurgery1 + total_endo1 + total_ortho1 + total_periodontology1 + total_prosthodontics1)
+    total_paid_t = (paid_exo + paid_filling + paid_pedo + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
+    remaining = total_price_t - total_paid_t
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'selected_doctor': selected_doctor,
+        'search_results': search_results,
+        'form': form,  # Pass the form to the template for display
+        'total_exo': total_exo,  # Add total_salary to the context
+        'total_filling': total_filling,  # Add total_salary to the context
+        'total_pedo': total_filling,  # Add total_salary to the context
+        'total_crown': total_crown,  # Add total_salary to the context
+        'total_veneer': total_veneer,  # Add total_salary to the context
+        'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
+        'total_endo': total_endo,  # Add total_salary to the context
+        'total_ortho': total_ortho,  # Add total_salary to the context
+        'total_periodontology': total_periodontology,  # Add total_salary to the context
+        'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
+        'total_exo1': total_exo1,  # Add total_salary to the context
+        'total_filling1': total_filling1,  # Add total_salary to the context
+        'total_pedo1': total_pedo1,  # Add total_salary to the context
+        'total_crown1': total_crown1,  # Add total_salary to the context
+        'total_veneer1': total_veneer1,  # Add total_salary to the context
+        'total_oralSurgery1': total_oralSurgery1,  # Add total_salary to the context
+        'total_endo1': total_endo1,  # Add total_salary to the context
+        'total_ortho1': total_ortho1,  # Add total_salary to the context
+        'total_periodontology1': total_periodontology1,  # Add total_salary to the context
+        'total_prosthodontics1': total_prosthodontics1,  # Add total_salary to the context
+        'paid_exo': paid_exo,  # Add total_salary to the context
+        'paid_filling': paid_filling,  # Add total_salary to the context
+        'paid_pedo': paid_filling,  # Add total_salary to the context
+        'paid_crown': paid_crown,  # Add paid_salary to the context
+        'paid_veneer': paid_veneer,  # Add paid_salary to the context
+        'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
+        'paid_endo': paid_endo,  # Add paid_salary to the context
+        'paid_ortho': paid_ortho,  # Add paid_salary to the context
+        'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
+        'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
+        'total_price_t': total_price_t,  # Add total_salary to the context
+        'total_price_t1': total_price_t1,  # Add total_salary to the context
+        'total_paid_t': total_paid_t,  # Add total_salary to the context
+        'remaining': remaining,  # Add total_salary to the context
+    }
+
+    return render(request, 'debts/earnings.html', context)
+
+
+def earnings_print(request):
+    form = SearchForm(request.GET or None)  # Instantiate the form
+
+    # Initialize selected_doctor with None
+    selected_doctor = None
+
+    if request.method == 'GET':
+        if form.is_valid():
+            # Use the correct parameter name based on your URL
+            selected_doctor = form.cleaned_data['doctor']
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    start_datetime = None  # Initialize start_datetime variable
+    end_datetime = None  # Initialize end_datetime variable
+
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    pedos = Pedo.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
+    periodontologys = Periodontology.objects.none()
+    prosthodonticss = Prosthodontics.objects.none()
+
+    if start_date and end_date:
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+        end_datetime = end_datetime + timedelta(days=1)
+
+        # Apply doctor filter only if selected_doctor has a value
+        if selected_doctor is not None:
+            exos = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            fillings = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            pedos = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            crowns = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            veneers = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            endos = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            orthos = Ortho.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) &Q(doctor=selected_doctor) &Q(visits_id__isnull=True))
+            periodontologys = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+            prosthodonticss = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor))
+        else:
+            # No matter if selected_doctor is None, perform the query without doctor filter
+            exos = Exo.objects.filter(regdate__range=(start_datetime, end_datetime))
+            fillings = Filling.objects.filter(regdate__range=(start_datetime, end_datetime))
+            pedos = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime))
+            crowns = Crown.objects.filter(regdate__range=(start_datetime, end_datetime))
+            veneers = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime))
+            oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime))
+            endos = Endo.objects.filter(regdate__range=(start_datetime, end_datetime))
+            orthos = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime), visits_id__isnull=True)
+            periodontologys = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime))
+            prosthodonticss = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime))
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if pedos.exists():
+        search_results.append(('Pedo', pedos))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
+    if periodontologys.exists():
+        search_results.append(('Periodontology', periodontologys))
+    if prosthodonticss.exists():
+        search_results.append(('Prosthodontics', prosthodonticss))
+    total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+
+    total_exo1 = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_filling1 = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_pedo1 = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_crown1 = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_veneer1 = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_oralSurgery1 = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_endo1 = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_ortho1 = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_periodontology1 = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_prosthodontics1 = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+
+    paid_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_ortho = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    total_price_t = (total_exo + total_filling + total_pedo + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
+    total_price_t1 = (total_exo1 + total_filling1 + total_pedo1 + total_crown1 + total_veneer1 + total_oralSurgery1 + total_endo1 + total_ortho1 + total_periodontology1 + total_prosthodontics1)
+    total_paid_t = (paid_exo + paid_filling + paid_pedo + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
+    remaining = total_price_t - total_paid_t
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'selected_doctor': selected_doctor,
+        'search_results': search_results,
+        'form': form,  # Pass the form to the template for display
+        'total_exo': total_exo,  # Add total_salary to the context
+        'total_filling': total_filling,  # Add total_salary to the context
+        'total_pedo': total_filling,  # Add total_salary to the context
+        'total_crown': total_crown,  # Add total_salary to the context
+        'total_veneer': total_veneer,  # Add total_salary to the context
+        'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
+        'total_endo': total_endo,  # Add total_salary to the context
+        'total_ortho': total_ortho,  # Add total_salary to the context
+        'total_periodontology': total_periodontology,  # Add total_salary to the context
+        'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
+        'total_exo1': total_exo1,  # Add total_salary to the context
+        'total_filling1': total_filling1,  # Add total_salary to the context
+        'total_pedo1': total_pedo1,  # Add total_salary to the context
+        'total_crown1': total_crown1,  # Add total_salary to the context
+        'total_veneer1': total_veneer1,  # Add total_salary to the context
+        'total_oralSurgery1': total_oralSurgery1,  # Add total_salary to the context
+        'total_endo1': total_endo1,  # Add total_salary to the context
+        'total_ortho1': total_ortho1,  # Add total_salary to the context
+        'total_periodontology1': total_periodontology1,  # Add total_salary to the context
+        'total_prosthodontics1': total_prosthodontics1,  # Add total_salary to the context
+        'paid_exo': paid_exo,  # Add total_salary to the context
+        'paid_filling': paid_filling,  # Add total_salary to the context
+        'paid_pedo': paid_filling,  # Add total_salary to the context
+        'paid_crown': paid_crown,  # Add paid_salary to the context
+        'paid_veneer': paid_veneer,  # Add paid_salary to the context
+        'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
+        'paid_endo': paid_endo,  # Add paid_salary to the context
+        'paid_ortho': paid_ortho,  # Add paid_salary to the context
+        'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
+        'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
+        'total_price_t': total_price_t,  # Add total_salary to the context
+        'total_price_t1': total_price_t1,  # Add total_salary to the context
+        'total_paid_t': total_paid_t,  # Add total_salary to the context
+        'remaining': remaining,  # Add total_salary to the context
+    }
+
+    return render(request, 'debts/earnings_print.html', context)
+
 
 def all_debts1(request):
     form = SearchForm(request.GET or None)  # Instantiate the form
@@ -732,6 +1073,7 @@ def all_total(request):
 
     exos = Exo.objects.none()  # Initialize as an empty queryset
     fillings = Filling.objects.none()
+    pedos = Pedo.objects.none()
     crowns = Crown.objects.none()
     veneers = Veneer.objects.none()
     oralSurgery = OralSurgery.objects.none()
@@ -749,6 +1091,7 @@ def all_total(request):
 
         exos = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         fillings = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
+        pedos = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         crowns = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         veneers = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
         oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)))
@@ -765,6 +1108,8 @@ def all_total(request):
         search_results.append(('Exo', exos))
     if fillings.exists():
         search_results.append(('Filling', fillings))
+    if pedos.exists():
+        search_results.append(('Pedo', pedos))
     if crowns.exists():
         search_results.append(('Crown', crowns))
     if veneers.exists():
@@ -785,6 +1130,7 @@ def all_total(request):
         search_results.append(('Salary', salaries))
     total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(total_price=Sum('total_price'))['total_price'] or 0
@@ -802,6 +1148,7 @@ def all_total(request):
         'search_results': search_results,
         'total_exo': total_exo,  # Add total_salary to the context
         'total_filling': total_filling,  # Add total_salary to the context
+        'total_pedo': total_pedo,  # Add total_salary to the context
         'total_crown': total_crown,  # Add total_salary to the context
         'total_veneer': total_veneer,  # Add total_salary to the context
         'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
@@ -817,23 +1164,51 @@ def all_total(request):
     return render(request, 'all_total.html', context)
 
 
-def doctor(request):
+def doctor(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
+        messages.error(request, 'User does not exist.')
+        return redirect('signup')  # Redirect to the signup page if user doesn't exist
+
     if request.method == 'POST':
         form = DoctorsForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('doctor')  # Redirect to the same page after saving the form data
+            doctor_instance = form.save(commit=False)  # Create an instance but don't save yet
+            doctor_instance.user = user  # Associate the user with the new doctor instance
+
+            proportion_doctor_input = form.cleaned_data.get('proportion_doctor')
+            if proportion_doctor_input is not None:
+                proportion_doctor = proportion_doctor_input
+                proportion_center = 100 - proportion_doctor
+            else:
+                proportion_doctor = 0
+                proportion_center = 0
+
+            salary_input = form.cleaned_data.get('salary')
+            salary = salary_input if salary_input is not None else 0
+
+            # Set the calculated proportions and salary
+            doctor_instance.proportion_doctor = proportion_doctor
+            doctor_instance.proportion_center = proportion_center
+            doctor_instance.salary = salary
+
+            # Save the instance
+            doctor_instance.save()
+
+        return redirect('doctor', user_id=user_id)   # Redirect to the list of doctors or any other appropriate page
     else:
         form = DoctorsForm()
-    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+
+    # Retrieve all Doctor objects (appointments) from the database and order them by their IDs in ascending order.
     appointments = Doctors.objects.all().order_by('id')
-    return render(request, 'doctors/doctor.html', {'form': form, 'appointments': appointments})
+    return render(request, 'doctors/doctor.html', {'form': form, 'appointments': appointments, 'user': user})
 
 
-def delete_doctor(request,id):
-    appointments = Doctors.objects.get(pk=id)
-    appointments.delete()
-    return redirect('doctor')
+def delete_doctor(request, id):
+    doctor = get_object_or_404(Doctors, pk=id)
+    doctor.delete()
+    return redirect('doctor', user_id=request.user.id)
 
 
 def educational(request):
@@ -866,6 +1241,32 @@ def medicine1(request):
     # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
     appointments = Medicine1.objects.all().order_by('-id')
     return render(request, 'drugs/medicine1.html', {'form': form, 'appointments': appointments})
+
+
+def material(request):
+    if request.method == 'POST':
+        form = MaterialForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('material')  # Redirect to the same page after saving the form data
+    else:
+        form = MaterialForm()
+    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+    appointments = Material.objects.all().order_by('-id')
+    return render(request, 'store/material.html', {'form': form, 'appointments': appointments})
+
+
+def lab(request):
+    if request.method == 'POST':
+        form = LabForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lab')  # Redirect to the same page after saving the form data
+    else:
+        form = LabForm()
+    # Retrieve all Medicine1 objects (appointments) from the database and order them by their IDs in descending order.
+    appointments = Lab.objects.all().order_by('-id')
+    return render(request, 'store/lab.html', {'form': form, 'appointments': appointments})
 
 
 def delete_medicine1(request,id):
@@ -1022,6 +1423,7 @@ def reception(request):
             gender = form.cleaned_data['gender']
             date_of_birth = form.cleaned_data['date_of_birth']
             instance.doctor = Doctors.objects.get(doctor_name=doctor_name)
+
 
             try:
                 educational_instance = Educational.objects.get(educational_name=educational_name)
@@ -1368,27 +1770,88 @@ def all_gave(request):
     return render(request, 'all_gave.html', {'gaves': gaves})
 
 
+@login_required
 def add_oral_surgery(request, id):
-    if request.method == 'POST':
-        form = OralSurgeryForm(request.POST, request.FILES)
-        if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            implant_name = form.cleaned_data['implant']
-            oral_surgery.implant = Implant.objects.get(implant_name=implant_name)
-            oral_surgery.idReception1_id = id
-            no_unite = form.cleaned_data['no_unite']
-            price = form.cleaned_data['price']
-            total_price = price
-            oral_surgery.total_price = total_price
-            reception = Reception1.objects.get(id=id)
-            oral_surgery.idReception_id = reception.idReception_id
-            oral_surgery.name = reception.name
-            oral_surgery.phone = reception.phone
-            oral_surgery.gender = reception.gender
-            oral_surgery.date_of_birth = reception.date_of_birth
-            oral_surgery.educational_id = reception.educational_id
-            oral_surgery.doctor_id = reception.doctor_id
-            oral_surgery.save()
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = OralSurgeryForm(request.POST, request.FILES)
+            if form.is_valid():
+                oral_surgery = form.save(commit=False)
+                implant_name = form.cleaned_data['implant']
+                oral_surgery.implant = Implant.objects.get(implant_name=implant_name)
+                oral_surgery.idReception1_id = id
+
+                no_unite = form.cleaned_data['no_unite']
+                price = form.cleaned_data['price']
+                total_price = price
+                oral_surgery.total_price = total_price
+
+                oral_surgery.idReception_id = reception.idReception_id
+                oral_surgery.name = reception.name
+                oral_surgery.phone = reception.phone
+                oral_surgery.gender = reception.gender
+                oral_surgery.date_of_birth = reception.date_of_birth
+                oral_surgery.educational_id = reception.educational_id
+                oral_surgery.doctor_id = reception.doctor_id
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+
+                # Assign Decimal values to model fields
+                oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+                oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
+                oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
             oral_surgery_instance = form.save(commit=False)
@@ -1399,7 +1862,6 @@ def add_oral_surgery(request, id):
 
             return redirect('add-oral-surgery', id=id)
         else:
-            reception = Reception1.objects.get(id=id)
             initial_data = {
                 'idReception1_id': id,
                 'name': reception.name,
@@ -1411,23 +1873,11 @@ def add_oral_surgery(request, id):
                 'doctor_id': reception.doctor_id
             }
             form = OralSurgeryForm(initial=initial_data)
-    else:
-        reception = Reception1.objects.get(id=id)
-        initial_data = {
-            'idReception1_id': id,
-            'idReception_id': reception.idReception_id,
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth,
-            'educational_id': reception.educational_id,
-            'doctor_id': reception.doctor_id
-        }
-        form = OralSurgeryForm(initial=initial_data)
+    except Doctors.DoesNotExist:
+        return redirect('error_page')
 
     appointments = Reception1.objects.all().order_by('-id')
     oralls = OralSurgery.objects.filter(idReception1=id)
-    # Create a list to store photos for each OralSurgery instance
     photos_list = []
 
     try:
@@ -1453,10 +1903,7 @@ def add_oral_surgery(request, id):
             orall.ll = orall.ll.replace("'", "")
         orall.total_price = orall.price
         orall.save()
-        # Retrieve photos associated with the current OralSurgery instance
         photos = orall.photo_set.all()
-
-        # Append the photos to the photos_list
         photos_list.append(photos)
 
     formatted_total_prices = ["{:,}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
@@ -1520,15 +1967,20 @@ def search_oral(request):
 
 def oral_edit(request, id):
     orall = get_object_or_404(OralSurgery, id=id)
+    photos = Photo.objects.filter(oral_surgery_instance=orall)  # Fetch photos associated with the oral surgery instance
 
     if request.method == 'POST':
-        form = OralSurgeryForm(request.POST, instance=orall)
+        form = OralSurgeryForm(request.POST, request.FILES, instance=orall)
         if form.is_valid():
             implant_name = form.cleaned_data['implant']
+            price = form.cleaned_data['price']
             implant = Implant.objects.get(implant_name=implant_name)
             orall.implant = implant
             # Get the form data
             form_data = form.cleaned_data
+            # Assign the name of the selected Lab instance to lab_name
+            lab_instance = form.cleaned_data['lab_name']
+            form_data['lab_name'] = lab_instance.lab_name if lab_instance else None
 
             # Remove single quotes in certain fields
             for field in ['ur', 'ul', 'lr', 'll']:
@@ -1537,36 +1989,85 @@ def oral_edit(request, id):
             # Update the 'OralSurgery' instance with the cleaned form data
             for field, value in form_data.items():
                 setattr(orall, field, value)
+            try:
+                doctor = Doctors.objects.get(id=orall.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
 
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab')
+
+            # Adjust the price if price_lab is not null
+            if price_lab is not None:
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+            else:
+                adjusted_price = price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            orall.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            orall.center_share = center_share.quantize(Decimal('0.01'))
             # Save the updated 'OralSurgery' instance
             orall.save()
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(oral_surgery_instance=orall, image=photo)
             return redirect('add-oral-surgery', id=orall.idReception1_id)  # Redirect to a success view after saving
     else:
+        # Define a default value for first_visit when the request method is not POST
+        first_visit = orall.first_visit if orall.first_visit is not None else None
+        # Define a default value for second_visit when the request method is not POST
+        second_visit = orall.second_visit if orall.second_visit is not None else None
+        third_visit = orall.third_visit if orall.third_visit is not None else None
+        fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
+        fifth_visit = orall.fifth_visit if orall.fifth_visit is not None else None
+        # Remove first and last characters from certain fields
+        ur = orall.ur[1:-1] if orall.ur else None
+        ul = orall.ul[1:-1] if orall.ul else None
+        lr = orall.lr[1:-1] if orall.lr else None
+        ll = orall.ll[1:-1] if orall.ll else None
 
-            # Define a default value for first_visit when the request method is not POST
-            first_visit = orall.first_visit if orall.first_visit is not None else None
-            # Define a default value for second_visit when the request method is not POST
-            second_visit = orall.second_visit if orall.second_visit is not None else None
-            third_visit = orall.third_visit if orall.third_visit is not None else None
-            fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
-            fifth_visit = orall.fifth_visit if orall.fifth_visit is not None else None
-            # Remove first and last characters from certain fields
-            ur = orall.ur[1:-1] if orall.ur else None
-            ul = orall.ul[1:-1] if orall.ul else None
-            lr = orall.lr[1:-1] if orall.lr else None
-            ll = orall.ll[1:-1] if orall.ll else None
-
-            form = OralSurgeryForm(instance=orall, initial={
-                'first_visit': first_visit,
-                'second_visit': second_visit,
-                'third_visit': third_visit,
-                'fourth_visit': fourth_visit,
-                'fifth_visit': fifth_visit,
-                'ur': ur,
-                'ul': ul,
-                'lr': lr,
-                'll': ll,
-            })
+        form = OralSurgeryForm(instance=orall, initial={
+            'first_visit': first_visit,
+            'second_visit': second_visit,
+            'third_visit': third_visit,
+            'fourth_visit': fourth_visit,
+            'fifth_visit': fifth_visit,
+            'ur': ur,
+            'ul': ul,
+            'lr': lr,
+            'll': ll,
+        })
 
     return render(request, 'update_oral_surgery.html', {'form': form, 'orall': orall})
 
@@ -1645,128 +2146,142 @@ def delete_visit(request,id):
     return redirect('visit')
 
 
-def add_ortho(request, id):
-    disable_submit = False  # Initialize disable_submit before the if block
-    if request.method == 'POST':
-        form = OrthoForm(request.POST, request.FILES)
-        if form.is_valid():
-            ortho = form.save(commit=False)
-            ortho.idReception1_id = id
-            reception = Reception1.objects.get(id=id)
-            ortho.idReception_id = reception.idReception_id
-            ortho.name = reception.name
-            ortho.phone = reception.phone
-            ortho.gender = reception.gender
-            ortho.date_of_birth = reception.date_of_birth
-            ortho.educational_id = reception.educational_id
-            ortho.doctor_id = reception.doctor_id
-            ortho.save()
-            # Set disable_submit flag to True after successful form processing
-            disable_submit = True
-            photos = request.FILES.getlist('exo_images')
-            ortho_instance = form.save(commit=False)
-            ortho_instance.save()
 
-            for photo in photos:
-                Photo.objects.create(ortho_instance=ortho_instance, image=photo)
-            return redirect('add-ortho', id=id)
+
+@login_required
+def add_ortho(request, id):
+    disable_submit = False
+    orall = None  # Initialize orall outside try-except block
+
+    try:
+        user = request.user
+
+        # Check if the user is an admin or the doctor associated with the reception
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
         else:
-            reception = Reception1.objects.get(id=id)
+            doctor = Doctors.objects.get(user=user)
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = OrthoForm(request.POST, request.FILES)
+            if form.is_valid():
+                ortho = form.save(commit=False)
+                ortho.idReception1_id = id
+                ortho.idReception_id = reception.idReception_id
+                ortho.name = reception.name
+                ortho.phone = reception.phone
+                ortho.gender = reception.gender
+                ortho.date_of_birth = reception.date_of_birth
+                ortho.educational_id = reception.educational_id
+                ortho.doctor_id = reception.doctor_id
+
+                # Calculate total price and shares
+                price = form.cleaned_data['price']
+                total_price = Decimal(price)  # Convert price to Decimal
+                ortho.total_price = total_price
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                # Assign Decimal values to model fields
+                ortho.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                ortho.center_share = center_share.quantize(Decimal('0.01'))
+                ortho.price_lab = price_lab_decimal  # Save price_lab as Decimal
+                ortho.save()
+
+                # Handle uploaded photos
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(ortho_instance=ortho, image=photo)
+
+                # Set disable_submit flag to True after successful form processing
+                disable_submit = True
+
+                return redirect('add-ortho', id=id)
+
+        else:
             initial_data = {
                 'idReception1_id': id,
-
                 'name': reception.name,
                 'phone': reception.phone,
                 'gender': reception.gender,
                 'date_of_birth': reception.date_of_birth,
                 'educational_id': reception.educational_id,
-                'doctor_id': reception.doctor_id
-
+                'doctor_id': reception.doctor_id,
             }
-            form = OrthoForm(initial=initial_data)
-    else:
-        reception = Reception1.objects.get(id=id)
-        initial_data = {
-            'idReception1_id': id,
+            form = VeneerForm(initial=initial_data)
 
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth,
-            'educational_id': reception.educational_id,
-            'doctor_id': reception.doctor_id
-        }
-        form = OrthoForm(initial=initial_data)
-    # Retrieve the first Ortho object where visits_id is null or 1
-    orall = Ortho.objects.filter(Q(visits_id__isnull=True) | Q(visits_id=1)
-                                 ).filter(idReception1=id).first()
-    appointments = Reception1.objects.all().order_by('-id')
+    except (ObjectDoesNotExist, ValueError):
+        reception = None
+        form = None
+
+    # Retrieve Ortho objects related to the current reception
     oralls = Ortho.objects.filter(idReception1=id).order_by('-id')
-    # Create a list to store photos for each OralSurgery instance
     photos_list = []
 
-    try:
-        orall = oralls.first()
-        photos = orall.photo_set.all()
-    except AttributeError:
-        orall = None
-        photos = None
-    try:
-        medicine = Medicin.objects.get(idReception=id)
-    except Medicin.DoesNotExist:
-        medicine = None
-
     for orall in oralls:
-        if orall.ur:
-            orall.ur = orall.ur.replace("'", "")
-        if orall.ul:
-            orall.ul = orall.ul.replace("'", "")
-        if orall.lr:
-            orall.lr = orall.lr.replace("'", "")
-        if orall.ll:
-            orall.ll = orall.ll.replace("'", "")
-        if orall.urn:
-            orall.urn = orall.urn.replace("'", "")
-        if orall.uln:
-            orall.uln = orall.uln.replace("'", "")
-        if orall.lrn:
-            orall.lrn = orall.lrn.replace("'", "")
-        if orall.lln:
-            orall.lln = orall.lln.replace("'", "")
-        if orall.teeth_type:
-            orall.teeth_type = orall.teeth_type.replace("'", "")
-        if orall.urs:
-            orall.urs = orall.urs.replace("'", "")
-        if orall.uls:
-            orall.uls = orall.uls.replace("'", "")
-        if orall.lrs:
-            orall.lrs = orall.lrs.replace("'", "")
-        if orall.lls:
-            orall.lls = orall.lls.replace("'", "")
-        if orall.teeth_size:
-            orall.teeth_size = orall.teeth_size.replace("'", "")
-        orall.save()
-        # Retrieve photos associated with the current OralSurgery instance
-        photos = orall.photo_set.all()
+        # Clean up certain fields
+        for field in ['ur', 'ul', 'lr', 'll', 'urn', 'uln', 'lrn', 'lln', 'teeth_type', 'urs', 'uls', 'lrs', 'lls', 'teeth_size']:
+            value = getattr(orall, field)
+            if value:
+                setattr(orall, field, value.replace("'", ""))
 
-        # Append the photos to the photos_list
+        orall.save()
+
+        # Retrieve photos associated with the current Ortho instance
+        photos = orall.photo_set.all()
         photos_list.append(photos)
 
+    # Retrieve other related data
+    appointments = Reception1.objects.all().order_by('-id')
     formatted_prices = ["{:,}".format(orall.price) if orall.price is not None else None for orall in oralls]
-    # Retrieve the first Ortho object where visits_id is null or 1
-    # Disable the form submission after processing
+
+    # Ensure to handle the case where oralls might be empty
+    if oralls.exists():
+        orall = oralls.first()
 
     return render(request, 'ortho/ortho.html', {
         'form': form,
         'appointments': appointments,
-        'medicine': medicine,
+        'medicine': None,  # Adjust this based on your logic
         'oralls': oralls,
         'id': id,
-        'photos': photos,
-        'disable_submit': disable_submit,
         'photos_list': photos_list,
         'formatted_prices': formatted_prices,
-        'orall': orall
+        'disable_submit': disable_submit,
+        'orall': orall,  # Ensure to pass the last orall outside the loop correctly
     })
 
 
@@ -1856,21 +2371,70 @@ def ortho_visit(request, id):
 
 
 def ortho_edit(request, id):
-    orall = Ortho.objects.get(id=id)
+    orall = get_object_or_404(Ortho, id=id)
     photos = Photo.objects.filter(ortho_instance=orall)
 
     if request.method == 'POST':
-        form = OrthoForm(request.POST, instance=orall)
+        form = OrthoForm(request.POST, request.FILES, instance=orall)
         if form.is_valid():
+            ortho = form.save(commit=False)
             price = form.cleaned_data['price']
-            total_price = price
-            form.instance.total_price = total_price
-            form.save()
-            # Update the associated photos
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            price = Decimal(price)
+            ortho.price = price
+
+            try:
+                doctor = Doctors.objects.get(id=orall.idReception1.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            ortho.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            ortho.center_share = center_share.quantize(Decimal('0.01'))
+            ortho.price_lab = price_lab_decimal
+
+            # Handle lab_name separately
+            selected_lab = form.cleaned_data['lab_name']
+            if selected_lab:
+                ortho.lab = selected_lab  # Set the foreign key to the selected Lab
+                ortho.lab_name = selected_lab.lab_name  # Save the lab_name as well
+
+            ortho.save()
+
+            # Handle saving of associated photos
             photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(ortho_instance=orall, image=photo)
+
             return redirect('add-ortho', id=orall.idReception1_id)
+        else:
+            print("Form is not valid:", form.errors)
     else:
         form = OrthoForm(instance=orall)
 
@@ -1878,30 +2442,48 @@ def ortho_edit(request, id):
 
 
 def ortho_edit_visit(request, id):
-    orall = Ortho.objects.get(id=id)
+    # Retrieve the Ortho instance based on the provided ID
+    orall = get_object_or_404(Ortho, id=id)
+    # Retrieve associated photos
     photos = Photo.objects.filter(ortho_instance=orall)
 
     if request.method == 'POST':
-        form = OrthoForm(request.POST, instance=orall)
+        # Bind the form with POST data and the existing Ortho instance
+        form = OrthoForm(request.POST, request.FILES, instance=orall)
+
         if form.is_valid():
+            # Extract cleaned data
             price = form.cleaned_data['price']
             visits = form.cleaned_data['visits']
-            total_price = price
-            form.instance.total_price = total_price
-            form.instance.visits = visits
-            form.save()
+            total_price = price  # This might be used to update some total price field
 
-            # Update associated photos
-            photos = request.FILES.getlist('exo_images')
-            for photo in photos:
-                Photo.objects.create(ortho_instance=orall, image=photo)
+            # Update the Ortho instance with cleaned data
+            orall = form.save(commit=False)
+            orall.total_price = total_price
+            orall.visits = visits
+
+            # Ensure lab_name is correctly set
+            if form.cleaned_data['lab_name']:
+                orall.lab_name = form.cleaned_data['lab_name']
+            else:
+                orall.lab_name = orall.lab_name
+            orall.save()
+
+            # Handle the saving of associated photos
+            if 'exo_images' in request.FILES:
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(ortho_instance=orall, image=photo)
 
             print("Form submission successful. Redirecting...")
             return redirect('add-ortho', id=orall.idReception1_id)
         else:
             print("Form is not valid. Errors:", form.errors)
     else:
-        form = OrthoForm(instance=orall)
+        # Initialize the form with the existing Ortho instance
+        form = OrthoForm(instance=orall, initial={
+            'lab_name': orall.lab_name  # Ensure this sets the initial value
+        })
 
     print("Rendering ortho_edit_visit template...")
     return render(request, 'ortho/ortho_edit_visit.html', {'form': form, 'orall': orall, 'photos': photos})
@@ -1909,6 +2491,7 @@ def ortho_edit_visit(request, id):
 
 def ortho_visit1(request, id):
     orall = get_object_or_404(Ortho, id=id)
+    all_oralls = Ortho.objects.filter(idReception1=orall.idReception1).order_by('-id')
     if request.method == 'POST':
 
         # Create a new instance of Ortho
@@ -1957,26 +2540,38 @@ def ortho_visit1(request, id):
         new_orall.treatment_plan = orall.treatment_plan
         new_orall.price = orall.price
         new_orall.paid = orall.paid
+        new_orall.discount_option = orall.discount_option
+        new_orall.lab_name = orall.lab_name
+        new_orall.price_lab = orall.price_lab
+        new_orall.center_share = orall.center_share
+        new_orall.doctor_share = orall.doctor_share
         new_orall.notes = orall.notes
-        new_orall.exo_images = orall.exo_images
-        new_orall.exo_images = orall.exo_images
-        new_orall.exo_images = orall.exo_images
-        new_orall.exo_images = orall.exo_images
-        new_orall.exo_images = orall.exo_images
         new_orall.exo_images = orall.exo_images
         new_orall.uper_date = orall.uper_date
         new_orall.lower_date = orall.lower_date
         new_orall.both_date = orall.both_date
+        new_orall.discount_option = orall.discount_option
 
         form = OrthoForm(request.POST, request.FILES, instance=new_orall)
         if form.is_valid():
-            form.save()
+            # Handle the saving of the form
+            new_orall = form.save(commit=False)
+
+            # Ensure lab_name is correctly set
+            if form.cleaned_data['lab_name']:
+                new_orall.lab_name = form.cleaned_data['lab_name']
+            else:
+                new_orall.lab_name = orall.lab_name
+
+            # Save the new Ortho object
+            new_orall.save()
             photos = request.FILES.getlist('exo_images')
 
             for photo in photos:
                 Photo.objects.create(ortho_instance=new_orall, image=photo)
 
             return redirect('add-ortho', id=orall.idReception1_id)
+
     else:
         # Remove first and last characters from certain fields
         urs = orall.urs[1:-1] if orall.urs else None
@@ -2009,6 +2604,7 @@ def ortho_visit1(request, id):
             'lln': lln,
             'teeth_type': teeth_type,
             'teeth_size': teeth_size,
+            'lab_name': orall.lab_name
 
         })
         # Get all instances related to the idReception
@@ -2018,7 +2614,8 @@ def ortho_visit1(request, id):
             orall = oralls.first()
         except AttributeError:
             orall = None
-    return render(request, 'ortho/ortho_visit1.html', {'form': form,'all_oralls': all_oralls,'orall': orall})
+
+    return render(request, 'ortho/ortho_visit1.html', {'form': form,'all_oralls':all_oralls,'orall': orall})
 
 
 def remove_photo_ortho(request, photo_id):
@@ -2070,16 +2667,28 @@ def search_ortho(request):
         return render(request, 'ortho/search_ortho.html', {})
 
 
+@login_required
 def exo_reception(request):
-    appointments =Reception1.objects.all().order_by('-id')
-    p = Paginator(appointments,25) #Paginator
-    page = request.GET.get('page') #Paginator
-    appointments = p.get_page(page)#Paginator
-    nums = "a" * appointments.paginator.num_pages#Paginator
+    user = request.user
+    try:
+        if user.role == 'admin':
+            appointments = Reception1.objects.all().order_by('-id')
+        else:
+            doctor = Doctors.objects.get(user=user)
+            appointments = Reception1.objects.filter(doctor=doctor).order_by('-id')
+    except Doctors.DoesNotExist:
+        appointments = Reception1.objects.none()
+
+    p = Paginator(appointments, 25)
+    page = request.GET.get('page')
+    appointments = p.get_page(page)
+    nums = "a" * appointments.paginator.num_pages
+
     for appointment in appointments:
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
-    return render(request, 'exo/exo_reception.html', {'appointments': appointments})
+
+    return render(request, 'exo/exo_reception.html', {'appointments': appointments, 'nums': nums})
 
 
 def prosthodontics_reception(request):
@@ -2099,38 +2708,103 @@ def exo_reception1(request):
     return render(request, 'exo/exo_reception1.html', {'appointments': appointments})
 
 
+@login_required
 def exo(request, id):
-    if request.method == 'POST':
-        form = ExoForm(request.POST, request.FILES)
-        if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            oral_surgery.idReception1_id = id
+    user = request.user
 
-            price = form.cleaned_data['price']
-            total_price = price
-            oral_surgery.total_price = total_price
-            reception = Reception1.objects.get(id=id)
-            oral_surgery.name = reception.name
-            oral_surgery.phone = reception.phone
-            oral_surgery.gender = reception.gender
-            oral_surgery.date_of_birth = reception.date_of_birth
-            oral_surgery.educational_id = reception.educational_id
-            oral_surgery.idReception_id = reception.idReception_id
-            oral_surgery.doctor_id = reception.doctor_id
-            oral_surgery.save()
-
-            photos = request.FILES.getlist('exo_images')
-            exo_instance = form.save(commit=False)
-            exo_instance.save()
-
-            for photo in photos:
-                Photo.objects.create(exo_instance=exo_instance, image=photo)
-
-            return redirect('exo', id=id)
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
         else:
-            reception = Reception1.objects.get(id=id)
-            initial_data = {
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
 
+        if request.method == 'POST':
+            form = ExoForm(request.POST, request.FILES)
+            if form.is_valid():
+                oral_surgery = form.save(commit=False)
+                oral_surgery.idReception1_id = id
+
+                price = form.cleaned_data['price']
+                total_price = Decimal(price)  # Convert price to Decimal
+                oral_surgery.total_price = total_price
+                oral_surgery.name = reception.name
+                oral_surgery.phone = reception.phone
+                oral_surgery.gender = reception.gender
+                oral_surgery.date_of_birth = reception.date_of_birth
+                oral_surgery.educational_id = reception.educational_id
+                oral_surgery.idReception_id = reception.idReception_id
+                oral_surgery.doctor_id = reception.doctor_id
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+
+                # Assign Decimal values to model fields
+                oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+                oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
+                oral_surgery.save()
+
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(exo_instance=oral_surgery, image=photo)
+
+                return redirect('exo', id=id)
+            else:
+                form = ExoForm(initial={
+                    'idReception1_id': id,
+                    'name': reception.name,
+                    'phone': reception.phone,
+                    'gender': reception.gender,
+                    'date_of_birth': reception.date_of_birth,
+                    'educational_id': reception.educational_id,
+                    'idReception_id': reception.idReception_id,
+                    'doctor_id': reception.doctor_id
+                })
+        else:
+            form = ExoForm(initial={
                 'idReception1_id': id,
                 'name': reception.name,
                 'phone': reception.phone,
@@ -2139,78 +2813,60 @@ def exo(request, id):
                 'educational_id': reception.educational_id,
                 'idReception_id': reception.idReception_id,
                 'doctor_id': reception.doctor_id
+            })
 
-            }
-            form = ExoForm(initial=initial_data)
-    else:
-        reception = Reception1.objects.get(id=id)
-        initial_data = {
+        appointments = Reception1.objects.all().order_by('-id')
+        exooes = Exo.objects.filter(idReception1=id)
+        photos_list = []
 
-            'idReception1_id': id,
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth,
-            'educational_id': reception.educational_id,
-            'idReception_id': reception.idReception_id,
-            'doctor_id': reception.doctor_id
-        }
-        form = ExoForm(initial=initial_data)
-
-    appointments = Reception1.objects.all().order_by('-id')
-    exooes = Exo.objects.filter(idReception1=id)
-    # Create a list to store photos for each OralSurgery instance
-    photos_list = []
-
-    try:
         exoo = exooes.first()
-        photos = exoo.photo_set.all()
-    except AttributeError:
-        exoo = None
-        photos = None
+        photos = exoo.photo_set.all() if exoo else None
 
-    try:
-        medicine = Medicin.objects.get(idReception=id)
-    except Medicin.DoesNotExist:
-        medicine = None
+        medicine = Medicin.objects.filter(idReception=id).first()
 
-    for exoo in exooes:
-        if exoo.ur:
-            exoo.ur = exoo.ur.replace("'", "")
-        if exoo.ul:
-            exoo.ul = exoo.ul.replace("'", "")
-        if exoo.lr:
-            exoo.lr = exoo.lr.replace("'", "")
-        if exoo.ll:
-            exoo.ll = exoo.ll.replace("'", "")
-        if exoo.exoby:
-            exoo.exoby = exoo.exoby.replace("'", "")
-        if exoo.simpleexo:
-            exoo.simpleexo = exoo.simpleexo.replace("'", "")
-        if exoo.complcated:
-            exoo.complcated = exoo.complcated.replace("'", "")
-        exoo.total_price = exoo.price
-        exoo.save()
-        # Retrieve photos associated with the current OralSurgery instance
-        photos = exoo.photo_set.all()
+        for exoo in exooes:
+            if exoo.ur:
+                exoo.ur = exoo.ur.replace("'", "")
+            if exoo.ul:
+                exoo.ul = exoo.ul.replace("'", "")
+            if exoo.lr:
+                exoo.lr = exoo.lr.replace("'", "")
+            if exoo.ll:
+                exoo.ll = exoo.ll.replace("'", "")
+            if exoo.exoby:
+                exoo.exoby = exoo.exoby.replace("'", "")
+            if exoo.simpleexo:
+                exoo.simpleexo = exoo.simpleexo.replace("'", "")
+            if exoo.complcated:
+                exoo.complcated = exoo.complcated.replace("'", "")
+            exoo.total_price = exoo.price
+            exoo.save()
+            photos = exoo.photo_set.all()
+            photos_list.append(photos)
 
-        # Append the photos to the photos_list
-        photos_list.append(photos)
+        formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+        formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
 
-    formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
-    formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
-
-    return render(request, 'exo/exo.html', {
-        'form': form,
-        'appointments': appointments,
-        'medicine': medicine,
-        'exooes': exooes,
-        'id': id,
-        'photos': photos,
-        'photos_list': photos_list,
-        'formatted_total_prices': formatted_total_prices,
-        'formatted_prices': formatted_prices
-    })
+        return render(request, 'exo/exo.html', {
+            'form': form,
+            'appointments': appointments,
+            'medicine': medicine,
+            'exooes': exooes,
+            'id': id,
+            'photos': photos,
+            'photos_list': photos_list,
+            'formatted_total_prices': formatted_total_prices,
+            'reception': reception,
+            'formatted_prices': formatted_prices
+        })
+    except Doctors.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'You are not authorized to access this page.')
+        return redirect('home')
+    except Reception1.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'Reception does not exist or you do not have permission to access it.')
+        return redirect('home')
 
 
 def exo_edit(request, id):
@@ -2219,7 +2875,59 @@ def exo_edit(request, id):
     if request.method == 'POST':
         form = ExoForm(request.POST, request.FILES, instance=exoo)
         if form.is_valid():
-            form.save()
+            exoo = form.save(commit=False)
+            price = form.cleaned_data['price']
+            total_price = Decimal(price)
+            exoo.total_price = total_price
+
+            try:
+                doctor = Doctors.objects.get(id=exoo.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab')
+
+            # Adjust the price if price_lab is not null
+            if price_lab is not None:
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+            else:
+                adjusted_price = price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            exoo.center_share = center_share.quantize(Decimal('0.01'))
+            exoo.save()
 
             # Update the associated photos
             photos = request.FILES.getlist('exo_images')
@@ -2267,6 +2975,57 @@ def prosthodontics_edit(request, id):
     if request.method == 'POST':
         form = ProsthodonticsForm(request.POST, request.FILES, instance=exoo)
         if form.is_valid():
+            price = form.cleaned_data['price']
+            try:
+                doctor = Doctors.objects.get(id=exoo.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+            # Handle lab_name separately
+            selected_lab = form.cleaned_data['lab_name']
+            if selected_lab:
+                form.lab = selected_lab  # Set the foreign key to the selected Lab
+                form.lab_name = selected_lab.lab_name  # Save the lab_name as well
             form.save()
 
             # Update the associated photos
@@ -2325,7 +3084,17 @@ def delete_prosthodontics(request, id):
     return redirect('prosthodontics', id=idReception)
 
 
+@login_required
 def prosthodontics(request, id):
+    user = request.user
+
+    # Check if the user is an admin or the doctor associated with the reception
+    if user.role == 'admin':
+        reception = get_object_or_404(Reception1, id=id)
+    else:
+        doctor = Doctors.objects.get(user=user)
+        reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
     if request.method == 'POST':
         form = ProsthodonticsForm(request.POST, request.FILES)
         if form.is_valid():
@@ -2333,9 +3102,9 @@ def prosthodontics(request, id):
             oral_surgery.idReception1_id = id
 
             price = form.cleaned_data['price']
-            total_price = price
+            total_price = Decimal(price)  # Convert price to Decimal
             oral_surgery.total_price = total_price
-            reception = Reception1.objects.get(id=id)
+
             oral_surgery.idReception_id = reception.idReception_id
             oral_surgery.name = reception.name
             oral_surgery.phone = reception.phone
@@ -2343,34 +3112,65 @@ def prosthodontics(request, id):
             oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.educational_id = reception.educational_id
             oral_surgery.doctor_id = reception.doctor_id
+
+            # Calculate total price and shares
+            price = form.cleaned_data['price']
+            total_price = Decimal(price)  # Convert price to Decimal
+            oral_surgery.total_price = total_price
+
+            try:
+                doctor = Doctors.objects.get(id=reception.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            # Assign Decimal values to model fields
+            oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+            oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
             oral_surgery.save()
 
+            # Handle file uploads
             photos = request.FILES.getlist('exo_images')
-            prosthodontics_instance = form.save(commit=False)
-            prosthodontics_instance.save()
-
             for photo in photos:
-                Photo.objects.create(prosthodontics_instance=prosthodontics_instance, image=photo)
+                Photo.objects.create(prosthodontics_instance=oral_surgery, image=photo)
 
             return redirect('prosthodontics', id=id)
         else:
-            reception = Reception1.objects.get(id=id)
-            initial_data = {
-                'idReception1_id': id,
-                'idReception_id': reception.idReception_id,
-                'name': reception.name,
-                'phone': reception.phone,
-                'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth,
-                'educational_id': reception.educational_id,
-                'doctor_id': reception.doctor_id
-
-            }
-            form = ProsthodonticsForm(initial=initial_data)
+            print("Form is not valid:", form.errors)
     else:
         reception = Reception1.objects.get(id=id)
         initial_data = {
-             'idReception1_id': id,
+            'idReception1_id': id,
             'idReception_id': reception.idReception_id,
             'name': reception.name,
             'phone': reception.phone,
@@ -2383,7 +3183,6 @@ def prosthodontics(request, id):
 
     appointments = Reception1.objects.all().order_by('-id')
     exooes = Prosthodontics.objects.filter(idReception1=id)
-    # Create a list to store photos for each OralSurgery instance
     photos_list = []
 
     try:
@@ -2417,14 +3216,17 @@ def prosthodontics(request, id):
             exoo.partial = exoo.partial.replace("'", "")
         exoo.total_price = exoo.price
         exoo.save()
-        # Retrieve photos associated with the current OralSurgery instance
         photos = exoo.photo_set.all()
-
-        # Append the photos to the photos_list
         photos_list.append(photos)
 
-    formatted_total_prices = ["{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
-    formatted_prices = ["{:,.2f}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+    formatted_total_prices = [
+        "{:,.2f}".format(exoo.total_price) if exoo.total_price is not None else None
+        for exoo in exooes
+    ]
+    formatted_prices = [
+        "{:,.2f}".format(exoo.price) if exoo.price is not None else None
+        for exoo in exooes
+    ]
 
     return render(request, 'prosthodontics/prosthodontics.html', {
         'form': form,
@@ -2470,35 +3272,90 @@ def delete_periodontology(request, id):
     return redirect('periodontology', id=idReception)
 
 
+@login_required
 def periodontology(request, id):
-    if request.method == 'POST':
-        form = PeriodontologyForm(request.POST, request.FILES)
-        if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            oral_surgery.idReception1_id = id
+    user = request.user
 
-            price = form.cleaned_data['price']
-            total_price = price
-            oral_surgery.total_price = total_price
-            reception = Reception1.objects.get(id=id)
-            oral_surgery.name = reception.name
-            oral_surgery.phone = reception.phone
-            oral_surgery.gender = reception.gender
-            oral_surgery.date_of_birth = reception.date_of_birth
-            oral_surgery.educational_id = reception.educational_id
-            oral_surgery.doctor_id = reception.doctor_id
-            oral_surgery.save()
-
-            photos = request.FILES.getlist('exo_images')
-            periodontology_instance = form.save(commit=False)
-            periodontology_instance.save()
-
-            for photo in photos:
-                Photo.objects.create(periodontology_instance=periodontology_instance, image=photo)
-
-            return redirect('periodontology', id=id)
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
         else:
-            reception = Reception1.objects.get(id=id)
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = PeriodontologyForm(request.POST, request.FILES)
+            if form.is_valid():
+                oral_surgery = form.save(commit=False)
+                oral_surgery.idReception1_id = id
+
+                price = form.cleaned_data['price']
+                total_price = price
+                oral_surgery.total_price = total_price
+                oral_surgery.name = reception.name
+                oral_surgery.phone = reception.phone
+                oral_surgery.gender = reception.gender
+                oral_surgery.date_of_birth = reception.date_of_birth
+                oral_surgery.educational_id = reception.educational_id
+                oral_surgery.doctor_id = reception.doctor_id
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+
+                # Assign Decimal values to model fields
+                oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+                oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+                oral_surgery.save()
+
+                # Save photos associated with the oral_surgery instance
+                for photo in request.FILES.getlist('exo_images'):
+                    Photo.objects.create(periodontology_instance=oral_surgery, image=photo)
+
+                return redirect('periodontology', id=id)
+        else:
+            # Populate initial form data when the request method is GET
             initial_data = {
                 'idReception1': id,
                 'idReception': reception.idReception_id,
@@ -2508,11 +3365,11 @@ def periodontology(request, id):
                 'date_of_birth': reception.date_of_birth,
                 'educational_id': reception.educational_id,
                 'doctor_id': reception.doctor_id
-
             }
             form = PeriodontologyForm(initial=initial_data)
-    else:
-        reception = Reception1.objects.get(id=id)
+    except (ObjectDoesNotExist, Doctors.DoesNotExist):
+        # Handle case where Reception1 or Doctors do not exist
+        # This could happen if the id does not exist or user's doctor record is missing
         initial_data = {
             'idReception1': id,
             'idReception': reception.idReception_id,
@@ -2525,9 +3382,9 @@ def periodontology(request, id):
         }
         form = PeriodontologyForm(initial=initial_data)
 
+    # Fetch data for rendering the template
     appointments = Reception1.objects.all().order_by('-id')
     exooes = Periodontology.objects.filter(idReception1=id)
-    # Create a list to store photos for each OralSurgery instance
     photos_list = []
 
     try:
@@ -2547,10 +3404,7 @@ def periodontology(request, id):
             exoo.type = exoo.type.replace("'", "")
         exoo.total_price = exoo.price
         exoo.save()
-        # Retrieve photos associated with the current OralSurgery instance
         photos = exoo.photo_set.all()
-
-        # Append the photos to the photos_list
         photos_list.append(photos)
 
     formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
@@ -2575,6 +3429,60 @@ def periodontology_edit(request, id):
     if request.method == 'POST':
         form = PeriodontologyForm(request.POST, request.FILES, instance=exoo)
         if form.is_valid():
+            price = form.cleaned_data['price']
+            # Get the form data
+            form_data = form.cleaned_data
+            # Assign the name of the selected Lab instance to lab_name
+            lab_instance = form.cleaned_data['lab_name']
+            form_data['lab_name'] = lab_instance.lab_name if lab_instance else None
+            try:
+                doctor = Doctors.objects.get(id=exoo.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab')
+
+            # Adjust the price if price_lab is not null
+            if price_lab is not None:
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+            else:
+                adjusted_price = price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            exoo.center_share = center_share.quantize(Decimal('0.01'))
+            # Save the updated 'OralSurgery' instance
             form.save()
 
             # Update the associated photos
@@ -2906,36 +3814,86 @@ def search_crown(request):
         return render(request, 'conservation/crown/search_crown.html', {})
 
 
+@login_required
 def crown(request, id):
-    if request.method == 'POST':
-        form = CrownForm(request.POST, request.FILES)
-        if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            oral_surgery.idReception1_id = id
-            no_prepare = form.cleaned_data['no_prepare']
-            price = form.cleaned_data['price']
-            total_price = price
-            oral_surgery.total_price = total_price
-            reception = Reception1.objects.get(id=id)
-            oral_surgery.idReception_id = reception.idReception_id
-            oral_surgery.name = reception.name
-            oral_surgery.phone = reception.phone
-            oral_surgery.gender = reception.gender
-            oral_surgery.date_of_birth = reception.date_of_birth
-            oral_surgery.educational_id = reception.educational_id
-            oral_surgery.doctor_id = reception.doctor_id
-            oral_surgery.save()
+    user = request.user
 
-            photos = request.FILES.getlist('exo_images')
-            crown_instance = form.save(commit=False)
-            crown_instance.save()
-
-            for photo in photos:
-                Photo.objects.create(crown_instance=crown_instance, image=photo)
-
-            return redirect('crown', id=id)
+    try:
+        # Check if the user is an admin or the doctor associated with the reception
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
         else:
-            reception = Reception1.objects.get(id=id)
+            doctor = Doctors.objects.get(user=user)
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = CrownForm(request.POST, request.FILES)
+            if form.is_valid():
+                crown_instance = form.save(commit=False)
+                crown_instance.idReception1_id = id
+
+                # Set additional fields from reception
+                crown_instance.idReception_id = reception.idReception_id
+                crown_instance.name = reception.name
+                crown_instance.phone = reception.phone
+                crown_instance.gender = reception.gender
+                crown_instance.date_of_birth = reception.date_of_birth
+                crown_instance.educational_id = reception.educational_id
+                crown_instance.doctor_id = reception.doctor_id
+
+                # Calculate total price and shares
+                price = form.cleaned_data['price']
+                total_price = Decimal(price)  # Convert price to Decimal
+                crown_instance.total_price = total_price
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                # Assign Decimal values to model fields
+                crown_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                crown_instance.center_share = center_share.quantize(Decimal('0.01'))
+                crown_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
+                crown_instance.save()
+
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(crown_instance=crown_instance, image=photo)
+
+                return redirect('crown', id=id)
+
+        else:
             initial_data = {
                 'idReception1_id': id,
                 'idReception_id': reception.idReception_id,
@@ -2947,19 +3905,10 @@ def crown(request, id):
                 'doctor_id': reception.doctor_id
             }
             form = CrownForm(initial=initial_data)
-    else:
-        reception = Reception1.objects.get(id=id)
-        initial_data = {
-            'idReception1_id': id,
-            'idReception_id': reception.idReception_id,
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth,
-            'educational_id': reception.educational_id,
-            'doctor_id': reception.doctor_id
-        }
-        form = CrownForm(initial=initial_data)
+
+    except (ObjectDoesNotExist, Doctors.DoesNotExist):
+        messages.error(request, 'Reception does not exist or you do not have permission to access it.')
+        return redirect('home')
 
     appointments = Reception1.objects.all().order_by('-id')
     crownn = Crown.objects.filter(idReception1=id)
@@ -2976,10 +3925,6 @@ def crown(request, id):
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-
-    for crown in crownn:
-        photos = crown.photo_set.all()
-        photos_list.append(photos)
 
     formatted_total_prices = ["{:,.2f}".format(crown.total_price) if crown.total_price is not None else None for crown in crownn]
     formatted_prices = ["{:,.2f}".format(crown.price) if crown.price is not None else None for crown in crownn]
@@ -3009,6 +3954,51 @@ def crown_edit(request, id):
             total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
+            try:
+                doctor = Doctors.objects.get(id=pi.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            pi.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            pi.center_share = center_share.quantize(Decimal('0.01'))
+            pi.price_lab = price_lab_decimal  # Save price_lab as Decimal
             form.save()
 
             # Update the associated photos
@@ -3066,37 +4056,88 @@ def search_veneer(request):
         return render(request, 'conservation/veneer/search_veneer.html', {})
 
 
+@login_required
 def veneer(request, id):
-    if request.method == 'POST':
-        form = VeneerForm(request.POST, request.FILES)
-        if form.is_valid():
-            oral_surgery = form.save(commit=False)
-            oral_surgery.idReception1_id = id
-            no_prepare = form.cleaned_data['no_prepare']
-            price = form.cleaned_data['price']
-            total_price = price
-            oral_surgery.total_price = total_price
-            reception = Reception1.objects.get(id=id)
-            oral_surgery.idReception_id = reception.idReception_id
-            oral_surgery.name = reception.name
-            oral_surgery.name = reception.name
-            oral_surgery.phone = reception.phone
-            oral_surgery.gender = reception.gender
-            oral_surgery.date_of_birth = reception.date_of_birth
-            oral_surgery.educational_id = reception.educational_id
-            oral_surgery.doctor_id = reception.doctor_id
-            oral_surgery.save()
+    try:
+        user = request.user
 
-            photos = request.FILES.getlist('exo_images')
-            veneer_instance = form.save(commit=False)
-            veneer_instance.save()
-
-            for photo in photos:
-                Photo.objects.create(veneer_instance=veneer_instance, image=photo)
-
-            return redirect('veneer', id=id)
+        # Check if the user is an admin or the doctor associated with the reception
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
         else:
-            reception = Reception1.objects.get(id=id)
+            doctor = Doctors.objects.get(user=user)
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = VeneerForm(request.POST, request.FILES)
+            if form.is_valid():
+                veneer_instance = form.save(commit=False)
+                veneer_instance.idReception1_id = id
+
+                # Set additional fields from reception
+                veneer_instance.idReception_id = reception.idReception_id
+                veneer_instance.name = reception.name
+                veneer_instance.phone = reception.phone
+                veneer_instance.gender = reception.gender
+                veneer_instance.date_of_birth = reception.date_of_birth
+                veneer_instance.educational_id = reception.educational_id
+                veneer_instance.doctor_id = reception.doctor_id
+
+                # Calculate total price and shares
+                price = form.cleaned_data['price']
+                total_price = Decimal(price)  # Convert price to Decimal
+                veneer_instance.total_price = total_price
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                # Assign Decimal values to model fields
+                veneer_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                veneer_instance.center_share = center_share.quantize(Decimal('0.01'))
+                veneer_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
+                veneer_instance.save()
+
+                # Save associated photos
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(veneer_instance=veneer_instance, image=photo)
+
+                return redirect('veneer', id=id)
+
+        else:
+            # GET request: Initialize form with initial data
             initial_data = {
                 'idReception1_id': id,
                 'idReception_id': reception.idReception_id,
@@ -3108,20 +4149,13 @@ def veneer(request, id):
                 'doctor_id': reception.doctor_id
             }
             form = VeneerForm(initial=initial_data)
-    else:
-        reception = Reception1.objects.get(id=id)
-        initial_data = {
-            'idReception1_id': id,
-            'idReception_id': reception.idReception_id,
-            'name': reception.name,
-            'phone': reception.phone,
-            'gender': reception.gender,
-            'date_of_birth': reception.date_of_birth,
-            'educational_id': reception.educational_id,
-            'doctor_id': reception.doctor_id
-        }
-        form = VeneerForm(initial=initial_data)
 
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        messages.error(request, 'An error occurred. Please try again.')
+        return redirect('home')
+
+    # Fetch necessary data for rendering the template
     appointments = Reception1.objects.all().order_by('-id')
     veneerr = Veneer.objects.filter(idReception1=id)
     photos_list = []
@@ -3137,10 +4171,6 @@ def veneer(request, id):
         medicine = Medicin.objects.get(idReception=id)
     except Medicin.DoesNotExist:
         medicine = None
-
-    for veneer in veneerr:
-        photos = veneer.photo_set.all()
-        photos_list.append(photos)
 
     formatted_total_prices = ["{:,.2f}".format(veneer.total_price) if veneer.total_price is not None else None for veneer in veneerr]
     formatted_prices = ["{:,.2f}".format(veneer.price) if veneer.price is not None else None for veneer in veneerr]
@@ -3170,6 +4200,51 @@ def veneer_edit(request, id):
             total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
+            try:
+                doctor = Doctors.objects.get(id=pi.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
             form.save()
 
             # Update the associated photos
@@ -3205,17 +4280,32 @@ def remove_photo_veneer(request, photo_id):
     return redirect('veneer_edit', id=veneer_instance.id)
 
 
+@login_required
 def filling(request, id):
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+    except Doctors.DoesNotExist:
+        # Handle the case where the doctor does not exist
+        return redirect('error_page')  # Redirect to an error page or handle appropriately
+
     if request.method == 'POST':
         form = FillingForm(request.POST, request.FILES)
         if form.is_valid():
             filling_instance = form.save(commit=False)
             filling_instance.idReception1_id = id
+            no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
             total_price = price
             filling_instance.total_price = total_price
-
-            reception = Reception1.objects.get(id=id)
             filling_instance.idReception_id = reception.idReception_id
             filling_instance.name = reception.name
             filling_instance.phone = reception.phone
@@ -3223,6 +4313,52 @@ def filling(request, id):
             filling_instance.date_of_birth = reception.date_of_birth
             filling_instance.educational_id = reception.educational_id
             filling_instance.doctor_id = reception.doctor_id
+
+            try:
+                doctor = Doctors.objects.get(id=reception.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            filling_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            filling_instance.center_share = center_share.quantize(Decimal('0.01'))
+            filling_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
             filling_instance.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -3231,7 +4367,6 @@ def filling(request, id):
 
             return redirect('filling', id=id)
     else:
-        reception = Reception1.objects.get(id=id)
         initial_data = {
             'idReception1_id': id,
             'idReception_id': reception.idReception_id,
@@ -3275,8 +4410,7 @@ def filling(request, id):
         photos = fill.photo_set.all()
         photos_list.append(photos)
 
-    formatted_total_prices = ["{:,.2f}".format(fill.total_price) if fill.total_price is not None else None for fill in
-                              fillingg]
+    formatted_total_prices = ["{:,.2f}".format(fill.total_price) if fill.total_price is not None else None for fill in fillingg]
     formatted_prices = ["{:,.2f}".format(fill.price) if fill.price is not None else None for fill in fillingg]
 
     return render(request, 'conservation/filling/filling.html', {
@@ -3292,6 +4426,157 @@ def filling(request, id):
     })
 
 
+@login_required
+def pedo(request, id):
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = PedoForm(request.POST, request.FILES)
+            if form.is_valid():
+                pedo_instance = form.save(commit=False)
+                pedo_instance.idReception1_id = id
+
+                price = form.cleaned_data['price']
+                total_price = Decimal(price)  # Convert price to Decimal
+                pedo_instance.total_price = total_price
+                pedo_instance.name = reception.name
+                pedo_instance.phone = reception.phone
+                pedo_instance.gender = reception.gender
+                pedo_instance.date_of_birth = reception.date_of_birth
+                pedo_instance.educational_id = reception.educational_id
+                pedo_instance.idReception_id = reception.idReception_id
+                pedo_instance.doctor_id = reception.doctor_id
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = total_price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = total_price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                elif discount_option == 'Quota discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                elif discount_option == 'Full discount':
+                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+
+                # Assign Decimal values to model fields
+                pedo_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                pedo_instance.center_share = center_share.quantize(Decimal('0.01'))
+                pedo_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
+                pedo_instance.save()
+
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(pedo_instance=pedo_instance, image=photo)
+
+                return redirect('pedo', id=id)
+        else:
+            form = PedoForm(initial={
+                'idReception1_id': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'idReception_id': reception.idReception_id,
+                'doctor_id': reception.doctor_id
+            })
+
+        appointments = Reception1.objects.all().order_by('-id')
+        fillingg = Pedo.objects.filter(idReception1=id)
+        photos_list = []
+
+        try:
+            filling = fillingg.first()
+            photos = filling.photo_set.all()
+        except AttributeError:
+            filling = None
+            photos = None
+
+        try:
+            medicine = Medicin.objects.get(idReception=id)
+        except Medicin.DoesNotExist:
+            medicine = None
+
+        for fill in fillingg:
+            if fill.filling_type:
+                fill.filling_type = fill.filling_type.replace("'", "")
+            if fill.ur:
+                fill.ur = fill.ur.replace("'", "")
+            if fill.ul:
+                fill.ul = fill.ul.replace("'", "")
+            if fill.lr:
+                fill.lr = fill.lr.replace("'", "")
+            if fill.ll:
+                fill.ll = fill.ll.replace("'", "")
+
+            photos = fill.photo_set.all()
+            photos_list.append(photos)
+
+        formatted_total_prices = ["{:,.2f}".format(fill.total_price) if fill.total_price is not None else None for fill in fillingg]
+        formatted_prices = ["{:,.2f}".format(fill.price) if fill.price is not None else None for fill in fillingg]
+
+        return render(request, 'conservation/pedo/pedo.html', {
+            'form': form,
+            'appointments': appointments,
+            'medicine': medicine,
+            'fillingg': fillingg,
+            'id': id,
+            'photos': photos,
+            'photos_list': photos_list,
+            'formatted_total_prices': formatted_total_prices,
+            'formatted_prices': formatted_prices
+        })
+    except Doctors.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'You are not authorized to access this page.')
+        return redirect('home')
+    except Reception1.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'Reception does not exist or you do not have permission to access it.')
+        return redirect('home')
+
+
 def filling_reception(request):
     appointments =Reception1.objects.all().order_by('-id')
     p = Paginator(appointments,20) #Paginator
@@ -3303,6 +4588,27 @@ def filling_reception(request):
             appointment.time = appointment.time.replace("'", "")
     return render(request, 'conservation/filling/filling_reception.html', {'appointments': appointments})
 
+
+def pedo_reception(request):
+    appointments =Reception1.objects.all().order_by('-id')
+    p = Paginator(appointments,20) #Paginator
+    page = request.GET.get('page') #Paginator
+    appointments = p.get_page(page)#Paginator
+    nums = "a" * appointments.paginator.num_pages#Paginator
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+    return render(request, 'conservation/pedo/pedo_reception.html', {'appointments': appointments})
+
+
+def search_pedo(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception1.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception1.objects.all()
+        return render(request, 'conservation/pedo/search_pedo.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'conservation/filling/search_filling.html', {})
 
 def search_filling(request):
     if request.method == 'POST':
@@ -3325,6 +4631,51 @@ def filling_edit(request, id):
             total_price = price
 
             form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
+            try:
+                doctor = Doctors.objects.get(id=pi.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
             form.save()
 
             # Update the associated photos
@@ -3337,6 +4688,133 @@ def filling_edit(request, id):
         form = FillingForm(instance=pi)
 
     return render(request, 'conservation/filling/filling_edit.html', {'form': form, 'pi': pi, 'photos': photos})
+
+def pedo_edit(request, id):
+    pi = Pedo.objects.get(id=id)
+    photos = Photo.objects.filter(pedo_instance=pi)  # Fetch photos associated with the pedo instance
+
+    if request.method == 'POST':
+        form = PedoForm(request.POST, instance=pi)
+        if form.is_valid():
+            price = form.cleaned_data['price']
+            total_price = price
+
+            form.instance.total_price = total_price
+            try:
+                doctor = Doctors.objects.get(id=pi.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+            form.save()
+
+            # Update associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(pedo_instance=pi, image=photo)
+
+            return redirect('pedo', id=pi.idReception1_id)
+    else:
+        form = PedoForm(instance=pi)
+
+    appointments = Reception1.objects.all().order_by('-id')
+    fillingg = Pedo.objects.filter(idReception1=pi.idReception1_id)
+    photos_list = []
+
+    try:
+        filling = fillingg.first()
+        photos = filling.photo_set.all()
+    except AttributeError:
+        filling = None
+        photos = None
+
+    try:
+        medicine = Medicin.objects.get(idReception=pi.idReception1_id)
+    except Medicin.DoesNotExist:
+        medicine = None
+
+    for fill in fillingg:
+        if fill.filling_type:
+            fill.filling_type = fill.filling_type.replace("'", "")
+        if fill.ur:
+            fill.ur = fill.ur.replace("'", "")
+        if fill.ul:
+            fill.ul = fill.ul.replace("'", "")
+        if fill.lr:
+            fill.lr = fill.lr.replace("'", "")
+        if fill.ll:
+            fill.ll = fill.ll.replace("'", "")
+
+        photos = fill.photo_set.all()
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,.2f}".format(fill.total_price) if fill.total_price is not None else None for fill in fillingg]
+    formatted_prices = ["{:,.2f}".format(fill.price) if fill.price is not None else None for fill in fillingg]
+
+    return render(request, 'conservation/pedo/pedo_edit.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'fillingg': fillingg,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
+
+
+def delete_pedo(request, id):
+    # Get the drug related to the Reception
+    filling = get_object_or_404(Pedo, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = filling.idReception1_id
+
+    # Delete the drug
+    filling.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('pedo', id=idReception)
 
 
 def delete_filling(request, id):
@@ -3360,6 +4838,13 @@ def remove_photo_filling(request, photo_id):
     return redirect('filling_edit', id=filling_instance.id)
 
 
+def remove_photo_pedo(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    pedo_instance = photo.pedo_instance
+    photo.delete()
+    return redirect('pedo_edit', id=pedo_instance.id)
+
+
 def add_debt(request, id):
     try:
         exo_instance = Exo.objects.get(id=id)
@@ -3369,15 +4854,15 @@ def add_debt(request, id):
     previous_dates = PaymentHistory.objects.filter(exo_instance=exo_instance)
     previous_date = exo_instance.date
     previous_paid = exo_instance.paid
-    total_price = exo_instance.total_price
+    center_share = exo_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if exo_instance.paid + paid >= total_price:
-            exo_instance.paid = total_price
+        if exo_instance.paid + paid >= center_share:
+            exo_instance.paid = center_share
         else:
             exo_instance.paid += paid  # Increment the paid amount
 
@@ -3385,12 +4870,12 @@ def add_debt(request, id):
 
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(exo_instance=exo_instance, previous_date=date, paid_amount=paid,
-                                         idReception1=exo_instance.idReception1, idReception=exo_instance.idReception, name=exo_instance.name, phone=exo_instance.phone, price=exo_instance.price)
+                                         idReception1=exo_instance.idReception1, idReception=exo_instance.idReception, name=exo_instance.name, phone=exo_instance.phone, price=exo_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt.html', {
             'id': id,
@@ -3410,15 +4895,15 @@ def add_debt1(request, id):
     previous_dates = PaymentHistory.objects.filter(exo_instance=exo_instance)
     previous_date = exo_instance.date
     previous_paid = exo_instance.paid
-    total_price = exo_instance.total_price
+    center_share = exo_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if exo_instance.paid + paid >= total_price:
-            exo_instance.paid = total_price
+        if exo_instance.paid + paid >= center_share:
+            exo_instance.paid = center_share
         else:
             exo_instance.paid += paid  # Increment the paid amount
 
@@ -3427,13 +4912,13 @@ def add_debt1(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(exo_instance=exo_instance, previous_date=date, paid_amount=paid,
                                          idReception=exo_instance.idReception, idReception1=exo_instance.idReception1, name=exo_instance.name,
-                                         phone=exo_instance.phone, price=exo_instance.price)
+                                         phone=exo_instance.phone, price=exo_instance.center_share)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt.html', {
             'id': id,
@@ -3446,40 +4931,45 @@ def add_debt1(request, id):
 
 def print_exo_debt(request, id):
     debts = PaymentHistory.objects.filter(idReception1=id).values('id', 'previous_date', 'paid_amount')
-    debt1 = Exo.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    debt2 = Crown.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    debt3 = Filling.objects.filter(idReception1=id).values('id', 'paid', 'total_price')
-    debt4 = Endo.objects.filter(idReception1=id).values('id', 'paid', 'total_price')
-    debt5 = Ortho.objects.filter(idReception1=id).values('id', 'paid', 'price')
-    debt6 = OralSurgery.objects.filter(idReception1=id).values('id', 'paid', 'total_price')
-    debt7 = Prosthodontics.objects.filter(idReception1=id).values('id', 'paid', 'total_price')
-    debt8 = Periodontology.objects.filter(idReception1=id).values('id', 'paid', 'total_price')
-    debt9 = Veneer.objects.filter(idReception1=id).values('id', 'paid', 'total_price')
-    combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9)
+    debt1 = Exo.objects.filter(idReception1=id).values_list('id', 'paid', 'center_share')
+    debt2 = Crown.objects.filter(idReception1=id).values_list('id', 'paid', 'center_share')
+    debt3 = Filling.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
+    debt4 = Endo.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
+    debt5 = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).values_list('id', 'paid', 'center_share')
+    debt6 = OralSurgery.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
+    debt7 = Prosthodontics.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
+    debt8 = Periodontology.objects.filter(idReception1=id).values_list('id', 'paid', 'center_share')
+    debt9 = Veneer.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
+    debt10 = Pedo.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
+    combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9,debt10)
     debtss = PaymentHistory.objects.filter(idReception1=id)
 
     # Calculate the total remaining amount for idReception
-    total_exo = Exo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_exo = Exo.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_filling = Filling.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_filling = Filling.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_crown = Crown.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_pedo = Pedo.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_veneer = Veneer.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_crown = Crown.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_veneer = Veneer.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_endo = Endo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_ortho = Ortho.objects.filter(idReception1=id).aggregate(total_price=Sum('price'))['total_price'] or 0
+    total_endo = Endo.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+
+    total_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
     paid_exo = Exo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
     paid_filling = Filling.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_pedo = Pedo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
     paid_crown = Crown.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
@@ -3489,14 +4979,14 @@ def print_exo_debt(request, id):
 
     paid_endo = Endo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
-    paid_ortho = Ortho.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+    paid_ortho = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
     paid_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
     paid_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
-    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
-    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
+    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics+ total_pedo)
+    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_pedo)
     total_remaining = total_price - total_paid
 
     context = {
@@ -3511,6 +5001,7 @@ def print_exo_debt(request, id):
         'debt7': debt7,
         'debt8': debt8,
         'debt9': debt9,
+        'debt10': debt10,
         'debtss': debtss,
         'combined_debts': combined_debts,
         'total_remaining': total_remaining,
@@ -3518,6 +5009,7 @@ def print_exo_debt(request, id):
         'total_paid': total_paid,
         'total_exo': total_exo,  # Add total_salary to the context
         'total_filling': total_filling,  # Add total_salary to the context
+        'total_pedo': total_filling,  # Add total_salary to the context
         'total_crown': total_crown,  # Add total_salary to the context
         'total_veneer': total_veneer,  # Add total_salary to the context
         'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
@@ -3527,6 +5019,7 @@ def print_exo_debt(request, id):
         'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
         'paid_exo': paid_exo,  # Add total_salary to the context
         'paid_filling': paid_filling,  # Add total_salary to the context
+        'paid_pedo': paid_filling,  # Add total_salary to the context
         'paid_crown': paid_crown,  # Add paid_salary to the context
         'paid_veneer': paid_veneer,  # Add paid_salary to the context
         'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
@@ -3549,15 +5042,15 @@ def add_debt_crown(request, id):
     previous_dates = PaymentHistory.objects.filter(crown_instance=crown_instance)
     previous_date = crown_instance.date
     previous_paid = crown_instance.paid
-    total_price = crown_instance.total_price
+    center_share = crown_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if crown_instance.paid + paid >= total_price:
-            crown_instance.paid = total_price
+        if crown_instance.paid + paid >= center_share:
+            crown_instance.paid = center_share
         else:
             crown_instance.paid += paid  # Increment the paid amount
 
@@ -3565,12 +5058,12 @@ def add_debt_crown(request, id):
 
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(crown_instance=crown_instance, previous_date=date, paid_amount=paid,
-                                         idReception1=crown_instance.idReception1, idReception=crown_instance.idReception, name=crown_instance.name, phone=crown_instance.phone, price=crown_instance.price)
+                                         idReception1=crown_instance.idReception1, idReception=crown_instance.idReception, name=crown_instance.name, phone=crown_instance.phone, price=crown_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_crown.html', {
             'id': id,
@@ -3590,7 +5083,7 @@ def add_debt_crown1(request, id):
     previous_dates = PaymentHistory.objects.filter(crown_instance=crown_instance)
     previous_date = crown_instance.date
     previous_paid = crown_instance.paid
-    total_price = crown_instance.total_price
+    center_share = crown_instance.center_share
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -3599,8 +5092,8 @@ def add_debt_crown1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if crown_instance.paid + paid >= total_price:
-                crown_instance.paid = total_price
+            if crown_instance.paid + paid >= center_share:
+                crown_instance.paid = center_share
             else:
                 crown_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -3617,7 +5110,7 @@ def add_debt_crown1(request, id):
                 idReception=crown_instance.idReception,
                 name=crown_instance.name,
                 phone=crown_instance.phone,
-                price=crown_instance.price
+                price=crown_instance.center_share
             )
             payment_history.save()
 
@@ -3629,7 +5122,7 @@ def add_debt_crown1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = total_price - previous_paid
+    remaining_amount = center_share - previous_paid
     return render(request, 'debts/add_debt_crown.html', {
         'id': id,
         'crown_instance': crown_instance,
@@ -3722,15 +5215,15 @@ def add_debt_ortho(request, id):
     previous_dates = PaymentHistory.objects.filter(ortho_instance=ortho_instance)
     previous_date = ortho_instance.date
     previous_paid = ortho_instance.paid
-    total_price = ortho_instance.price
+    center_share = ortho_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if ortho_instance.paid + paid >= total_price:
-            ortho_instance.paid = total_price
+        if ortho_instance.paid + paid >= center_share:
+            ortho_instance.paid = center_share
         else:
             ortho_instance.paid += paid  # Increment the paid amount
 
@@ -3739,12 +5232,12 @@ def add_debt_ortho(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(ortho_instance=ortho_instance, previous_date=date, paid_amount=paid,
                                          idReception1=ortho_instance.idReception1, idReception=ortho_instance.idReception, name=ortho_instance.name,
-                                         phone=ortho_instance.phone, price=ortho_instance.price)
+                                         phone=ortho_instance.phone, price=ortho_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_ortho.html', {
             'id': id,
@@ -3764,7 +5257,7 @@ def add_debt_ortho1(request, id):
     previous_dates = PaymentHistory.objects.filter(ortho_instance=ortho_instance)
     previous_date = ortho_instance.date
     previous_paid = ortho_instance.paid
-    price = ortho_instance.price
+    center_share = ortho_instance.center_share
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -3773,8 +5266,8 @@ def add_debt_ortho1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if ortho_instance.paid + paid >= price:
-                ortho_instance.paid = price
+            if ortho_instance.paid + paid >= center_share:
+                ortho_instance.paid = center_share
             else:
                 ortho_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -3791,7 +5284,7 @@ def add_debt_ortho1(request, id):
                 idReception=ortho_instance.idReception,
                 name=ortho_instance.name,
                 phone=ortho_instance.phone,
-                price=ortho_instance.price
+                price=ortho_instance.center_share
             )
             payment_history.save()
 
@@ -3803,7 +5296,7 @@ def add_debt_ortho1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = price - previous_paid
+    remaining_amount = center_share - previous_paid
     return render(request, 'debts/add_debt_ortho.html', {
         'id': id,
         'ortho_instance': ortho_instance,
@@ -3823,14 +5316,14 @@ def print_ortho_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = ortho_instance.price
-    total_remaining = total_price - total_paid
+    center_share = ortho_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
         'total_paid': total_paid,
-        'total_price': total_price,
+        'total_price': center_share,
         'patient_name': ortho_instance.name,
         'patient_phone': ortho_instance.phone,
     }
@@ -3847,15 +5340,15 @@ def add_debt_filling(request, id):
     previous_dates = PaymentHistory.objects.filter(filling_instance=filling_instance)
     previous_date = filling_instance.date
     previous_paid = filling_instance.paid
-    total_price = filling_instance.total_price
+    center_share = filling_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if filling_instance.paid + paid >= total_price:
-            filling_instance.paid = total_price
+        if filling_instance.paid + paid >= center_share:
+            filling_instance.paid = center_share
         else:
             filling_instance.paid += paid  # Increment the paid amount
 
@@ -3864,16 +5357,58 @@ def add_debt_filling(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(filling_instance=filling_instance, previous_date=date, paid_amount=paid,
                                          idReception1=filling_instance.idReception1, idReception=filling_instance.idReception, name=filling_instance.name,
-                                         phone=filling_instance.phone, price=filling_instance.price)
+                                         phone=filling_instance.phone, price=filling_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_filling.html', {
             'id': id,
             'filling_instance': filling_instance,
+            'previous_dates': previous_dates,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
+
+
+def add_debt_pedo(request, id):
+    try:
+        pedo_instance = Pedo.objects.get(id=id)
+    except Pedo.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(pedo_instance=pedo_instance)
+    previous_date = pedo_instance.date
+    previous_paid = pedo_instance.paid
+    center_share = pedo_instance.center_share
+
+    if request.method == 'POST':
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if pedo_instance.paid + paid >= center_share:
+            pedo_instance.paid = center_share
+        else:
+            pedo_instance.paid += paid  # Increment the paid amount
+
+        pedo_instance.save()
+
+        # Store the previous date from the form in PaymentHistory
+        payment_history = PaymentHistory(pedo_instance=pedo_instance, previous_date=date, paid_amount=paid,
+                                         idReception1=pedo_instance.idReception1, idReception=pedo_instance.idReception, name=pedo_instance.name,
+                                         phone=pedo_instance.phone, price=pedo_instance.center_share)
+        payment_history.save()
+
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        remaining_amount = center_share - previous_paid
+
+        return render(request, 'debts/add_debt_pedo.html', {
+            'id': id,
+            'pedo_instance': pedo_instance,
             'previous_dates': previous_dates,
             'previous_paid': previous_paid,
             'remaining_amount': remaining_amount
@@ -3889,7 +5424,7 @@ def add_debt_filling1(request, id):
     previous_dates = PaymentHistory.objects.filter(filling_instance=filling_instance)
     previous_date = filling_instance.date
     previous_paid = filling_instance.paid
-    total_price = filling_instance.total_price
+    center_share = filling_instance.center_share
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -3898,8 +5433,8 @@ def add_debt_filling1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if filling_instance.paid + paid >= total_price:
-                filling_instance.paid = total_price
+            if filling_instance.paid + paid >= center_share:
+                filling_instance.paid = center_share
             else:
                 filling_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -3916,7 +5451,7 @@ def add_debt_filling1(request, id):
                 idReception=filling_instance.idReception,
                 name=filling_instance.name,
                 phone=filling_instance.phone,
-                price=filling_instance.price
+                price=filling_instance.center_share
             )
             payment_history.save()
 
@@ -3928,7 +5463,7 @@ def add_debt_filling1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = total_price - previous_paid
+    remaining_amount = center_share - previous_paid
     return render(request, 'debts/add_debt_filling.html', {
         'id': id,
         'filling_instance': filling_instance,
@@ -3948,19 +5483,44 @@ def print_filling_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = filling_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = filling_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'total_price': center_share,
         'total_paid': total_paid,
         'patient_name': filling_instance.name,
         'patient_phone': filling_instance.phone,
     }
 
     return render(request, 'debts/print_filling_debt.html', context)
+
+
+def print_pedo_debt(request, id):
+    try:
+        pedo_instance = Pedo.objects.get(id=id)
+    except Pedo.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    debts = PaymentHistory.objects.filter(pedo_instance=pedo_instance)
+
+    # Calculate the total remaining amount for the crown
+    total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
+    center_share = pedo_instance.center_share
+    total_remaining = center_share - total_paid
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+        'total_price': center_share,
+        'total_paid': total_paid,
+        'patient_name': pedo_instance.name,
+        'patient_phone': pedo_instance.phone,
+    }
+
+    return render(request, 'debts/print_pedo_debt.html', context)
 
 
 def print_exo_debt1(request, id):
@@ -3973,13 +5533,13 @@ def print_exo_debt1(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = exo_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = exo_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'center_share': center_share,
         'total_paid': total_paid,
         'patient_name': exo_instance.name,
         'patient_phone': exo_instance.phone,
@@ -3998,13 +5558,13 @@ def print_crown_debt1(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = crown_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = crown_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'center_share': center_share,
         'total_paid': total_paid,
         'patient_name': crown_instance.name,
         'patient_phone': crown_instance.phone,
@@ -4022,15 +5582,15 @@ def add_debt_veneer(request, id):
     previous_dates = PaymentHistory.objects.filter(veneer_instance=veneer_instance)
     previous_date = veneer_instance.date
     previous_paid = veneer_instance.paid
-    total_price = veneer_instance.total_price
+    center_share = veneer_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if veneer_instance.paid + paid >= total_price:
-            veneer_instance.paid = total_price
+        if veneer_instance.paid + paid >= center_share:
+            veneer_instance.paid = center_share
         else:
             veneer_instance.paid += paid  # Increment the paid amount
 
@@ -4039,12 +5599,12 @@ def add_debt_veneer(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(veneer_instance=veneer_instance, previous_date=date, paid_amount=paid,
                                          idReception1=veneer_instance.idReception1, idReception=veneer_instance.idReception, name=veneer_instance.name,
-                                         phone=veneer_instance.phone, price=veneer_instance.price)
+                                         phone=veneer_instance.phone, price=veneer_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_veneer.html', {
             'id': id,
@@ -4064,15 +5624,15 @@ def add_debt_veneer1(request, id):
     previous_dates = PaymentHistory.objects.filter(veneer_instance=veneer_instance)
     previous_date = veneer_instance.date
     previous_paid = veneer_instance.paid
-    total_price = veneer_instance.total_price
+    center_share = veneer_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if veneer_instance.paid + paid >= total_price:
-            veneer_instance.paid = total_price
+        if veneer_instance.paid + paid >= center_share:
+            veneer_instance.paid = center_share
         else:
             veneer_instance.paid += paid  # Increment the paid amount
 
@@ -4081,13 +5641,13 @@ def add_debt_veneer1(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(veneer_instance=veneer_instance, previous_date=date, paid_amount=paid,
                                          idReception=veneer_instance.idReception, name=veneer_instance.name,
-                                         phone=veneer_instance.phone, price=veneer_instance.price)
+                                         phone=veneer_instance.phone, price=veneer_instance.center_share)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_veneer.html', {
             'id': id,
@@ -4108,13 +5668,13 @@ def print_veneer_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = veneer_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = veneer_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'total_price': center_share,
         'total_paid': total_paid,
         'patient_name': veneer_instance.name,
         'patient_phone': veneer_instance.phone,
@@ -4132,15 +5692,15 @@ def add_debt_periodontology(request, id):
     previous_dates = PaymentHistory.objects.filter(periodontology_instance=periodontology_instance)
     previous_date = periodontology_instance.date
     previous_paid = periodontology_instance.paid
-    total_price = periodontology_instance.total_price
+    center_share = periodontology_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if periodontology_instance.paid + paid >= total_price:
-            periodontology_instance.paid = total_price
+        if periodontology_instance.paid + paid >= center_share:
+            periodontology_instance.paid = center_share
         else:
             periodontology_instance.paid += paid  # Increment the paid amount
 
@@ -4149,12 +5709,12 @@ def add_debt_periodontology(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(periodontology_instance=periodontology_instance, previous_date=date, paid_amount=paid,
                                          idReception1=periodontology_instance.idReception1, idReception=periodontology_instance.idReception, name=periodontology_instance.name,
-                                         phone=periodontology_instance.phone, price=periodontology_instance.price)
+                                         phone=periodontology_instance.phone, price=periodontology_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_periodontology.html', {
             'id': id,
@@ -4174,15 +5734,15 @@ def add_debt_periodontology1(request, id):
     previous_dates = PaymentHistory.objects.filter(periodontology_instance=periodontology_instance)
     previous_date = periodontology_instance.date
     previous_paid = periodontology_instance.paid
-    total_price = periodontology_instance.total_price
+    center_share = periodontology_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if periodontology_instance.paid + paid >= total_price:
-            periodontology_instance.paid = total_price
+        if periodontology_instance.paid + paid >= center_share:
+            periodontology_instance.paid = center_share
         else:
             periodontology_instance.paid += paid  # Increment the paid amount
 
@@ -4194,13 +5754,13 @@ def add_debt_periodontology1(request, id):
                                          idReception=periodontology_instance.idReception,
                                          name=periodontology_instance.name,
                                          phone=periodontology_instance.phone,
-                                         price=periodontology_instance.price)
+                                         price=periodontology_instance.center_share)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_periodontology.html', {
             'id': id,
@@ -4209,7 +5769,50 @@ def add_debt_periodontology1(request, id):
             'previous_paid': previous_paid,
             'remaining_amount': remaining_amount
         })
+def add_debt_periodontology1(request, id):
+    try:
+        periodontology_instance = Periodontology.objects.get(id=id)
+    except Periodontology.DoesNotExist:
+        return HttpResponse("Endo instance not found")
 
+    previous_dates = PaymentHistory.objects.filter(periodontology_instance=periodontology_instance)
+    previous_date = periodontology_instance.date
+    previous_paid = periodontology_instance.paid
+    center_share = periodontology_instance.center_share
+
+    if request.method == 'POST':
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if periodontology_instance.paid + paid >= center_share:
+            periodontology_instance.paid = center_share
+        else:
+            periodontology_instance.paid += paid  # Increment the paid amount
+
+        periodontology_instance.save()
+
+        # Store the previous date from the form in PaymentHistory
+        payment_history = PaymentHistory(periodontology_instance=periodontology_instance, previous_date=date,
+                                         paid_amount=paid,
+                                         idReception=periodontology_instance.idReception,
+                                         name=periodontology_instance.name,
+                                         phone=periodontology_instance.phone,
+                                         price=periodontology_instance.center_share)
+        payment_history.save()
+
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+    else:
+        remaining_amount = center_share - previous_paid
+
+        return render(request, 'debts/add_debt_periodontology.html', {
+            'id': id,
+            'periodontology_instance': periodontology_instance,
+            'previous_dates': previous_dates,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
 
 def print_periodontology_debt(request, id):
     try:
@@ -4221,13 +5824,13 @@ def print_periodontology_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = periodontology_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = periodontology_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'total_price': center_share,
         'total_paid': total_paid,
         'patient_name': periodontology_instance.name,
         'patient_phone': periodontology_instance.phone,
@@ -4245,15 +5848,15 @@ def add_debt_prosthodontics(request, id):
     previous_dates = PaymentHistory.objects.filter(prosthodontics_instance=prosthodontics_instance)
     previous_date = prosthodontics_instance.date
     previous_paid = prosthodontics_instance.paid
-    total_price = prosthodontics_instance.total_price
+    center_share = prosthodontics_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if prosthodontics_instance.paid + paid >= total_price:
-            prosthodontics_instance.paid = total_price
+        if prosthodontics_instance.paid + paid >= center_share:
+            prosthodontics_instance.paid = center_share
         else:
             prosthodontics_instance.paid += paid  # Increment the paid amount
 
@@ -4262,12 +5865,12 @@ def add_debt_prosthodontics(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(prosthodontics_instance=prosthodontics_instance, previous_date=date, paid_amount=paid,
                                          idReception1=prosthodontics_instance.idReception1, idReception=prosthodontics_instance.idReception, name=prosthodontics_instance.name,
-                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.price)
+                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_prosthodontics.html', {
             'id': id,
@@ -4287,15 +5890,15 @@ def add_debt_prosthodontics1(request, id):
     previous_dates = PaymentHistory.objects.filter(prosthodontics_instance=prosthodontics_instance)
     previous_date = prosthodontics_instance.date
     previous_paid = prosthodontics_instance.paid
-    total_price = prosthodontics_instance.total_price
+    center_share = prosthodontics_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if prosthodontics_instance.paid + paid >= total_price:
-            prosthodontics_instance.paid = total_price
+        if prosthodontics_instance.paid + paid >= center_share:
+            prosthodontics_instance.paid = center_share
         else:
             prosthodontics_instance.paid += paid  # Increment the paid amount
 
@@ -4306,13 +5909,13 @@ def add_debt_prosthodontics1(request, id):
                                          paid_amount=paid,
                                          idReception=prosthodontics_instance.idReception,
                                          name=prosthodontics_instance.name,
-                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.price)
+                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.center_share)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_prosthodontics.html', {
             'id': id,
@@ -4321,6 +5924,51 @@ def add_debt_prosthodontics1(request, id):
             'previous_paid': previous_paid,
             'remaining_amount': remaining_amount
         })
+
+def add_debt_pedo1(request, id):
+    try:
+        pedo_instance = Pedo.objects.get(id=id)
+    except Pedo.DoesNotExist:
+        return HttpResponse("Pedo instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(pedo_instance=pedo_instance)
+    previous_date = pedo_instance.date
+    previous_paid = pedo_instance.paid
+    center_share = pedo_instance.center_share
+
+    if request.method == 'POST':
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if pedo_instance.paid + paid >= center_share:
+            pedo_instance.paid = center_share
+        else:
+            pedo_instance.paid += paid  # Increment the paid amount
+
+        pedo_instance.save()
+
+        # Store the previous date from the form in PaymentHistory
+        payment_history = PaymentHistory(pedo_instance=pedo_instance, previous_date=date,
+                                         paid_amount=paid,
+                                         idReception=pedo_instance.idReception,
+                                         name=pedo_instance.name,
+                                         phone=pedo_instance.phone, price=pedo_instance.center_share)
+        payment_history.save()
+
+        return redirect(reverse(
+            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+    else:
+        remaining_amount = center_share - previous_paid
+
+        return render(request, 'debts/add_debt_pedo.html', {
+            'id': id,
+            'pedo_instance': pedo_instance,
+            'previous_dates': previous_dates,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
+
 
 
 def print_prosthodontics_debt(request, id):
@@ -4333,13 +5981,13 @@ def print_prosthodontics_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = prosthodontics_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = prosthodontics_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'total_price': center_share,
         'total_paid': total_paid,
         'patient_name': prosthodontics_instance.name,
         'patient_phone': prosthodontics_instance.phone,
@@ -4357,15 +6005,15 @@ def add_debt_oral(request, id):
     previous_dates = PaymentHistory.objects.filter(oral_surgery_instance=oral_surgery_instance)
     previous_date = oral_surgery_instance.date
     previous_paid = oral_surgery_instance.paid
-    total_price = oral_surgery_instance.total_price
+    center_share = oral_surgery_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if oral_surgery_instance.paid + paid >= total_price:
-            oral_surgery_instance.paid = total_price
+        if oral_surgery_instance.paid + paid >= center_share:
+            oral_surgery_instance.paid = center_share
         else:
             oral_surgery_instance.paid += paid  # Increment the paid amount
 
@@ -4374,12 +6022,12 @@ def add_debt_oral(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(oral_surgery_instance=oral_surgery_instance, previous_date=date, paid_amount=paid,
                                          idReception1=oral_surgery_instance.idReception1, idReception=oral_surgery_instance.idReception, name=oral_surgery_instance.name,
-                                         phone=oral_surgery_instance.phone, price=oral_surgery_instance.price)
+                                         phone=oral_surgery_instance.phone, price=oral_surgery_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_oral.html', {
             'id': id,
@@ -4399,7 +6047,7 @@ def add_debt_oral1(request, id):
     previous_dates = PaymentHistory.objects.filter(oral_surgery_instance=oral_surgery_instance)
     previous_date = oral_surgery_instance.date
     previous_paid = oral_surgery_instance.paid
-    total_price = oral_surgery_instance.total_price
+    center_share = oral_surgery_instance.center_share
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -4408,8 +6056,8 @@ def add_debt_oral1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if oral_surgery_instance.paid + paid >= total_price:
-                oral_surgery_instance.paid = total_price
+            if oral_surgery_instance.paid + paid >= center_share:
+                oral_surgery_instance.paid = center_share
             else:
                 oral_surgery_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -4426,7 +6074,7 @@ def add_debt_oral1(request, id):
                 idReception=oral_surgery_instance.idReception,
                 name=oral_surgery_instance.name,
                 phone=oral_surgery_instance.phone,
-                price=oral_surgery_instance.price
+                price=oral_surgery_instance.center_share
             )
             payment_history.save()
 
@@ -4438,7 +6086,7 @@ def add_debt_oral1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = total_price - previous_paid
+    remaining_amount = center_share - previous_paid
     return render(request, 'debts/add_debt_oral.html', {
         'id': id,
         'oral_surgery_instance': oral_surgery_instance,
@@ -4458,13 +6106,13 @@ def print_oral_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = oral_surgery_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = oral_surgery_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'center_share': center_share,
         'total_paid': total_paid,
         'patient_name': oral_surgery_instance.name,
         'patient_phone': oral_surgery_instance.phone,
@@ -4473,7 +6121,23 @@ def print_oral_debt(request, id):
     return render(request, 'debts/print_oral_debt.html', context)
 
 
+@login_required
 def add_endo(request, id):
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+    except Doctors.DoesNotExist:
+        # Handle the case where the doctor does not exist
+        return redirect('error_page')  # Redirect to an error page or handle appropriately
+
     if request.method == 'POST':
         form = EndoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -4490,6 +6154,50 @@ def add_endo(request, id):
             oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.educational_id = reception.educational_id
             oral_surgery.doctor_id = reception.doctor_id
+            # Calculate total price and shares
+            price = form.cleaned_data['price']
+            total_price = Decimal(price)  # Convert price to Decimal
+            oral_surgery.total_price = total_price
+
+            try:
+                doctor = Doctors.objects.get(id=reception.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            # Assign Decimal values to model fields
+            oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+            oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
             oral_surgery.save()
 
             photos = request.FILES.getlist('exo_images')
@@ -4500,19 +6208,6 @@ def add_endo(request, id):
                 Photo.objects.create(endo_instance=endo_instance, image=photo)
 
             return redirect('add-endo', id=id)
-        else:
-            reception = Reception1.objects.get(id=id)
-            initial_data = {
-                'idReception1_id': id,
-                'idReception_id': reception.idReception_id,
-                'name': reception.name,
-                'phone': reception.phone,
-                'gender': reception.gender,
-                'date_of_birth': reception.date_of_birth,
-                'educational_id': reception.educational_id,
-                'doctor_id': reception.doctor_id
-            }
-            form = EndoForm(initial=initial_data)
     else:
         reception = Reception1.objects.get(id=id)
         initial_data = {
@@ -4577,9 +6272,8 @@ def add_endo(request, id):
 
     formatted_total_prices = ["{:,.2f}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
     formatted_prices = ["{:,.2f}".format(orall.price) if orall.price is not None else None for orall in oralls]
-    if not form.is_valid():
 
-     return render(request, 'conservation/endo/endo.html', {
+    return render(request, 'conservation/endo/endo.html', {
         'form': form,
         'appointments': appointments,
         'medicine': medicine,
@@ -4649,6 +6343,7 @@ def endo_edit(request, id):
             # Calculate and update total_price
             total_price = price
             orall.total_price = total_price
+
             # Get the form data
             form_data = form.cleaned_data
 
@@ -4656,48 +6351,97 @@ def endo_edit(request, id):
             for field in ['ur', 'ul', 'lr', 'll']:
                 form_data[field] = form_data[field].replace("'", "") if form_data[field] else None
 
-            # Update the 'OralSurgery' instance with the cleaned form data
+            # Update the 'Endo' instance with the cleaned form data
             for field, value in form_data.items():
                 setattr(orall, field, value)
 
-            # Save the updated 'OralSurgery' instance
+            # Save the updated 'Endo' instance
+            try:
+                doctor = Doctors.objects.get(id=orall.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = total_price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = total_price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+            elif discount_option == 'Quota discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+
+            # Assign Decimal values to model fields
+            orall.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            orall.center_share = center_share.quantize(Decimal('0.01'))
+            orall.price_lab = price_lab_decimal  # Save price_lab as Decimal
             orall.save()
+
             # Handle uploaded photos
             photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(endo_instance=orall, image=photo)
-            return redirect('add-endo', id=orall.idReception1_id)  # Redirect to a success view after saving
-    else:
-            first_visit = orall.first_visit if orall.first_visit is not None else None
-            components_first = orall.components_first if orall.components_first is not None else None
-            second_visit = orall.second_visit if orall.second_visit is not None else None
-            components_second = orall.components_second if orall.components_second is not None else None
-            third_visit = orall.third_visit if orall.third_visit is not None else None
-            components_third = orall.components_third if orall.components_third is not None else None
-            fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
-            components_fourth = orall.components_fourth if orall.components_fourth is not None else None
-            # Remove first and last characters from certain fields
-            ur = orall.ur[1:-1] if orall.ur else None
-            ul = orall.ul[1:-1] if orall.ul else None
-            lr = orall.lr[1:-1] if orall.lr else None
-            ll = orall.ll[1:-1] if orall.ll else None
-            canal = orall.canal[1:-1] if orall.canal else None
 
-            form = EndoForm(instance=orall, initial={
-                'first_visit': first_visit,
-                'components_first': components_first,
-                'second_visit': second_visit,
-                'components_second': components_second,
-                'third_visit': third_visit,
-                'components_third': components_third,
-                'fourth_visit': fourth_visit,
-                'components_fourth': components_fourth,
-                'ur': ur,
-                'ul': ul,
-                'lr': lr,
-                'll': ll,
-                'canal': canal,
-            })
+            return redirect('add-endo', id=orall.idReception1_id)  # Redirect to a success view after saving
+
+    else:
+        first_visit = orall.first_visit if orall.first_visit is not None else None
+        components_first = orall.components_first if orall.components_first is not None else None
+        second_visit = orall.second_visit if orall.second_visit is not None else None
+        components_second = orall.components_second if orall.components_second is not None else None
+        third_visit = orall.third_visit if orall.third_visit is not None else None
+        components_third = orall.components_third if orall.components_third is not None else None
+        fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
+        components_fourth = orall.components_fourth if orall.components_fourth is not None else None
+
+        # Remove first and last characters from certain fields
+        ur = orall.ur[1:-1] if orall.ur else None
+        ul = orall.ul[1:-1] if orall.ul else None
+        lr = orall.lr[1:-1] if orall.lr else None
+        ll = orall.ll[1:-1] if orall.ll else None
+        canal = orall.canal[1:-1] if orall.canal else None
+
+        form = EndoForm(instance=orall, initial={
+            'first_visit': first_visit,
+            'components_first': components_first,
+            'second_visit': second_visit,
+            'components_second': components_second,
+            'third_visit': third_visit,
+            'components_third': components_third,
+            'fourth_visit': fourth_visit,
+            'components_fourth': components_fourth,
+            'ur': ur,
+            'ul': ul,
+            'lr': lr,
+            'll': ll,
+            'canal': canal,
+        })
 
     return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall})
 
@@ -4711,15 +6455,15 @@ def add_debt_endo(request, id):
     previous_dates = PaymentHistory.objects.filter(endo_instance=endo_instance)
     previous_date = endo_instance.date
     previous_paid = endo_instance.paid
-    total_price = endo_instance.total_price
+    center_share = endo_instance.center_share
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if endo_instance.paid + paid >= total_price:
-            endo_instance.paid = total_price
+        if endo_instance.paid + paid >= center_share:
+            endo_instance.paid = center_share
         else:
             endo_instance.paid += paid  # Increment the paid amount
 
@@ -4728,12 +6472,12 @@ def add_debt_endo(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(endo_instance=endo_instance, previous_date=date, paid_amount=paid,
                                          idReception1=endo_instance.idReception1, idReception=endo_instance.idReception, name=endo_instance.name,
-                                         phone=endo_instance.phone, price=endo_instance.price)
+                                         phone=endo_instance.phone, price=endo_instance.center_share)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = total_price - previous_paid
+        remaining_amount = center_share - previous_paid
 
         return render(request, 'debts/add_debt_endo.html', {
             'id': id,
@@ -4755,7 +6499,7 @@ def add_debt_endo1(request, id):
     previous_dates = PaymentHistory.objects.filter(endo_instance=endo_instance)
     previous_date = endo_instance.date
     previous_paid = endo_instance.paid
-    total_price = endo_instance.total_price
+    center_share = endo_instance.center_share
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -4764,8 +6508,8 @@ def add_debt_endo1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if endo_instance.paid + paid >= total_price:
-                endo_instance.paid = total_price
+            if endo_instance.paid + paid >= center_share:
+                endo_instance.paid = center_share
             else:
                 endo_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -4782,7 +6526,7 @@ def add_debt_endo1(request, id):
                 idReception=endo_instance.idReception,
                 name=endo_instance.name,
                 phone=endo_instance.phone,
-                price=endo_instance.price
+                price=endo_instance.center_share
             )
             payment_history.save()
 
@@ -4794,7 +6538,7 @@ def add_debt_endo1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = total_price - previous_paid
+    remaining_amount = center_share - previous_paid
     return render(request, 'debts/add_debt_endo.html', {
         'id': id,
         'endo_instance': endo_instance,
@@ -4814,13 +6558,13 @@ def print_endo_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    total_price = endo_instance.total_price
-    total_remaining = total_price - total_paid
+    center_share = endo_instance.center_share
+    total_remaining = center_share - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': total_price,
+        'total_price': center_share,
         'total_paid': total_paid,
         'patient_name': endo_instance.name,
         'patient_phone': endo_instance.phone,
@@ -4931,3 +6675,220 @@ def edit_payment_history(request, id):
         'end_date': request.GET.get('end_date'),  # Include end_date parameter in the context
     }
     return render(request, 'debts/edit_payment_history.html', context)
+
+
+def calculate_price_view(request):
+    context = {}
+
+    # Check if doctor_id is provided in the request
+    doctor_id = request.GET.get('doctor_id')
+
+    if doctor_id:
+        try:
+            # Fetch all Exo instances related to the doctor_id
+            exo_instances = Exo.objects.filter(doctor_id=doctor_id)
+
+            if exo_instances.exists():
+                # Fetch the Doctor object associated with the doctor_id
+                doctor = exo_instances.first().doctor  # Assuming each Exo has the same doctor
+                # Initialize lists to store calculated values and totals
+                prices = []
+                total_prices = {
+                    'total_total_price': Decimal('0'),
+                    'total_discounted_price': Decimal('0'),
+                    'total_remaining_amount': Decimal('0'),
+                }
+
+                discount_value = Decimal('0.333')  # Example discount value as Decimal (33.3%)
+                remaining_value = Decimal('1') - discount_value
+
+                # Calculate prices for each instance and accumulate totals
+                for exo_instance in exo_instances:
+                    total_price = exo_instance.total_price
+                    discounted_price = total_price * (1 - discount_value)
+                    remaining_amount = total_price * discount_value
+
+                    # Append a dictionary with calculated values to prices list
+                    prices.append({
+                        'total_price': total_price,
+                        'discount_value': discount_value,
+                        'discounted_price': discounted_price,
+                        'remaining_amount': remaining_amount,
+                        'remaining_value': remaining_value,
+                    })
+
+                    # Accumulate totals
+                    total_prices['total_total_price'] += total_price
+                    total_prices['total_discounted_price'] += discounted_price
+                    total_prices['total_remaining_amount'] += remaining_amount
+
+                context = {
+                    'prices': prices,
+                    'doctor_id': doctor_id,
+                    'doctor_name': doctor.doctor_name,
+                    'total_prices': total_prices,  # Add total_prices to context
+                }
+
+            else:
+                context['error'] = f"No Exo instances found for doctor ID '{doctor_id}'."
+
+        except Exo.DoesNotExist:
+            context['error'] = f"Doctor ID '{doctor_id}' not found."
+
+    return render(request, 'finance/price.html', context)
+
+
+def add_store(request):
+    if request.method == 'POST':
+        form = StoreForm(request.POST, request.FILES)
+        if form.is_valid():
+            barcode = form.cleaned_data.get('barcode')
+            new_quantity = int(form.cleaned_data.get('quantity'))  # Ensure new_quantity is an integer
+
+            # Check if a store record with the same barcode already exists
+            existing_store = Store.objects.filter(barcode=barcode).first()
+
+            if existing_store:
+                # Add the new quantity to the existing quantity
+                existing_store.quantity += new_quantity  # Ensure addition of integers
+                existing_store.save()
+            else:
+                # Create a new store record
+                store = form.save(commit=False)
+                store.user = request.user  # Set the logged-in user
+                store.save()
+
+            return redirect('add_store')  # Redirect to the same page after saving the form data
+    else:
+        form = StoreForm()
+
+    appointments = Store.objects.all().order_by('-regdate')
+    return render(request, 'store/add_store.html', {'form': form, 'appointments': appointments})
+
+
+def delete_material(request,id):
+    appointments = Material.objects.get(pk=id)
+    appointments.delete()
+    return redirect('material')
+
+def delete_lab(request,id):
+    appointments = Lab.objects.get(pk=id)
+    appointments.delete()
+    return redirect('lab')
+
+def store_search(request):
+    store_instance = None
+    alerts = []
+
+    if request.method == 'POST':
+        barcode = request.POST.get('barcode', '')
+
+        # Query the Store model for the given barcode
+        try:
+            store_instance = Store.objects.get(barcode=barcode)
+
+            # Check expiry date condition
+            current_date = datetime.now().date()
+            expire_date = store_instance.expire_date
+
+            if expire_date is not None and (expire_date - current_date) < timedelta(days=30):
+                alerts.append(f'Alert: Expiry date for barcode {barcode} is less than one month.')
+
+            # Check quantity condition
+            quantity_remaining = int(store_instance.Quantity)  # Convert to integer
+
+            if quantity_remaining <= 3:
+                alerts.append(f'Alert: Quantity remaining for barcode {barcode} is less than or equal to 3.')
+
+        except Store.DoesNotExist:
+            alerts.append(f'No store item found with barcode {barcode}.')
+            store_instance = None
+
+    return render(request, 'store/store_search.html', {'store_instance': store_instance, 'alerts': alerts})
+
+@login_required
+def add_material_output(request):
+    total_quantity_in_store = None  # Default value if barcode is not found
+
+    if request.method == 'POST':
+        form = MaterialOutputForm(request.POST)
+        if form.is_valid():
+            barcode = form.cleaned_data['barcode']
+            quantity = form.cleaned_data['quantity']  # Already validated and converted to integer
+
+            try:
+                store_item = Store.objects.get(barcode=barcode)
+                store_item_quantity = int(store_item.quantity)  # Convert to integer
+                material_name = store_item.material_name
+
+                # Calculate total quantity already outputted for this barcode
+                total_output_quantity = MaterialOutput.objects.filter(store__barcode=barcode).aggregate(Sum('quantity'))['quantity__sum']
+                if total_output_quantity is None:
+                    total_output_quantity = 0
+
+                # Check if the requested quantity exceeds the available quantity in store
+                if total_output_quantity + quantity > store_item_quantity:
+                    messages.error(request, 'Not enough quantity in stock.')
+                else:
+                    material_output = form.save(commit=False)
+                    material_output.store = store_item
+                    material_output.user = request.user
+                    material_output.material_out = material_name  # Save material name
+                    material_output.quantity_in = store_item_quantity  # Save quantity in
+                    material_output.save()
+
+                    # Calculate remaining quantity in store after output
+                    remaining_quantity = store_item_quantity - total_output_quantity - quantity
+                    print(f"Remaining quantity: {remaining_quantity}")
+
+                    messages.success(request, 'Material output successfully recorded.')
+                    return redirect('add_material_output')  # Redirect to the same page after saving the form data
+
+            except Store.DoesNotExist:
+                messages.error(request, 'No store item found with the provided barcode.')
+
+        else:
+            messages.error(request, 'Form is not valid.')
+            print(form.errors)  # Debugging
+
+    else:
+        form = MaterialOutputForm()
+
+    # Fetch all outputs
+    outputs = MaterialOutput.objects.all().order_by('-output_date')
+
+    # Calculate remaining quantity for each output and check if less than 3
+    remaining_quantities = {}
+    for output in outputs:
+        barcode = output.store.barcode
+        if barcode not in remaining_quantities:
+            remaining_quantities[barcode] = output.store.quantity
+        remaining_quantities[barcode] -= output.quantity
+        output.remaining_quantity = remaining_quantities[barcode]
+
+        # Check if remaining quantity is less than 3 and set an alert
+        if output.remaining_quantity < 3:
+            messages.warning(request, f'Remaining quantity for barcode {barcode} is less than 3.')
+
+    doctors = Doctors.objects.all()
+
+    # Fetch total quantity available in store for the barcode
+    if form.initial.get('barcode'):
+        try:
+            store_item = Store.objects.get(barcode=form.initial.get('barcode'))
+            total_quantity_in_store = store_item.quantity
+        except Store.DoesNotExist:
+            total_quantity_in_store = None
+            print(f"Total quantity in store: {total_quantity_in_store}")  # Debugging
+
+    return render(request, 'store/add_material_output.html', {
+        'form': form,
+        'outputs': outputs,
+        'total_quantity_in_store': total_quantity_in_store,
+        'doctors': doctors,  # Pass doctors to the template
+    })
+
+
+def print_material_output(request, id):
+    output = get_object_or_404(MaterialOutput, id=id)
+    return render(request, 'store/print_material_output.html', {'output': output})

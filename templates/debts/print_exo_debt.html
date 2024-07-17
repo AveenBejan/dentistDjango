@@ -72,8 +72,8 @@
     <tr>
 
       <td>Filling</td>
-      <td>{{ debt.total_price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
 
@@ -81,43 +81,50 @@
         {% for debt in debt4 %}
     <tr>
       <td>Endo</td>
-      <td>{{ debt.total_price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
     {% for debt in debt5 %}
-    <tr>
-      <td>Ortho</td>
-      <td>{{ debt.price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
-    </tr>
-    {% endfor %}
+<tr>
+  <td>Ortho</td>
+  <td>{{ debt.2|format_with_commas }}</td> <!-- center_share -->
+  <td>{{ debt.1|format_with_commas }}</td> <!-- paid -->
+</tr>
+{% endfor %}
         {% for debt in debt6 %}
     <tr>
       <td>OralSurgery</td>
-      <td>{{ debt.total_price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
      {% for debt in debt7 %}
     <tr>
       <td>Prosthodontist</td>
-      <td>{{ debt.total_price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
     {% for debt in debt8 %}
     <tr>
       <td>Periodontology</td>
-      <td>{{ debt.total_price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
     {% for debt in debt9 %}
     <tr>
       <td>Veneer</td>
-      <td>{{ debt.total_price|format_with_commas }}</td>
-      <td>{{ debt.paid|format_with_commas }}</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
+     {% for debt in debt10 %}
+    <tr>
+      <td>Pedo</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
 
@@ -193,6 +200,9 @@
     {% endif %}
     {% if debt.prosthodontics_instance and debt.exo_instance %}
         ,
+    {% endif %}
+    {% if debt.pedo_instance %}
+        Pedo
     {% endif %}
     {% if debt.exo_instance %}
         Exo

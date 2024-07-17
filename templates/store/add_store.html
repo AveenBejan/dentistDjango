@@ -1,0 +1,134 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+<br/>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add New Material</li>
+        </ol>
+    </nav>
+    <br/><br/>
+                <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Add New Material</h4></div>
+                <br/>
+    <div class="col-8">
+                            <form id="storeForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+                                <div class="input-group mb-3">
+{{ form.material_name }}
+        <input type="text" name="barcode" id="id_barcode" class="form-control" placeholder="Barcode" required>
+        <input type="text" name="quantity" id="id_quantity" placeholder="quantity" class="form-control appointment_date" required>
+                                </div>
+                                <div class="input-group mb-3">
+        <input type="text" name="shelf_Num" id="id_shelf_Num" placeholder="Shelf Number" class="form-control" required>
+        <input type="text" name="price" id="id_price" placeholder="Price" class="form-control" required>
+        <input type="date" name="expire_date" id="id_expire_date" placeholder="Expiration Date" class="form-control" required>
+<div class="input-group mb-3">
+        <br/>
+        <div class="form-group" style="text-align: center;">
+            <input type="submit" value="Add New Entry" class="btn btn-info">
+        </div>
+</div>
+                                </div>
+                            </form>
+        <table class="table table-hover">
+            <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Material Name</th>
+                <th scope="col">barcode</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">shelf_Num</th>
+                <th scope="col">price</th>
+                <th scope="col">expire_date</th>
+                <th scope="col">Reg.Date</th>
+                <th colspan="2" scope="col">Other</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td scope="row">{{appointment.id}}</td>
+                <td scope="row">{{appointment.material_name}}</td>
+                <td scope="row">{{appointment.barcode}}</td>
+                <td scope="row">{{appointment.quantity}}</td>
+                <td scope="row">{{appointment.shelf_Num}}</td>
+                 <td scope="row">{{appointment.price|format_with_commas}}</td>
+                 <td scope="row">{{appointment.expire_date}}</td>
+                <td scope="row">{{appointment.regdate}}</td>
+                <td><a href="{% url 'delete_store' appointment.id %}" style="display: inline;"><span
+                         class="btn btn-outline-danger">Delete</span></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    </div>
+</div>
+
+
+ <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const barcodeInput = document.getElementById("id_barcode");
+            const form = document.getElementById("storeForm");
+
+            // Automatically focus on the barcode input field when the page loads
+            barcodeInput.focus();
+
+            // Prevent the form from submitting when pressing Enter in the barcode field
+            barcodeInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const quantityInput = document.getElementById("id_quantity");
+                    const shelfNumInput = document.getElementById("id_shelf_Num");
+                    const priceInput = document.getElementById("id_price");
+                    const expireDateInput = document.getElementById("id_expire_date");
+
+                    // Check if all fields are filled
+                    if (barcodeInput.value && quantityInput.value && shelfNumInput.value && priceInput.value && expireDateInput.value) {
+                        form.submit();  // Submit the form if all fields are filled
+                    } else {
+                        // Focus the next empty field
+                        if (!quantityInput.value) {
+                            quantityInput.focus();
+                        } else if (!shelfNumInput.value) {
+                            shelfNumInput.focus();
+                        } else if (!priceInput.value) {
+                            priceInput.focus();
+                        } else if (!expireDateInput.value) {
+                            expireDateInput.focus();
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#storeForm').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#id_price');
+        var numericValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericValue);
+    });
+
+    $('#id_price').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
+</body>
+
+{% endblock %}

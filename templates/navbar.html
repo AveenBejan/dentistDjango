@@ -35,7 +35,8 @@
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
                       <li><a  href="{% url 'all-reception' %}">Reception Info</a></li>
                       <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
-                        <li><a  href="{% url 'all_customer' %}">All Customer</a></li>
+                       <li><a  href="{% url 'all_customer' %}">Customer</a></li>
+
 
                         {% else %}
                         <!-- Disabled links with onclick alert -->
@@ -57,6 +58,15 @@
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Exo</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Implant</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Periodontology</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                 <li><a><i class="fa fa-home"></i> Pedo <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'doctor' %}
+                        <li><a  href="{% url 'pedo-reception' %}">Pedo</a></li>
+                        {% else %}
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Pedo</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -120,14 +130,18 @@
                 <li><a><i class="fa fa-home"></i> ADDS <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
+                        <li><a  href="{% url 'all_customer' %}">Add Doctor</a></li>
                         <li><a  href="{% url 'medicine1' %}">Add New Drugs</a></li>
                         <li><a  href="{% url 'implant' %}">Add New Type Of Implant</a></li>
                         <li><a  href="{% url 'visit' %}">Add New Visits</a></li>
-                         <li><a  href="{% url 'doctor' %}">Add Doctors</a></li>
+                        <li><a  href="{% url 'material' %}">Add New Material</a></li>
+
+                        <li><a  href="{% url 'lab' %}">Add New Lab</a></li>
                         <li><a  href="{% url 'educational' %}">Add Students</a></li>
                         <li><a  href="{% url 'add-new-employ' %}">Add Employee</a></li>
                         <li><a  href="{% url 'add-outcome' %}">Add OutCome</a></li>
                          {% else %}
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Doctor</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Drugs</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Type Of Implant</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Visits</a></li>
@@ -147,13 +161,20 @@
                         <ul class="nav child_menu">
                         <li><a  href="{% url 'search-debts' %}">Patient Search Debts</a></li>
                         <li><a  href="{% url 'all_debts' %}"> All Patient Debts</a></li>
-                            <li><a  href="{% url 'search-debts-history' %}">Patient History Debts</a></li>
-                            <li><a  href="{% url 'all-total' %}">Total Report</a></li>
+                            <!--<li><a  href="{% url 'search-debts-history' %}">Patient History Debts</a></li>
+                            <li><a  href="{% url 'all-total' %}">Total Report</a></li>-->
+                            <li><a  href="{% url 'earnings' %}">Doctor's earnings</a></li>
                         </ul></li>
                         <li><a><i class="fa fa-table"></i>Patient Reports <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                         <li><a  href="{% url 'search-debts1' %}">Patient Search Details</a></li>
                         <li><a  href="{% url 'all_debts1' %}"> All Patient Details</a></li>
+                        </ul></li>
+                        <li><a><i class="fa fa-table"></i>Store <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                        <li><a  href="{% url 'add_store' %}">Store Income</a></li>
+                            <li><a  href="{% url 'add_material_output' %}">Store OutPut</a></li>
+                            <li><a  href="{% url 'store_search' %}">store_search</a></li>
                         </ul></li>
                         <li><a  href="{% url 'salary_reception' %}">Add Salary</a></li>
                         <li><a  href="{% url 'search-educational1' %}">Visits Report</a></li>

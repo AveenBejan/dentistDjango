@@ -1,0 +1,1057 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+<form method="POST" enctype="multipart/form-data" id="filling-form">
+    {% csrf_token %}
+    <input type="hidden" name="idReception"
+                                   value="{{ form.initial.idReception }}"
+                                   class="form-control">
+                            <input type="hidden" name="idReception1"
+                                   value="{{ form.initial.idReception1 }}"
+                                   class="form-control">
+    <input type="hidden" name="name" value="{{ form.initial.name }}"
+           class="form-control">
+    <input type="hidden" name="phone" value="{{ form.initial.phone }}"
+           class="form-control">
+    <input type="hidden" name="gender" value="{{ form.initial.gender }}"
+           class="form-control">
+    <input type="hidden" name="date_of_birth"
+           value="{{ form.initial.date_of_birth }}"
+           class="form-control">
+    <div class="container">
+        <br/>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+            </ol>
+        </nav>
+
+        <div class="col-8">
+
+            <br/>
+            <div class="card-header">
+                <h4 style="font-size: 22px; text-align:center;">Filling</h4>
+
+            </div>
+
+            <br/>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="card-header">
+                        Upper Right
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+
+                           <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="URA"{% if "URA" in form.initial.ur %}checked{% endif %} data-diameter="fillingurA">
+                                        <label class="form-check-label">A</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="URB"{% if "URB" in form.initial.ur %}checked{% endif %} data-diameter="fillingurB">
+                                        <label class="form-check-label">URB</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="URC"{% if "URC" in form.initial.ur %}checked{% endif %} data-diameter="fillingurC">
+                                        <label class="form-check-label">C</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="URD"{% if "URD" in form.initial.ur %}checked{% endif %} data-diameter="fillingurD">
+                                        <label class="form-check-label">D</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ur"
+                                               value="URE"{% if "URE" in form.initial.ur %}checked{% endif %} data-diameter="fillingurE">
+                                        <label class="form-check-label">E</label>
+                                    </div>
+                                   
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-header">
+                        Upper Left
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                           <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="ULA"{% if "ULA" in form.initial.ul %}checked{% endif %} data-diameter="fillingulA">
+                                        <label class="form-check-label">A</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="ULB"{% if "ULB" in form.initial.ul %}checked{% endif %} data-diameter="fillingulB">
+                                        <label class="form-check-label">B</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="ULC"{% if "ULC" in form.initial.ul %}checked{% endif %}  data-diameter="fillingulC">
+                                        <label class="form-check-label">C</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="ULD"{% if "ULD" in form.initial.ul %}checked{% endif %} data-diameter="fillingulD">
+                                        <label class="form-check-label">D</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ul"
+                                               value="ULE"{% if "ULE" in form.initial.ul %}checked{% endif %} data-diameter="fillingulE">
+                                        <label class="form-check-label">E</label>
+                                    </div>
+                                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card-header">
+                        Lower Right
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                             <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LRA"{% if "LRA" in form.initial.lr %}checked{% endif %} data-diameter="fillinglrA">
+                                        <label class="form-check-label">A</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LRB"{% if "LRB" in form.initial.lr %}checked{% endif %} data-diameter="fillinglrB">
+                                        <label class="form-check-label">B</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LRC"{% if "LRC" in form.initial.lr %}checked{% endif %} data-diameter="fillinglrC">
+                                        <label class="form-check-label">C</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LRD"{% if "LRD" in form.initial.lr %}checked{% endif %} data-diameter="fillinglrD">
+                                        <label class="form-check-label">D</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="lr"
+                                               value="LRE"{% if "LRE" in form.initial.lr %}checked{% endif %} data-diameter="fillinglrE">
+                                        <label class="form-check-label">E</label>
+                                    </div>
+                                    
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-header">
+                        Lower Left
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LLA"{% if "LLA" in form.initial.ll %}checked{% endif %} data-diameter="fillingllA">
+                                        <label class="form-check-label">A</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LLB"{% if "LLB" in form.initial.ll %}checked{% endif %} data-diameter="fillingllB">
+                                        <label class="form-check-label">B</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LLC"{% if "LLC" in form.initial.ll %}checked{% endif %} data-diameter="fillingllC">
+                                        <label class="form-check-label">C</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LLD"{% if "LLD" in form.initial.ll %}checked{% endif %} data-diameter="fillingllD">
+                                        <label class="form-check-label">D</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               name="ll"
+                                               value="LLE"{% if "LLE" in form.initial.ll %}checked{% endif %} data-diameter="fillingllE">
+                                        <label class="form-check-label">E</label>
+                                    </div>
+                                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="card text-left">
+                <div class="row">
+                    <div class="col">
+                        <label style="font-weight:bold">Filling Type</label>
+                        <select name="filling_type" class="form-select" required>
+                            <option value="">Chose from here</option>
+                            <option value="PolPotic">PolPotic</option>
+                            <option value="Compisit">Compisit</option>
+                            <option value="Glass cement">Glass cement</option>
+                            <option value="Temporary filing">Temporary filing</option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="hidden fillingurA">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UR1 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="Class 1"{% if "Class 1" in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurA" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingurA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingurB">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UR2 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="Class 1"{% if "Class 1" in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurB" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingurB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingurC">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UR3 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="Class 1"{% if "Class 1" in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurC" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingurC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingurD">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UR4 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="Class 1"{% if "Class 1" in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurD" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingurD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingurE">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UR5 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="Class 1"{% if "Class 1" in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingurE" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingurE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                   
+                    <div class="hidden fillingulA">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UL1 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="Class 1"{% if "Class 1" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="CLASS 3"{% if "CLASS 3" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulA" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingulA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingulB">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UL2 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="Class 1"{% if "Class 1" in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulB" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingulB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingulC">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UL3 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="Class 1"{% if "Class 1" in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulC" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingulC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingulD">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UL4 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="Class 1"{% if "Class 1" in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulD" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingulD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingulE">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class UL5 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="Class 1"{% if "Class 1" in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingulE" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingulE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    
+                    <div class="hidden fillinglrA">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LR1 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="Class 1"{% if "Class 1" in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="CLASS 4"{% if "CLASS 4" in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrA" value="CLASS 5"{% if "CLASS 5" in form.initial.fillinglrA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillinglrB">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LR2 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="Class 1"{% if "Class 1" in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="CLASS 4"{% if "CLASS 4" in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrB" value="CLASS 5"{% if "CLASS 5" in form.initial.fillinglrB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillinglrC">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LR3 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="Class 1"{% if "Class 1" in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="CLASS 4"{% if "CLASS 4" in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrC" value="CLASS 5"{% if "CLASS 5" in form.initial.fillinglrC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillinglrD">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LR4 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="Class 1"{% if "Class 1" in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="CLASS 4"{% if "CLASS 4" in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrD" value="CLASS 5"{% if "CLASS 5" in form.initial.fillinglrD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillinglrE">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LR5 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="Class 1"{% if "Class 1" in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="CLASS 4"{% if "CLASS 4" in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillinglrE" value="CLASS 5"{% if "CLASS 5" in form.initial.fillinglrE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                   
+                    <div class="hidden fillingllA">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LL1 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="Class 1"{% if "Class 1" in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllA" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingllA %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingllB">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LL2 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="Class 1"{% if "Class 1" in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllB" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingllB %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingllC">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LL3 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="Class 1"{% if "Class 1" in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllC" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingllC %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingllD">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LL4 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="Class 1"{% if "Class 1" in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllD" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingllD %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+                    <div class="hidden fillingllE">
+                        <br/>
+                        <label style="font-weight:bold">Filling Class LL5 : </label>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="Class 1"{% if "Class 1" in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">Class 1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="Class 2 MO"{% if "Class 2 MO" in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">Class 2 MO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="CLASS 2 DO"{% if "CLASS 2 DO" in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 DO</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="CLASS 2 MOD"{% if "CLASS 2 MOD" in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 2 MOD</label>
+                        </div>
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="CLASS 3"{% if "CLASS 3"  in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="CLASS 4"{% if "CLASS 4" in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" name="fillingllE" value="CLASS 5"{% if "CLASS 5" in form.initial.fillingllE %}checked{% endif %}>
+                            <label class="form-check-label">CLASS 5</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+
+                            <input type="text" name="price" value="{{ form.initial.price }}"
+                                   class="form-control" id="price"
+                                   placeholder="Price:" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+    <select id="discount_option" name="discount_option" class="form-control">
+        <option>Select Discount Option  * </option>
+        <option value="None">None (where no proportion for doctors just salary)</option>
+        <option value="Without discount">Without discount (1/3 for doctor and 2/3 for center)</option>
+        <option value="Quota discount">Quota discount (0 for doctor and 2/3 for center)</option>
+        <option value="Full discount">Full discount (-2/3 for doctor and 0 for center)</option>
+    </select>
+</div>
+                                    <div class="col-md-3 mb-3">
+                                                        {{ form.lab_name }}
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"  value="{{ form.initial.price_lab }}"
+                                                               placeholder="Price of Lab">
+                                                    </div>
+                    </div>
+                    <input type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control" placeholder="paid:">
+                    <br/>
+                    <br/>
+
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" name="exo_images"
+                                   class="form-control"
+                                   multiple>
+                        </div>
+                        <div class="col">
+                            <textarea name="note" placeholder="Notes" rows="2"  class="form-control" cols="85" value="{{ form.initial.note }}"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <input type="submit" value="Update Pedo Information"
+                           class="btn btn-primary">
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</form>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#filling-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+        // Remove commas from the price_lab value before submission
+        var priceLabInput = $('#price_lab');
+        var numericPriceLabValue = priceLabInput.val().replace(/,/g, '');
+        priceLabInput.val(numericPriceLabValue);
+    });
+
+    $('#price, #price_lab').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
+<script>
+    function handleCheckboxChange(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const diameterName = this.getAttribute('data-diameter');
+            const diameterInputs = document.querySelectorAll(`.${diameterName}`);
+
+            if (this.checked) {
+                diameterInputs.forEach(input => {
+                    input.classList.remove('hidden');
+                });
+            } else {
+                diameterInputs.forEach(input => {
+                    input.classList.add('hidden');
+                });
+            }
+        });
+    }
+
+const checkboxesUR = document.querySelectorAll('input[name="ur"]');
+checkboxesUR.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+
+const checkboxesUL = document.querySelectorAll('input[name="ul"]');
+checkboxesUL.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+
+const checkboxesLR = document.querySelectorAll('input[name="lr"]');
+checkboxesLR.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+
+const checkboxesLL = document.querySelectorAll('input[name="ll"]');
+checkboxesLL.forEach(checkbox => {
+    handleCheckboxChange(checkbox);
+});
+</script>
+
+{% endblock %}

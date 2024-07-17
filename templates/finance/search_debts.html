@@ -66,6 +66,7 @@
                 <th scope="col" style="text-align: center;" >Lower Left</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th scope="col" style="text-align: center;">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
                 <!--<th scope="col" style="text-align: center;" >Notes</th>
                 <th scope="col" style="text-align: center;" >Exo by Surgery</th>
@@ -84,6 +85,7 @@
                 <th scope="col" style="text-align: center;" >Notes</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th scope="col" style="text-align: center;">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
                 <th scope="col" style="text-align: center;">Add Debts</th>
 
@@ -101,6 +103,7 @@
                 <th scope="col" style="text-align: center;" >Notes</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th scope="col" style="text-align: center;">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
@@ -116,6 +119,7 @@
               th scope="col" style="text-align: center;" >Notes</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th scope="col" style="text-align: center;">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
@@ -139,6 +143,7 @@
                 <th scope="col" style="text-align: center;" >Notes</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th scope="col" style="text-align: center;">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;">Paid</th>
                 <th scope="col" style="text-align: center;">Add Debts</th>
 
@@ -156,6 +161,7 @@
                 <th style="text-align: center;" scope="col">Notes</th>
                 <th style="text-align: center;" scope="col">Price</th>-->
                 <th style="text-align: center;" scope="col">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th style="text-align: center;" scope="col">Paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
@@ -186,6 +192,7 @@
                 <th scope="col" style="text-align: center;" class="hideable">treatment_plan</th>
                 <th scope="col" style="text-align: center;" class="hideable">Notes</th>-->
                 <th scope="col" style="text-align: center;">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
                 <th scope="col" style="text-align: center;">Add Debts</th>
 
@@ -204,6 +211,7 @@
                 <th scope="col" style="text-align: center;" class="hideable">Notes</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th style="text-align: center;" scope="col">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
@@ -216,17 +224,30 @@
                 <th scope="col" style="text-align: center;" class="hideable">Notes</th>
                 <th scope="col" style="text-align: center;" >Price</th>-->
                 <th style="text-align: center;" scope="col">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
 
+                {% elif model_name == 'Pedo' %}
+                <th scope="col" style="text-align: center;">#</th>
+                <th scope="col" style="text-align: center;">Name</th>
+                <th scope="col" style="text-align: center;">Phone Number</th>
+                <!--<th scope="col" style="text-align: center;" class="hideable">Type</th>
+                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                <th scope="col" style="text-align: center;" >Price</th>-->
+                <th style="text-align: center;" scope="col">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
+                <th scope="col" style="text-align: center;" class="hideable">paid</th>
+
+                <th scope="col" style="text-align: center;">Add Debts</th>
                 {% endif %}
                 <!-- ... other header columns ... -->
             </tr>
             </thead>
             <tbody>
             {% for result in results %}
-            <tr style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}">
+            <tr style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}">
                 {% if model_name == 'Exo' %}
                 <td style="text-align: center;">{{ result.id }}</td>
                 <td style="text-align: center;">{{ result.name }}</td>
@@ -240,8 +261,9 @@
                  <td style="text-align: center;" >{{ result.simpleexo|slice:"1:-1" }}</td>
                  <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
                  <td style="text-align: center;" >{{ result.price }}</td>-->
-                <td style="text-align: center;">{{ result.total_price }}</td>
-                <td style="text-align: center;">{{ result.paid }}</td>
+                <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.paid|format_with_commas }}</td>
 
                 <td style="text-align: center;"><a href="{% url 'add-debt' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a></td>
@@ -258,8 +280,9 @@
                  <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
                  <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
                  <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>-->
-                <td style="text-align: center;" scope="row" align="center"> {{result.total_price }}</td>
-                <td style="text-align: center;" scope="row" align="center"> {{result.paid }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{result.paid|format_with_commas }}</td>
 
                 <td style="text-align: center;"><a
                         href="{% url 'add-debt-crown' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
@@ -282,8 +305,9 @@
                 <td scope="row">{{result.ll|slice:"1:-1"}}</td>
                 <td scope="row">{{result.no_prepare}}</td>
                 <td scope="row">{{result.price}}</td>-->
-                <td style="text-align: center;" scope="row" align="center">{{result.total_price}}</td>
-                <td style="text-align: center;" scope="row" align="center">{{result.paid}}</td>
+                <td style="text-align: center;" scope="row" align="center">{{result.total_price|format_with_commas}}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row" align="center">{{result.paid|format_with_commas}}</td>
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-filling' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
@@ -302,8 +326,9 @@
                 <td style="text-align: center;"  scope="row" align="center">{{result.color}}</td>
                 <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
                 <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>-->
-                <td style="text-align: center;" scope="row" align="center"> {{ result.total_price }}</td>
-                <td style="text-align: center;" scope="row" align="center"> {{ result.paid }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.paid|format_with_commas }}</td>
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-veneer' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
@@ -329,8 +354,9 @@
                 <td style="text-align: center;" scope="row">{{ result.no_unite }}</td>
                 <td style="text-align: center;" scope="row">{{ result.color }}</td>
                 <td style="text-align: center;" scope="row">{{ result.price }}</td>-->
-                <td style="text-align: center;" scope="row">{{ result.total_price }}</td>
-                <td style="text-align: center;" scope="row" align="center"> {{ result.paid }}</td>
+                <td style="text-align: center;" scope="row">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.paid|format_with_commas }}</td>
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-oral' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
@@ -347,20 +373,21 @@
                 <td style="text-align: center;" scope="row">{{ result.work_length }}</td>
                 <td style="text-align: center;" scope="row">{{ result.no_prepare }}</td>
                 <td style="text-align: center;">{{ result.price }}</td>-->
-                <td style="text-align: center;">{{ result.total_price }}</td>
-                <td style="text-align: center;" scope="row">{{ result.paid }}</td>
+                <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-endo' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
 
                 {% elif model_name == 'Ortho' %}
-                <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
+                <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;">
                     {{ result.id }}
                 </td>
-                <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
+                <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;">
                     {{ result.name }}
                 </td>
-                <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
+                <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;">
                     {{ result.phone }}
                 </td>
                 <!--<td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
@@ -383,13 +410,10 @@
                 <td style="text-align: center;" scope="row" class="hideable">{{ result.lls|slice:"1:-1" }}</td>
                 <td style="text-align: center;" scope="row" class="hideable">{{ result.teeth_size |slice:"1:-1" }}</td>
                 <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>-->
-                <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
-                    {{ result.price}}
-                </td>
-                <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
-                    {{ result.paid }}
-                </td>
-                <td style="color: {% if result.price != result.paid %}red{% else %}green{% endif %}; text-align: center;">
+                <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;">{{ result.price|format_with_commas}}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;">{{ result.paid|format_with_commas }}</td>
+                <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;">
                     <a href="{% url 'add-debt-ortho' id=result.id %}?query={{ query }}"><span class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 {% elif model_name == 'Prosthodontics' %}
@@ -406,6 +430,7 @@
                 <td style="text-align: center;" scope="row">{{ result.partial }}</td>
                 <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
                 <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
                 <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-prosthodontics' id=result.id %}?query={{ query }}"><span
@@ -418,10 +443,25 @@
                 <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
                 <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
                 <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
                 <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
 
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add-debt-periodontology' id=result.id %}?query={{ query }}"><span
+                        class="btn btn-danger">Add-Debt</span></a>
+                </td>
+                {% elif model_name == 'Pedo' %}
+                <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.phone }}</td>
+                <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
+                <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
+                <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.center_share|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
+
+                <td style="text-align: center;" scope="row" align="center"><a
+                        href="{% url 'add-debt-pedo' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 {% endif %}

@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <br/>
 <body class="nav-md">
@@ -14,54 +15,71 @@
         </ol>
     </nav>
     <br/><br/>
-    <div class="container px-5">
-        <div class="row gx-5">
-            <div class="col">
                 <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Add New Doctors</h4></div>
                 <br/>
-                <form method="POST" enctype="multipart/form-data">
+    <div class="col-8">
+                <form method="POST" enctype="multipart/form-data" id="exo-form">
                     {% csrf_token %}
+                    <div class="input-group mb-3">
 
                     <input type="text" name="doctor_name"
                            class="form-control" placeholder="Doctor's Name">
+
                     <input type="text" name="phone" placeholder="Phone Number"
                            class="form-control">
                     <select name="gender" placeholder="Gender"
                             class="form-control">
+
                         <option selected disabled>Select Gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
 
-                    </select>
+                    </select></div>
+
+                    <div class="input-group mb-3">
+
+                        <input type="text" name="proportion_doctor" id="id_proportion_doctor"
+                               placeholder="Proportion of Doctor"
+                               class="form-control">
+
+                        <input type="text" name="salary" id="id_salary" placeholder="Doctor Salary"
+                               class="form-control">
+
+                    </div>
+
                     <br/>
                     <div class="form-group" style="text-align: center;">
                         <input type="submit" value="Add New Doctor"
                                class="btn btn-info">
-                    </div>
 
-
-                </form>
-            </div>
+</div></form>
+        </div>
             <div class="col-8">
                 <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Doctors Information</h4></div>
                 <br/>
                 <table class="table table-hover">
                     <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Doctor Name</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Other</th>
+                        <th style="text-align: center;" scope="col">#</th>
+                        <th style="text-align: center;" scope="col">Doctor Name</th>
+                        <th style="text-align: center;" scope="col">Phone</th>
+                        <th style="text-align: center;" scope="col">Gender</th>
+                        <th style="text-align: center;" scope="col">Proportion Doctor</th>
+                        <th style="text-align: center;" scope="col">Proportion Center</th>
+                        <th style="text-align: center;" scope="col">Salary</th>
+                        <th style="text-align: center;" scope="col">Other</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for appointment in appointments %}
                     <tr>
-                        <td scope="row">{{appointment.id}}</td>
-                        <td scope="row">{{appointment.doctor_name}}</td>
-                        <td scope="row">{{appointment.phone}}</td>
-                        <td scope="row">{{appointment.gender}}</td>
+                        <td style="text-align: center;" scope="row">{{appointment.id}}</td>
+                        <td style="text-align: center;" scope="row">{{appointment.doctor_name}}</td>
+                        <td style="text-align: center;" scope="row">{{appointment.phone}}</td>
+                        <td style="text-align: center;" scope="row">{{appointment.gender}}</td>
+                        <td style="text-align: center;" scope="row">{{appointment.proportion_doctor}}%</td>
+                        <td style="text-align: center;" scope="row">{{appointment.proportion_center}}%</td>
+                        <td style="text-align: center;" scope="row">{{appointment.salary|format_with_commas}}</td>
                         <td><a href="{% url 'delete-doctor' appointment.id %}" style="display: inline;"><span
                                 class="btn btn-round btn-danger">Delete</span></a></td>
                     </tr>
@@ -69,10 +87,50 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+
     </div>
 </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#exo-form').submit(function() {
+        // Remove commas from the price value before submission
+        var salaryInput = $('#id_salary');
+        var numericValue = salaryInput.val().replace(/,/g, '');
+        salaryInput.val(numericValue);
+    });
+
+    $('#id_salary').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Event listener to toggle field activity based on user interaction
+        $('#id_proportion_doctor, #id_salary').on('input', function() {
+            if ($(this).attr('id') === 'id_proportion_doctor') {
+                $('#id_proportion_doctor').prop('disabled', false);
+                $('#id_salary').prop('disabled', true);
+            } else if ($(this).attr('id') === 'id_salary') {
+                $('#id_salary').prop('disabled', false);
+                $('#id_proportion_doctor').prop('disabled', true);
+            }
+        });
+
+        // Event listener to enable all fields before form submission
+        $('form').on('submit', function() {
+            $('#id_proportion_doctor, #id_salary').prop('disabled', false);
+        });
+    });
+</script>
+
 </body>
 {% endblock %}

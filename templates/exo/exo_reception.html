@@ -29,7 +29,7 @@
                     </nav>
                     <div class="row d-flex mb-5 contact-info">
                         <div class="col-md-12 mb-4">
-
+<h1>Appointments for Dr. {{ request.user.doctors.doctor_name }}</h1>
                             <table class="table table-hover">
                                 <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
                                 <tr>
@@ -49,7 +49,7 @@
                                 {% for appointment in appointments %}
                                 <tr>
                                     <td scope="row">{{appointment.id}}</td>
-                                    <td scope="row"><a href="{% url 'exo' appointment.id %}">{{appointment.name}}</a>
+                                      <td scope="row"><a href="{% url 'exo' appointment.id %}">{{ appointment.name }}</a></td>
                                     </td>
                                     <td scope="row">{{appointment.phone}}</td>
                                     <td scope="row">{{appointment.gender}}</td>

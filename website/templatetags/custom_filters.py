@@ -16,6 +16,13 @@ def split_by_comma(value):
 
 @register.filter
 def format_with_commas(value):
-    if value is not None:
-        return "{:,}".format(value)
-    return None
+    """
+    Custom template filter to format a number with commas for thousands separators.
+    Remove unnecessary decimals and trailing zeros.
+    """
+    try:
+        value = float(value)
+        formatted_value = "{:,.2f}".format(value).rstrip('0').rstrip('.')
+        return formatted_value if '.' in formatted_value else "{:,.0f}".format(value)
+    except (TypeError, ValueError):
+        return value

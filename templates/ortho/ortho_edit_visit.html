@@ -22,8 +22,11 @@
 
 
                                 {% csrf_token %}
-                                <input type="hidden" name="idReception"
+                                <input type="text" name="idReception"
                                        value="{{ form.initial.idReception }}"
+                                       class="form-control">
+                                <input type="text" name="idReception1"
+                                       value="{{ form.initial.idReception1 }}"
                                        class="form-control">
                                 <input type="hidden" name="name" value="{{ form.initial.name }}"
                                        class="form-control">
@@ -70,6 +73,10 @@
                                 <input  type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control">
                                 <input  type="hidden"name="notes" value="{{ form.initial.notes }}" class="form-control">
                                 <input  type="hidden"name="exo_images" value="{{ form.initial.exo_images }}" class="form-control">
+                                <input type="text" name="discount_option" value="{{ form.initial.discount_option }}">
+                                <input type="text" name="price_lab" value="{{ form.initial.price_lab }}">
+                                <input type="text" value="{{ form.lab_name.value }}" readonly class="form-control">
+
 
                                     <div class="form-group col-md-3">
                                         {{ form.visits }}

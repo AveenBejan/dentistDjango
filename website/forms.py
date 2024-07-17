@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
     Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,\
-    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1
+    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput
 from django.forms import formset_factory
 
 
@@ -95,17 +95,48 @@ class SalaryForm(forms.ModelForm):
 class DoctorsForm(forms.ModelForm):
     class Meta:
         model = Doctors
-        fields = ( 'doctor_name', 'phone', 'gender')
+        fields = ( 'doctor_name', 'phone', 'gender', 'proportion_doctor', 'proportion_center', 'salary')
         labels = {
             'doctor_name': '',
             'phone': '',
             'gender': '',
+            'proportion_doctor': '',
+            'proportion_center': '',
+            'salary': '',
+
 
         }
         widgets = {
             'doctor_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
             'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'proportion_doctor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'proportion_center': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+        }
+
+
+class MaterialForm(forms.ModelForm):
+    class Meta:
+        model = Material
+        fields = ('material_name',)
+        labels = {
+            'material_name': '',
+        }
+        widgets = {
+            'material_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
+        }
+
+
+class LabForm(forms.ModelForm):
+    class Meta:
+        model = Lab
+        fields = ('lab_name',)
+        labels = {
+            'lab_name': '',
+        }
+        widgets = {
+            'lab_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'doctor_name'}),
         }
 
 
@@ -356,6 +387,8 @@ class MedicinForm(forms.ModelForm):
 
 class FillingForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
 
     class Meta:
         model = Filling
@@ -364,7 +397,8 @@ class FillingForm(forms.ModelForm):
                   'fillingul8','fillinglr1','fillinglr2','fillinglr3','fillinglr4','fillinglr5','fillinglr6','fillinglr7',
                   'fillinglr8','fillingll1','fillingll2','fillingll3','fillingll4','fillingll5','fillingll6','fillingll7',
                   'fillingll8',
-                  'ur', 'ul', 'lr', 'll',  'no_prepare', 'price','paid','date', 'note','exo_images')
+                  'ur', 'ul', 'lr', 'll',  'no_prepare', 'price','paid','date', 'note','exo_images','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -413,7 +447,10 @@ class FillingForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'note': '',
-    'date': '',
+            'date': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
 
         }
         widgets = {
@@ -464,16 +501,117 @@ class FillingForm(forms.ModelForm):
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+
+        }
+
+
+class PedoForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
+
+    class Meta:
+        model = Pedo
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','filling_type','fillingurA','fillingurB','fillingurC','fillingurD','fillingurE','fillingulA','fillingulB','fillingulC','fillingulD','fillingulE','fillinglrA','fillinglrB','fillinglrC','fillinglrD','fillinglrE',
+                  'fillingllA','fillingllB','fillingllC','fillingllD','fillingllE',
+                  'ur', 'ul', 'lr', 'll',  'no_prepare', 'price','paid','date', 'note','exo_images','discount_option','lab_name',
+                  'price_lab')
+        labels = {
+            'idReception': '',
+            'idReception1': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'filling_type': '',
+            'fillingurA': '',
+            'fillingurB': '',
+            'fillingurC': '',
+            'fillingurD': '',
+            'fillingurE': '',
+            'fillingulA': '',
+            'fillingulB': '',
+            'fillingulC': '',
+            'fillingulD': '',
+            'fillingulE': '',
+            'fillinglrA': '',
+            'fillinglrB': '',
+            'fillinglrC': '',
+            'fillinglrD': '',
+            'fillinglrE': '',
+            'fillingllA': '',
+            'fillingllB': '',
+            'fillingllC': '',
+            'fillingllD': '',
+            'fillingllE': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'no_prepare': '',
+            'price': '',
+            'paid': '',
+            'note': '',
+            'date': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
+
+
+        }
+        widgets = {
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'filling_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
+            'fillingurA': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingurB': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingurC': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingurD': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingurE': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingulA': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingulB': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingulC': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingulD': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingulE': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillinglrA': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillinglrB': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillinglrC': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillinglrD': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillinglrE': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingllA': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingllB': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingllC': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingllD': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'fillingllE': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'filling_place'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'no_prepare': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'no_prepare'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'note': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
 
         }
 
 
 class ExoForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label='Select Lab', required=False)
 
     class Meta:
         model = Exo
-        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid','date', 'note', 'exoby', 'simpleexo', 'complcated','exo_images')
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price',
+                  'paid','date', 'note', 'exoby', 'simpleexo', 'complcated','exo_images', 'discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception1': '',
             'idExo': '',
@@ -493,6 +631,10 @@ class ExoForm(forms.ModelForm):
             'exoby': '',
             'simpleexo': '',
             'complcated': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
+
 
 
         }
@@ -509,8 +651,10 @@ class ExoForm(forms.ModelForm):
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
 
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
-             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'exoby': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'exoby'}),
             'simpleexo': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'simpleexo'}),
@@ -522,10 +666,13 @@ class ExoForm(forms.ModelForm):
 
 class PeriodontologyForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
 
     class Meta:
         model = Periodontology
-        fields = ('idReception', 'idReception1', 'name', 'phone', 'gender', 'date_of_birth','type','price', 'paid', 'date', 'note', 'exo_images')
+        fields = ('idReception', 'idReception1', 'name', 'phone', 'gender', 'date_of_birth','type','price', 'paid', 'date', 'note', 'exo_images','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -537,7 +684,10 @@ class PeriodontologyForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'note': '',
-    'date': '',
+            'date': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
 
         }
         widgets = {
@@ -552,16 +702,21 @@ class PeriodontologyForm(forms.ModelForm):
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
 
         }
 
 
 class CrownForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
 
     class Meta:
         model = Crown
-        fields = ('idReception', 'idReception1', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price',  'paid','date', 'note', 'exo_images')
+        fields = ('idReception', 'idReception1', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price',  'paid','date', 'note', 'exo_images','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -576,7 +731,10 @@ class CrownForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'note': '',
-    'date': '',
+            'date': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
 
         }
         widgets = {
@@ -594,16 +752,21 @@ class CrownForm(forms.ModelForm):
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
 
         }
 
 
 class VeneerForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
 
     class Meta:
         model = Veneer
-        fields = ('idReception',  'idReception1', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'paid', 'date', 'note', 'exo_images')
+        fields = ('idReception',  'idReception1', 'name', 'phone', 'gender', 'date_of_birth','shade', 'no_unite', 'color', 'no_prepare', 'price', 'paid', 'date', 'note', 'exo_images','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -618,7 +781,10 @@ class VeneerForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'note': '',
-    'date': '',
+            'date': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
 
         }
         widgets = {
@@ -636,6 +802,8 @@ class VeneerForm(forms.ModelForm):
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
 
         }
 
@@ -654,6 +822,7 @@ class OralSurgeryForm(forms.ModelForm):
     exo_images = forms.FileInput()
     implant = forms.ModelChoiceField(queryset=Implant.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Implant",
                                     to_field_name='implant_name')
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label='Select Lab', required=False)
 
     class Meta:
         model = OralSurgery
@@ -668,7 +837,8 @@ class OralSurgeryForm(forms.ModelForm):
                   'diameterll5', 'lengthll5', 'diameterll6', 'lengthll6', 'diameterll7', 'lengthll7', 'diameterll8', 'lengthll8',
                   'no_Implant', 'ur', 'ul','lr', 'll','shade','no_unite',
                   'color', 'price', 'paid','date', 'note', 'exo_images', 'first_visit','second_visit','third_visit',
-                  'fourth_visit','fifth_visit')
+                  'fourth_visit','fifth_visit' ,'discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '','idReception1': '','name': '','phone': '','gender': '','date_of_birth': '','first_visit': '','implant': '',
             'diameterur1': '', 'lengthur1': '','diameterur2': '', 'lengthur2': '','diameterur3': '','lengthur3': '', 'diameterur4': '', 'lengthur4': '',
@@ -695,6 +865,9 @@ class OralSurgeryForm(forms.ModelForm):
             'third_visit': '',
             'fourth_visit': '',
             'fifth_visit': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab':'',
 
 
         }
@@ -779,6 +952,8 @@ class OralSurgeryForm(forms.ModelForm):
             'shade': forms.Select(attrs={'class': 'form-control', 'placeholder': 'shade'}),
             'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'color'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
@@ -791,11 +966,14 @@ class OralSurgeryForm(forms.ModelForm):
 
 class EndoForm(forms.ModelForm):
     exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
 
     class Meta:
         model = Endo
         fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length',
-                  'price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth')
+                  'price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -821,6 +999,11 @@ class EndoForm(forms.ModelForm):
             'components_third': '',
             'fourth_visit': '',
             'components_fourth': '',
+            'filling_type': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
+
 
 
         }
@@ -840,6 +1023,8 @@ class EndoForm(forms.ModelForm):
             'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
             'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
@@ -849,6 +1034,7 @@ class EndoForm(forms.ModelForm):
             'components_third': forms.CheckboxSelectMultiple( attrs={'class': 'form-control', 'placeholder': 'components_third'}),
             'fourth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'components_fourth': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_fourth'}),
+            'filling_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
         }
 
 
@@ -944,13 +1130,16 @@ class OrthoForm(forms.ModelForm):
                                     to_field_name='visit_name',
                                     required=False,  # Mark the field as not required
                                     initial=None) # Set the initial value to None
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
 
     class Meta:
         model = Ortho
         fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth', 'ur', 'ul','lr', 'll',  'urn', 'uln','lrn', 'lln','teeth_type', 'angle_class',
                   'over_jet','over_bt', 'jow_shift', 'midlin_shift','urs', 'uls','lrs', 'lls','teeth_size','SNA_before','SNA_after','SNB_before','SNB_after','ANB_before','ANB_after',
                   'IMPA_before','IMPA_after','U1_SN_before','U1_SN_after','SNGOGN_before','SNGOGN_after', 'treatment_plan','price','paid',  'notes','exo_images','visits',
-                  'wive_size','cross_sectional','material','brackets','visit_date','uper_date','lower_date','both_date','type_arch')
+                  'wive_size','cross_sectional','material','brackets','visit_date','uper_date','lower_date','both_date','type_arch','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -1004,6 +1193,9 @@ class OrthoForm(forms.ModelForm):
             'lower_date': '',
             'both_date': '',
             'type_arch': '',
+            'discount_option': '',
+            'price_lab': '',
+
         }
         widgets = {
             'idReception': forms.Select(attrs={'class': 'form-control'}),
@@ -1057,6 +1249,8 @@ class OrthoForm(forms.ModelForm):
             'lower_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'both_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'type_arch': forms.Select(attrs={'class': 'form-control', 'placeholder': ''}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
 
         }
 
@@ -1090,9 +1284,13 @@ class DebtsForm(forms.ModelForm):
 
 
 class ProsthodonticsForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
+                                      empty_label='Select Lab', required=False)
     class Meta:
         model = Prosthodontics
-        fields = ('idReception','idReception1', 'idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid', 'date', 'note', 'denture', 'upper','lower', 'partial','exo_images')
+        fields = ('idReception','idReception1', 'idReception', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price', 'paid', 'date', 'note','denture', 'upper','lower', 'partial','exo_images','discount_option','lab_name',
+                  'price_lab')
         labels = {
             'idReception': '',
             'idReception1': '',
@@ -1107,11 +1305,14 @@ class ProsthodonticsForm(forms.ModelForm):
             'price': '',
             'paid': '',
             'note': '',
-    'date': '',
+            'date': '',
             'denture': '',
             'upper': '',
             'lower': '',
             'partial': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
 
         }
         widgets = {
@@ -1133,6 +1334,8 @@ class ProsthodonticsForm(forms.ModelForm):
             'upper': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'upper'}),
             'lower': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
             'partial': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input', 'placeholder': 'complcated'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
 
         }
 
@@ -1140,4 +1343,64 @@ class ProsthodonticsForm(forms.ModelForm):
 class PaymentHistoryForm(forms.ModelForm):
     class Meta:
         model = PaymentHistory
-        fields = ['idReception','idReception1', 'crown_instance', 'endo_instance', 'filling_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']
+        fields = ['idReception','idReception1', 'crown_instance', 'endo_instance', 'filling_instance','pedo_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']
+
+
+class StoreForm(forms.ModelForm):
+    material_name = forms.ModelChoiceField(queryset=Material.objects.all(),widget=forms.Select(attrs=
+                                           {'class': 'form-control'}), empty_label='Select Material', required=True)
+
+    class Meta:
+        model = Store
+        fields = ('barcode','quantity', 'shelf_Num', 'price', 'expire_date','user','material_name')
+        labels = {
+            'barcode': '',
+            'quantity': '',
+            'shelf_Num': '',
+            'price': '',
+            'gender': '',
+            'date_of_birth': '',
+            'material_name': '',
+
+        }
+        widgets = {
+            'material_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+            'barcode': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+            'quantity': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter quantity'}),
+            'shelf_Num': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter shelf number'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter price'}),
+            'expire_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter expiration date', 'type': 'date'}),
+        }
+
+        def clean_Quantity(self):
+            quantity = self.cleaned_data.get('Quantity')
+            if quantity is None:
+                return 0
+            return int(quantity)  # Ensure Quantity is returned as an integer
+
+
+class MaterialOutputForm(forms.ModelForm):
+    doctor = forms.ModelChoiceField(queryset=Doctors.objects.all(),
+                                    widget=forms.Select(attrs={'class': 'form-control'}) , empty_label="Select Doctor",
+                                    to_field_name='doctor_name')
+    class Meta:
+        model = MaterialOutput
+        fields = ['doctor','quantity', 'barcode','material_out','quantity_in']
+        widgets = {
+            'quantity': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter quantity to output'}),
+            'barcode': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+            'material_out': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+            'quantity_in': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+        }
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data['quantity']
+        try:
+            quantity = int(quantity)
+        except ValueError:
+            raise forms.ValidationError('Quantity must be a valid integer.')
+
+        if quantity <= 0:
+            raise forms.ValidationError('Quantity must be a positive number.')
+
+        return quantity

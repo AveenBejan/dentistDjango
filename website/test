@@ -1731,3 +1731,134 @@ def oral_visit(request, id):
       <td>{{ debt.paid|format_with_commas }}</td>
     </tr>
     {% endfor %}
+
+
+def exo(request, id):
+    if request.method == 'POST':
+        form = ExoForm(request.POST, request.FILES)
+        if form.is_valid():
+            oral_surgery = form.save(commit=False)
+            oral_surgery.idReception1_id = id
+
+            price = form.cleaned_data['price']
+            total_price = price
+            oral_surgery.total_price = total_price
+            reception = Reception1.objects.get(id=id)
+            oral_surgery.name = reception.name
+            oral_surgery.phone = reception.phone
+            oral_surgery.gender = reception.gender
+            oral_surgery.date_of_birth = reception.date_of_birth
+            oral_surgery.educational_id = reception.educational_id
+            oral_surgery.idReception_id = reception.idReception_id
+            oral_surgery.doctor_id = reception.doctor_id
+            discount_option = form.cleaned_data['discount_option']
+
+            if discount_option == 'Without discount':
+                doctor_share = price / 3
+                center_share = 2 * price / 3
+            elif discount_option == 'Quota discount':
+                doctor_share = 0
+                center_share = 2 * price / 3
+            elif discount_option == 'Full discount':
+                doctor_share = -2 * price / 3
+                center_share = 0
+
+            oral_surgery.total_price = price
+            oral_surgery.doctor_share = doctor_share
+            oral_surgery.center_share = center_share
+
+            oral_surgery.save()
+
+            photos = request.FILES.getlist('exo_images')
+            exo_instance = form.save(commit=False)
+            exo_instance.save()
+
+            for photo in photos:
+                Photo.objects.create(exo_instance=exo_instance, image=photo)
+
+            return redirect('exo', id=id)
+        else:
+            reception = Reception1.objects.get(id=id)
+            initial_data = {
+
+                'idReception1_id': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'idReception_id': reception.idReception_id,
+                'doctor_id': reception.doctor_id
+
+            }
+            form = ExoForm(initial=initial_data)
+    else:
+        reception = Reception1.objects.get(id=id)
+        initial_data = {
+
+            'idReception1_id': id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'idReception_id': reception.idReception_id,
+            'doctor_id': reception.doctor_id
+        }
+        form = ExoForm(initial=initial_data)
+
+    appointments = Reception1.objects.all().order_by('-id')
+    exooes = Exo.objects.filter(idReception1=id)
+    # Create a list to store photos for each OralSurgery instance
+    photos_list = []
+
+    try:
+        exoo = exooes.first()
+        photos = exoo.photo_set.all()
+    except AttributeError:
+        exoo = None
+        photos = None
+
+    try:
+        medicine = Medicin.objects.get(idReception=id)
+    except Medicin.DoesNotExist:
+        medicine = None
+
+    for exoo in exooes:
+        if exoo.ur:
+            exoo.ur = exoo.ur.replace("'", "")
+        if exoo.ul:
+            exoo.ul = exoo.ul.replace("'", "")
+        if exoo.lr:
+            exoo.lr = exoo.lr.replace("'", "")
+        if exoo.ll:
+            exoo.ll = exoo.ll.replace("'", "")
+        if exoo.exoby:
+            exoo.exoby = exoo.exoby.replace("'", "")
+        if exoo.simpleexo:
+            exoo.simpleexo = exoo.simpleexo.replace("'", "")
+        if exoo.complcated:
+            exoo.complcated = exoo.complcated.replace("'", "")
+        exoo.total_price = exoo.price
+        exoo.save()
+        # Retrieve photos associated with the current OralSurgery instance
+        photos = exoo.photo_set.all()
+
+        # Append the photos to the photos_list
+        photos_list.append(photos)
+
+    formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+    formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
+    return render(request, 'exo/exo.html', {
+        'form': form,
+        'appointments': appointments,
+        'medicine': medicine,
+        'exooes': exooes,
+        'id': id,
+        'photos': photos,
+        'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
+        'formatted_prices': formatted_prices
+    })
+

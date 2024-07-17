@@ -50,8 +50,12 @@
                                 <th scope="col" style="text-align: center;">No of Unite</th>
                                 <th scope="col" style="text-align: center;">Color</th>
                                 <th scope="col" style="text-align: center;">No of Pre.Unite</th>
+                                <th scope="col" style="text-align: center;">Discount Type</th>
                                 <th scope="col" style="text-align: center;">Price</th>
-                                <th scope="col" style="text-align: center;">Total Price</th>
+                                <th scope="col" style="text-align: center;">Doctor Dis.</th>
+                                <th scope="col" style="text-align: center;">Center Dis.</th>
+                                <th scope="col" style="text-align: center;">Lab Name</th>
+                                <th scope="col" style="text-align: center;">Lab Price</th>
                                 <th scope="col"  style="text-align: center;" class="hideable">Notes</th>
                                 <th scope="col" style="text-align: center;">Veneer Photo</th>
                                 <th scope="col"  style="text-align: center;">Action</th>
@@ -72,20 +76,19 @@
                                 <td  style="text-align: center;" scope="row" align="center">{{veneer.no_unite}}</td>
                                 <td  style="text-align: center;" scope="row" align="center">{{veneer.color}}</td>
                                 <td  style="text-align: center;" scope="row" align="center">{{veneer.no_prepare}}</td>
-                                <td style="text-align: center;">
-                                    {% if veneer.price is not None %}
-                                    {{ veneer.price|format_with_commas }}
-                                    {% else %}
-                                    None
-                                    {% endif %}
-                                </td>
-                                <td style="text-align: center;">
+                                 <td style="text-align: center;" scope="row">{{veneer.discount_option}}</td>
+                                <td style="text-align: center;" scope="row">
                                     {% if veneer.total_price is not None %}
                                     {{ veneer.total_price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
+
+                                <td style="text-align: center;" scope="row">{{ veneer.doctor_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ veneer.center_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ veneer.lab_name }}</td>
+                                <td style="text-align: center;" scope="row">{{ veneer.price_lab|format_with_commas }}</td>
                                 <td  style="text-align: center;" scope="row" align="center" class="hideable">{{veneer.note}}</td>
                                 <td>
                                     {% for photos in photos_list %}
@@ -201,6 +204,23 @@
                                                     <input type="text" name="note" value="" class="form-control"
                                                            placeholder="Notes:">
                                                 </div>
+                                                <div class="col-md-3 mb-3">
+                                                        <select id="discount_option" name="discount_option" class="form-select" required>
+                                                            <option>Select Discount Option</option>
+                                                            <option value="None">None (where no proportion for doctors just salary)</option>
+                                                            <option value="Without discount">Without discount</option>
+                                                            <option value="Quota discount">Quota discount</option>
+                                                            <option value="Full discount">Full discount</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        {{ form.lab_name }}
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"
+                                                               placeholder="Price of Lab:">
+                                                    </div>
                                                 <input type="hidden" id="paid" name="paid" value="0"
                                                        class="form-control"
                                                        placeholder="Paid:" required>
@@ -237,11 +257,16 @@ $(document).ready(function() {
     $('#veneer-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
-        var numericValue = priceInput.val().replace(/,/g, '');
-        priceInput.val(numericValue);
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+        // Remove commas from the price_lab value before submission
+        var priceLabInput = $('#price_lab');
+        var numericPriceLabValue = priceLabInput.val().replace(/,/g, '');
+        priceLabInput.val(numericPriceLabValue);
     });
 
-    $('#price').on('input', function() {
+    $('#price, #price_lab').on('input', function() {
         // Remove non-numeric characters except dots (keeping decimals)
         var numericValue = $(this).val().replace(/[^0-9.]/g, '');
         // Format with commas for thousands separators

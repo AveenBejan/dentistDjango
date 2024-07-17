@@ -77,6 +77,23 @@
                         <input type="text" name="price" id="price" value="{{ form.initial.price }}" class="form-control"
                                placeholder="Price:" required>
                     </div>
+                    <div class="col-md-3 mb-3">
+    <select id="discount_option" name="discount_option" class="form-control">
+        <option>Select Discount Option  * </option>
+        <option value="None">None (where no proportion for doctors just salary)</option>
+        <option value="Without discount">Without discount (1/3 for doctor and 2/3 for center)</option>
+        <option value="Quota discount">Quota discount (0 for doctor and 2/3 for center)</option>
+        <option value="Full discount">Full discount (-2/3 for doctor and 0 for center)</option>
+    </select>
+</div>
+                                    <div class="col-md-3 mb-3">
+                                                        {{ form.lab_name }}
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"  value="{{ form.initial.price_lab }}"
+                                                               placeholder="Price of Lab">
+                                                    </div>
 <input type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control" placeholder="paid:">
                     <div class="form-group">
                         <input type="text" name="note" value="{{ form.initial.note }}" class="form-control"
@@ -108,11 +125,16 @@ $(document).ready(function() {
     $('#veneer-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
-        var numericValue = priceInput.val().replace(/,/g, '');
-        priceInput.val(numericValue);
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+        // Remove commas from the price_lab value before submission
+        var priceLabInput = $('#price_lab');
+        var numericPriceLabValue = priceLabInput.val().replace(/,/g, '');
+        priceLabInput.val(numericPriceLabValue);
     });
 
-    $('#price').on('input', function() {
+    $('#price, #price_lab').on('input', function() {
         // Remove non-numeric characters except dots (keeping decimals)
         var numericValue = $(this).val().replace(/[^0-9.]/g, '');
         // Format with commas for thousands separators

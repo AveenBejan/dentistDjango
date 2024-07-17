@@ -1,0 +1,88 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+<br/>
+<br/>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add New Material</li>
+                </ol>
+            </nav>
+            <br/><br/>
+            <div class="p-3 border bg-light"><h4 style="font-weight: bold; color:#17a2b8;">Add New Material Output</h4>
+            </div>
+            <br/>
+            <div class="col-8">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        {{ form.doctor }}
+                        <input type="text" id="quantity" name="quantity" class="form-control"
+                               placeholder="Enter quantity to output">
+                        <input type="text" id="barcode" name="barcode" class="form-control" placeholder="Enter barcode">
+                    </div>
+
+                    <input type="hidden" id="material_out" name="material_out"
+                           value="{{ form.fields.material_out.initial }}">
+                    <input type="hidden" id="quantity_in" name="quantity_in"
+                           value="{{ form.fields.quantity_in.initial }}">
+                    <div class="input-group mb-3">
+                        <br/>
+                        <div class="form-group" style="text-align: center;">
+                            <input type="submit" value="Add New Entry" class="btn btn-info">
+                        </div>
+                    </div>
+                </form>
+              <!-- Displaying Django messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+                <table class="table table-hover">
+                    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+                    <tr>
+
+                        <th scope="col" style="text-align: center;">Barcode</th>
+                        <th scope="col" style="text-align: center;">Output Date</th>
+                        <th scope="col" style="text-align: center;">Doctor Name</th>
+                        <th scope="col" style="text-align: center;">Material Name</th>
+                        <th scope="col" style="text-align: center;">Quantity In</th>
+                        <th scope="col" style="text-align: center;">Quantity Out</th>
+                        <th scope="col" style="text-align: center;">Remaining Quantity</th>
+                        <th scope="col" style="text-align: center;">Print</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for output in outputs %}
+                    <tr>
+
+                        <td scope="row" style="text-align: center;">{{ output.barcode }}</td>
+                        <td scope="row" style="text-align: center;">{{ output.output_date }}</td>
+                        <td scope="row" style="text-align: center;">{{ output.doctor.doctor_name }}</td>
+                        <td scope="row" style="text-align: center;">{{ output.material_out }}</td>
+                        <td scope="row" style="text-align: center;">{{ output.quantity_in }}</td>
+                        <td scope="row" style="text-align: center;">{{ output.quantity }}</td>
+                        <td scope="row" style="text-align: center;">{{ output.remaining_quantity }}</td>
+                        <td><a href="{% url 'print_material_output'  output.id %}">Print</a></td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+{% endblock %}
