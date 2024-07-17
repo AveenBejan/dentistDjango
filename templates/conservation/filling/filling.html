@@ -113,7 +113,7 @@ textarea {
                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                     {% for photo in photos %}
                                     <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                    <a href="{% url 'remove-photo-filling' photo.id %}">Remove</a>
+                                    <a href="{% url 'remove_photo_filling' photo.id %}">Remove</a>
                                     {% endfor %}
                                     {% endif %}
                                     {% endfor %}
