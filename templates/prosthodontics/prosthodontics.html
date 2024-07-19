@@ -136,10 +136,10 @@
                         <div class="accordion-body">
                             <form method="POST" enctype="multipart/form-data" id="pro-form">
                                 {% csrf_token %}
-                                 <input type="text" name="idReception"
+                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception}}"
                                        class="form-control">
-                                <input type="text" name="idExo"
+                                <input type="hidden" name="idExo"
                                        value="{{ form.initial.idReception1_id }}"
                                        class="form-control">
                                 <input type="hidden" name="doctor"
@@ -565,6 +565,35 @@ $(document).ready(function() {
         $(this).val(formattedValue);
     });
 });
+</script>
+<script>
+    document.getElementById('pro-form').addEventListener('submit', function(event) {
+        const priceLab = document.getElementById('price_lab').value;
+        const labName = document.querySelector('[name="lab_name"]').value;
+
+        if ((priceLab && !labName) || (!priceLab && labName)) {
+            alert('Please select a lab name when the price lab is filled and vice versa.');
+            event.preventDefault();
+        }
+    });
+
+    document.getElementById('price_lab').addEventListener('input', function() {
+        const labNameInput = document.querySelector('[name="lab_name"]');
+        if (this.value) {
+            labNameInput.setAttribute('required', 'required');
+        } else {
+            labNameInput.removeAttribute('required');
+        }
+    });
+
+    document.querySelector('[name="lab_name"]').addEventListener('change', function() {
+        const priceLabInput = document.getElementById('price_lab');
+        if (this.value) {
+            priceLabInput.setAttribute('required', 'required');
+        } else {
+            priceLabInput.removeAttribute('required');
+        }
+    });
 </script>
 
 <!-- Display existing images if available

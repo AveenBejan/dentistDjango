@@ -244,12 +244,12 @@
                     <div class="col">
                         <label style="font-weight:bold">Filling Type</label>
                         <select name="filling_type" class="form-select" required>
-                            <option value="">Chose from here</option>
-                            <option value="PolPotic">PolPotic</option>
-                            <option value="Compisit">Compisit</option>
-                            <option value="Glass cement">Glass cement</option>
-                            <option value="Temporary filing">Temporary filing</option>
-                        </select>
+    <option value="">Choose from here</option>
+    <option value="PolPotic" {% if form.instance.filling_type == 'PolPotic' %}selected{% endif %}>PolPotic</option>
+    <option value="Compisit" {% if form.instance.filling_type == 'Compisit' %}selected{% endif %}>Compisit</option>
+    <option value="Glass cement" {% if form.instance.filling_type == 'Glass cement' %}selected{% endif %}>Glass cement</option>
+    <option value="Temporary filing" {% if form.instance.filling_type == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
+</select>
                     </div>
                 </div>
                 <br/>
@@ -940,28 +940,37 @@
 
                     <div class="row">
                         <div class="col">
+                            <label>Price</label>
 
                             <input type="text" name="price" value="{{ form.initial.price }}"
                                    class="form-control" id="price"
                                    placeholder="Price:" required>
                         </div>
                         <div class="col-md-3 mb-3">
+    <label for="discount_option">Discount Option</label>
     <select id="discount_option" name="discount_option" class="form-control">
-        <option>Select Discount Option  * </option>
-        <option value="None">None (where no proportion for doctors just salary)</option>
-        <option value="Without discount">Without discount (1/3 for doctor and 2/3 for center)</option>
-        <option value="Quota discount">Quota discount (0 for doctor and 2/3 for center)</option>
-        <option value="Full discount">Full discount (-2/3 for doctor and 0 for center)</option>
+        <option value="" {% if not form.instance.discount_option %}selected{% endif %}>Select Discount Option *</option>
+        <option value="None" {% if form.instance.discount_option == 'None' %}selected{% endif %}>None (where no proportion for doctors just salary)</option>
+        <option value="Without discount" {% if form.instance.discount_option == 'Without discount' %}selected{% endif %}>Without discoun</option>
+        <option value="Quota discount" {% if form.instance.discount_option == 'Quota discount' %}selected{% endif %}>Quota discount</option>
+        <option value="Full discount" {% if form.instance.discount_option == 'Full discount' %}selected{% endif %}>Full discount</option>
     </select>
 </div>
-                                    <div class="col-md-3 mb-3">
-                                                        {{ form.lab_name }}
-                                                    </div>
-                                                    <div class="col-md-3 mb-3">
-                                                        <input type="text" name="price_lab" id="price_lab"
-                                                               class="form-control"  value="{{ form.initial.price_lab }}"
-                                                               placeholder="Price of Lab">
-                                                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="id_lab_name">Lab Name</label>
+                        <select id="id_lab_name" name="lab_name" class="form-control">
+                            {% for lab in form.fields.lab_name.queryset %}
+                            <option value="{{ lab.id }}" {% if lab.id == form.instance.lab.id %}selected{% endif %}>
+                                {{ lab.lab_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <LABEL>Price Lab</LABEL>
+                        <input type="text" name="price_lab" id="price_lab"
+                               class="form-control" value="{{ form.initial.price_lab }}"
+                               placeholder="Price of Lab">
                     </div>
                     <input type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control" placeholder="paid:">
                     <br/>
@@ -974,6 +983,7 @@
                                    multiple>
                         </div>
                         <div class="col">
+                            <label>Notes</label>
                             <textarea name="note" placeholder="Notes" rows="2"  class="form-control" cols="85" value="{{ form.initial.note }}"></textarea>
                         </div>
                     </div>

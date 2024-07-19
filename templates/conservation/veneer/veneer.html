@@ -296,5 +296,33 @@ $(document).ready(function() {
         });
     });
 </script>
+<script>
+    document.getElementById('veneer-form').addEventListener('submit', function(event) {
+        const priceLab = document.getElementById('price_lab').value;
+        const labName = document.querySelector('[name="lab_name"]').value;
 
+        if ((priceLab && !labName) || (!priceLab && labName)) {
+            alert('Please select a lab name when the price lab is filled and vice versa.');
+            event.preventDefault();
+        }
+    });
+
+    document.getElementById('price_lab').addEventListener('input', function() {
+        const labNameInput = document.querySelector('[name="lab_name"]');
+        if (this.value) {
+            labNameInput.setAttribute('required', 'required');
+        } else {
+            labNameInput.removeAttribute('required');
+        }
+    });
+
+    document.querySelector('[name="lab_name"]').addEventListener('change', function() {
+        const priceLabInput = document.getElementById('price_lab');
+        if (this.value) {
+            priceLabInput.setAttribute('required', 'required');
+        } else {
+            priceLabInput.removeAttribute('required');
+        }
+    });
+</script>
 {% endblock %}

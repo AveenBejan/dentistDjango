@@ -25,10 +25,10 @@
 
 
                     {% csrf_token %}
-                    <input type="text" name="idReception"
+                    <input type="hidden" name="idReception"
                            value="{{ form.initial.idReception}}"
                            class="form-control">
-                    <input type="text" name="idReception1"
+                    <input type="hidden" name="idReception1"
                            value="{{ form.initial.idReception1}}"
                            class="form-control">
                     <input type="hidden" name="name" value="{{ form.initial.name }}"
@@ -80,10 +80,10 @@
                     <input type="hidden" name="paid" value="0">
                     <input type="hidden" name="notes" value="{{ form.initial.notes }}">
                     <input type="hidden" name="exo_images" value="{{ form.initial.exo_images }}">
-<label>Date of Upper</label><input type="text" name="uper_date" id="uper_date" {% if form.initial.uper_date %}readonly{% endif %} value="{% if form.initial.uper_date %}{{ form.initial.uper_date|date:" Y-m-d" }}{% endif %}">
+<input type="hidden" name="uper_date" id="uper_date" {% if form.initial.uper_date %}readonly{% endif %} value="{% if form.initial.uper_date %}{{ form.initial.uper_date|date:" Y-m-d" }}{% endif %}">
 
-                                        <label>Date of Lower</label><input type="text" name="lower_date" id="lower_date" {% if form.initial.lower_date %}readonly{% endif %} value="{% if form.initial.lower_date %}{{ form.initial.lower_date|date:" Y-m-d" }}{% endif %}">
-                                         <label>Date of Both</label><input type="text" name="both_date" id="both_date" {% if form.initial.both_date %}readonly{% endif %} value="{% if form.initial.both_date %}{{ form.initial.both_date|date:" Y-m-d" }}{% endif %}">
+                                      <input type="hidden" name="lower_date" id="lower_date" {% if form.initial.lower_date %}readonly{% endif %} value="{% if form.initial.lower_date %}{{ form.initial.lower_date|date:" Y-m-d" }}{% endif %}">
+                    <input type="hidden" name="both_date" id="both_date" {% if form.initial.both_date %}readonly{% endif %} value="{% if form.initial.both_date %}{{ form.initial.both_date|date:" Y-m-d" }}{% endif %}">
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             {{ form.visits }}

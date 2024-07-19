@@ -48,54 +48,68 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label>Shade</label>
-                        <select name="shade" class="form-select" required="required">
-                            <option value="">Chose from here</option>
-                            <option value="VITA Shade">VITA</option>
-                            <option value="A-D Shade">A-D Shade</option>
-                            <option value="Bleach Shade">Bleach Shade</option>
-                            <option value="Tetric N-Ceram(16) Shade">Tetric N-Ceram(16) Shade</option>
-                            <option value="Tetric N-Flow(10) Shade">Tetric N-Ceram(10) Shade</option>
-                        </select>
 
-
-                    </div>
+    <label for="shade">Shade</label>
+    <select name="shade" id="shade" class="form-select" required="required">
+        <option value="">Choose from here</option>
+        <option value="VITA Shade" {% if form.instance.shade == 'VITA Shade' %}selected{% endif %}>VITA</option>
+        <option value="A-D Shade" {% if form.instance.shade == 'A-D Shade' %}selected{% endif %}>A-D Shade</option>
+        <option value="Bleach Shade" {% if form.instance.shade == 'Bleach Shade' %}selected{% endif %}>Bleach Shade</option>
+        <option value="Tetric N-Ceram(16) Shade" {% if form.instance.shade == 'Tetric N-Ceram(16) Shade' %}selected{% endif %}>Tetric N-Ceram(16) Shade</option>
+        <option value="Tetric N-Flow(10) Shade" {% if form.instance.shade == 'Tetric N-Flow(10) Shade' %}selected{% endif %}>Tetric N-Flow(10) Shade</option>
+    </select>
+</div>
                     <div class="form-group">
+                        <label>No Unite</label>
                         <input type="text" class="form-control" name="no_unite" value="{{ form.initial.no_unite }}"
                                placeholder="No of Unite:" required>
                     </div>
                     <div class="form-group">
+                        <label>Color</label>
                         <input type="text" class="form-control" name="color" placeholder="Color"
                                value="{{ form.initial.color }}" required>
 
                     </div>
                     <div class="form-group">
+                        <label>No of Prepared Teeth</label>
                         <input type="text" class="form-control" name="no_prepare" placeholder="No of Prepared Teeth"
                                value="{{ form.initial.no_prepare }}" required>
                     </div>
                     <div class="form-group">
+                        <label>Price</label>
                         <input type="text" name="price" id="price" value="{{ form.initial.price }}" class="form-control"
                                placeholder="Price:" required>
                     </div>
                     <div class="col-md-3 mb-3">
+    <label for="discount_option">Discount Option</label>
     <select id="discount_option" name="discount_option" class="form-control">
-        <option>Select Discount Option  * </option>
-        <option value="None">None (where no proportion for doctors just salary)</option>
-        <option value="Without discount">Without discount (1/3 for doctor and 2/3 for center)</option>
-        <option value="Quota discount">Quota discount (0 for doctor and 2/3 for center)</option>
-        <option value="Full discount">Full discount (-2/3 for doctor and 0 for center)</option>
+        <option value="" {% if not form.instance.discount_option %}selected{% endif %}>Select Discount Option *</option>
+        <option value="None" {% if form.instance.discount_option == 'None' %}selected{% endif %}>None (where no proportion for doctors just salary)</option>
+        <option value="Without discount" {% if form.instance.discount_option == 'Without discount' %}selected{% endif %}>Without discoun</option>
+        <option value="Quota discount" {% if form.instance.discount_option == 'Quota discount' %}selected{% endif %}>Quota discount</option>
+        <option value="Full discount" {% if form.instance.discount_option == 'Full discount' %}selected{% endif %}>Full discount</option>
     </select>
 </div>
-                                    <div class="col-md-3 mb-3">
-                                                        {{ form.lab_name }}
-                                                    </div>
-                                                    <div class="col-md-3 mb-3">
-                                                        <input type="text" name="price_lab" id="price_lab"
-                                                               class="form-control"  value="{{ form.initial.price_lab }}"
-                                                               placeholder="Price of Lab">
-                                                    </div>
-<input type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control" placeholder="paid:">
-                    <div class="form-group">
+                    <div class="col-md-3 mb-3">
+                        <label for="id_lab_name">Lab Name</label>
+                        <select id="id_lab_name" name="lab_name" class="form-control">
+                            {% for lab in form.fields.lab_name.queryset %}
+                            <option value="{{ lab.id }}" {% if lab.id == form.instance.lab.id %}selected{% endif %}>
+                                {{ lab.lab_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <LABEL>Price Lab</LABEL>
+                        <input type="text" name="price_lab" id="price_lab"
+                               class="form-control" value="{{ form.initial.price_lab }}"
+                               placeholder="Price of Lab">
+                    </div>
+                    <input type="hidden" name="paid" value="{{ form.initial.paid }}" class="form-control"
+                           placeholder="paid:">
+                    <div class="col-md-3 mb-3">
+                        <label>Notes</label>
                         <input type="text" name="note" value="{{ form.initial.note }}" class="form-control"
                                placeholder="Notes:">
                     </div>
@@ -142,5 +156,34 @@ $(document).ready(function() {
         $(this).val(formattedValue);
     });
 });
+</script>
+<script>
+    document.getElementById('crown-form').addEventListener('submit', function(event) {
+        const priceLab = document.getElementById('price_lab').value;
+        const labName = document.querySelector('[name="lab_name"]').value;
+
+        if ((priceLab && !labName) || (!priceLab && labName)) {
+            alert('Please select a lab name when the price lab is filled and vice versa.');
+            event.preventDefault();
+        }
+    });
+
+    document.getElementById('price_lab').addEventListener('input', function() {
+        const labNameInput = document.querySelector('[name="lab_name"]');
+        if (this.value) {
+            labNameInput.setAttribute('required', 'required');
+        } else {
+            labNameInput.removeAttribute('required');
+        }
+    });
+
+    document.querySelector('[name="lab_name"]').addEventListener('change', function() {
+        const priceLabInput = document.getElementById('price_lab');
+        if (this.value) {
+            priceLabInput.setAttribute('required', 'required');
+        } else {
+            priceLabInput.removeAttribute('required');
+        }
+    });
 </script>
 {% endblock %}

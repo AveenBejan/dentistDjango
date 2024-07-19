@@ -594,26 +594,26 @@ def all_debts(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
-    total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    paid_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_ortho = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    total_exo = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    paid_exo = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_filling = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_pedo = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_crown = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_veneer = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_endo = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_periodontology = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_prosthodontics = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = (total_exo + total_filling + total_pedo + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
     total_paid_t = (paid_exo + paid_filling + paid_pedo + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
     remaining = total_price_t - total_paid_t
@@ -732,38 +732,38 @@ def earnings(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
-    total_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
-    total_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_exo = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate( center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
-    total_exo1 = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_filling1 = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_pedo1 = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_crown1 = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_exo1 = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_filling1 = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_pedo1 = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_crown1 = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_veneer1 = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_oralSurgery1 = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_endo1 = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_ortho1 = Ortho.objects.filter(visits_id__isnull=True).filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_periodontology1 = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
-    total_prosthodontics1 = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_oralSurgery1 = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_endo1 = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_ortho1 = Ortho.objects.filter(visits_id__isnull=True).filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_periodontology1 = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_prosthodontics1 = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
-    paid_exo = Exo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_filling = Filling.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_pedo = Pedo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_crown = Crown.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_veneer = Veneer.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_oralSurgery = OralSurgery.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_endo = Endo.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_ortho = Ortho.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_periodontology = Periodontology.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
-    paid_prosthodontics = Prosthodontics.objects.filter(regdate__range=(start_datetime, end_datetime)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_exo = Exo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_filling = Filling.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_pedo = Pedo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_crown = Crown.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_veneer = Veneer.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_oralSurgery = OralSurgery.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_endo = Endo.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_ortho = Ortho.objects.filter(visits_id__isnull=True).filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_periodontology = Periodontology.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_prosthodontics = Prosthodontics.objects.filter(Q(regdate__range=(start_datetime, end_datetime)) & Q(doctor=selected_doctor)).aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = (total_exo + total_filling + total_pedo + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics)
     total_price_t1 = (total_exo1 + total_filling1 + total_pedo1 + total_crown1 + total_veneer1 + total_oralSurgery1 + total_endo1 + total_ortho1 + total_periodontology1 + total_prosthodontics1)
     total_paid_t = (paid_exo + paid_filling + paid_pedo + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics)
@@ -2248,7 +2248,9 @@ def add_ortho(request, id):
         form = None
 
     # Retrieve Ortho objects related to the current reception
-    oralls = Ortho.objects.filter(idReception1=id).order_by('-id')
+    oralls_with_visits = Ortho.objects.filter(idReception1=id, visits_id__isnull=False).order_by('-id')
+    oralls_without_visits = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).order_by('-id')
+    oralls = oralls_with_visits.union(oralls_without_visits)
     photos_list = []
 
     for orall in oralls:
@@ -3912,7 +3914,7 @@ def crown(request, id):
 
     appointments = Reception1.objects.all().order_by('-id')
     crownn = Crown.objects.filter(idReception1=id)
-    photos_list = []
+    photos_list = [crown.photo_set.all() for crown in crownn]
 
     try:
         crown = crownn.first()
@@ -3999,7 +4001,12 @@ def crown_edit(request, id):
             pi.doctor_share = doctor_share.quantize(Decimal('0.01'))
             pi.center_share = center_share.quantize(Decimal('0.01'))
             pi.price_lab = price_lab_decimal  # Save price_lab as Decimal
-            form.save()
+            # Handle lab_name separately
+            selected_lab = form.cleaned_data['lab_name']
+            if selected_lab:
+                pi.lab = selected_lab  # Set the foreign key to the selected Lab
+                pi.lab_name = selected_lab.lab_name  # Save the lab_name as well
+            pi.save()
 
             # Update the associated photos
             photos = request.FILES.getlist('exo_images')
@@ -4158,7 +4165,7 @@ def veneer(request, id):
     # Fetch necessary data for rendering the template
     appointments = Reception1.objects.all().order_by('-id')
     veneerr = Veneer.objects.filter(idReception1=id)
-    photos_list = []
+    photos_list = [veneer.photo_set.all() for veneer in veneerr]
 
     try:
         veneer = veneerr.first()
@@ -6401,6 +6408,10 @@ def endo_edit(request, id):
             orall.doctor_share = doctor_share.quantize(Decimal('0.01'))
             orall.center_share = center_share.quantize(Decimal('0.01'))
             orall.price_lab = price_lab_decimal  # Save price_lab as Decimal
+            selected_lab = form.cleaned_data['lab_name']
+            if selected_lab:
+                orall.lab = selected_lab  # Set the foreign key to the selected Lab
+                orall.lab_name = selected_lab.lab_name  # Save the lab_name as well
             orall.save()
 
             # Handle uploaded photos
