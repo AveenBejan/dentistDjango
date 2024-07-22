@@ -42,22 +42,23 @@
                     <th scope="col" style="text-align: center;">Material Name</th>
                     <th scope="col" style="text-align: center;">Quantity</th>
                     <th scope="col" style="text-align: center;">Shelf Number:</th>
-                    <th scope="col" style="text-align: center;">Price</th>
+
                     <th scope="col" style="text-align: center;">Expire Date</th>
                     <th scope="col" style="text-align: center;">Expire Date</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
+                    <td style="text-align: center;">{{ store_instance.id }}</td>
                     <td style="text-align: center;">{{ store_instance.barcode }}</td>
-                    <td>{{ store_instance.material_name }}</td>
-                    <td>{{ store_instance.Quantity }}</td>
-                    <td>{{ store_instance.shelf_Num }}</td>
-                    <td>{{ store_instance.price }}</td>
-                    <td>{{ store_instance.expire_date }}</td>
+                    <td style="text-align: center;">{{ store_instance.material_name }}</td>
+                    <td style="text-align: center;">{{ store_instance.quantity }}</td>
+                    <td style="text-align: center;">{{ store_instance.shelf_Num }}</td>
+
+                    <td style="text-align: center;">{{ store_instance.expire_date }}</td>
                     {% if alerts %}
                     {% for alert in alerts %}
-                    <td>{{ alert }}</td>
+                    <td style="text-align: center;">{{ alert }}</td>
                     {% endfor %}
                     {% endif %}
 

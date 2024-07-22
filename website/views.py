@@ -6817,7 +6817,7 @@ def store_search(request):
                 alerts.append(f'Alert: Expiry date for barcode {barcode} is less than one month.')
 
             # Check quantity condition
-            quantity_remaining = int(store_instance.Quantity)  # Convert to integer
+            quantity_remaining = int(store_instance.quantity)  # Convert to integer
 
             if quantity_remaining <= 3:
                 alerts.append(f'Alert: Quantity remaining for barcode {barcode} is less than or equal to 3.')
