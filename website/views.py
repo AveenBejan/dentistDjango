@@ -2814,7 +2814,7 @@ def delete_ortho(request, idReception1_id):
         return redirect('add-ortho', id=idReception1_id)
 
     # Find all Ortho objects with the specified idReception_id
-    ortho_objects = Ortho.objects.filter(idReception_id=idReception1_id)
+    ortho_objects = Ortho.objects.filter(idReception1_id=idReception1_id)
 
     # Delete all Ortho objects in the queryset
     ortho_objects.delete()
