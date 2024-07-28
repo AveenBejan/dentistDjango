@@ -2805,24 +2805,18 @@ def remove_photo_ortho(request, photo_id):
     return redirect('ortho-edit', id=ortho_instance.id)
 
 @login_required
-def delete_ortho(request, idReception1_id):
-    # Ensure that the user has the role of "admin"
-    if request.user.role != 'admin':
-        # If the user does not have the role of "admin", display an alert message
-        messages.error(request, "You do not have permission to perform this action.")
-        # Render the same page with the alert message
-        return redirect('add-ortho', id=idReception1_id)
+def delete_ortho(request, id):
+    # Get the drug related to the Reception
+    orall = get_object_or_404(Ortho, id=id)
 
-    # Find all Ortho objects with the specified idReception_id
-    ortho_objects = Ortho.objects.filter(idReception1_id=idReception1_id)
+    # Store the idReception before deleting the drug
+    idReception = orall.idReception1_id
 
-    # Delete all Ortho objects in the queryset
-    ortho_objects.delete()
+    # Delete the drug
+    orall.delete()
 
-    # If deletion is successful, display a success alert message
-    messages.success(request, "Orthodontic records deleted successfully.")
-    # Render the same page with the success message
-    return redirect('add-ortho', id=idReception1_id)
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('add-ortho', id=idReception)
 
 
 def ortho_reception(request):
