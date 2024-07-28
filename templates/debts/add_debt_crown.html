@@ -20,7 +20,7 @@
                 </nav>
                 <div class="col-6">
                 <h4 style="color:#000;">Patient Name:{{ crown_instance.name }}</h4>
-                <h5 style="color:#000;">Total Price: {{ crown_instance.center_share|format_with_commas  }}</h5>
+                <h5 style="color:#000;">Total Price: {{ crown_instance.total_price|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Previous Paid Amount Total: {{ previous_paid|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Remaining Amount: {{ remaining_amount|format_with_commas  }}</h5>
 
@@ -53,7 +53,7 @@
                        <div class="row">
 
                         <div class="col-sm-6">
-                            <input type="hidden" id="price" name="price" value="{{ crown_instance.center_share }}" class="form-control" readonly>
+                            <input type="hidden" id="price" name="price" value="{{ crown_instance.total_price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
                             <br/><h4> Date Paid </h4>
@@ -85,14 +85,14 @@ $(document).ready(function () {
         // Extracting values
         var remainingAmount = parseFloat('{{ remaining_amount }}');
         var previousPaid = parseFloat('{{ previous_paid }}');
-        var center_share = parseFloat($('#price').val());
+        var total_price = parseFloat($('#price').val());
         var paidAmount = parseFloat(numericValue); // Use the cleaned numericValue for paidAmount
 
         // Calculate the total paid by adding previous paid with current paid amount
         var totalPaid = previousPaid + paidAmount;
 
         // Check if the total paid amount reaches the total price or covers the remaining amount
-        if (totalPaid > center_share) {
+        if (totalPaid > total_price) {
             alert("Total paid amount must equal the total price or cover the remaining amount.");
         } else if (paidAmount > remainingAmount) {
             alert("Paid amount cannot exceed the remaining amount.");

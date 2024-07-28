@@ -903,7 +903,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label>Angle Class</label>
-                                    <select name="angle_class" class="form-control">
+                                    <select name="angle_class" class="form-control" required>
     <option value="">Select Angle Class</option>
     <option value="I" {% if form.instance.angle_class == "I" %}selected{% endif %}>I</option>
     <option value="II Div 1" {% if form.instance.angle_class == "II Div 1" %}selected{% endif %}>II Div 1</option>
@@ -967,21 +967,23 @@
     <select id="discount_option" name="discount_option" class="form-control">
         <option value="" {% if not form.instance.discount_option %}selected{% endif %}>Select Discount Option *</option>
         <option value="None" {% if form.instance.discount_option == 'None' %}selected{% endif %}>None (where no proportion for doctors just salary)</option>
-        <option value="Without discount" {% if form.instance.discount_option == 'Without discount' %}selected{% endif %}>Without discoun</option>
-        <option value="Quota discount" {% if form.instance.discount_option == 'Quota discount' %}selected{% endif %}>Quota discount</option>
-        <option value="Full discount" {% if form.instance.discount_option == 'Full discount' %}selected{% endif %}>Full discount</option>
+        <option value="Without Discount" {% if form.instance.discount_option == 'Without Discount' %}selected{% endif %}>Without Discount</option>
+        <option value="With Discount" {% if form.instance.discount_option == 'With Discount' %}selected{% endif %}>With Discount</option>
+        <option value="Full Discount" {% if form.instance.discount_option == 'Full Discount' %}selected{% endif %}>Full Discount</option>
+        <option value="No Pay" {% if form.instance.discount_option == 'No Pay' %}selected{% endif %}>No Pay</option>
     </select>
 </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="id_lab_name">Lab Name</label>
-                        <select id="id_lab_name" name="lab_name" class="form-control">
-                            {% for lab in form.fields.lab_name.queryset %}
-                            <option value="{{ lab.id }}" {% if lab.id == form.instance.lab.id %}selected{% endif %}>
-                                {{ lab.lab_name }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="id_lab_name">Lab Name</label>
+                                       <select id="id_lab_name" name="lab_name" class="form-control">
+    <option value="" {% if not form.instance.lab_name %}selected{% endif %}>Select Lab</option>
+    {% for lab in form.fields.lab_name.queryset %}
+        <option value="{{ lab.id }}" {% if form.instance.lab_name == lab.lab_name %}selected{% endif %}>
+            {{ lab.lab_name }}
+        </option>
+    {% endfor %}
+</select>
+                                    </div>
                     <div class="col-md-3 mb-3">
                         <LABEL>Price Lab</LABEL>
                         <input type="text" name="price_lab" id="price_lab"
@@ -1103,7 +1105,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#exo-form').submit(function() {
+    $('#ortho-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
         var numericPriceValue = priceInput.val().replace(/,/g, '');
@@ -1192,33 +1194,47 @@ $(document).ready(function() {
     });
 </script>
 <script>
-    document.getElementById('ortho-form').addEventListener('submit', function(event) {
-        const priceLab = document.getElementById('price_lab').value;
-        const labName = document.querySelector('[name="lab_name"]').value;
+document.getElementById('ortho-form').addEventListener('submit', function(event) {
+    const priceLab = parseFloat(document.getElementById('price_lab').value);
+    const labName = document.querySelector('[name="lab_name"]').value;
 
-        if ((priceLab && !labName) || (!priceLab && labName)) {
-            alert('Please select a lab name when the price lab is filled and vice versa.');
-            event.preventDefault();
-        }
-    });
+    // Check if priceLab is a valid number
+    if (isNaN(priceLab)) {
+        alert('Price lab must be a valid number.');
+        event.preventDefault();
+        return;
+    }
 
-    document.getElementById('price_lab').addEventListener('input', function() {
-        const labNameInput = document.querySelector('[name="lab_name"]');
-        if (this.value) {
+    if ((priceLab > 0 && !labName) || (priceLab <= 0 && labName)) {
+        alert('Please select a lab name when the price lab is filled and vice versa.');
+        event.preventDefault();  // Prevent form submission
+    }
+});
+
+document.getElementById('price_lab').addEventListener('input', function() {
+    const labNameInput = document.querySelector('[name="lab_name"]');
+    const priceLabValue = parseFloat(this.value);
+
+    // Check if priceLabValue is a valid number
+    if (isNaN(priceLabValue)) {
+        labNameInput.removeAttribute('required');
+    } else {
+        if (priceLabValue > 0) {
             labNameInput.setAttribute('required', 'required');
         } else {
             labNameInput.removeAttribute('required');
         }
-    });
+    }
+});
 
-    document.querySelector('[name="lab_name"]').addEventListener('change', function() {
-        const priceLabInput = document.getElementById('price_lab');
-        if (this.value) {
-            priceLabInput.setAttribute('required', 'required');
-        } else {
-            priceLabInput.removeAttribute('required');
-        }
-    });
+document.querySelector('[name="lab_name"]').addEventListener('change', function() {
+    const priceLabInput = document.getElementById('price_lab');
+    if (this.value) {
+        priceLabInput.setAttribute('required', 'required');
+    } else {
+        priceLabInput.removeAttribute('required');
+    }
+});
 </script>
 
 {% endblock %}

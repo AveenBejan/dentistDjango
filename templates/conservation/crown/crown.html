@@ -48,6 +48,7 @@
                                 <th style="text-align: center;"  scope="col">No of Pre.Unite</th>
                                 <th scope="col" style="text-align: center;">Discount Type</th>
                                 <th style="text-align: center;"  scope="col">Price</th>
+                                <th style="text-align: center;"  scope="col">Patient Paid</th>
                                 <th scope="col" style="text-align: center;">Doctor Dis.</th>
                                 <th scope="col" style="text-align: center;">Center Dis.</th>
                                 <th scope="col" style="text-align: center;">Lab Name</th>
@@ -70,6 +71,13 @@
                                 <td style="text-align: center;">
                                     {% if crown.price is not None %}
                                     {{ crown.price|format_with_commas }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: center;">
+                                    {% if crown.total_price is not None %}
+                                    {{ crown.total_price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
@@ -206,9 +214,10 @@
                                                         <select id="discount_option" name="discount_option" class="form-select" required>
                                                             <option>Select Discount Option</option>
                                                             <option value="None">None (where no proportion for doctors just salary)</option>
-                                                            <option value="Without discount">Without discount</option>
-                                                            <option value="Quota discount">Quota discount</option>
-                                                            <option value="Full discount">Full discount</option>
+                                                            <option value="Without Discount">Without Discount</option>
+                                                            <option value="With Discount">With Discount</option>
+                                                            <option value="Full Discount">Full Discount</option>
+                                                            <option value="No Pay">No Pay</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3 mb-3">

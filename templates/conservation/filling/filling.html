@@ -71,6 +71,7 @@ textarea {
                                 <th style="text-align: center;" scope="col">Lower Left</th>
                                 <th scope="col" style="text-align: center;">Discount Type</th>
                                 <th scope="col" style="text-align: center;">Price</th>
+                                <th scope="col" style="text-align: center;">Patient Paid</th>
                                 <th scope="col" style="text-align: center;">Doctor Dis.</th>
                                 <th scope="col" style="text-align: center;">Center Dis.</th>
                                 <th scope="col" style="text-align: center;">Lab Name</th>
@@ -95,6 +96,13 @@ textarea {
                                 <td  style="text-align: center;" scope="row">{{fill.lr|slice:"1:-1"}}</td>
                                 <td  style="text-align: center;" scope="row">{{fill.ll|slice:"1:-1"}}</td>
                                 <td style="text-align: center;" scope="row">{{fill.discount_option}}</td>
+                                <td style="text-align: center;" scope="row">
+                                    {% if fill.price is not None %}
+                                    {{ fill.price|format_with_commas }}
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </td>
                                 <td style="text-align: center;" scope="row">
                                     {% if fill.total_price is not None %}
                                     {{ fill.total_price|format_with_commas }}
@@ -1542,9 +1550,10 @@ textarea {
                                                         <select id="discount_option" name="discount_option" class="form-select" required>
                                                             <option>Select Discount Option</option>
                                                             <option value="None">None (where no proportion for doctors just salary)</option>
-                                                            <option value="Without discount">Without discount</option>
-                                                            <option value="Quota discount">Quota discount</option>
-                                                            <option value="Full discount">Full discount</option>
+                                                            <option value="Without Discount">Without Discount</option>
+                                                            <option value="With Discount">With Discount</option>
+                                                            <option value="Full Discount">Full Discount</option>
+                                                            <option value="No Pay">No Pay</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3 mb-3">

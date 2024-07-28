@@ -21,7 +21,7 @@
                 </nav>
                 <div class="col-6">
                 <h4 style="color:#000;">Patient Name:{{ pedo_instance.name }}</h4>
-                <h5 style="color:#000;">Total Price: {{ pedo_instance.center_share|format_with_commas  }}</h5>
+                <h5 style="color:#000;">Total Price: {{ pedo_instance.total_price|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Previous Paid Amount Total: {{ previous_paid|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Remaining Amount: {{ remaining_amount|format_with_commas  }}</h5>
 
@@ -54,7 +54,7 @@
                        <div class="row">
 
                         <div class="col-sm-6">
-                            <input type="hidden" id="price" name="price" value="{{ pedo_instance.center_share }}" class="form-control" readonly>
+                            <input type="hidden" id="price" name="price" value="{{ pedo_instance.total_price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="" placeholder="Paid:" required>
                             <br/><h4> Date Paid </h4>

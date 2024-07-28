@@ -5,10 +5,10 @@ from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
     ImplantForm,GaveAppointmentForm,DebtsForm,PaymentHistoryForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,\
-    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm
+    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm,XraysForm,SurgeryForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,\
-    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput
+    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -299,6 +299,7 @@ def search_debts(request):
     prosthodonticss = Prosthodontics.objects.none()
     periodontologys = Periodontology.objects.none()
     pedos = Pedo.objects.none()
+    surgerys = Surgery.objects.none()
 
     if query:
         exos = Exo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
@@ -312,6 +313,7 @@ def search_debts(request):
         prosthodonticss = Prosthodontics.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         periodontologys = Periodontology.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         pedos = Pedo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        surgerys = Surgery.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
 
     search_results = []
 
@@ -335,6 +337,8 @@ def search_debts(request):
         search_results.append(('Periodontology', periodontologys))
     if pedos.exists():
         search_results.append(('Pedo', pedos))
+    if surgerys.exists():
+            search_results.append(('Surgery', surgerys))
     context = {
         'query': query,
         'search_results': search_results,
@@ -541,6 +545,7 @@ def all_debts(request):
     orthos = Ortho.objects.none()
     periodontologys = Periodontology.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
+    surgerys = Surgery.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -560,6 +565,7 @@ def all_debts(request):
         orthos = Ortho.objects.filter(date_range_filter & doctor_filter & Q(visits_id__isnull=True))
         periodontologys = Periodontology.objects.filter(date_range_filter & doctor_filter)
         prosthodonticss = Prosthodontics.objects.filter(date_range_filter & doctor_filter)
+        surgerys = Surgery.objects.filter(date_range_filter & doctor_filter)
 
     search_results = []
 
@@ -583,6 +589,9 @@ def all_debts(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
+    if surgerys.exists():
+            search_results.append(('Surgery', surgerys))
+
 
     total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_filling = fillings.aggregate(center_share=Sum('center_share'))['center_share'] or 0
@@ -594,6 +603,7 @@ def all_debts(request):
     total_ortho = orthos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_periodontology = periodontologys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_prosthodontics = prosthodonticss.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_surgery = surgerys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
     total_exo1 = exos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_filling1 = fillings.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
@@ -605,7 +615,31 @@ def all_debts(request):
     total_ortho1 = orthos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_surgery1 = surgerys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
+    total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_pedo2 = pedos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_crown2 = crowns.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_veneer2 = veneers.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_oralSurgery2 = oralSurgery.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_endo2 = endos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho2 = orthos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_surgery2 = surgerys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
+    total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
+    total_pedo3 = pedos.aggregate(price=Sum('price'))['price'] or 0
+    total_crown3 = crowns.aggregate(price=Sum('price'))['price'] or 0
+    total_veneer3 = veneers.aggregate(price=Sum('price'))['price'] or 0
+    total_oralSurgery3 = oralSurgery.aggregate(price=Sum('price'))['price'] or 0
+    total_endo3 = endos.aggregate(price=Sum('price'))['price'] or 0
+    total_ortho3 = orthos.aggregate(price=Sum('price'))['price'] or 0
+    total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
+    total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
+    total_surgery3 = surgerys.aggregate(price=Sum('price'))['price'] or 0
     # Calculate total paid for each type
     paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -617,16 +651,23 @@ def all_debts(request):
     paid_ortho = orthos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_periodontology = periodontologys.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = prosthodonticss.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_surgery = surgerys.aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = sum(
         [total_exo, total_filling, total_pedo, total_crown, total_veneer, total_oralSurgery, total_endo, total_ortho,
-         total_periodontology, total_prosthodontics])
+         total_periodontology, total_prosthodontics, total_surgery])
     total_price_t1 = sum(
         [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
-         total_ortho1, total_periodontology1, total_prosthodontics1])
+         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1])
+    total_price_t2 = sum(
+        [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
+         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2])
+    total_price_t3 = sum(
+        [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
+         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3])
     total_paid_t = sum(
         [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
-         paid_periodontology, paid_prosthodontics])
-    remaining = total_price_t - total_paid_t
+         paid_periodontology, paid_prosthodontics, paid_surgery])
+    remaining = total_price_t2 - total_paid_t
 
     context = {
         'form': form,
@@ -641,6 +682,7 @@ def all_debts(request):
         'total_ortho': total_ortho,
         'total_periodontology': total_periodontology,
         'total_prosthodontics': total_prosthodontics,
+        'total_surgery': total_surgery,
         'total_exo1': total_exo1,
         'total_filling1': total_filling1,
         'total_pedo1': total_pedo1,
@@ -651,6 +693,29 @@ def all_debts(request):
         'total_ortho1': total_ortho1,
         'total_periodontology1': total_periodontology1,
         'total_prosthodontics1': total_prosthodontics1,
+        'total_surgery1': total_surgery1,
+        'total_exo2': total_exo2,
+        'total_filling2': total_filling2,
+        'total_pedo2': total_pedo2,
+        'total_crown2': total_crown2,
+        'total_veneer2': total_veneer2,
+        'total_oralSurgery2': total_oralSurgery2,
+        'total_endo2': total_endo2,
+        'total_ortho2': total_ortho2,
+        'total_periodontology2': total_periodontology2,
+        'total_prosthodontics2': total_prosthodontics2,
+        'total_surgery2': total_surgery2,
+        'total_exo3': total_exo3,
+        'total_filling3': total_filling3,
+        'total_pedo3': total_pedo3,
+        'total_crown3': total_crown3,
+        'total_veneer3': total_veneer3,
+        'total_oralSurgery3': total_oralSurgery3,
+        'total_endo3': total_endo3,
+        'total_ortho3': total_ortho3,
+        'total_periodontology3': total_periodontology3,
+        'total_prosthodontics3': total_prosthodontics3,
+        'total_surgery3': total_surgery3,
         'paid_exo': paid_exo,
         'paid_filling': paid_filling,
         'paid_pedo': paid_pedo,
@@ -661,8 +726,11 @@ def all_debts(request):
         'paid_ortho': paid_ortho,
         'paid_periodontology': paid_periodontology,
         'paid_prosthodontics': paid_prosthodontics,
+        'paid_surgery': paid_surgery,
         'total_price_t': total_price_t,
         'total_price_t1': total_price_t1,
+        'total_price_t2': total_price_t2,
+        'total_price_t3': total_price_t3,
         'total_paid_t': total_paid_t,
         'remaining': remaining,
         'start_date': start_date,  # Add this line
@@ -764,6 +832,28 @@ def earnings(request):
     total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
+    total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_pedo2 = pedos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_crown2 = crowns.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_veneer2 = veneers.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_oralSurgery2 = oralSurgery.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_endo2 = endos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho2 = orthos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
+    total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
+    total_pedo3 = pedos.aggregate(price=Sum('price'))['price'] or 0
+    total_crown3 = crowns.aggregate(price=Sum('price'))['price'] or 0
+    total_veneer3 = veneers.aggregate(price=Sum('price'))['price'] or 0
+    total_oralSurgery3 = oralSurgery.aggregate(price=Sum('price'))['price'] or 0
+    total_endo3 = endos.aggregate(price=Sum('price'))['price'] or 0
+    total_ortho3 = orthos.aggregate(price=Sum('price'))['price'] or 0
+    total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
+    total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
+
     # Calculate total paid for each type
     paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -781,10 +871,16 @@ def earnings(request):
     total_price_t1 = sum(
         [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
          total_ortho1, total_periodontology1, total_prosthodontics1])
+    total_price_t2 = sum(
+        [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
+         total_ortho2, total_periodontology2, total_prosthodontics2])
+    total_price_t3 = sum(
+        [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
+         total_ortho3, total_periodontology3, total_prosthodontics3])
     total_paid_t = sum(
         [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
          paid_periodontology, paid_prosthodontics])
-    remaining = total_price_t - total_paid_t
+    remaining = total_price_t2 - total_paid_t
 
     context = {
         'form': form,
@@ -809,6 +905,26 @@ def earnings(request):
         'total_ortho1': total_ortho1,
         'total_periodontology1': total_periodontology1,
         'total_prosthodontics1': total_prosthodontics1,
+        'total_exo2': total_exo2,
+        'total_filling2': total_filling2,
+        'total_pedo2': total_pedo2,
+        'total_crown2': total_crown2,
+        'total_veneer2': total_veneer2,
+        'total_oralSurgery2': total_oralSurgery2,
+        'total_endo2': total_endo2,
+        'total_ortho2': total_ortho2,
+        'total_periodontology2': total_periodontology2,
+        'total_prosthodontics2': total_prosthodontics2,
+        'total_exo3': total_exo3,
+        'total_filling3': total_filling3,
+        'total_pedo3': total_pedo3,
+        'total_crown3': total_crown3,
+        'total_veneer3': total_veneer3,
+        'total_oralSurgery3': total_oralSurgery3,
+        'total_endo3': total_endo3,
+        'total_ortho3': total_ortho3,
+        'total_periodontology3': total_periodontology3,
+        'total_prosthodontics3': total_prosthodontics3,
         'paid_exo': paid_exo,
         'paid_filling': paid_filling,
         'paid_pedo': paid_pedo,
@@ -821,6 +937,8 @@ def earnings(request):
         'paid_prosthodontics': paid_prosthodontics,
         'total_price_t': total_price_t,
         'total_price_t1': total_price_t1,
+        'total_price_t2': total_price_t2,
+        'total_price_t3': total_price_t3,
         'total_paid_t': total_paid_t,
         'remaining': remaining,
         'start_date': start_date,  # Add this line
@@ -1803,11 +1921,7 @@ def add_oral_surgery(request, id):
                 oral_surgery.implant = Implant.objects.get(implant_name=implant_name)
                 oral_surgery.idReception1_id = id
 
-                no_unite = form.cleaned_data['no_unite']
                 price = form.cleaned_data['price']
-                total_price = price
-                oral_surgery.total_price = total_price
-
                 oral_surgery.idReception_id = reception.idReception_id
                 oral_surgery.name = reception.name
                 oral_surgery.phone = reception.phone
@@ -1830,37 +1944,48 @@ def add_oral_surgery(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
                 print(f"Original price: {price}")
                 print(f"Price of lab: {price_lab}")
                 print(f"Adjusted price: {adjusted_price}")
 
-                if discount_option == 'Without discount':
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
 
                 print(f"Doctor share: {doctor_share}")
                 print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
 
                 # Assign Decimal values to model fields
                 oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
                 oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+                oral_surgery.total_price = total_price.quantize(Decimal('0.01'))  # Save price_lab as Decimal
 
                 oral_surgery.save()
 
@@ -1912,7 +2037,7 @@ def add_oral_surgery(request, id):
             orall.lr = orall.lr.replace("'", "")
         if orall.ll:
             orall.ll = orall.ll.replace("'", "")
-        orall.total_price = orall.price
+        orall.total_price = orall.total_price
         orall.save()
         photos = orall.photo_set.all()
         photos_list.append(photos)
@@ -1978,28 +2103,25 @@ def search_oral(request):
 
 def oral_edit(request, id):
     orall = get_object_or_404(OralSurgery, id=id)
-    photos = Photo.objects.filter(oral_surgery_instance=orall)  # Fetch photos associated with the oral surgery instance
+    photos = Photo.objects.filter(oral_surgery_instance=orall)
 
     if request.method == 'POST':
         form = OralSurgeryForm(request.POST, request.FILES, instance=orall)
         if form.is_valid():
+            print("Form is valid")
             implant_name = form.cleaned_data['implant']
             price = form.cleaned_data['price']
             implant = Implant.objects.get(implant_name=implant_name)
             orall.implant = implant
-            # Get the form data
             form_data = form.cleaned_data
-            # Assign the name of the selected Lab instance to lab_name
-            lab_instance = form.cleaned_data['lab_name']
-            form_data['lab_name'] = lab_instance.lab_name if lab_instance else None
 
-            # Remove single quotes in certain fields
+            # Sanitize the fields by removing single quotes
             for field in ['ur', 'ul', 'lr', 'll']:
                 form_data[field] = form_data[field].replace("'", "") if form_data[field] else None
 
-            # Update the 'OralSurgery' instance with the cleaned form data
             for field, value in form_data.items():
                 setattr(orall, field, value)
+
             try:
                 doctor = Doctors.objects.get(id=orall.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
@@ -2011,7 +2133,6 @@ def oral_edit(request, id):
             discount_option = form.cleaned_data['discount_option']
             price_lab = form.cleaned_data.get('price_lab')
 
-            # Adjust the price if price_lab is not null
             if price_lab is not None:
                 try:
                     price_lab_decimal = Decimal(price_lab)
@@ -2021,48 +2142,57 @@ def oral_edit(request, id):
             else:
                 adjusted_price = price
 
-            print(f"Original price: {price}")
-            print(f"Price of lab: {price_lab}")
-            print(f"Adjusted price: {adjusted_price}")
-
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
-            print(f"Doctor share: {doctor_share}")
-            print(f"Center share: {center_share}")
-
-            # Assign Decimal values to model fields
             orall.doctor_share = doctor_share.quantize(Decimal('0.01'))
             orall.center_share = center_share.quantize(Decimal('0.01'))
-            # Save the updated 'OralSurgery' instance
+            orall.total_price = total_price.quantize(Decimal('0.01'))
+
+            # Assign the lab_name value properly
+            lab_name = form.cleaned_data.get('lab_name')
+            if lab_name:
+                orall.lab_name = lab_name  # Assuming lab_name is already a string
             orall.save()
-            # Update the associated photos
-            photos = request.FILES.getlist('exo_images')
+
+            photos = request.FILES.getlist('oral_images')
             for photo in photos:
                 Photo.objects.create(oral_surgery_instance=orall, image=photo)
-            return redirect('add-oral-surgery', id=orall.idReception1_id)  # Redirect to a success view after saving
+
+            return redirect('add-oral-surgery', id=orall.idReception1_id)
+        else:
+            print("Form is not valid")
+            print(form.errors)
+
     else:
-        # Define a default value for first_visit when the request method is not POST
+        # Sanitize initial values for the form fields
         first_visit = orall.first_visit if orall.first_visit is not None else None
-        # Define a default value for second_visit when the request method is not POST
         second_visit = orall.second_visit if orall.second_visit is not None else None
         third_visit = orall.third_visit if orall.third_visit is not None else None
         fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
         fifth_visit = orall.fifth_visit if orall.fifth_visit is not None else None
-        # Remove first and last characters from certain fields
         ur = orall.ur[1:-1] if orall.ur else None
         ul = orall.ul[1:-1] if orall.ul else None
         lr = orall.lr[1:-1] if orall.lr else None
@@ -2080,7 +2210,8 @@ def oral_edit(request, id):
             'll': ll,
         })
 
-    return render(request, 'update_oral_surgery.html', {'form': form, 'orall': orall})
+    labs = Lab.objects.all()
+    return render(request, 'update_oral_surgery.html', {'form': form, 'orall': orall, 'labs': labs,'photos':photos})
 
 
 def oral_visit(request, id):
@@ -2189,8 +2320,6 @@ def add_ortho(request, id):
 
                 # Calculate total price and shares
                 price = form.cleaned_data['price']
-                total_price = Decimal(price)  # Convert price to Decimal
-                ortho.total_price = total_price
 
                 try:
                     doctor = Doctors.objects.get(id=reception.doctor_id)
@@ -2206,29 +2335,46 @@ def add_ortho(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
-                if discount_option == 'Without discount':
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
 
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
                 # Assign Decimal values to model fields
                 ortho.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 ortho.center_share = center_share.quantize(Decimal('0.01'))
+                ortho.total_price = total_price.quantize(Decimal('0.01'))
                 ortho.price_lab = price_lab_decimal  # Save price_lab as Decimal
                 ortho.save()
 
@@ -2279,11 +2425,15 @@ def add_ortho(request, id):
 
     # Retrieve other related data
     appointments = Reception1.objects.all().order_by('-id')
+    # Format total prices and prices
+    formatted_total_prices = ["{:,}".format(orall.total_price) if orall.total_price is not None else None for orall in oralls]
     formatted_prices = ["{:,}".format(orall.price) if orall.price is not None else None for orall in oralls]
 
     # Ensure to handle the case where oralls might be empty
+    orall = None
     if oralls.exists():
-        orall = oralls.first()
+        orall = oralls.first()  # Get the first Orall instance if any
+
 
     return render(request, 'ortho/ortho.html', {
         'form': form,
@@ -2292,6 +2442,7 @@ def add_ortho(request, id):
         'oralls': oralls,
         'id': id,
         'photos_list': photos_list,
+        'formatted_total_prices': formatted_total_prices,
         'formatted_prices': formatted_prices,
         'disable_submit': disable_submit,
         'orall': orall,  # Ensure to pass the last orall outside the loop correctly
@@ -2398,6 +2549,8 @@ def ortho_edit(request, id):
             price = Decimal(price)
             ortho.price = price
 
+
+
             try:
                 doctor = Doctors.objects.get(id=orall.idReception1.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
@@ -2406,34 +2559,47 @@ def ortho_edit(request, id):
                 proportion_doctor = Decimal('0')
                 proportion_center = Decimal('0')
 
+            # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
                 adjusted_price = price - price_lab_decimal
             except InvalidOperation:
                 adjusted_price = price
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = Decimal('0')
             else:
+                # Default case if no valid discount_option is selected
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
+            # Set formatted values
             ortho.doctor_share = doctor_share.quantize(Decimal('0.01'))
             ortho.center_share = center_share.quantize(Decimal('0.01'))
+            ortho.total_price = total_price.quantize(Decimal('0.01'))
             ortho.price_lab = price_lab_decimal
 
             # Handle lab_name separately
-            selected_lab = form.cleaned_data['lab_name']
+            selected_lab = form.cleaned_data.get('lab_name')
             if selected_lab:
                 ortho.lab = selected_lab  # Set the foreign key to the selected Lab
                 ortho.lab_name = selected_lab.lab_name  # Save the lab_name as well
@@ -2451,7 +2617,8 @@ def ortho_edit(request, id):
     else:
         form = OrthoForm(instance=orall)
 
-    return render(request, 'ortho/update_ortho.html', {'form': form, 'orall': orall, 'photos': photos})
+    labs = Lab.objects.all()
+    return render(request, 'ortho/update_ortho.html', {'form': form, 'orall': orall, 'photos': photos, 'labs': labs})
 
 
 def ortho_edit_visit(request, id):
@@ -2742,8 +2909,6 @@ def exo(request, id):
                 oral_surgery.idReception1_id = id
 
                 price = form.cleaned_data['price']
-                total_price = Decimal(price)  # Convert price to Decimal
-                oral_surgery.total_price = total_price
                 oral_surgery.name = reception.name
                 oral_surgery.phone = reception.phone
                 oral_surgery.gender = reception.gender
@@ -2766,37 +2931,51 @@ def exo(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
                 print(f"Original price: {price}")
                 print(f"Price of lab: {price_lab}")
                 print(f"Adjusted price: {adjusted_price}")
 
-                if discount_option == 'Without discount':
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
 
                 print(f"Doctor share: {doctor_share}")
                 print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
 
                 # Assign Decimal values to model fields
                 oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
-                oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+                oral_surgery.price_lab = price_lab_decimal.quantize(Decimal('0.01'))
+                oral_surgery.total_price = total_price.quantize(Decimal('0.01'))  # Save total_price as Decimal
+
+                # Debugging statement to confirm the assignment
+                print(f"Total price after quantize: {oral_surgery.total_price}")
 
                 oral_surgery.save()
 
@@ -2852,7 +3031,7 @@ def exo(request, id):
                 exoo.simpleexo = exoo.simpleexo.replace("'", "")
             if exoo.complcated:
                 exoo.complcated = exoo.complcated.replace("'", "")
-            exoo.total_price = exoo.price
+            exoo.total_price = exoo.total_price
             exoo.save()
             photos = exoo.photo_set.all()
             photos_list.append(photos)
@@ -2884,14 +3063,13 @@ def exo(request, id):
 
 def exo_edit(request, id):
     exoo = get_object_or_404(Exo, id=id)
-    photos = Photo.objects.filter(exo_instance=exoo)  # Fetch photos associated with the oral surgery instance
+    photos = Photo.objects.filter(exo_instance=exoo)
+
     if request.method == 'POST':
         form = ExoForm(request.POST, request.FILES, instance=exoo)
         if form.is_valid():
             exoo = form.save(commit=False)
             price = form.cleaned_data['price']
-            total_price = Decimal(price)
-            exoo.total_price = total_price
 
             try:
                 doctor = Doctors.objects.get(id=exoo.doctor_id)
@@ -2902,47 +3080,44 @@ def exo_edit(request, id):
                 proportion_center = Decimal('0')
 
             discount_option = form.cleaned_data['discount_option']
-            price_lab = form.cleaned_data.get('price_lab')
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
 
-            # Adjust the price if price_lab is not null
-            if price_lab is not None:
-                try:
-                    price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = price - price_lab_decimal
-                except InvalidOperation:
-                    adjusted_price = price
-            else:
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
                 adjusted_price = price
 
-            print(f"Original price: {price}")
-            print(f"Price of lab: {price_lab}")
-            print(f"Adjusted price: {adjusted_price}")
-
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
-            print(f"Doctor share: {doctor_share}")
-            print(f"Center share: {center_share}")
-
-            # Assign Decimal values to model fields
             exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
             exoo.center_share = center_share.quantize(Decimal('0.01'))
+            exoo.total_price = total_price.quantize(Decimal('0.01'))
             exoo.save()
 
-            # Update the associated photos
             photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(exo_instance=exoo, image=photo)
@@ -2950,29 +3125,9 @@ def exo_edit(request, id):
             return redirect('exo', id=exoo.idReception1_id)
     else:
         form = ExoForm(instance=exoo)
-        try:
-            exoo = Exo.objects.get(id=id)
-            photos = exoo.photo_set.all()
-            # Sanitize field values in the instance
-            if exoo.ur:
-                exoo.ur = exoo.ur.replace("'", "")
-            if exoo.ul:
-                exoo.ul = exoo.ul.replace("'", "")
-            if exoo.lr:
-                exoo.lr = exoo.lr.replace("'", "")
-            if exoo.ll:
-                exoo.ll = exoo.ll.replace("'", "")
-            if exoo.exoby:
-                exoo.exoby = exoo.exoby.replace("'", "")
-            if exoo.simpleexo:
-                exoo.simpleexo = exoo.simpleexo.replace("'", "")
-            if exoo.complcated:
-                exoo.complcated = exoo.complcated.replace("'", "")
-        except Exo.DoesNotExist:
-            exoo = None
-            photos = None
 
-    return render(request, 'exo/exo_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
+    labs = Lab.objects.all()
+    return render(request, 'exo/exo_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos, 'labs': labs})
 
 
 def remove_photo(request, photo_id):
@@ -3011,28 +3166,39 @@ def prosthodontics_edit(request, id):
             print(f"Price of lab: {price_lab}")
             print(f"Adjusted price: {adjusted_price}")
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
             print(f"Doctor share: {doctor_share}")
             print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
             form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.total_price = total_price.quantize(Decimal('0.01'))
             form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
             # Handle lab_name separately
             selected_lab = form.cleaned_data['lab_name']
@@ -3072,8 +3238,8 @@ def prosthodontics_edit(request, id):
         except Prosthodontics.DoesNotExist:
             exoo = None
             photos = None
-
-    return render(request, 'prosthodontics/prosthodontics_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
+    labs = Lab.objects.all()
+    return render(request, 'prosthodontics/prosthodontics_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos, 'labs': labs})
 
 
 def remove_photo_prosthodontics(request, photo_id):
@@ -3115,8 +3281,8 @@ def prosthodontics(request, id):
             oral_surgery.idReception1_id = id
 
             price = form.cleaned_data['price']
-            total_price = Decimal(price)  # Convert price to Decimal
-            oral_surgery.total_price = total_price
+            price = Decimal(price)  # Convert price to Decimal
+
 
             oral_surgery.idReception_id = reception.idReception_id
             oral_surgery.name = reception.name
@@ -3126,10 +3292,6 @@ def prosthodontics(request, id):
             oral_surgery.educational_id = reception.educational_id
             oral_surgery.doctor_id = reception.doctor_id
 
-            # Calculate total price and shares
-            price = form.cleaned_data['price']
-            total_price = Decimal(price)  # Convert price to Decimal
-            oral_surgery.total_price = total_price
 
             try:
                 doctor = Doctors.objects.get(id=reception.doctor_id)
@@ -3145,29 +3307,47 @@ def prosthodontics(request, id):
             # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
+                adjusted_price = price - price_lab_decimal
             except InvalidOperation:
-                adjusted_price = total_price
+                adjusted_price = price
 
-            if discount_option == 'Without discount':
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
             oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+            oral_surgery.total_price = total_price.quantize(Decimal('0.01'))
             oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
 
             oral_surgery.save()
@@ -3227,7 +3407,7 @@ def prosthodontics(request, id):
             exoo.lower = exoo.lower.replace("'", "")
         if exoo.partial:
             exoo.partial = exoo.partial.replace("'", "")
-        exoo.total_price = exoo.price
+        exoo.total_price = exoo.total_price
         exoo.save()
         photos = exoo.photo_set.all()
         photos_list.append(photos)
@@ -3306,8 +3486,6 @@ def periodontology(request, id):
                 oral_surgery.idReception1_id = id
 
                 price = form.cleaned_data['price']
-                total_price = price
-                oral_surgery.total_price = total_price
                 oral_surgery.name = reception.name
                 oral_surgery.phone = reception.phone
                 oral_surgery.gender = reception.gender
@@ -3329,37 +3507,48 @@ def periodontology(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
                 print(f"Original price: {price}")
                 print(f"Price of lab: {price_lab}")
                 print(f"Adjusted price: {adjusted_price}")
 
-                if discount_option == 'Without discount':
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
 
                 print(f"Doctor share: {doctor_share}")
                 print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
 
                 # Assign Decimal values to model fields
                 oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
                 oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
+                oral_surgery.total_price = total_price.quantize(Decimal('0.01'))
                 oral_surgery.save()
 
                 # Save photos associated with the oral_surgery instance
@@ -3415,7 +3604,7 @@ def periodontology(request, id):
     for exoo in exooes:
         if exoo.type:
             exoo.type = exoo.type.replace("'", "")
-        exoo.total_price = exoo.price
+        exoo.total_price = exoo.total_price
         exoo.save()
         photos = exoo.photo_set.all()
         photos_list.append(photos)
@@ -3438,28 +3627,28 @@ def periodontology(request, id):
 
 def periodontology_edit(request, id):
     exoo = get_object_or_404(Periodontology, id=id)
-    photos = Photo.objects.filter(periodontology_instance=exoo)  # Fetch photos associated with the oral surgery instance
+    photos = Photo.objects.filter(
+        periodontology_instance=exoo)  # Fetch photos associated with the periodontology instance
+
     if request.method == 'POST':
         form = PeriodontologyForm(request.POST, request.FILES, instance=exoo)
         if form.is_valid():
             price = form.cleaned_data['price']
-            # Get the form data
-            form_data = form.cleaned_data
-            # Assign the name of the selected Lab instance to lab_name
             lab_instance = form.cleaned_data['lab_name']
+            form_data = form.cleaned_data
             form_data['lab_name'] = lab_instance.lab_name if lab_instance else None
+
             try:
                 doctor = Doctors.objects.get(id=exoo.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
                 proportion_center = Decimal(doctor.proportion_center) / 100
-            except (ObjectDoesNotExist, InvalidOperation):
+            except (Doctors.DoesNotExist, InvalidOperation):
                 proportion_doctor = Decimal('0')
                 proportion_center = Decimal('0')
 
             discount_option = form.cleaned_data['discount_option']
             price_lab = form.cleaned_data.get('price_lab')
 
-            # Adjust the price if price_lab is not null
             if price_lab is not None:
                 try:
                     price_lab_decimal = Decimal(price_lab)
@@ -3473,32 +3662,40 @@ def periodontology_edit(request, id):
             print(f"Price of lab: {price_lab}")
             print(f"Adjusted price: {adjusted_price}")
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
             print(f"Doctor share: {doctor_share}")
             print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
-            # Assign Decimal values to model fields
             exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
             exoo.center_share = center_share.quantize(Decimal('0.01'))
-            # Save the updated 'OralSurgery' instance
+            exoo.total_price = total_price.quantize(Decimal('0.01'))
             form.save()
 
-            # Update the associated photos
             photos = request.FILES.getlist('exo_images')
             for photo in photos:
                 Photo.objects.create(periodontology_instance=exoo, image=photo)
@@ -3509,14 +3706,15 @@ def periodontology_edit(request, id):
         try:
             exoo = Periodontology.objects.get(idReception1=id)
             photos = exoo.photo_set.all()
-            # Sanitize field values in the instance
             if exoo.type:
                 exoo.type = exoo.type.replace("'", "")
         except Periodontology.DoesNotExist:
             exoo = None
             photos = None
 
-    return render(request, 'periodontology/periodontology_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
+    labs = Lab.objects.all()  # Get all labs
+    return render(request, 'periodontology/periodontology_edit.html',
+                  {'form': form, 'id': id, 'exoo': exoo, 'labs': labs, 'photos': photos})
 
 
 def periodontology_reception(request):
@@ -3856,8 +4054,7 @@ def crown(request, id):
 
                 # Calculate total price and shares
                 price = form.cleaned_data['price']
-                total_price = Decimal(price)  # Convert price to Decimal
-                crown_instance.total_price = total_price
+                price = Decimal(price)  # Convert price to Decimal
 
                 try:
                     doctor = Doctors.objects.get(id=reception.doctor_id)
@@ -3873,29 +4070,47 @@ def crown(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
-                if discount_option == 'Without discount':
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
 
                 # Assign Decimal values to model fields
                 crown_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 crown_instance.center_share = center_share.quantize(Decimal('0.01'))
+                crown_instance.total_price = total_price.quantize(Decimal('0.01'))
                 crown_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
 
                 crown_instance.save()
@@ -3964,9 +4179,7 @@ def crown_edit(request, id):
         if form.is_valid():
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = price
 
-            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             try:
                 doctor = Doctors.objects.get(id=pi.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
@@ -3981,37 +4194,38 @@ def crown_edit(request, id):
             # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
+                adjusted_price = price - price_lab_decimal
             except InvalidOperation:
-                adjusted_price = total_price
+                adjusted_price = price
 
-            print(f"Original price: {price}")
-            print(f"Price of lab: {price_lab}")
-            print(f"Adjusted price: {adjusted_price}")
-
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
-            print(f"Doctor share: {doctor_share}")
-            print(f"Center share: {center_share}")
-
-            # Assign Decimal values to model fields
             pi.doctor_share = doctor_share.quantize(Decimal('0.01'))
             pi.center_share = center_share.quantize(Decimal('0.01'))
-            pi.price_lab = price_lab_decimal  # Save price_lab as Decimal
+            pi.total_price = total_price.quantize(Decimal('0.01'))
             # Handle lab_name separately
             selected_lab = form.cleaned_data['lab_name']
             if selected_lab:
@@ -4027,8 +4241,8 @@ def crown_edit(request, id):
             return redirect('crown', id=pi.idReception1_id)
     else:
         form = CrownForm(instance=pi)
-
-    return render(request, 'conservation/crown/crown_edit.html', {'form': form, 'pi': pi, 'photos': photos})
+    labs = Lab.objects.all()
+    return render(request, 'conservation/crown/crown_edit.html', {'form': form, 'pi': pi, 'photos': photos, 'labs': labs})
 
 
 def remove_photo_crown(request, photo_id):
@@ -4103,8 +4317,8 @@ def veneer(request, id):
 
                 # Calculate total price and shares
                 price = form.cleaned_data['price']
-                total_price = Decimal(price)  # Convert price to Decimal
-                veneer_instance.total_price = total_price
+                price = Decimal(price)  # Convert price to Decimal
+
 
                 try:
                     doctor = Doctors.objects.get(id=reception.doctor_id)
@@ -4120,29 +4334,47 @@ def veneer(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
-                if discount_option == 'Without discount':
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
 
                 # Assign Decimal values to model fields
                 veneer_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 veneer_instance.center_share = center_share.quantize(Decimal('0.01'))
+                veneer_instance.total_price = total_price.quantize(Decimal('0.01'))
                 veneer_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
 
                 veneer_instance.save()
@@ -4215,9 +4447,7 @@ def veneer_edit(request, id):
         if form.is_valid():
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = price
 
-            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
             try:
                 doctor = Doctors.objects.get(id=pi.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
@@ -4232,36 +4462,47 @@ def veneer_edit(request, id):
             # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
+                adjusted_price = price - price_lab_decimal
             except InvalidOperation:
-                adjusted_price = total_price
+                adjusted_price = price
 
             print(f"Original price: {price}")
             print(f"Price of lab: {price_lab}")
             print(f"Adjusted price: {adjusted_price}")
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
             print(f"Doctor share: {doctor_share}")
             print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
             form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.total_price = total_price.quantize(Decimal('0.01'))
             form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
             form.save()
 
@@ -4273,8 +4514,8 @@ def veneer_edit(request, id):
             return redirect('veneer', id=pi.idReception1_id)
     else:
         form = VeneerForm(instance=pi)
-
-    return render(request, 'conservation/veneer/veneer_edit.html', {'form': form, 'pi': pi, 'photos': photos})
+    labs = Lab.objects.all()
+    return render(request, 'conservation/veneer/veneer_edit.html', {'form': form, 'pi': pi, 'photos': photos, 'labs': labs})
 
 
 def delete_veneer(request, id):
@@ -4322,8 +4563,6 @@ def filling(request, id):
             filling_instance.idReception1_id = id
             no_prepare = form.cleaned_data['no_prepare']
             price = form.cleaned_data['price']
-            total_price = price
-            filling_instance.total_price = total_price
             filling_instance.idReception_id = reception.idReception_id
             filling_instance.name = reception.name
             filling_instance.phone = reception.phone
@@ -4346,36 +4585,47 @@ def filling(request, id):
             # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
+                adjusted_price = price - price_lab_decimal
             except InvalidOperation:
-                adjusted_price = total_price
+                adjusted_price = price
 
             print(f"Original price: {price}")
             print(f"Price of lab: {price_lab}")
             print(f"Adjusted price: {adjusted_price}")
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
             print(f"Doctor share: {doctor_share}")
             print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             filling_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
             filling_instance.center_share = center_share.quantize(Decimal('0.01'))
+            filling_instance.total_price = total_price.quantize(Decimal('0.01'))
             filling_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
             filling_instance.save()
 
@@ -4465,8 +4715,8 @@ def pedo(request, id):
                 pedo_instance.idReception1_id = id
 
                 price = form.cleaned_data['price']
-                total_price = Decimal(price)  # Convert price to Decimal
-                pedo_instance.total_price = total_price
+                price = Decimal(price)  # Convert price to Decimal
+                pedo_instance.price = price
                 pedo_instance.name = reception.name
                 pedo_instance.phone = reception.phone
                 pedo_instance.gender = reception.gender
@@ -4489,37 +4739,48 @@ def pedo(request, id):
                 # Adjust the price if price_lab is not null
                 try:
                     price_lab_decimal = Decimal(price_lab)
-                    adjusted_price = total_price - price_lab_decimal
+                    adjusted_price = price - price_lab_decimal
                 except InvalidOperation:
-                    adjusted_price = total_price
+                    adjusted_price = price
 
                 print(f"Original price: {price}")
                 print(f"Price of lab: {price_lab}")
                 print(f"Adjusted price: {adjusted_price}")
 
-                if discount_option == 'Without discount':
+                if discount_option == 'Without Discount':
                     doctor_share = adjusted_price * proportion_doctor
                     center_share = adjusted_price * proportion_center
+                    total_price = price
                 elif discount_option == 'None':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price
-                elif discount_option == 'Quota discount':
+                    total_price = center_share
+                elif discount_option == 'With Discount':
                     doctor_share = Decimal('0')
                     center_share = adjusted_price * proportion_center
-                elif discount_option == 'Full discount':
-                    doctor_share = -2 * (adjusted_price * proportion_doctor)
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
                     center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
                 else:
                     doctor_share = Decimal('0')
                     center_share = Decimal('0')
+                    total_price = Decimal('0')
 
                 print(f"Doctor share: {doctor_share}")
                 print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
 
                 # Assign Decimal values to model fields
                 pedo_instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
                 pedo_instance.center_share = center_share.quantize(Decimal('0.01'))
                 pedo_instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+                pedo_instance.total_price = total_price.quantize(Decimal('0.01'))
 
                 pedo_instance.save()
 
@@ -4646,78 +4907,7 @@ def filling_edit(request, id):
         form = FillingForm(request.POST, instance=pi)
         if form.is_valid():
             price = form.cleaned_data['price']
-            total_price = price
 
-            form.instance.total_price = total_price  # Set the 'total_price' field of the form instance
-            try:
-                doctor = Doctors.objects.get(id=pi.doctor_id)
-                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
-                proportion_center = Decimal(doctor.proportion_center) / 100
-            except (ObjectDoesNotExist, InvalidOperation):
-                proportion_doctor = Decimal('0')
-                proportion_center = Decimal('0')
-
-            discount_option = form.cleaned_data['discount_option']
-            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
-
-            # Adjust the price if price_lab is not null
-            try:
-                price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
-            except InvalidOperation:
-                adjusted_price = total_price
-
-            print(f"Original price: {price}")
-            print(f"Price of lab: {price_lab}")
-            print(f"Adjusted price: {adjusted_price}")
-
-            if discount_option == 'Without discount':
-                doctor_share = adjusted_price * proportion_doctor
-                center_share = adjusted_price * proportion_center
-            elif discount_option == 'None':
-                doctor_share = Decimal('0')
-                center_share = adjusted_price
-            elif discount_option == 'Quota discount':
-                doctor_share = Decimal('0')
-                center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
-                center_share = Decimal('0')
-            else:
-                doctor_share = Decimal('0')
-                center_share = Decimal('0')
-
-            print(f"Doctor share: {doctor_share}")
-            print(f"Center share: {center_share}")
-
-            # Assign Decimal values to model fields
-            form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
-            form.instance.center_share = center_share.quantize(Decimal('0.01'))
-            form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
-            form.save()
-
-            # Update the associated photos
-            photos = request.FILES.getlist('exo_images')
-            for photo in photos:
-                Photo.objects.create(filling_instance=pi, image=photo)
-
-            return redirect('filling', id=pi.idReception1_id)
-    else:
-        form = FillingForm(instance=pi)
-
-    return render(request, 'conservation/filling/filling_edit.html', {'form': form, 'pi': pi, 'photos': photos})
-
-def pedo_edit(request, id):
-    pi = Pedo.objects.get(id=id)
-    photos = Photo.objects.filter(pedo_instance=pi)  # Fetch photos associated with the pedo instance
-
-    if request.method == 'POST':
-        form = PedoForm(request.POST, instance=pi)
-        if form.is_valid():
-            price = form.cleaned_data['price']
-            total_price = price
-
-            form.instance.total_price = total_price
             try:
                 doctor = Doctors.objects.get(id=pi.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
@@ -4740,29 +4930,119 @@ def pedo_edit(request, id):
             print(f"Price of lab: {price_lab}")
             print(f"Adjusted price: {adjusted_price}")
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
             print(f"Doctor share: {doctor_share}")
             print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
+
+            # Assign Decimal values to model fields
+            form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            form.instance.center_share = center_share.quantize(Decimal('0.01'))
+            form.instance.total_price = total_price.quantize(Decimal('0.01'))
+            form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+            form.save()
+
+            # Update the associated photos
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(filling_instance=pi, image=photo)
+
+            return redirect('filling', id=pi.idReception1_id)
+    else:
+        form = FillingForm(instance=pi)
+    labs = Lab.objects.all()
+    return render(request, 'conservation/filling/filling_edit.html', {'form': form, 'pi': pi, 'photos': photos, 'labs': labs})
+
+
+def pedo_edit(request, id):
+    pi = Pedo.objects.get(id=id)
+    photos = Photo.objects.filter(pedo_instance=pi)  # Fetch photos associated with the pedo instance
+
+    if request.method == 'POST':
+        form = PedoForm(request.POST, instance=pi)
+        if form.is_valid():
+            price = form.cleaned_data['price']
+
+            try:
+                doctor = Doctors.objects.get(id=pi.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            # Adjust the price if price_lab is not null
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without Discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+                total_price = price
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+                total_price = center_share
+            elif discount_option == 'With Discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+                total_price = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             form.instance.doctor_share = doctor_share.quantize(Decimal('0.01'))
             form.instance.center_share = center_share.quantize(Decimal('0.01'))
             form.instance.price_lab = price_lab_decimal  # Save price_lab as Decimal
+            form.instance.total_price = total_price.quantize(Decimal('0.01'))
             form.save()
 
             # Update associated photos
@@ -4807,7 +5087,7 @@ def pedo_edit(request, id):
 
     formatted_total_prices = ["{:,.2f}".format(fill.total_price) if fill.total_price is not None else None for fill in fillingg]
     formatted_prices = ["{:,.2f}".format(fill.price) if fill.price is not None else None for fill in fillingg]
-
+    labs = Lab.objects.all()
     return render(request, 'conservation/pedo/pedo_edit.html', {
         'form': form,
         'appointments': appointments,
@@ -4815,6 +5095,7 @@ def pedo_edit(request, id):
         'fillingg': fillingg,
         'id': id,
         'photos': photos,
+        'labs': labs,
         'photos_list': photos_list,
         'formatted_total_prices': formatted_total_prices,
         'formatted_prices': formatted_prices
@@ -4872,15 +5153,15 @@ def add_debt(request, id):
     previous_dates = PaymentHistory.objects.filter(exo_instance=exo_instance)
     previous_date = exo_instance.date
     previous_paid = exo_instance.paid
-    center_share = exo_instance.center_share
+    total_price = exo_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if exo_instance.paid + paid >= center_share:
-            exo_instance.paid = center_share
+        if exo_instance.paid + paid >= total_price:
+            exo_instance.paid = total_price
         else:
             exo_instance.paid += paid  # Increment the paid amount
 
@@ -4888,12 +5169,12 @@ def add_debt(request, id):
 
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(exo_instance=exo_instance, previous_date=date, paid_amount=paid,
-                                         idReception1=exo_instance.idReception1, idReception=exo_instance.idReception, name=exo_instance.name, phone=exo_instance.phone, price=exo_instance.center_share)
+                                         idReception1=exo_instance.idReception1, idReception=exo_instance.idReception, name=exo_instance.name, phone=exo_instance.phone, price=exo_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt.html', {
             'id': id,
@@ -4913,15 +5194,15 @@ def add_debt1(request, id):
     previous_dates = PaymentHistory.objects.filter(exo_instance=exo_instance)
     previous_date = exo_instance.date
     previous_paid = exo_instance.paid
-    center_share = exo_instance.center_share
+    total_price = exo_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if exo_instance.paid + paid >= center_share:
-            exo_instance.paid = center_share
+        if exo_instance.paid + paid >= total_price:
+            exo_instance.paid = total_price
         else:
             exo_instance.paid += paid  # Increment the paid amount
 
@@ -4930,13 +5211,13 @@ def add_debt1(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(exo_instance=exo_instance, previous_date=date, paid_amount=paid,
                                          idReception=exo_instance.idReception, idReception1=exo_instance.idReception1, name=exo_instance.name,
-                                         phone=exo_instance.phone, price=exo_instance.center_share)
+                                         phone=exo_instance.phone, price=exo_instance.total_price)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt.html', {
             'id': id,
@@ -4949,39 +5230,42 @@ def add_debt1(request, id):
 
 def print_exo_debt(request, id):
     debts = PaymentHistory.objects.filter(idReception1=id).values('id', 'previous_date', 'paid_amount')
-    debt1 = Exo.objects.filter(idReception1=id).values_list('id', 'paid', 'center_share')
-    debt2 = Crown.objects.filter(idReception1=id).values_list('id', 'paid', 'center_share')
-    debt3 = Filling.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
-    debt4 = Endo.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
-    debt5 = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).values_list('id', 'paid', 'center_share')
-    debt6 = OralSurgery.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
-    debt7 = Prosthodontics.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
-    debt8 = Periodontology.objects.filter(idReception1=id).values_list('id', 'paid', 'center_share')
-    debt9 = Veneer.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
-    debt10 = Pedo.objects.filter(idReception1=id).values_list('id', 'paid',  'center_share')
-    combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9,debt10)
+    debt1 = Exo.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
+    debt2 = Crown.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
+    debt3 = Filling.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
+    debt4 = Endo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
+    debt5 = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).values_list('id', 'paid', 'total_price')
+    debt6 = OralSurgery.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
+    debt7 = Prosthodontics.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
+    debt8 = Periodontology.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
+    debt9 = Veneer.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
+    debt10 = Pedo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
+    debt11 = Surgery.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
+    combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9,debt10,debt11)
     debtss = PaymentHistory.objects.filter(idReception1=id)
 
     # Calculate the total remaining amount for idReception
-    total_exo = Exo.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_exo = Exo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_filling = Filling.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = Filling.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_pedo = Pedo.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = Pedo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_crown = Crown.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = Crown.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_veneer = Veneer.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = Veneer.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_endo = Endo.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = Endo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_ortho = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
-    total_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
     paid_exo = Exo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
@@ -5003,8 +5287,10 @@ def print_exo_debt(request, id):
 
     paid_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
-    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics+ total_pedo)
-    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_pedo)
+    paid_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics + total_pedo+ total_surgery)
+    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_pedo + paid_surgery)
     total_remaining = total_price - total_paid
 
     context = {
@@ -5020,6 +5306,7 @@ def print_exo_debt(request, id):
         'debt8': debt8,
         'debt9': debt9,
         'debt10': debt10,
+        'debt11': debt11,
         'debtss': debtss,
         'combined_debts': combined_debts,
         'total_remaining': total_remaining,
@@ -5035,6 +5322,7 @@ def print_exo_debt(request, id):
         'total_ortho': total_ortho,  # Add total_salary to the context
         'total_periodontology': total_periodontology,  # Add total_salary to the context
         'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
+        'total_surgery': total_surgery,  # Add total_salary to the context
         'paid_exo': paid_exo,  # Add total_salary to the context
         'paid_filling': paid_filling,  # Add total_salary to the context
         'paid_pedo': paid_filling,  # Add total_salary to the context
@@ -5045,9 +5333,8 @@ def print_exo_debt(request, id):
         'paid_ortho': paid_ortho,  # Add paid_salary to the context
         'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
         'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
-
+        'paid_surgery': paid_surgery,
     }
-
     return render(request, 'debts/print_exo_debt.html', context)
 
 
@@ -5060,15 +5347,15 @@ def add_debt_crown(request, id):
     previous_dates = PaymentHistory.objects.filter(crown_instance=crown_instance)
     previous_date = crown_instance.date
     previous_paid = crown_instance.paid
-    center_share = crown_instance.center_share
+    total_price = crown_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if crown_instance.paid + paid >= center_share:
-            crown_instance.paid = center_share
+        if crown_instance.paid + paid >= total_price:
+            crown_instance.paid = total_price
         else:
             crown_instance.paid += paid  # Increment the paid amount
 
@@ -5076,12 +5363,12 @@ def add_debt_crown(request, id):
 
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(crown_instance=crown_instance, previous_date=date, paid_amount=paid,
-                                         idReception1=crown_instance.idReception1, idReception=crown_instance.idReception, name=crown_instance.name, phone=crown_instance.phone, price=crown_instance.center_share)
+                                         idReception1=crown_instance.idReception1, idReception=crown_instance.idReception, name=crown_instance.name, phone=crown_instance.phone, price=crown_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_crown.html', {
             'id': id,
@@ -5101,7 +5388,7 @@ def add_debt_crown1(request, id):
     previous_dates = PaymentHistory.objects.filter(crown_instance=crown_instance)
     previous_date = crown_instance.date
     previous_paid = crown_instance.paid
-    center_share = crown_instance.center_share
+    total_price = crown_instance.total_price
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -5110,8 +5397,8 @@ def add_debt_crown1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if crown_instance.paid + paid >= center_share:
-                crown_instance.paid = center_share
+            if crown_instance.paid + paid >= total_price:
+                crown_instance.paid = total_price
             else:
                 crown_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -5126,9 +5413,10 @@ def add_debt_crown1(request, id):
                 previous_date=date,
                 paid_amount=paid,
                 idReception=crown_instance.idReception,
+                idReception1=crown_instance.idReception1,
                 name=crown_instance.name,
                 phone=crown_instance.phone,
-                price=crown_instance.center_share
+                price=crown_instance.total_price
             )
             payment_history.save()
 
@@ -5140,7 +5428,7 @@ def add_debt_crown1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = center_share - previous_paid
+    remaining_amount = total_price - previous_paid
     return render(request, 'debts/add_debt_crown.html', {
         'id': id,
         'crown_instance': crown_instance,
@@ -5233,15 +5521,15 @@ def add_debt_ortho(request, id):
     previous_dates = PaymentHistory.objects.filter(ortho_instance=ortho_instance)
     previous_date = ortho_instance.date
     previous_paid = ortho_instance.paid
-    center_share = ortho_instance.center_share
+    total_price = ortho_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if ortho_instance.paid + paid >= center_share:
-            ortho_instance.paid = center_share
+        if ortho_instance.paid + paid >= total_price:
+            ortho_instance.paid = total_price
         else:
             ortho_instance.paid += paid  # Increment the paid amount
 
@@ -5250,12 +5538,12 @@ def add_debt_ortho(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(ortho_instance=ortho_instance, previous_date=date, paid_amount=paid,
                                          idReception1=ortho_instance.idReception1, idReception=ortho_instance.idReception, name=ortho_instance.name,
-                                         phone=ortho_instance.phone, price=ortho_instance.center_share)
+                                         phone=ortho_instance.phone, price=ortho_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_ortho.html', {
             'id': id,
@@ -5275,7 +5563,7 @@ def add_debt_ortho1(request, id):
     previous_dates = PaymentHistory.objects.filter(ortho_instance=ortho_instance)
     previous_date = ortho_instance.date
     previous_paid = ortho_instance.paid
-    center_share = ortho_instance.center_share
+    total_price = ortho_instance.total_price
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -5284,8 +5572,8 @@ def add_debt_ortho1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if ortho_instance.paid + paid >= center_share:
-                ortho_instance.paid = center_share
+            if ortho_instance.paid + paid >= total_price:
+                ortho_instance.paid = total_price
             else:
                 ortho_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -5300,9 +5588,10 @@ def add_debt_ortho1(request, id):
                 previous_date=date,
                 paid_amount=paid,
                 idReception=ortho_instance.idReception,
+                idReception1=ortho_instance.idReception1,
                 name=ortho_instance.name,
                 phone=ortho_instance.phone,
-                price=ortho_instance.center_share
+                price=ortho_instance.total_price
             )
             payment_history.save()
 
@@ -5314,7 +5603,7 @@ def add_debt_ortho1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = center_share - previous_paid
+    remaining_amount = total_price - previous_paid
     return render(request, 'debts/add_debt_ortho.html', {
         'id': id,
         'ortho_instance': ortho_instance,
@@ -5334,14 +5623,14 @@ def print_ortho_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = ortho_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = ortho_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
         'total_paid': total_paid,
-        'total_price': center_share,
+        'total_price': total_price,
         'patient_name': ortho_instance.name,
         'patient_phone': ortho_instance.phone,
     }
@@ -5358,15 +5647,15 @@ def add_debt_filling(request, id):
     previous_dates = PaymentHistory.objects.filter(filling_instance=filling_instance)
     previous_date = filling_instance.date
     previous_paid = filling_instance.paid
-    center_share = filling_instance.center_share
+    total_price = filling_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if filling_instance.paid + paid >= center_share:
-            filling_instance.paid = center_share
+        if filling_instance.paid + paid >= total_price:
+            filling_instance.paid = total_price
         else:
             filling_instance.paid += paid  # Increment the paid amount
 
@@ -5375,12 +5664,12 @@ def add_debt_filling(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(filling_instance=filling_instance, previous_date=date, paid_amount=paid,
                                          idReception1=filling_instance.idReception1, idReception=filling_instance.idReception, name=filling_instance.name,
-                                         phone=filling_instance.phone, price=filling_instance.center_share)
+                                         phone=filling_instance.phone, price=filling_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_filling.html', {
             'id': id,
@@ -5400,15 +5689,15 @@ def add_debt_pedo(request, id):
     previous_dates = PaymentHistory.objects.filter(pedo_instance=pedo_instance)
     previous_date = pedo_instance.date
     previous_paid = pedo_instance.paid
-    center_share = pedo_instance.center_share
+    total_price = pedo_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if pedo_instance.paid + paid >= center_share:
-            pedo_instance.paid = center_share
+        if pedo_instance.paid + paid >= total_price:
+            pedo_instance.paid = total_price
         else:
             pedo_instance.paid += paid  # Increment the paid amount
 
@@ -5417,12 +5706,12 @@ def add_debt_pedo(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(pedo_instance=pedo_instance, previous_date=date, paid_amount=paid,
                                          idReception1=pedo_instance.idReception1, idReception=pedo_instance.idReception, name=pedo_instance.name,
-                                         phone=pedo_instance.phone, price=pedo_instance.center_share)
+                                         phone=pedo_instance.phone, price=pedo_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_pedo.html', {
             'id': id,
@@ -5442,7 +5731,7 @@ def add_debt_filling1(request, id):
     previous_dates = PaymentHistory.objects.filter(filling_instance=filling_instance)
     previous_date = filling_instance.date
     previous_paid = filling_instance.paid
-    center_share = filling_instance.center_share
+    total_price = filling_instance.total_price
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -5451,8 +5740,8 @@ def add_debt_filling1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if filling_instance.paid + paid >= center_share:
-                filling_instance.paid = center_share
+            if filling_instance.paid + paid >= total_price:
+                filling_instance.paid = total_price
             else:
                 filling_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -5467,9 +5756,10 @@ def add_debt_filling1(request, id):
                 previous_date=date,
                 paid_amount=paid,
                 idReception=filling_instance.idReception,
+                idReception1=filling_instance.idReception1,
                 name=filling_instance.name,
                 phone=filling_instance.phone,
-                price=filling_instance.center_share
+                price=filling_instance.total_price
             )
             payment_history.save()
 
@@ -5481,7 +5771,7 @@ def add_debt_filling1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = center_share - previous_paid
+    remaining_amount = total_price - previous_paid
     return render(request, 'debts/add_debt_filling.html', {
         'id': id,
         'filling_instance': filling_instance,
@@ -5501,13 +5791,13 @@ def print_filling_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = filling_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = filling_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': filling_instance.name,
         'patient_phone': filling_instance.phone,
@@ -5526,13 +5816,13 @@ def print_pedo_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = pedo_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = pedo_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': pedo_instance.name,
         'patient_phone': pedo_instance.phone,
@@ -5551,13 +5841,13 @@ def print_exo_debt1(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = exo_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = exo_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'center_share': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': exo_instance.name,
         'patient_phone': exo_instance.phone,
@@ -5576,13 +5866,13 @@ def print_crown_debt1(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = crown_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = crown_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'center_share': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': crown_instance.name,
         'patient_phone': crown_instance.phone,
@@ -5600,15 +5890,15 @@ def add_debt_veneer(request, id):
     previous_dates = PaymentHistory.objects.filter(veneer_instance=veneer_instance)
     previous_date = veneer_instance.date
     previous_paid = veneer_instance.paid
-    center_share = veneer_instance.center_share
+    total_price = veneer_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if veneer_instance.paid + paid >= center_share:
-            veneer_instance.paid = center_share
+        if veneer_instance.paid + paid >= total_price:
+            veneer_instance.paid = total_price
         else:
             veneer_instance.paid += paid  # Increment the paid amount
 
@@ -5617,12 +5907,12 @@ def add_debt_veneer(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(veneer_instance=veneer_instance, previous_date=date, paid_amount=paid,
                                          idReception1=veneer_instance.idReception1, idReception=veneer_instance.idReception, name=veneer_instance.name,
-                                         phone=veneer_instance.phone, price=veneer_instance.center_share)
+                                         phone=veneer_instance.phone, price=veneer_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_veneer.html', {
             'id': id,
@@ -5642,15 +5932,15 @@ def add_debt_veneer1(request, id):
     previous_dates = PaymentHistory.objects.filter(veneer_instance=veneer_instance)
     previous_date = veneer_instance.date
     previous_paid = veneer_instance.paid
-    center_share = veneer_instance.center_share
+    total_price = veneer_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if veneer_instance.paid + paid >= center_share:
-            veneer_instance.paid = center_share
+        if veneer_instance.paid + paid >= total_price:
+            veneer_instance.paid = total_price
         else:
             veneer_instance.paid += paid  # Increment the paid amount
 
@@ -5658,14 +5948,14 @@ def add_debt_veneer1(request, id):
 
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(veneer_instance=veneer_instance, previous_date=date, paid_amount=paid,
-                                         idReception=veneer_instance.idReception, name=veneer_instance.name,
-                                         phone=veneer_instance.phone, price=veneer_instance.center_share)
+                                         idReception=veneer_instance.idReception,idReception1=veneer_instance.idReception1, name=veneer_instance.name,
+                                         phone=veneer_instance.phone, price=veneer_instance.total_price)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_veneer.html', {
             'id': id,
@@ -5686,13 +5976,13 @@ def print_veneer_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = veneer_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = veneer_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': veneer_instance.name,
         'patient_phone': veneer_instance.phone,
@@ -5710,15 +6000,15 @@ def add_debt_periodontology(request, id):
     previous_dates = PaymentHistory.objects.filter(periodontology_instance=periodontology_instance)
     previous_date = periodontology_instance.date
     previous_paid = periodontology_instance.paid
-    center_share = periodontology_instance.center_share
+    total_price = periodontology_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if periodontology_instance.paid + paid >= center_share:
-            periodontology_instance.paid = center_share
+        if periodontology_instance.paid + paid >= total_price:
+            periodontology_instance.paid = total_price
         else:
             periodontology_instance.paid += paid  # Increment the paid amount
 
@@ -5727,12 +6017,12 @@ def add_debt_periodontology(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(periodontology_instance=periodontology_instance, previous_date=date, paid_amount=paid,
                                          idReception1=periodontology_instance.idReception1, idReception=periodontology_instance.idReception, name=periodontology_instance.name,
-                                         phone=periodontology_instance.phone, price=periodontology_instance.center_share)
+                                         phone=periodontology_instance.phone, price=periodontology_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_periodontology.html', {
             'id': id,
@@ -5752,15 +6042,15 @@ def add_debt_periodontology1(request, id):
     previous_dates = PaymentHistory.objects.filter(periodontology_instance=periodontology_instance)
     previous_date = periodontology_instance.date
     previous_paid = periodontology_instance.paid
-    center_share = periodontology_instance.center_share
+    total_price = periodontology_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if periodontology_instance.paid + paid >= center_share:
-            periodontology_instance.paid = center_share
+        if periodontology_instance.paid + paid >= total_price:
+            periodontology_instance.paid = total_price
         else:
             periodontology_instance.paid += paid  # Increment the paid amount
 
@@ -5770,15 +6060,16 @@ def add_debt_periodontology1(request, id):
         payment_history = PaymentHistory(periodontology_instance=periodontology_instance, previous_date=date,
                                          paid_amount=paid,
                                          idReception=periodontology_instance.idReception,
+                                         idReception1=periodontology_instance.idReception1,
                                          name=periodontology_instance.name,
                                          phone=periodontology_instance.phone,
-                                         price=periodontology_instance.center_share)
+                                         price=periodontology_instance.total_price)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_periodontology.html', {
             'id': id,
@@ -5787,50 +6078,7 @@ def add_debt_periodontology1(request, id):
             'previous_paid': previous_paid,
             'remaining_amount': remaining_amount
         })
-def add_debt_periodontology1(request, id):
-    try:
-        periodontology_instance = Periodontology.objects.get(id=id)
-    except Periodontology.DoesNotExist:
-        return HttpResponse("Endo instance not found")
 
-    previous_dates = PaymentHistory.objects.filter(periodontology_instance=periodontology_instance)
-    previous_date = periodontology_instance.date
-    previous_paid = periodontology_instance.paid
-    center_share = periodontology_instance.center_share
-
-    if request.method == 'POST':
-        paid = Decimal(request.POST.get('paid', '0'))
-        date_str = request.POST.get('date')
-        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
-
-        if periodontology_instance.paid + paid >= center_share:
-            periodontology_instance.paid = center_share
-        else:
-            periodontology_instance.paid += paid  # Increment the paid amount
-
-        periodontology_instance.save()
-
-        # Store the previous date from the form in PaymentHistory
-        payment_history = PaymentHistory(periodontology_instance=periodontology_instance, previous_date=date,
-                                         paid_amount=paid,
-                                         idReception=periodontology_instance.idReception,
-                                         name=periodontology_instance.name,
-                                         phone=periodontology_instance.phone,
-                                         price=periodontology_instance.center_share)
-        payment_history.save()
-
-        return redirect(reverse(
-            'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
-    else:
-        remaining_amount = center_share - previous_paid
-
-        return render(request, 'debts/add_debt_periodontology.html', {
-            'id': id,
-            'periodontology_instance': periodontology_instance,
-            'previous_dates': previous_dates,
-            'previous_paid': previous_paid,
-            'remaining_amount': remaining_amount
-        })
 
 def print_periodontology_debt(request, id):
     try:
@@ -5842,13 +6090,13 @@ def print_periodontology_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = periodontology_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = periodontology_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': periodontology_instance.name,
         'patient_phone': periodontology_instance.phone,
@@ -5866,15 +6114,15 @@ def add_debt_prosthodontics(request, id):
     previous_dates = PaymentHistory.objects.filter(prosthodontics_instance=prosthodontics_instance)
     previous_date = prosthodontics_instance.date
     previous_paid = prosthodontics_instance.paid
-    center_share = prosthodontics_instance.center_share
+    total_price = prosthodontics_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if prosthodontics_instance.paid + paid >= center_share:
-            prosthodontics_instance.paid = center_share
+        if prosthodontics_instance.paid + paid >= total_price:
+            prosthodontics_instance.paid = total_price
         else:
             prosthodontics_instance.paid += paid  # Increment the paid amount
 
@@ -5883,12 +6131,12 @@ def add_debt_prosthodontics(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(prosthodontics_instance=prosthodontics_instance, previous_date=date, paid_amount=paid,
                                          idReception1=prosthodontics_instance.idReception1, idReception=prosthodontics_instance.idReception, name=prosthodontics_instance.name,
-                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.center_share)
+                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_prosthodontics.html', {
             'id': id,
@@ -5908,15 +6156,15 @@ def add_debt_prosthodontics1(request, id):
     previous_dates = PaymentHistory.objects.filter(prosthodontics_instance=prosthodontics_instance)
     previous_date = prosthodontics_instance.date
     previous_paid = prosthodontics_instance.paid
-    center_share = prosthodontics_instance.center_share
+    total_price = prosthodontics_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if prosthodontics_instance.paid + paid >= center_share:
-            prosthodontics_instance.paid = center_share
+        if prosthodontics_instance.paid + paid >= total_price:
+            prosthodontics_instance.paid = total_price
         else:
             prosthodontics_instance.paid += paid  # Increment the paid amount
 
@@ -5926,14 +6174,15 @@ def add_debt_prosthodontics1(request, id):
         payment_history = PaymentHistory(prosthodontics_instance=prosthodontics_instance, previous_date=date,
                                          paid_amount=paid,
                                          idReception=prosthodontics_instance.idReception,
+                                         idReception1=prosthodontics_instance.idReception1,
                                          name=prosthodontics_instance.name,
-                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.center_share)
+                                         phone=prosthodontics_instance.phone, price=prosthodontics_instance.total_price)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_prosthodontics.html', {
             'id': id,
@@ -5942,6 +6191,7 @@ def add_debt_prosthodontics1(request, id):
             'previous_paid': previous_paid,
             'remaining_amount': remaining_amount
         })
+
 
 def add_debt_pedo1(request, id):
     try:
@@ -5952,15 +6202,15 @@ def add_debt_pedo1(request, id):
     previous_dates = PaymentHistory.objects.filter(pedo_instance=pedo_instance)
     previous_date = pedo_instance.date
     previous_paid = pedo_instance.paid
-    center_share = pedo_instance.center_share
+    total_price = pedo_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if pedo_instance.paid + paid >= center_share:
-            pedo_instance.paid = center_share
+        if pedo_instance.paid + paid >= total_price:
+            pedo_instance.paid = total_price
         else:
             pedo_instance.paid += paid  # Increment the paid amount
 
@@ -5970,14 +6220,15 @@ def add_debt_pedo1(request, id):
         payment_history = PaymentHistory(pedo_instance=pedo_instance, previous_date=date,
                                          paid_amount=paid,
                                          idReception=pedo_instance.idReception,
+                                         idReception1=pedo_instance.idReception1,
                                          name=pedo_instance.name,
-                                         phone=pedo_instance.phone, price=pedo_instance.center_share)
+                                         phone=pedo_instance.phone, price=pedo_instance.total_price)
         payment_history.save()
 
         return redirect(reverse(
             'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_pedo.html', {
             'id': id,
@@ -5999,13 +6250,13 @@ def print_prosthodontics_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = prosthodontics_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = prosthodontics_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': prosthodontics_instance.name,
         'patient_phone': prosthodontics_instance.phone,
@@ -6023,15 +6274,15 @@ def add_debt_oral(request, id):
     previous_dates = PaymentHistory.objects.filter(oral_surgery_instance=oral_surgery_instance)
     previous_date = oral_surgery_instance.date
     previous_paid = oral_surgery_instance.paid
-    center_share = oral_surgery_instance.center_share
+    total_price = oral_surgery_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if oral_surgery_instance.paid + paid >= center_share:
-            oral_surgery_instance.paid = center_share
+        if oral_surgery_instance.paid + paid >= total_price:
+            oral_surgery_instance.paid = total_price
         else:
             oral_surgery_instance.paid += paid  # Increment the paid amount
 
@@ -6040,12 +6291,12 @@ def add_debt_oral(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(oral_surgery_instance=oral_surgery_instance, previous_date=date, paid_amount=paid,
                                          idReception1=oral_surgery_instance.idReception1, idReception=oral_surgery_instance.idReception, name=oral_surgery_instance.name,
-                                         phone=oral_surgery_instance.phone, price=oral_surgery_instance.center_share)
+                                         phone=oral_surgery_instance.phone, price=oral_surgery_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_oral.html', {
             'id': id,
@@ -6065,7 +6316,7 @@ def add_debt_oral1(request, id):
     previous_dates = PaymentHistory.objects.filter(oral_surgery_instance=oral_surgery_instance)
     previous_date = oral_surgery_instance.date
     previous_paid = oral_surgery_instance.paid
-    center_share = oral_surgery_instance.center_share
+    total_price = oral_surgery_instance.total_price
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -6074,8 +6325,8 @@ def add_debt_oral1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if oral_surgery_instance.paid + paid >= center_share:
-                oral_surgery_instance.paid = center_share
+            if oral_surgery_instance.paid + paid >= total_price:
+                oral_surgery_instance.paid = total_price
             else:
                 oral_surgery_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -6090,9 +6341,10 @@ def add_debt_oral1(request, id):
                 previous_date=date,
                 paid_amount=paid,
                 idReception=oral_surgery_instance.idReception,
+                idReception1=oral_surgery_instance.idReception1,
                 name=oral_surgery_instance.name,
                 phone=oral_surgery_instance.phone,
-                price=oral_surgery_instance.center_share
+                price=oral_surgery_instance.total_price
             )
             payment_history.save()
 
@@ -6104,7 +6356,7 @@ def add_debt_oral1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = center_share - previous_paid
+    remaining_amount = total_price - previous_paid
     return render(request, 'debts/add_debt_oral.html', {
         'id': id,
         'oral_surgery_instance': oral_surgery_instance,
@@ -6124,13 +6376,13 @@ def print_oral_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = oral_surgery_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = oral_surgery_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'center_share': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': oral_surgery_instance.name,
         'patient_phone': oral_surgery_instance.phone,
@@ -6162,8 +6414,7 @@ def add_endo(request, id):
             oral_surgery = form.save(commit=False)
             oral_surgery.idReception1_id = id
             price = form.cleaned_data['price']
-            total_price = price
-            oral_surgery.total_price = total_price
+
             reception = Reception1.objects.get(id=id)
             oral_surgery.idReception_id = reception.idReception_id
             oral_surgery.name = reception.name
@@ -6172,10 +6423,7 @@ def add_endo(request, id):
             oral_surgery.date_of_birth = reception.date_of_birth
             oral_surgery.educational_id = reception.educational_id
             oral_surgery.doctor_id = reception.doctor_id
-            # Calculate total price and shares
-            price = form.cleaned_data['price']
-            total_price = Decimal(price)  # Convert price to Decimal
-            oral_surgery.total_price = total_price
+
 
             try:
                 doctor = Doctors.objects.get(id=reception.doctor_id)
@@ -6191,29 +6439,47 @@ def add_endo(request, id):
             # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
+                adjusted_price = price - price_lab_decimal
             except InvalidOperation:
-                adjusted_price = total_price
+                adjusted_price = price
 
-            if discount_option == 'Without discount':
+            print(f"Original price: {price}")
+            print(f"Price of lab: {price_lab}")
+            print(f"Adjusted price: {adjusted_price}")
+
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
+
+            print(f"Doctor share: {doctor_share}")
+            print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
             oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+            oral_surgery.total_price = total_price.quantize(Decimal('0.01'))
             oral_surgery.price_lab = price_lab_decimal  # Save price_lab as Decimal
 
             oral_surgery.save()
@@ -6280,7 +6546,8 @@ def add_endo(request, id):
             orall.components_third = orall.components_third.replace("'", "")
         if orall.components_fourth:
             orall.components_fourth = orall.components_fourth.replace("'", "")
-        orall.total_price = orall.price
+        orall.price = orall.price
+        orall.total_price = orall.total_price
         orall.save()
         # Retrieve photos associated with the current OralSurgery instance
         photos = orall.photo_set.all()
@@ -6358,10 +6625,6 @@ def endo_edit(request, id):
             # Update the Endo instance with the new values
             orall.price = price
 
-            # Calculate and update total_price
-            total_price = price
-            orall.total_price = total_price
-
             # Get the form data
             form_data = form.cleaned_data
 
@@ -6388,36 +6651,47 @@ def endo_edit(request, id):
             # Adjust the price if price_lab is not null
             try:
                 price_lab_decimal = Decimal(price_lab)
-                adjusted_price = total_price - price_lab_decimal
+                adjusted_price = price - price_lab_decimal
             except InvalidOperation:
-                adjusted_price = total_price
+                adjusted_price = price
 
             print(f"Original price: {price}")
             print(f"Price of lab: {price_lab}")
             print(f"Adjusted price: {adjusted_price}")
 
-            if discount_option == 'Without discount':
+            if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
                 center_share = adjusted_price * proportion_center
+                total_price = price
             elif discount_option == 'None':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price
-            elif discount_option == 'Quota discount':
+                total_price = center_share
+            elif discount_option == 'With Discount':
                 doctor_share = Decimal('0')
                 center_share = adjusted_price * proportion_center
-            elif discount_option == 'Full discount':
-                doctor_share = -2 * (adjusted_price * proportion_doctor)
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
                 center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
             else:
                 doctor_share = Decimal('0')
                 center_share = Decimal('0')
+                total_price = Decimal('0')
 
             print(f"Doctor share: {doctor_share}")
             print(f"Center share: {center_share}")
+            print(f"Total price before saving: {total_price}")
 
             # Assign Decimal values to model fields
             orall.doctor_share = doctor_share.quantize(Decimal('0.01'))
             orall.center_share = center_share.quantize(Decimal('0.01'))
+            orall.total_price = total_price.quantize(Decimal('0.01'))
             orall.price_lab = price_lab_decimal  # Save price_lab as Decimal
             selected_lab = form.cleaned_data['lab_name']
             if selected_lab:
@@ -6464,8 +6738,8 @@ def endo_edit(request, id):
             'll': ll,
             'canal': canal,
         })
-
-    return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall})
+    labs = Lab.objects.all()
+    return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall, 'labs': labs})
 
 
 def add_debt_endo(request, id):
@@ -6477,15 +6751,15 @@ def add_debt_endo(request, id):
     previous_dates = PaymentHistory.objects.filter(endo_instance=endo_instance)
     previous_date = endo_instance.date
     previous_paid = endo_instance.paid
-    center_share = endo_instance.center_share
+    total_price = endo_instance.total_price
 
     if request.method == 'POST':
         paid = Decimal(request.POST.get('paid', '0'))
         date_str = request.POST.get('date')
         date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
 
-        if endo_instance.paid + paid >= center_share:
-            endo_instance.paid = center_share
+        if endo_instance.paid + paid >= total_price:
+            endo_instance.paid = total_price
         else:
             endo_instance.paid += paid  # Increment the paid amount
 
@@ -6494,12 +6768,12 @@ def add_debt_endo(request, id):
         # Store the previous date from the form in PaymentHistory
         payment_history = PaymentHistory(endo_instance=endo_instance, previous_date=date, paid_amount=paid,
                                          idReception1=endo_instance.idReception1, idReception=endo_instance.idReception, name=endo_instance.name,
-                                         phone=endo_instance.phone, price=endo_instance.center_share)
+                                         phone=endo_instance.phone, price=endo_instance.total_price)
         payment_history.save()
 
         return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
     else:
-        remaining_amount = center_share - previous_paid
+        remaining_amount = total_price - previous_paid
 
         return render(request, 'debts/add_debt_endo.html', {
             'id': id,
@@ -6521,7 +6795,7 @@ def add_debt_endo1(request, id):
     previous_dates = PaymentHistory.objects.filter(endo_instance=endo_instance)
     previous_date = endo_instance.date
     previous_paid = endo_instance.paid
-    center_share = endo_instance.center_share
+    total_price = endo_instance.total_price
 
     if request.method == 'POST':
         paid = request.POST.get('paid', '0')
@@ -6530,8 +6804,8 @@ def add_debt_endo1(request, id):
         try:
             paid = Decimal(paid)  # Convert to Decimal
 
-            if endo_instance.paid + paid >= center_share:
-                endo_instance.paid = center_share
+            if endo_instance.paid + paid >= total_price:
+                endo_instance.paid = total_price
             else:
                 endo_instance.paid += paid  # Increment the paid amount (both are Decimal now)
 
@@ -6546,9 +6820,10 @@ def add_debt_endo1(request, id):
                 previous_date=date,
                 paid_amount=paid,
                 idReception=endo_instance.idReception,
+                idReception1=endo_instance.idReception1,
                 name=endo_instance.name,
                 phone=endo_instance.phone,
-                price=endo_instance.center_share
+                price=endo_instance.total_price
             )
             payment_history.save()
 
@@ -6560,7 +6835,7 @@ def add_debt_endo1(request, id):
             # Handle the error appropriately or log it for further investigation
 
     # If it's not a POST request or if an error occurred, render the form
-    remaining_amount = center_share - previous_paid
+    remaining_amount = total_price - previous_paid
     return render(request, 'debts/add_debt_endo.html', {
         'id': id,
         'endo_instance': endo_instance,
@@ -6580,20 +6855,19 @@ def print_endo_debt(request, id):
 
     # Calculate the total remaining amount for the crown
     total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
-    center_share = endo_instance.center_share
-    total_remaining = center_share - total_paid
+    total_price = endo_instance.total_price
+    total_remaining = total_price - total_paid
 
     context = {
         'debts': debts,
         'total_remaining': total_remaining,
-        'total_price': center_share,
+        'total_price': total_price,
         'total_paid': total_paid,
         'patient_name': endo_instance.name,
         'patient_phone': endo_instance.phone,
     }
 
     return render(request, 'debts/print_endo_debt.html', context)
-
 
 
 def endo_visit(request, id):
@@ -6914,3 +7188,807 @@ def add_material_output(request):
 def print_material_output(request, id):
     output = get_object_or_404(MaterialOutput, id=id)
     return render(request, 'store/print_material_output.html', {'output': output})
+
+
+def xrays_reception(request):
+    user = request.user
+    try:
+        if user.role == 'admin':
+            appointments = Reception1.objects.all().order_by('-id')
+        else:
+            doctor = Doctors.objects.get(user=user)
+            appointments = Reception1.objects.filter(doctor=doctor).order_by('-id')
+    except Doctors.DoesNotExist:
+        appointments = Reception1.objects.none()
+
+    p = Paginator(appointments, 25)
+    page = request.GET.get('page')
+    appointments = p.get_page(page)
+    nums = "a" * appointments.paginator.num_pages
+
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+
+    return render(request, 'xrays/xrays_reception.html', {'appointments': appointments, 'nums': nums})
+
+def search_xrays(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception1.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception1.objects.all()
+        return render(request, 'xrays/search_xrays.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'xrays/search_xrays.html', {})
+@login_required
+def xrays(request, id):
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = XraysForm(request.POST, request.FILES)
+            if form.is_valid():
+                oral_surgery = form.save(commit=False)
+                oral_surgery.idReception1_id = id
+
+                price = form.cleaned_data['price']
+                oral_surgery.name = reception.name
+                oral_surgery.phone = reception.phone
+                oral_surgery.gender = reception.gender
+                oral_surgery.date_of_birth = reception.date_of_birth
+                oral_surgery.educational_id = reception.educational_id
+                oral_surgery.idReception_id = reception.idReception_id
+                oral_surgery.doctor_id = reception.doctor_id
+
+                oral_surgery.total_price = price
+                oral_surgery.save()
+
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(xrays_instance=oral_surgery, image=photo)
+
+                return redirect('xrays', id=id)
+            else:
+                form = XraysForm(initial={
+                    'idReception1_id': id,
+                    'name': reception.name,
+                    'phone': reception.phone,
+                    'gender': reception.gender,
+                    'date_of_birth': reception.date_of_birth,
+                    'educational_id': reception.educational_id,
+                    'idReception_id': reception.idReception_id,
+                    'doctor_id': reception.doctor_id
+                })
+        else:
+            form = XraysForm(initial={
+                'idReception1_id': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'idReception_id': reception.idReception_id,
+                'doctor_id': reception.doctor_id
+            })
+
+        appointments = Reception1.objects.all().order_by('-id')
+        exooes = Xrays.objects.filter(idReception1=id)
+        photos_list = []
+
+        exoo = exooes.first()
+        photos = exoo.photo_set.all() if exoo else None
+
+        medicine = Medicin.objects.filter(idReception=id).first()
+
+        for exoo in exooes:
+            if exoo.ur:
+                exoo.ur = exoo.ur.replace("'", "")
+            if exoo.ul:
+                exoo.ul = exoo.ul.replace("'", "")
+            if exoo.lr:
+                exoo.lr = exoo.lr.replace("'", "")
+            if exoo.ll:
+                exoo.ll = exoo.ll.replace("'", "")
+            exoo.total_price = exoo.price
+            exoo.save()
+            photos = exoo.photo_set.all()
+            photos_list.append(photos)
+
+        formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+        formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
+        return render(request, 'xrays/xrays.html', {
+            'form': form,
+            'appointments': appointments,
+            'medicine': medicine,
+            'exooes': exooes,
+            'id': id,
+            'photos': photos,
+            'photos_list': photos_list,
+            'formatted_total_prices': formatted_total_prices,
+            'reception': reception,
+            'formatted_prices': formatted_prices
+        })
+    except Doctors.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'You are not authorized to access this page.')
+        return redirect('home')
+    except Reception1.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'Reception does not exist or you do not have permission to access it.')
+        return redirect('home')
+
+def delete_xrays(request, id):
+    # Get the drug related to the Reception
+    exo = get_object_or_404(Xrays, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = exo.idReception1_id
+
+    # Delete the drug
+    exo.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('xrays', id=idReception)
+
+def xrays_edit(request, id):
+    exoo = get_object_or_404(Xrays, id=id)
+    photos = Photo.objects.filter(xrays_instance=exoo)
+
+    if request.method == 'POST':
+        form = XraysForm(request.POST, request.FILES, instance=exoo)
+        if form.is_valid():
+            exoo = form.save(commit=False)
+            price = form.cleaned_data['price']
+
+            exoo.save()
+
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(xrays_instance=exoo, image=photo)
+
+            return redirect('xrays', id=exoo.idReception1_id)
+    else:
+        form = XraysForm(instance=exoo)
+
+    return render(request, 'xrays/xrays_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos})
+
+
+def print_xrays_debt1(request, id):
+    try:
+        xrays_instance = Xrays.objects.get(id=id)
+    except Xrays.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    debts = PaymentHistory.objects.filter(xrays_instance=xrays_instance)
+
+    # Calculate the total remaining amount for the crown
+    total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
+    total_price = xrays_instance.total_price
+    total_remaining = total_price - total_paid
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+        'total_price': total_price,
+        'total_paid': total_paid,
+        'patient_name': xrays_instance.name,
+        'patient_phone': xrays_instance.phone,
+    }
+
+    return render(request, 'debts/print_xrays_debt1.html', context)
+
+
+def all_debts_xrays(request):
+    form = SearchForm(request.GET or None)  # Instantiate the form
+
+    # Initialize selected_doctor with None
+    selected_doctor = None
+
+    if request.method == 'GET':
+        if form.is_valid():
+            # Use the correct parameter name based on your URL
+            selected_doctor = form.cleaned_data['doctor']
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    start_datetime = None  # Initialize start_datetime variable
+    end_datetime = None  # Initialize end_datetime variable
+
+    exos = Xrays.objects.none()  # Initialize as an empty queryset
+
+    if start_date and end_date:
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+        end_datetime = end_datetime + timedelta(days=1)
+
+        date_range_filter = Q(regdate__range=(start_datetime, end_datetime))
+        doctor_filter = Q(doctor=selected_doctor) if selected_doctor else Q()
+
+        exos = Xrays.objects.filter(date_range_filter & doctor_filter)
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Xrays', exos))
+    total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    # Calculate total paid for each type
+    paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
+    total_price_t2 = total_exo2
+    total_paid_t = paid_exo
+    remaining = total_price_t2 - total_paid_t
+
+    context = {
+        'form': form,
+        'search_results': search_results,
+        'total_exo2': total_exo2,
+        'paid_exo': paid_exo,
+        'total_price_t2': total_price_t2,
+        'total_paid_t': total_paid_t,
+        'remaining': remaining,
+        'start_date': start_date,  # Add this line
+        'end_date': end_date  # Add this line
+    }
+
+    return render(request, 'debts/all_debts_xrays.html', context)
+
+
+def add_debt_xrays1(request, id):
+    try:
+        xrays_instance = Xrays.objects.get(id=id)
+    except Xrays.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(xrays_instance=xrays_instance)
+    previous_date = xrays_instance.date
+    previous_paid = xrays_instance.paid
+    total_price = xrays_instance.total_price
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid', '0')
+        print("Received Paid Value:", paid)  # Debug line: print received value
+
+        try:
+            paid = Decimal(paid)  # Convert to Decimal
+
+            if xrays_instance.paid + paid >= total_price:
+                xrays_instance.paid = total_price
+            else:
+                xrays_instance.paid += paid  # Increment the paid amount (both are Decimal now)
+
+            xrays_instance.save()
+
+            # Store the previous date from the form in PaymentHistory
+            date_str = request.POST.get('date')
+            date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+            payment_history = PaymentHistory(
+                xrays_instance=xrays_instance,
+                previous_date=date,
+                paid_amount=paid,
+                idReception=xrays_instance.idReception,
+                name=xrays_instance.name,
+                phone=xrays_instance.phone,
+                price=xrays_instance.total_price
+            )
+            payment_history.save()
+
+            return redirect(reverse(
+                'all_debts_xrays') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+
+        except Exception as e:
+            print("Conversion Error:", e)  # Debug line: print any conversion errors
+            # Handle the error appropriately or log it for further investigation
+
+    # If it's not a POST request or if an error occurred, render the form
+    remaining_amount = total_price - previous_paid
+    return render(request, 'debts/add_debt_xrays.html', {
+        'id': id,
+        'xrays_instance': xrays_instance,
+        'previous_dates': previous_dates,
+        'previous_paid': previous_paid,
+        'remaining_amount': remaining_amount
+    })
+
+@login_required
+def surgery_reception(request):
+    user = request.user
+    try:
+        if user.role == 'admin':
+            appointments = Reception1.objects.all().order_by('-id')
+        else:
+            doctor = Doctors.objects.get(user=user)
+            appointments = Reception1.objects.filter(doctor=doctor).order_by('-id')
+    except Doctors.DoesNotExist:
+        appointments = Reception1.objects.none()
+
+    p = Paginator(appointments, 25)
+    page = request.GET.get('page')
+    appointments = p.get_page(page)
+    nums = "a" * appointments.paginator.num_pages
+
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+
+    return render(request, 'surgery/surgery_reception.html', {'appointments': appointments, 'nums': nums})
+def search_surgery(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception1.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception1.objects.all()
+        return render(request, 'surgery/search_surgery.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'surgery/search_surgery.html', {})
+
+@login_required
+def surgery(request, id):
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = SurgeryForm(request.POST, request.FILES)
+            if form.is_valid():
+                oral_surgery = form.save(commit=False)
+                oral_surgery.idReception1_id = id
+
+                price = form.cleaned_data['price']
+                oral_surgery.name = reception.name
+                oral_surgery.phone = reception.phone
+                oral_surgery.gender = reception.gender
+                oral_surgery.date_of_birth = reception.date_of_birth
+                oral_surgery.educational_id = reception.educational_id
+                oral_surgery.idReception_id = reception.idReception_id
+                oral_surgery.doctor_id = reception.doctor_id
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without Discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                    total_price = price
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                    total_price = center_share
+                elif discount_option == 'With Discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+                    total_price = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
+
+                # Assign Decimal values to model fields
+                oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+                oral_surgery.price_lab = price_lab_decimal.quantize(Decimal('0.01'))
+                oral_surgery.total_price = total_price.quantize(Decimal('0.01'))  # Save total_price as Decimal
+
+                # Debugging statement to confirm the assignment
+                print(f"Total price after quantize: {oral_surgery.total_price}")
+
+                oral_surgery.save()
+
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(surgery_instance=oral_surgery, image=photo)
+
+                return redirect('surgery', id=id)
+            else:
+                form = SurgeryForm(initial={
+                    'idReception1_id': id,
+                    'name': reception.name,
+                    'phone': reception.phone,
+                    'gender': reception.gender,
+                    'date_of_birth': reception.date_of_birth,
+                    'educational_id': reception.educational_id,
+                    'idReception_id': reception.idReception_id,
+                    'doctor_id': reception.doctor_id
+                })
+        else:
+            form = SurgeryForm(initial={
+                'idReception1_id': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'idReception_id': reception.idReception_id,
+                'doctor_id': reception.doctor_id
+            })
+
+        appointments = Reception1.objects.all().order_by('-id')
+        exooes = Surgery.objects.filter(idReception1=id)
+        photos_list = []
+
+        exoo = exooes.first()
+        photos = exoo.photo_set.all() if exoo else None
+
+        medicine = Medicin.objects.filter(idReception=id).first()
+
+        for exoo in exooes:
+            if exoo.ur:
+                exoo.ur = exoo.ur.replace("'", "")
+            if exoo.ul:
+                exoo.ul = exoo.ul.replace("'", "")
+            if exoo.lr:
+                exoo.lr = exoo.lr.replace("'", "")
+            if exoo.ll:
+                exoo.ll = exoo.ll.replace("'", "")
+            exoo.total_price = exoo.total_price
+            exoo.save()
+            photos = exoo.photo_set.all()
+            photos_list.append(photos)
+
+        formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+        formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
+        return render(request, 'surgery/surgery.html', {
+            'form': form,
+            'appointments': appointments,
+            'medicine': medicine,
+            'exooes': exooes,
+            'id': id,
+            'photos': photos,
+            'photos_list': photos_list,
+            'formatted_total_prices': formatted_total_prices,
+            'reception': reception,
+            'formatted_prices': formatted_prices
+        })
+    except Doctors.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'You are not authorized to access this page.')
+        return redirect('home')
+    except Reception1.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'Reception does not exist or you do not have permission to access it.')
+        return redirect('home')
+
+
+def surgery_edit(request, id):
+    exoo = get_object_or_404(Surgery, id=id)
+    photos = Photo.objects.filter(surgery_instance=exoo)
+
+    if request.method == 'POST':
+        form = SurgeryForm(request.POST, request.FILES, instance=exoo)
+        if form.is_valid():
+            exoo = form.save(commit=False)
+            price = form.cleaned_data['price']
+
+            try:
+                doctor = Doctors.objects.get(id=exoo.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            if discount_option == 'Without Discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+                total_price = price
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+                total_price = center_share
+            elif discount_option == 'With Discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+                total_price = Decimal('0')
+
+            exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            exoo.center_share = center_share.quantize(Decimal('0.01'))
+            exoo.total_price = total_price.quantize(Decimal('0.01'))
+            exoo.save()
+
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(surgery_instance=exoo, image=photo)
+
+            return redirect('surgery', id=exoo.idReception1_id)
+    else:
+        form = SurgeryForm(instance=exoo)
+
+    labs = Lab.objects.all()
+    return render(request, 'surgery/surgery_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos, 'labs': labs})
+
+
+def remove_photo_surgery(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    surgery_instance = photo.surgery_instance
+    photo.delete()
+    return redirect('surgery_edit', id=surgery_instance.id)
+
+def delete_surgery(request, id):
+    # Get the drug related to the Reception
+    exo = get_object_or_404(Surgery, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = exo.idReception1_id
+
+    # Delete the drug
+    exo.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('surgery', id=idReception)
+
+
+def print_surgery_debt1(request, id):
+    try:
+        surgery_instance = Surgery.objects.get(id=id)
+    except Surgery.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    debts = PaymentHistory.objects.filter(surgery_instance=surgery_instance)
+
+    # Calculate the total remaining amount for the crown
+    total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
+    total_price = surgery_instance.total_price
+    total_remaining = total_price - total_paid
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+        'total_price': total_price,
+        'total_paid': total_paid,
+        'patient_name': surgery_instance.name,
+        'patient_phone': surgery_instance.phone,
+    }
+
+    return render(request, 'debts/print_surgery_debt1.html', context)
+
+
+def add_debt_surgery(request, id):
+    try:
+        surgery_instance = Surgery.objects.get(id=id)
+    except Surgery.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(surgery_instance=surgery_instance)
+    previous_date = surgery_instance.date
+    previous_paid = surgery_instance.paid
+    total_price = surgery_instance.total_price
+
+    if request.method == 'POST':
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if surgery_instance.paid + paid >= total_price:
+            surgery_instance.paid = total_price
+        else:
+            surgery_instance.paid += paid  # Increment the paid amount
+
+        surgery_instance.save()
+
+        # Store the previous date from the form in PaymentHistory
+        payment_history = PaymentHistory(surgery_instance=surgery_instance, previous_date=date, paid_amount=paid,
+                                         idReception1=surgery_instance.idReception1, idReception=surgery_instance.idReception, name=surgery_instance.name,
+                                         phone=surgery_instance.phone, price=surgery_instance.total_price)
+        payment_history.save()
+
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_surgery.html', {
+            'id': id,
+            'surgery_instance': surgery_instance,
+            'previous_dates': previous_dates,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
+
+
+def add_debt_surgery1(request, id):
+    try:
+        surgery_instance = Surgery.objects.get(id=id)
+    except Surgery.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(surgery_instance=surgery_instance)
+    previous_date = surgery_instance.date
+    previous_paid = surgery_instance.paid
+    total_price = surgery_instance.total_price
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid', '0')
+        print("Received Paid Value:", paid)  # Debug line: print received value
+
+        try:
+            paid = Decimal(paid)  # Convert to Decimal
+
+            if surgery_instance.paid + paid >= total_price:
+                surgery_instance.paid = total_price
+            else:
+                surgery_instance.paid += paid  # Increment the paid amount (both are Decimal now)
+
+            surgery_instance.save()
+
+            # Store the previous date from the form in PaymentHistory
+            date_str = request.POST.get('date')
+            date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+            payment_history = PaymentHistory(
+                surgery_instance=surgery_instance,
+                previous_date=date,
+                paid_amount=paid,
+                idReception=surgery_instance.idReception,
+                idReception1=surgery_instance.idReception1,
+                name=surgery_instance.name,
+                phone=surgery_instance.phone,
+                price=surgery_instance.total_price
+            )
+            payment_history.save()
+
+            return redirect(reverse(
+                'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+
+        except Exception as e:
+            print("Conversion Error:", e)  # Debug line: print any conversion errors
+            # Handle the error appropriately or log it for further investigation
+
+    # If it's not a POST request or if an error occurred, render the form
+    remaining_amount = total_price - previous_paid
+    return render(request, 'debts/add_debt_surgery.html', {
+        'id': id,
+        'surgery_instance': surgery_instance,
+        'previous_dates': previous_dates,
+        'previous_paid': previous_paid,
+        'remaining_amount': remaining_amount
+    })
+
+def print_surgery_debt(request, id):
+    debts = PaymentHistory.objects.filter(idReception1=id)
+
+    # Calculate the total remaining amount for idReception
+    total_exo = Exo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_filling = Filling.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_crown = Crown.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_veneer = Veneer.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_endo = Endo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_ortho = Ortho.objects.filter(idReception1=id).aggregate(total_price=Sum('price'))['total_price'] or 0
+
+    total_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))[
+                               'total_price'] or 0
+
+    paid_exo = Exo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_filling = Filling.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_crown = Crown.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_veneer = Veneer.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_endo = Endo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_ortho = Ortho.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))[
+                              'total_paid'] or 0
+
+    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics+ total_surgery)
+    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_surgery)
+    total_remaining = total_price - total_paid
+
+
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+        'total_price': total_price,
+        'total_exo': total_exo,  # Add total_salary to the context
+        'total_filling': total_filling,  # Add total_salary to the context
+        'total_crown': total_crown,  # Add total_salary to the context
+        'total_veneer': total_veneer,  # Add total_salary to the context
+        'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
+        'total_endo': total_endo,  # Add total_salary to the context
+        'total_ortho': total_ortho,  # Add total_salary to the context
+        'total_periodontology': total_periodontology,  # Add total_salary to the context
+        'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
+        'total_surgery': total_surgery,  # Add total_salary to the context
+        'paid_exo': paid_exo,  # Add total_salary to the context
+        'paid_filling': paid_filling,  # Add total_salary to the context
+        'paid_crown': paid_crown,  # Add paid_salary to the context
+        'paid_veneer': paid_veneer,  # Add paid_salary to the context
+        'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
+        'paid_endo': paid_endo,  # Add paid_salary to the context
+        'paid_ortho': paid_ortho,  # Add paid_salary to the context
+        'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
+        'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
+        'paid_surgery': paid_surgery,  # Add paid_salary to the context
+
+    }
+
+    return render(request, 'debts/print_surgery_debt.html', context)

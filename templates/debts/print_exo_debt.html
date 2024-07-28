@@ -78,7 +78,7 @@
     {% endfor %}
 
 
-        {% for debt in debt4 %}
+   {% for debt in debt4 %}
     <tr>
       <td>Endo</td>
       <td>{{ debt.2|format_with_commas }}</td>
@@ -127,6 +127,13 @@
       <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
+    {% for debt in debt11 %}
+    <tr>
+      <td>Surgery</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
 
     <!-- Repeat similar blocks for debt4 to debt9 -->
   </tbody>
@@ -150,64 +157,53 @@
             </thead>
             <tbody>
             {% for debt in debtss %}
-            <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
-                <td style="text-align:center;">{{ debt.id }}</td>
-                <td style="text-align:center;">
-    {% if debt.crown_instance %}
-        Crown
-    {% endif %}
-    {% if debt.crown_instance and debt.endo_instance %}
-        ,
-    {% endif %}
-    {% if debt.endo_instance %}
-        Endo
-    {% endif %}
-    {% if debt.endo_instance and debt.filling_instance %}
-        ,
-    {% endif %}
-    {% if debt.filling_instance %}
-        Filling
-    {% endif %}
-    {% if debt.filling_instance and debt.oral_surgery_instance %}
-        ,
-    {% endif %}
-    {% if debt.oral_surgery_instance %}
-        Oral Surgery
-    {% endif %}
-    {% if debt.oral_surgery_instance and debt.ortho_instance %}
-        ,
-    {% endif %}
-    {% if debt.ortho_instance %}
-        Ortho
-    {% endif %}
-    {% if debt.ortho_instance and debt.veneer_instance %}
-        ,
-    {% endif %}
-    {% if debt.veneer_instance %}
-        Veneer
-    {% endif %}
-    {% if debt.veneer_instance and debt.periodontology_instance %}
-        ,
-    {% endif %}
-    {% if debt.periodontology_instance %}
-        Periodontology
-    {% endif %}
-    {% if debt.periodontology_instance and debt.prosthodontics_instance %}
-        ,
-    {% endif %}
-    {% if debt.prosthodontics_instance %}
-        Prosthodontics
-    {% endif %}
-    {% if debt.prosthodontics_instance and debt.exo_instance %}
-        ,
-    {% endif %}
-    {% if debt.pedo_instance %}
-        Pedo
-    {% endif %}
-    {% if debt.exo_instance %}
-        Exo
-    {% endif %}
-</td>
+    <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
+        <td style="text-align:center;">{{ debt.id }}</td>
+        <td style="text-align:center;">
+            {% if debt.crown_instance %}
+                Crown
+            {% endif %}
+            {% if debt.endo_instance %}
+                {% if debt.crown_instance %}, {% endif %}
+                Endo
+            {% endif %}
+            {% if debt.filling_instance %}
+                {% if debt.crown_instance or debt.endo_instance %}, {% endif %}
+                Filling
+            {% endif %}
+            {% if debt.oral_surgery_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance %}, {% endif %}
+                Oral Surgery
+            {% endif %}
+            {% if debt.ortho_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance %}, {% endif %}
+                Ortho
+            {% endif %}
+            {% if debt.veneer_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance %}, {% endif %}
+                Veneer
+            {% endif %}
+            {% if debt.periodontology_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance %}, {% endif %}
+                Periodontology
+            {% endif %}
+            {% if debt.prosthodontics_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance or debt.periodontology_instance %}, {% endif %}
+                Prosthodontics
+            {% endif %}
+            {% if debt.exo_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance or debt.periodontology_instance or debt.prosthodontics_instance %}, {% endif %}
+                Exo
+            {% endif %}
+            {% if debt.pedo_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance or debt.periodontology_instance or debt.prosthodontics_instance or debt.exo_instance %}, {% endif %}
+                Pedo
+            {% endif %}
+            {% if debt.surgery_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance or debt.periodontology_instance or debt.prosthodontics_instance or debt.exo_instance or debt.pedo_instance %}, {% endif %}
+                Surgery
+            {% endif %}
+        </td>
 
 
 

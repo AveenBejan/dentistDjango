@@ -1862,3 +1862,80 @@ def exo(request, id):
         'formatted_prices': formatted_prices
     })
 
+# Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without Discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                    total_price = price
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                    total_price = center_share
+                elif discount_option == 'With Discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+                    total_price = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
+
+
+
+
+                        try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            if discount_option == 'Without Discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+                total_price = price
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+                total_price = center_share
+            elif discount_option == 'With Discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+                total_price = Decimal('0')
+
+            exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            exoo.center_share = center_share.quantize(Decimal('0.01'))
+            exoo.total_price = total_price.quantize(Decimal('0.01'))

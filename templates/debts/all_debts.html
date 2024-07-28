@@ -33,7 +33,11 @@
             <table class="table table-hover">
                 <thead style="background-color:#555; color:#fff;">
                 <tr>
-                    <th scope="row" style="text-align: center;"> Total Price</th>
+                    <th scope="row" style="text-align: center;"> Center.proportion</th>
+                    <th scope="row" style="text-align: center;"> Dector.proportion</th>
+                    <th scope="row" style="text-align: center;"> Price </th>
+                    <th scope="row" style="text-align: center;"> Total Price </th>
+
                     <th scope="row" style="text-align: center;"> Total Paid</th>
                     <th scope="row" style="text-align: center;"> Remaining</th>
                     <th>Display Details </th>
@@ -42,6 +46,9 @@
                 <tbody>
                 <tr>
                     <td style="text-align: center;">{{total_price_t|format_with_commas}}</td>
+                    <td style="text-align: center;">{{total_price_t1|format_with_commas}}</td>
+                    <td style="text-align: center;">{{total_price_t3|format_with_commas}}</td>
+                    <td style="text-align: center;">{{total_price_t2|format_with_commas}}</td>
                     <td style="text-align: center;">{{total_paid_t|format_with_commas}}</td>
                     <td style="text-align: center;">{{remaining|format_with_commas}}</td>
                     <td><button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Show Information</button></td>
@@ -79,6 +86,7 @@
                                 <th scope="row"> Ortho T.Price</th>
                                 <th scope="row"> Periodo T.Price</th>
                                 <th scope="row"> Prostho T.Price</th>
+                                <th scope="row"> Surgery T.Price</th>
 
                             </tr>
                             </thead>
@@ -94,6 +102,7 @@
                                 <td style="text-align: center;">{{total_ortho}}</td>
                                 <td style="text-align: center;">{{total_periodontology }}</td>
                                 <td style="text-align: center;">{{total_prosthodontics}}</td>
+                                <td style="text-align: center;">{{total_surgery}}</td>
 
                             </tr>
                             </tbody>
@@ -109,6 +118,7 @@
                                 <th scope="row"> Ortho Paid</th>
                                 <th scope="row"> Periodo Paid</th>
                                 <th scope="row"> Prostho Paid</th>
+                                <th scope="row"> Surgery Paid</th>
 
                             </tr>
                             </thead>
@@ -124,6 +134,7 @@
                                 <td style="text-align: center;">{{paid_ortho}}</td>
                                 <td style="text-align: center;">{{ paid_periodontology }}</td>
                                 <td style="text-align: center;">{{paid_prosthodontics}}</td>
+                                <td style="text-align: center;">{{paid_surgery}}</td>
 
 
                             </tr>
@@ -309,8 +320,8 @@
         <th style="text-align: center;" scope="col">Canal</th>
         <th style="text-align: center;" scope="col">Work Length</th>
         <th style="text-align: center;" scope="col">no_prepare</th>
-        <th style="text-align: center;" scope="col">Notes</th>
-        <th style="text-align: center;" scope="col">Price</th>-->
+        <th style="text-align: center;" scope="col">Notes</th>-->
+        <th style="text-align: center;" scope="col">Price</th>
         <th style="text-align: center;" scope="col">Total Price</th>
         <th style="text-align: center;" scope="col">Paid</th>
 
@@ -379,13 +390,26 @@
 
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
+        {% elif model_name == 'Surgery' %}
+        <th scope="col" style="text-align: center;" >#</th>
+        <th scope="col" style="text-align: center;" >Name</th>
+        <th scope="col" style="text-align: center;" >Phone Number</th>
+        <!--<th scope="col" style="text-align: center;" class="hideable">Type</th>
+        <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+        <th scope="col" style="text-align: center;" >Price</th>-->
+        <th scope="col" style="text-align: center;" >Total Price</th>
+        <th scope="col" style="text-align: center;">Final Price</th>
+        <th scope="col" style="text-align: center;" class="hideable">paid</th>
+
+        <th scope="col" style="text-align: center;" >Add Debts</th>
+        <th scope="col" style="text-align: center;" >Print Invoice</th>
         {% endif %}
         <!-- ... other header columns ... -->
     </tr>
     </thead>
     <tbody>
     {% for result in results %}
-    <tr style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}">
+    <tr style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}">
         {% if model_name == 'Exo' %}
          <td style="text-align: center;" >{{ result.id }}</td>
         <td style="text-align: center;" >{{ result.name }}</td>
@@ -400,7 +424,7 @@
         <td style="text-align: center;" >{{ result.complcated|slice:"1:-1" }}</td>
         <td style="text-align: center;" >{{ result.price }}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;" >{{ result.paid|format_with_commas}}</td>
 
         <td style="text-align: center;" ><a href="{% url 'add-debt1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
@@ -423,7 +447,7 @@
         <td style="text-align: center;"  scope="row" align="center">{{result.note}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-crown1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
@@ -444,7 +468,7 @@
         <td scope="row">{{result.no_prepare}}</td>
         <td scope="row">{{result.price}}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.paid}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-filling1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
@@ -464,9 +488,9 @@
         <td scope="row">{{result.no_prepare}}</td>
         <td scope="row">{{result.price}}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.paid}}</td>
-        <td style="text-align: center;" ><a href="{% url 'add-debt-pedo' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
+        <td style="text-align: center;" ><a href="{% url 'add-debt-pedo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
             <a href="{% url 'print_pedo_debt'  result.id %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
@@ -481,7 +505,7 @@
         <td style="text-align: center;"  scope="row" align="center">{{result.no_prepare}}</td>
         <td style="text-align: center;"  scope="row" align="center">{{result.price}}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-veneer1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a></td>
         <td style="text-align: center;" >
@@ -506,7 +530,7 @@
         <td style="text-align: center;" scope="row">{{ result.color }}</td>
         <td style="text-align: center;" scope="row">{{ result.price }}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;"  scope="row" align="center"> {{ result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-oral1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
@@ -527,7 +551,7 @@
         <td style="text-align: center;" scope="row">{{ result.no_prepare }}</td>
         <td style="text-align: center;">{{ result.price }}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-endo1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
@@ -536,9 +560,9 @@
                class="btn btn-info">Print Invoice</a>
         </td>
         {% elif model_name == 'Ortho' %}
-        <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.id }}</td>
-        <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.name }}</td>
-        <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.phone }}</td>
+        <td style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.id }}</td>
+        <td style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.name }}</td>
+        <td style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}; text-align: center;" > {{ result.phone }}</td>
         <!--<td style="text-align: center;" scope="row" class="hideable">{{ result.ur|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.ul|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lr|slice:"1:-1" }}</td>
@@ -559,9 +583,9 @@
         <td style="text-align: center;" scope="row" class="hideable">{{ result.lls|slice:"1:-1" }}</td>
         <td style="text-align: center;" scope="row" class="hideable">{{ result.teeth_size |slice:"1:-1" }}</td>
         <td style="text-align: center; word-wrap: break-word;" scope="row" class="hideable">{{ result.treatment_plan }}</td>-->
-        <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.price|format_with_commas}}</td>
-        <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.center_share|format_with_commas}}</td>
-        <td style="color: {% if result.center_share != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.paid|format_with_commas}}</td>
+        <td style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.price|format_with_commas}}</td>
+        <td style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.total_price|format_with_commas}}</td>
+        <td style="color: {% if result.total_price != result.paid %}red{% else %}green{% endif %}; text-align: center;" >{{ result.paid|format_with_commas}}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-ortho1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
@@ -582,7 +606,7 @@
         <td style="text-align: center;" scope="row">{{ result.partial }}</td>
         <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-prosthodontics1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
@@ -597,12 +621,27 @@
         <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
         <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
         <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
-        <td style="text-align: center;" >{{ result.center_share|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
         <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
         <td style="text-align: center;" ><a href="{% url 'add-debt-periodontology1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
         </td>
         <td style="text-align: center;" >
             <a href="{% url 'print_periodontology_debt'  result.id  %}" style="display: inline;"
+               class="btn btn-info">Print Invoice</a>
+        </td>
+        {% elif model_name == 'Surgery' %}
+         <td style="text-align: center;"  scope="row" align="center"> {{ result.id }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.name }}</td>
+        <td style="text-align: center;"  scope="row" align="center"> {{ result.phone }}</td>
+        <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
+        <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
+        <td style="text-align: center;" >{{ result.price|format_with_commas }}</td>
+        <td style="text-align: center;" >{{ result.total_price|format_with_commas }}</td>
+        <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
+        <td style="text-align: center;" ><a href="{% url 'add_debt_surgery1' id=result.id %}?start_date={{ start_date }}&end_date={{ end_date }}"><span class="btn btn-danger">Add-Debt</span></a>
+        </td>
+        <td style="text-align: center;" >
+            <a href="{% url 'print_surgery_debt1'  result.id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
         </td>
         {% endif %}

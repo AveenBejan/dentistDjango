@@ -20,7 +20,7 @@
                 </nav>
                 <div class="col-6">
                 <h4 style="color:#000;">Patient Name:{{ exo_instance.name }}</h4>
-                <h5 style="color:#000;">Total Price: {{ exo_instance.price|format_with_commas  }}</h5>
+                <h5 style="color:#000;">Total Price: {{ exo_instance.total_price|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Previous Paid Amount Total: {{ previous_paid|format_with_commas  }}</h5>
                 <h5 style="color:#000;">Remaining Amount: {{ remaining_amount|format_with_commas  }}</h5>
 
@@ -51,6 +51,7 @@
                 <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
                     {% csrf_token %}
                     <input type="text" name="idReception" value="{{ exo_instance.idReception_id  }}" class="form-control" readonly>
+                    <input type="text" name="idReception1" value="{{ exo_instance.idReception1_id  }}" class="form-control" readonly>
                     <input type="text" name="name" value="{{ exo_instance.name }}" class="form-control"readonly>
                     <input type="text" name="phone" value="{{ exo_instance.phone }}" class="form-control"readonly>
                     <input type="text" name="gender" value="{{ exo_instance.gender }}" class="form-control"readonly>
@@ -59,7 +60,7 @@
                     <div class="row">
 
                         <div class="col-sm-6">
-                            <input type="text" id="price" name="price" value="{{ exo_instance.price }}" class="form-control" readonly>
+                            <input type="text" id="price" name="price" value="{{ exo_instance.total_price }}" class="form-control" readonly>
                             <h4>Paid Money</h4>
                             <input type="text" id="paid" class="form-control" name="paid" value="{{ exo_instance.paid }}" placeholder="Paid:" required>
                             <br/><h4> Date Paid </h4>

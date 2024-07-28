@@ -47,11 +47,29 @@
                     </ul>
                 </li>
                 {% endif %}
+                {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' or user.role == 'patient'  %}
+                <li><a><i class="fa fa-home"></i> X-rays <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
+                      <li><a  href="{% url 'xrays-reception' %}">X-rays</a></li>
+                        <li><a  href="{% url 'all_debts_xrays' %}"> All Patient Debts X-rays</a></li>
+
+
+                        {% else %}
+                        <!-- Disabled links with onclick alert -->
+                        <li><a  href=""
+                           onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information.')">X-rays</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">All Patient Debts X-rays</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
 
                 <li><a><i class="fa fa-home"></i> Oral_Surgery <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
                         <li><a  href="{% url 'exo-reception' %}">Exo</a></li>
+                        <li><a  href="{% url 'surgery-reception' %}">Surgery</a></li>
                         <li><a  href="{% url 'oral-reception' %}">Implant</a></li>
                         <li><a  href="{% url 'periodontology-reception' %}">Periodontology</a></li>
                         {% else %}

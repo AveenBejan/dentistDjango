@@ -1,0 +1,130 @@
+{% load static %}
+
+{% block content %}
+{% load custom_filters %}
+<br/>
+
+<div class="container body">
+    <div class="right_col" role="main" style="width: 100%">
+<p align="center"
+   style="font-size:16px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+
+    <br/>COSMOLIGHT DENTAL CENTER<!--<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>-->
+<hr class="border border-primary border-3 opacity-40">
+        <p style="text-align: right;" ><img src="{% static 'website/images/img.jpg'  %}"
+                                             alt="..." class="img-circle profile_img"> &nbsp; &nbsp;<img src="{% static 'website/images/bar.png'  %}"
+                                             alt="..." class="img-circle profile_img"></p>
+        <br/>
+        <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
+<hr class="border border-primary border-3 opacity-40">
+<div class="col-8">
+    <div class="row" >
+
+        <h4 style="text-align:center;">Payment Invoice For Crown Patient </h4>
+        <div style="font-weight: bold;">
+            {% if debts %}
+            <p>
+                Name: {{ debts.0.name }} &nbsp; &nbsp; &nbsp; &nbsp;
+               <!-- Gender: {{ debts.0.gender }} &nbsp; &nbsp; &nbsp; &nbsp;-->
+                Phone Number: {{ debts.0.phone }} &nbsp; &nbsp; &nbsp; &nbsp;
+            </p>
+            {% endif %}
+        </div>
+          <table class="table table-hover">
+            <thead style="background-color:#555; color:#fff;">
+            <tr>
+
+                <th style="text-align:center;" scope="col">#</th>
+                <th style="text-align:center;" scope="col">Previous Date</th>
+                <th style="text-align:center;" scope="col">Paid</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for debt in debts %}
+            <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
+                <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">
+    {% if debt.crown_instance %}
+        Crown - Total Paid: {{ paid_crown }}, Total Debt: {{ total_crown }}
+    {% endif %}
+    {% if debt.crown_instance and debt.endo_instance %}
+        ,
+    {% endif %}
+    {% if debt.endo_instance %}
+        Endo - Total Paid: {{ paid_endo }}, Total Debt: {{ total_endo }}
+    {% endif %}
+    {% if debt.endo_instance and debt.filling_instance %}
+        ,
+    {% endif %}
+    {% if debt.filling_instance %}
+        Filling - Total Paid: {{ paid_filling }}, Total Debt: {{ total_filling }}
+    {% endif %}
+    {% if debt.filling_instance and debt.oral_surgery_instance %}
+        ,
+    {% endif %}
+    {% if debt.oral_surgery_instance %}
+        Oral Surgery - Total Paid: {{ paid_oral_surgery }}, Total Debt: {{ total_oralSurgery }}
+    {% endif %}
+    {% if debt.oral_surgery_instance and debt.ortho_instance %}
+        ,
+    {% endif %}
+    {% if debt.ortho_instance %}
+        Ortho - Total Paid: {{ paid_ortho }}, Total Debt: {{ total_ortho }}
+    {% endif %}
+    {% if debt.ortho_instance and debt.veneer_instance %}
+        ,
+    {% endif %}
+    {% if debt.veneer_instance %}
+        Veneer - Total Paid: {{ paid_veneer }}, Total Debt: {{ total_veneer }}
+    {% endif %}
+    {% if debt.veneer_instance and debt.periodontology_instance %}
+        ,
+    {% endif %}
+    {% if debt.periodontology_instance %}
+        Periodontology - Total Paid: {{ paid_periodontology }}, Total Debt: {{ total_periodontology }}
+    {% endif %}
+    {% if debt.periodontology_instance and debt.prosthodontics_instance %}
+        ,
+    {% endif %}
+    {% if debt.prosthodontics_instance %}
+        Prosthodontics - Total Paid: {{ paid_prosthodontics }}, Total Debt: {{ total_prosthodontics }}
+    {% endif %}
+    {% if debt.prosthodontics_instance and debt.exo_instance %}
+        ,
+    {% endif %}
+    {% if debt.exo_instance %}
+        Exo - Total Paid: {{ paid_exo }}, Total Debt: {{ total_exo }}
+    {% endif %}
+    {% if debt.pedo_instance and debt.exo_instance %}
+        ,
+    {% endif %}
+    {% if debt.exo_instance %}
+        Pedo - Total Paid: {{ paid_exo }}, Total Debt: {{ total_exo }}
+    {% endif %}
+</td>
+
+
+                <td style="text-align:center;">{{ debt.previous_date }}</td>
+                <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Price: {{ total_price|format_with_commas }}</span></td>
+<td ><span style="font-weight: bold; background-color:#555; color:#fff; text-align:right;"> &nbsp; &nbsp; &nbsp; &nbsp;Total Remaining: {{ total_remaining|format_with_commas }}</span></td>
+
+    </div>
+</div>
+
+<hr class="border border-primary border-3 opacity-40">
+<!--
+
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--></h4>
+مع
+        التمنيات بالشفاء العاجل
+    </div></div></body>
+
+{% endblock %}

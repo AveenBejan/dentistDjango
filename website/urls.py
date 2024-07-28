@@ -186,6 +186,7 @@ urlpatterns = [
     path('add_debt_crown1/<int:id>', views.add_debt_crown1, name='add-debt-crown1'),
     path('add_debt_filling1/<int:id>', views.add_debt_filling1, name='add-debt-filling1'),
     path('add_debt_pedo/<int:id>', views.add_debt_pedo, name='add-debt-pedo'),
+    path('add_debt_pedo1/<int:id>', views.add_debt_pedo1, name='add-debt-pedo1'),
     path('add_debt_veneer1/<int:id>', views.add_debt_veneer1, name='add-debt-veneer1'),
     path('add_debt_oral1/<int:id>', views.add_debt_oral1, name='add-debt-oral1'),
     path('add_debt_endo1/<int:id>', views.add_debt_endo1, name='add-debt-endo1'),
@@ -223,6 +224,25 @@ urlpatterns = [
     path('add_material_output/', views.add_material_output, name='add_material_output'),
     path('print_material_output/<int:id>/', views.print_material_output, name='print_material_output'),
     path('earnings_print', views.earnings_print, name='earnings_print'),
+
+    path('xrays/<int:id>', views.xrays, name='xrays'),
+    path('xrays/xrays_reception.html', views.xrays_reception, name='xrays-reception'),
+    path('search_xrays', views.search_xrays, name='search-xrays'),
+    path('delete_xrays/<int:id>', views.delete_xrays, name='delete-xrays'),
+    path('xrays_edit/<int:id>', views.xrays_edit, name='xrays_edit'),
+    path('print_xrays_debt1/<int:id>', views.print_xrays_debt1, name='print_xrays_debt1'),
+    path('all_debts_xrays', views.all_debts_xrays, name='all_debts_xrays'),
+    path('add_debt_xrays1/<int:id>', views.add_debt_xrays1, name='add_debt_xrays1'),
+
+    path('surgery/<int:id>', views.surgery, name='surgery'),
+    path('surgery/surgery_reception.html', views.surgery_reception, name='surgery-reception'),
+    path('surgery_edit/<int:id>', views.surgery_edit, name='surgery_edit'),
+    path('remove_photo_surgery/<int:photo_id>/', views.remove_photo_surgery, name='remove_photo_surgery'),
+    path('search_surgery', views.search_surgery, name='search-surgery'),
+    path('delete_surgery/<int:id>', views.delete_surgery, name='delete-surgery'),
+    path('print_surgery_debt1/<int:id>', views.print_surgery_debt1, name='print_surgery_debt1'),
+    path('add_debt_surgery/<int:id>', views.add_debt_surgery, name='add_debt_surgery'),
+    path('add_debt_surgery1/<int:id>', views.add_debt_surgery1, name='add_debt_surgery1'),
 
 
 
