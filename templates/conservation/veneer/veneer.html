@@ -213,15 +213,16 @@
                                                            placeholder="Notes:">
                                                 </div>
                                                 <div class="col-md-3 mb-3">
-                                                        <select id="discount_option" name="discount_option" class="form-select" required>
-                                                            <option>Select Discount Option</option>
-                                                            <option value="None">None (where no proportion for doctors just salary)</option>
-                                                            <option value="Without Discount">Without Discount</option>
-                                                            <option value="With Discount">With Discount</option>
-                                                            <option value="Full Discount">Full Discount</option>
-                                                            <option value="No Pay">No Pay</option>
-                                                        </select>
-                                                    </div>
+    <label for="discount_option">Discount Option</label>
+    <select id="discount_option" name="discount_option" class="form-select" required>
+        <option value="" disabled selected>Select Discount Option</option>
+        <option value="None">None (where no proportion for doctors just salary)</option>
+        <option value="Without Discount">Without Discount</option>
+        <option value="With Discount">With Discount</option>
+        <option value="Full Discount">Full Discount</option>
+        <option value="No Pay">No Pay</option>
+    </select>
+</div>
                                                     <div class="col-md-3 mb-3">
                                                         {{ form.lab_name }}
                                                     </div>

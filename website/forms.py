@@ -805,6 +805,7 @@ class CrownForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
             'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+            'discount_option': forms.Select(attrs={'class': 'form-control', 'placeholder': 'discount_option'}),
 
         }
 
