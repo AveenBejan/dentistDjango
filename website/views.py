@@ -767,6 +767,7 @@ def earnings(request):
     orthos = Ortho.objects.none()
     periodontologys = Periodontology.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
+    surgerys = Surgery.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -786,6 +787,7 @@ def earnings(request):
         orthos = Ortho.objects.filter(date_range_filter & doctor_filter & Q(visits_id__isnull=True))
         periodontologys = Periodontology.objects.filter(date_range_filter & doctor_filter)
         prosthodonticss = Prosthodontics.objects.filter(date_range_filter & doctor_filter)
+        surgerys = Surgery.objects.filter(date_range_filter & doctor_filter)
 
     search_results = []
 
@@ -809,6 +811,8 @@ def earnings(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
+    if surgerys.exists():
+        search_results.append(('Surgery', surgerys))
 
     total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_filling = fillings.aggregate(center_share=Sum('center_share'))['center_share'] or 0
@@ -820,6 +824,7 @@ def earnings(request):
     total_ortho = orthos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_periodontology = periodontologys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_prosthodontics = prosthodonticss.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_surgery = surgerys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
     total_exo1 = exos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_filling1 = fillings.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
@@ -831,6 +836,7 @@ def earnings(request):
     total_ortho1 = orthos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_surgery1 = surgerys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
     total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
@@ -842,6 +848,7 @@ def earnings(request):
     total_ortho2 = orthos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_surgery2 = surgerys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
     total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
     total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
@@ -853,7 +860,7 @@ def earnings(request):
     total_ortho3 = orthos.aggregate(price=Sum('price'))['price'] or 0
     total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
     total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
-
+    total_surgery3 = surgerys.aggregate(price=Sum('price'))['price'] or 0
     # Calculate total paid for each type
     paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -865,21 +872,22 @@ def earnings(request):
     paid_ortho = orthos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_periodontology = periodontologys.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = prosthodonticss.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_surgery = surgerys.aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = sum(
         [total_exo, total_filling, total_pedo, total_crown, total_veneer, total_oralSurgery, total_endo, total_ortho,
-         total_periodontology, total_prosthodontics])
+         total_periodontology, total_prosthodontics, total_surgery])
     total_price_t1 = sum(
         [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
-         total_ortho1, total_periodontology1, total_prosthodontics1])
+         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1])
     total_price_t2 = sum(
         [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
-         total_ortho2, total_periodontology2, total_prosthodontics2])
+         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2])
     total_price_t3 = sum(
         [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
-         total_ortho3, total_periodontology3, total_prosthodontics3])
+         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3])
     total_paid_t = sum(
         [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
-         paid_periodontology, paid_prosthodontics])
+         paid_periodontology, paid_prosthodontics, paid_surgery])
     remaining = total_price_t2 - total_paid_t
 
     context = {
@@ -895,6 +903,7 @@ def earnings(request):
         'total_ortho': total_ortho,
         'total_periodontology': total_periodontology,
         'total_prosthodontics': total_prosthodontics,
+        'total_surgery': total_surgery,
         'total_exo1': total_exo1,
         'total_filling1': total_filling1,
         'total_pedo1': total_pedo1,
@@ -905,6 +914,7 @@ def earnings(request):
         'total_ortho1': total_ortho1,
         'total_periodontology1': total_periodontology1,
         'total_prosthodontics1': total_prosthodontics1,
+        'total_surgery1': total_surgery1,
         'total_exo2': total_exo2,
         'total_filling2': total_filling2,
         'total_pedo2': total_pedo2,
@@ -915,6 +925,7 @@ def earnings(request):
         'total_ortho2': total_ortho2,
         'total_periodontology2': total_periodontology2,
         'total_prosthodontics2': total_prosthodontics2,
+        'total_surgery2': total_surgery2,
         'total_exo3': total_exo3,
         'total_filling3': total_filling3,
         'total_pedo3': total_pedo3,
@@ -925,6 +936,7 @@ def earnings(request):
         'total_ortho3': total_ortho3,
         'total_periodontology3': total_periodontology3,
         'total_prosthodontics3': total_prosthodontics3,
+        'total_surgery3': total_surgery3,
         'paid_exo': paid_exo,
         'paid_filling': paid_filling,
         'paid_pedo': paid_pedo,
@@ -935,6 +947,7 @@ def earnings(request):
         'paid_ortho': paid_ortho,
         'paid_periodontology': paid_periodontology,
         'paid_prosthodontics': paid_prosthodontics,
+        'paid_surgery': paid_surgery,
         'total_price_t': total_price_t,
         'total_price_t1': total_price_t1,
         'total_price_t2': total_price_t2,
