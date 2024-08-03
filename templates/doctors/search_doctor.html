@@ -44,10 +44,11 @@
                     <th scope="row" style="text-align:center;">Appointment Date</th>
                     <th scope="row" style="text-align:center;">Day Name</th>
                     <th scope="row" style="text-align:center;">Time</th>
-                    <th scope="col" style="text-align:center;">Oral Surgery</th>
+                    <th scope="col" style="text-align:center;">Surgery</th>
                     <th scope="col" style="text-align:center;">Conservation</th>
-                    <th scope="col" style="text-align:center;">Orthodontic</th>
+                    <th scope="col" style="text-align:center;">PoP</th>
                     <th scope="col" style="text-align:center;">Prosthodontics</th>
+                    <th scope="col" style="text-align:center;">RadioGraphy</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,11 +65,15 @@
                         <li class="nav-item dropdown" style="color: #fff;">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                                aria-expanded="false" style="color: #000;">
-                                Oral Surgery
+                                Surgery
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'exo' reception.id %}" style="display: inline;"><span
                                         class="btn btn-round btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;Add Exo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+                                <br/>
+
+                                <a href="{% url 'surgery' reception.id %}" style="display: inline;"><span
+                                        class="btn btn-round btn-warning">&nbsp;&nbsp;Add Oral &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
                                 <br/>
                                 <a href="{% url 'add-oral-surgery' reception.id %}" style="display: inline;"><span
                                         class="btn btn-round btn-warning">&nbsp;&nbsp;&nbsp;Add Implant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
@@ -103,11 +108,17 @@
                         <li class="nav-item dropdown" style="color: #fff;">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                                aria-expanded="false" style="color: #000;">
-                                Orthodontic
+                                PoP
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{% url 'add-ortho' reception.id %}" style="display: inline;"><span
                                         class="btn btn-round btn-warning">Add Ortho</span></a>
+                                <br/>
+                                <a href="{% url 'pedo' reception.id %}" style="display: inline;"><span
+                                        class="btn btn-round btn-warning">Add Pedo</span></a>
+                                <br/>
+                                <a href="{% url 'preventive' reception.id %}" style="display: inline;"><span
+                                        class="btn btn-round btn-warning">Add Preventive</span></a>
                                 <br/>
                             </div>
                         </li>
@@ -121,6 +132,19 @@
                             <div class="dropdown-menu">
                                 <a href="{% url 'prosthodontics' reception.id %}" style="display: inline;"><span
                                         class="btn btn-round btn-warning">Add Prosthodontics</span></a>
+                                <br/>
+                            </div>
+                        </li>
+                    </td>
+                    <td scope="row" style="text-align:center;">
+                        <li class="nav-item dropdown" style="color: #fff;">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                               aria-expanded="false" style="color: #000;">
+                                RadioGraphy
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'xrays' reception.id %}" style="display: inline;"><span
+                                        class="btn btn-round btn-warning">Add X-rays</span></a>
                                 <br/>
                             </div>
                         </li>
