@@ -13,7 +13,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add X-rays Information</li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Preventive Information</li>
                 </ol>
             </nav>
 
@@ -47,10 +47,14 @@
                                 <th scope="col" class="hideable">Upper Left</th>
                                 <th scope="col" class="hideable">Lower Right</th>
                                 <th scope="col" class="hideable">Lower Left</th>
-                                <th scope="col" style="text-align: center;">Type X-rays</th>
+                                <th scope="col" style="text-align: center;">Discount Type</th>
                                 <th scope="col" style="text-align: center;">Price</th>
-                                <th scope="col" style="text-align: center;">Total Price</th>
-                                <th scope="col" style="text-align: center;">Notes</th>
+                                <th scope="col" style="text-align: center;">Patient Paid</th>
+                                <th scope="col" style="text-align: center;">Doctor Dis.</th>
+                                <th scope="col" style="text-align: center;">Center Dis.</th>
+                                <th scope="col" style="text-align: center;">Lab Name</th>
+                                <th scope="col" style="text-align: center;">Lab Price</th>
+                                <th scope="col" class="hideable">Notes</th>
                                 <th scope="col" class="hideable">Exo Photo</th>
                                 <th scope="col"  style="text-align: center;">Action</th>
                                 <th scope="col"  style="text-align: center;">Show Data</th>
@@ -69,7 +73,7 @@
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.lr|slice:"1:-1"}}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.ll|slice:"1:-1"}}</td>
-                                <td style="text-align: center;" scope="row">{{exoo.type_xrays}}</td>
+                                <td style="text-align: center;" scope="row">{{exoo.discount_option}}</td>
                                 <td style="text-align: center;" scope="row">
                                     {% if exoo.price is not None %}
                                     {{ exoo.price|format_with_commas }}
@@ -84,13 +88,18 @@
                                     None
                                     {% endif %}
                                 </td>
+
+                                <td style="text-align: center;" scope="row">{{ exoo.doctor_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.center_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.lab_name }}</td>
+                                <td style="text-align: center;" scope="row">{{ exoo.price_lab|format_with_commas }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{exoo.note}}</td>
                                 <td class="hideable" style="text-align: center;" scope="row">
                                     {% for photos in photos_list %}
                                      {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                       {% for photo in photos %}
                                         <img src="{{ photo.image.url }}" alt="Photo" width="100">
-                                         <a href="{% url 'remove_photo' photo.id %}">Remove</a>
+                                         <a href="{% url 'remove_photo_preventive' photo.id %}">Remove</a>
                                       {% endfor %}
                                      {% endif %}
                                     {% endfor %}
@@ -99,14 +108,14 @@
                                 {% if exoo %}
 
                                 <td>
-                                    <a href="{% url 'xrays_edit' exoo.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/><br/>
-                                    <a href="{% url 'delete-xrays'  exoo.id %}" ><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
+                                    <a href="{% url 'preventive_edit' exoo.id   %}"><img src="{% static 'website/images/edit.png' %}" alt="Edit" style="width: 30px; height: auto;"></a><br/><br/>
+                                    <a href="{% url 'delete-preventive'  exoo.id %}" ><img src="{% static 'website/images/delete.png' %}" alt="Delete" style="width: 30px; height: auto;"></a></td>
                                 {% endif %}
                                 <td style="text-align: center; " scope="row" ><a href="{% url 'drugs' id=id %}"style="display: inline;"><span
                                         class="btn btn-info btn-xs">Add Drugs</span></a><br/>
                                 <a href="{% url 'gave-appointment' id=id %}" style="display: inline;"><span
                                         class="btn btn-info btn-xs">Add Appointment</span></a><br/>
-                                <a href="{% url 'print_xrays_debt1'  exoo.id  %}" style="display: inline;"
+                                <a href="{% url 'print_preventive_debt1'  exoo.id  %}" style="display: inline;"
                class="btn btn-info">Print UnPaid</a></td>
                             </tr>
                             {% endfor %}
@@ -120,14 +129,14 @@
                                 data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo"
                                 style="text-align: justify; background-color:#17a2b8; color:#fff">
-                            Add New Extracted
+                            Add New Preventive
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse"
                          aria-labelledby="headingTwo"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" enctype="multipart/form-data" id="xrays-form">
+                            <form method="POST" enctype="multipart/form-data" id="surgery-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="idReception"
                                        value="{{ form.initial.idReception}}"
@@ -172,7 +181,7 @@
 
                                         <br/>
                                         <div class="card-header">
-                                            <h4 style="font-size: 22px; text-align:center;">Add New X-rays</h4>
+                                            <h4 style="font-size: 22px; text-align:center;">Add New Preventive</h4>
                                         </div>
                                         <br/>
                                         <div class="row">
@@ -448,7 +457,7 @@
                                         <br/>
                                         <div class="card text-left">
                                             <div class="card-header">
-                                                <h4 style="font-size: 22px; text-align:center;">Exo
+                                                <h4 style="font-size: 22px; text-align:center;">Preventive
                                                     Notes</h4>
                                             </div>
                                             <div class="card-body">
@@ -459,12 +468,22 @@
                                                                placeholder="Price:" required>
                                                     </div>
                                                 <div class="col-md-3 mb-3">
-                                                        <select id="type_xrays" name="type_xrays" class="form-select" required>
-                                                            <option>Select Type X-rays</option>
-                                                            <option value="C.B.C.T">C.B.C.T</option>
-                                                            <option value="O.P.G">O.P.G</option>
-                                                            <option value="P.A">P.A</option>
-                                                        </select>
+    <select id="discount_option" name="discount_option" class="form-select" required>
+        <option value="" disabled selected>Select Discount Option</option>
+        <option value="None">None (where no proportion for doctors just salary)</option>
+        <option value="Without Discount">Without Discount</option>
+        <option value="With Discount">With Discount</option>
+        <option value="Full Discount">Full Discount</option>
+        <option value="No Pay">No Pay</option>
+    </select>
+</div>
+                                                    <div class="col-md-3 mb-3">
+                                                        {{ form.lab_name }}
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <input type="text" name="price_lab" id="price_lab"
+                                                               class="form-control"
+                                                               placeholder="Price of Lab:">
                                                     </div>
                                                     <div class="col-md-3 mb-3">
                                                         <input type="text" name="note" value=""
@@ -473,7 +492,13 @@
 
                                                     </div>
                                                 </div>
-
+                                                <div class="col-md-3 mb-3">
+                                                    <select id="type_preventive" name="type_preventive" class="form-select" required>
+                                                        <option>Select Type Preventive</option>
+                                                        <option value="Florida Application">Florida Application</option>
+                                                        <option value="Fissure Sealants">Fissure Sealants</option>
+                                                    </select>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <input type="file" name="exo_images"
@@ -485,10 +510,11 @@
                                                class="form-control"
                                                placeholder="Paid:" required>
                                                 <br/>
-                                                                                              <br/>
+
+                                                <br/>
                                                 <div class="col-12">
                                                     <div class="alert alert-secondary" role="alert" align="center">
-                                                        <input type="submit" value="Add New X-rays"
+                                                        <input type="submit" value="Add New Preventive"
                                                                class="btn btn-info">
                                                     </div>
                                                 </div>
@@ -510,7 +536,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#xrays-form').submit(function() {
+    $('#surgery-form').submit(function() {
         // Remove commas from the price value before submission
         var priceInput = $('#price');
         var numericPriceValue = priceInput.val().replace(/,/g, '');
@@ -531,7 +557,35 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+    document.getElementById('surgery-form').addEventListener('submit', function(event) {
+        const priceLab = document.getElementById('price_lab').value;
+        const labName = document.querySelector('[name="lab_name"]').value;
 
+        if ((priceLab && !labName) || (!priceLab && labName)) {
+            alert('Please select a lab name when the price lab is filled and vice versa.');
+            event.preventDefault();
+        }
+    });
+
+    document.getElementById('price_lab').addEventListener('input', function() {
+        const labNameInput = document.querySelector('[name="lab_name"]');
+        if (this.value) {
+            labNameInput.setAttribute('required', 'required');
+        } else {
+            labNameInput.removeAttribute('required');
+        }
+    });
+
+    document.querySelector('[name="lab_name"]').addEventListener('change', function() {
+        const priceLabInput = document.getElementById('price_lab');
+        if (this.value) {
+            priceLabInput.setAttribute('required', 'required');
+        } else {
+            priceLabInput.removeAttribute('required');
+        }
+    });
+</script>
 
 <!-- Display existing images if available
 {% if exoo and exoo.exo_image %}

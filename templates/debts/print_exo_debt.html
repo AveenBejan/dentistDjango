@@ -134,6 +134,13 @@
       <td>{{ debt.1|format_with_commas }}</td>
     </tr>
     {% endfor %}
+     {% for debt in debt12 %}
+    <tr>
+      <td>Preventive</td>
+      <td>{{ debt.2|format_with_commas }}</td>
+      <td>{{ debt.1|format_with_commas }}</td>
+    </tr>
+    {% endfor %}
 
     <!-- Repeat similar blocks for debt4 to debt9 -->
   </tbody>
@@ -202,6 +209,10 @@
             {% if debt.surgery_instance %}
                 {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance or debt.periodontology_instance or debt.prosthodontics_instance or debt.exo_instance or debt.pedo_instance %}, {% endif %}
                 Surgery
+            {% endif %}
+            {% if debt.preventive_instance %}
+                {% if debt.crown_instance or debt.endo_instance or debt.filling_instance or debt.oral_surgery_instance or debt.ortho_instance or debt.veneer_instance or debt.periodontology_instance or debt.prosthodontics_instance or debt.exo_instance or debt.pedo_instance or debt.surgery_instance %}, {% endif %}
+                Preventive
             {% endif %}
         </td>
 

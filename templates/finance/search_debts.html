@@ -253,6 +253,18 @@
                 <th scope="col" style="text-align: center;" class="hideable">paid</th>
 
                 <th scope="col" style="text-align: center;">Add Debts</th>
+                {% elif model_name == 'Preventive' %}
+                <th scope="col" style="text-align: center;">#</th>
+                <th scope="col" style="text-align: center;">Name</th>
+                <th scope="col" style="text-align: center;">Phone Number</th>
+                <!--<th scope="col" style="text-align: center;" class="hideable">Type</th>
+                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                <th scope="col" style="text-align: center;" >Price</th>-->
+                <th style="text-align: center;" scope="col">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
+                <th scope="col" style="text-align: center;" class="hideable">paid</th>
+
+                <th scope="col" style="text-align: center;">Add Debts</th>
                 {% endif %}
                 <!-- ... other header columns ... -->
             </tr>
@@ -488,6 +500,20 @@
 
                 <td style="text-align: center;" scope="row" align="center"><a
                         href="{% url 'add_debt_surgery' id=result.id %}?query={{ query }}"><span
+                        class="btn btn-danger">Add-Debt</span></a>
+                </td>
+                {% elif model_name == 'Preventive' %}
+                <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.phone }}</td>
+                <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
+                <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
+                <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
+
+                <td style="text-align: center;" scope="row" align="center"><a
+                        href="{% url 'add_debt_preventive' id=result.id %}?query={{ query }}"><span
                         class="btn btn-danger">Add-Debt</span></a>
                 </td>
                 {% endif %}

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
     Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,\
-    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery
+    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive
 from django.forms import formset_factory
 
 
@@ -715,6 +715,61 @@ class SurgeryForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
         }
 
+
+class PreventiveForm(forms.ModelForm):
+    exo_images = forms.FileInput()
+    lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), empty_label='Select Lab', required=False)
+
+    class Meta:
+        model = Preventive
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','ur', 'ul', 'lr', 'll', 'price',
+                  'paid','date', 'note','exo_images', 'discount_option','lab_name' ,'type_preventive',
+                  'price_lab')
+        labels = {
+            'idReception1': '',
+            'idExo': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'ur': '',
+            'ul': '',
+            'lr': '',
+            'll': '',
+            'price': '',
+            'paid': '',
+            'note': '',
+            'date': '',
+            'discount_option': '',
+            'lab_name': '',
+            'price_lab': '',
+            'type_preventive': '',
+
+
+
+        }
+        widgets = {
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
+            'idExo': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
+            'll': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'price_lab': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+            'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'type_preventive': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
+        }
+
+
 class PeriodontologyForm(forms.ModelForm):
     exo_images = forms.FileInput()
     lab_name = forms.ModelChoiceField(queryset=Lab.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}),
@@ -1395,7 +1450,7 @@ class ProsthodonticsForm(forms.ModelForm):
 class PaymentHistoryForm(forms.ModelForm):
     class Meta:
         model = PaymentHistory
-        fields = ['idReception','idReception1', 'crown_instance', 'endo_instance', 'filling_instance','pedo_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'xrays_instance', 'surgery_instance','exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']
+        fields = ['idReception','idReception1', 'crown_instance', 'endo_instance', 'filling_instance','pedo_instance', 'oral_surgery_instance', 'ortho_instance', 'veneer_instance', 'periodontology_instance', 'prosthodontics_instance', 'xrays_instance', 'surgery_instance','preventive_instance','exo_instance', 'previous_date', 'paid_amount', 'price', 'name', 'phone']
 
 
 class StoreForm(forms.ModelForm):

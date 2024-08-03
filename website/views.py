@@ -5,10 +5,10 @@ from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
     ImplantForm,GaveAppointmentForm,DebtsForm,PaymentHistoryForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,\
-    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm,XraysForm,SurgeryForm
+    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm,XraysForm,SurgeryForm,PreventiveForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,\
-    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery
+    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -300,6 +300,7 @@ def search_debts(request):
     periodontologys = Periodontology.objects.none()
     pedos = Pedo.objects.none()
     surgerys = Surgery.objects.none()
+    preventives = Preventive.objects.none()
 
     if query:
         exos = Exo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
@@ -314,6 +315,7 @@ def search_debts(request):
         periodontologys = Periodontology.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         pedos = Pedo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         surgerys = Surgery.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        preventives = Preventive.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
 
     search_results = []
 
@@ -337,8 +339,8 @@ def search_debts(request):
         search_results.append(('Periodontology', periodontologys))
     if pedos.exists():
         search_results.append(('Pedo', pedos))
-    if surgerys.exists():
-            search_results.append(('Surgery', surgerys))
+    if preventives.exists():
+            search_results.append(('Preventive', preventives))
     context = {
         'query': query,
         'search_results': search_results,
@@ -546,6 +548,7 @@ def all_debts(request):
     periodontologys = Periodontology.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
     surgerys = Surgery.objects.none()
+    preventives = Preventive.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -566,6 +569,7 @@ def all_debts(request):
         periodontologys = Periodontology.objects.filter(date_range_filter & doctor_filter)
         prosthodonticss = Prosthodontics.objects.filter(date_range_filter & doctor_filter)
         surgerys = Surgery.objects.filter(date_range_filter & doctor_filter)
+        preventives = Preventive.objects.filter(date_range_filter & doctor_filter)
 
     search_results = []
 
@@ -591,6 +595,8 @@ def all_debts(request):
         search_results.append(('Prosthodontics', prosthodonticss))
     if surgerys.exists():
             search_results.append(('Surgery', surgerys))
+    if preventives.exists():
+            search_results.append(('Preventive', preventives))
 
 
     total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
@@ -604,6 +610,7 @@ def all_debts(request):
     total_periodontology = periodontologys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_prosthodontics = prosthodonticss.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_surgery = surgerys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_preventive = preventives.aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
     total_exo1 = exos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_filling1 = fillings.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
@@ -616,6 +623,7 @@ def all_debts(request):
     total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_surgery1 = surgerys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_preventive1 = preventives.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
     total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
@@ -628,6 +636,7 @@ def all_debts(request):
     total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_surgery2 = surgerys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_preventive2 = preventives.aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
     total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
     total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
@@ -640,6 +649,7 @@ def all_debts(request):
     total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
     total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
     total_surgery3 = surgerys.aggregate(price=Sum('price'))['price'] or 0
+    total_preventive3 = preventives.aggregate(price=Sum('price'))['price'] or 0
     # Calculate total paid for each type
     paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -652,21 +662,22 @@ def all_debts(request):
     paid_periodontology = periodontologys.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = prosthodonticss.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_surgery = surgerys.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_preventive = preventives.aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = sum(
         [total_exo, total_filling, total_pedo, total_crown, total_veneer, total_oralSurgery, total_endo, total_ortho,
-         total_periodontology, total_prosthodontics, total_surgery])
+         total_periodontology, total_prosthodontics, total_surgery, total_preventive])
     total_price_t1 = sum(
         [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
-         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1])
+         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1, total_preventive1])
     total_price_t2 = sum(
         [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
-         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2])
+         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2, total_preventive2])
     total_price_t3 = sum(
         [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
-         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3])
+         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3, total_preventive3])
     total_paid_t = sum(
         [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
-         paid_periodontology, paid_prosthodontics, paid_surgery])
+         paid_periodontology, paid_prosthodontics, paid_surgery, paid_preventive])
     remaining = total_price_t2 - total_paid_t
 
     context = {
@@ -683,6 +694,7 @@ def all_debts(request):
         'total_periodontology': total_periodontology,
         'total_prosthodontics': total_prosthodontics,
         'total_surgery': total_surgery,
+        'total_preventive': total_preventive,
         'total_exo1': total_exo1,
         'total_filling1': total_filling1,
         'total_pedo1': total_pedo1,
@@ -694,6 +706,7 @@ def all_debts(request):
         'total_periodontology1': total_periodontology1,
         'total_prosthodontics1': total_prosthodontics1,
         'total_surgery1': total_surgery1,
+        'total_preventive1': total_preventive1,
         'total_exo2': total_exo2,
         'total_filling2': total_filling2,
         'total_pedo2': total_pedo2,
@@ -705,6 +718,7 @@ def all_debts(request):
         'total_periodontology2': total_periodontology2,
         'total_prosthodontics2': total_prosthodontics2,
         'total_surgery2': total_surgery2,
+        'total_preventive2': total_preventive2,
         'total_exo3': total_exo3,
         'total_filling3': total_filling3,
         'total_pedo3': total_pedo3,
@@ -716,6 +730,7 @@ def all_debts(request):
         'total_periodontology3': total_periodontology3,
         'total_prosthodontics3': total_prosthodontics3,
         'total_surgery3': total_surgery3,
+        'total_preventive3': total_preventive3,
         'paid_exo': paid_exo,
         'paid_filling': paid_filling,
         'paid_pedo': paid_pedo,
@@ -727,6 +742,7 @@ def all_debts(request):
         'paid_periodontology': paid_periodontology,
         'paid_prosthodontics': paid_prosthodontics,
         'paid_surgery': paid_surgery,
+        'paid_preventive': paid_preventive,
         'total_price_t': total_price_t,
         'total_price_t1': total_price_t1,
         'total_price_t2': total_price_t2,
@@ -768,6 +784,7 @@ def earnings(request):
     periodontologys = Periodontology.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
     surgerys = Surgery.objects.none()
+    preventives = Preventive.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -788,6 +805,7 @@ def earnings(request):
         periodontologys = Periodontology.objects.filter(date_range_filter & doctor_filter)
         prosthodonticss = Prosthodontics.objects.filter(date_range_filter & doctor_filter)
         surgerys = Surgery.objects.filter(date_range_filter & doctor_filter)
+        preventives = Preventive.objects.filter(date_range_filter & doctor_filter)
 
     search_results = []
 
@@ -813,6 +831,8 @@ def earnings(request):
         search_results.append(('Prosthodontics', prosthodonticss))
     if surgerys.exists():
         search_results.append(('Surgery', surgerys))
+    if preventives.exists():
+        search_results.append(('Preventive', preventives))
 
     total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_filling = fillings.aggregate(center_share=Sum('center_share'))['center_share'] or 0
@@ -825,6 +845,7 @@ def earnings(request):
     total_periodontology = periodontologys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_prosthodontics = prosthodonticss.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_surgery = surgerys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_preventive = preventives.aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
     total_exo1 = exos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_filling1 = fillings.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
@@ -837,6 +858,7 @@ def earnings(request):
     total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_surgery1 = surgerys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_preventive1 = preventives.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
     total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
@@ -849,6 +871,7 @@ def earnings(request):
     total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
     total_surgery2 = surgerys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_preventive2 = preventives.aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
     total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
     total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
@@ -861,6 +884,7 @@ def earnings(request):
     total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
     total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
     total_surgery3 = surgerys.aggregate(price=Sum('price'))['price'] or 0
+    total_preventive3 = preventives.aggregate(price=Sum('price'))['price'] or 0
     # Calculate total paid for each type
     paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -873,21 +897,22 @@ def earnings(request):
     paid_periodontology = periodontologys.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = prosthodonticss.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_surgery = surgerys.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_preventive = preventives.aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = sum(
         [total_exo, total_filling, total_pedo, total_crown, total_veneer, total_oralSurgery, total_endo, total_ortho,
-         total_periodontology, total_prosthodontics, total_surgery])
+         total_periodontology, total_prosthodontics, total_surgery, total_preventive])
     total_price_t1 = sum(
         [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
-         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1])
+         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1, total_preventive1])
     total_price_t2 = sum(
         [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
-         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2])
+         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2, total_preventive2])
     total_price_t3 = sum(
         [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
-         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3])
+         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3, total_preventive3])
     total_paid_t = sum(
         [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
-         paid_periodontology, paid_prosthodontics, paid_surgery])
+         paid_periodontology, paid_prosthodontics, paid_surgery, paid_preventive])
     remaining = total_price_t2 - total_paid_t
 
     context = {
@@ -904,6 +929,7 @@ def earnings(request):
         'total_periodontology': total_periodontology,
         'total_prosthodontics': total_prosthodontics,
         'total_surgery': total_surgery,
+        'total_preventive': total_preventive,
         'total_exo1': total_exo1,
         'total_filling1': total_filling1,
         'total_pedo1': total_pedo1,
@@ -915,6 +941,7 @@ def earnings(request):
         'total_periodontology1': total_periodontology1,
         'total_prosthodontics1': total_prosthodontics1,
         'total_surgery1': total_surgery1,
+        'total_preventive1': total_preventive1,
         'total_exo2': total_exo2,
         'total_filling2': total_filling2,
         'total_pedo2': total_pedo2,
@@ -926,6 +953,7 @@ def earnings(request):
         'total_periodontology2': total_periodontology2,
         'total_prosthodontics2': total_prosthodontics2,
         'total_surgery2': total_surgery2,
+        'total_preventive2': total_preventive2,
         'total_exo3': total_exo3,
         'total_filling3': total_filling3,
         'total_pedo3': total_pedo3,
@@ -937,6 +965,7 @@ def earnings(request):
         'total_periodontology3': total_periodontology3,
         'total_prosthodontics3': total_prosthodontics3,
         'total_surgery3': total_surgery3,
+        'total_preventive3': total_preventive3,
         'paid_exo': paid_exo,
         'paid_filling': paid_filling,
         'paid_pedo': paid_pedo,
@@ -948,6 +977,7 @@ def earnings(request):
         'paid_periodontology': paid_periodontology,
         'paid_prosthodontics': paid_prosthodontics,
         'paid_surgery': paid_surgery,
+        'paid_preventive': paid_preventive,
         'total_price_t': total_price_t,
         'total_price_t1': total_price_t1,
         'total_price_t2': total_price_t2,
@@ -957,7 +987,6 @@ def earnings(request):
         'start_date': start_date,  # Add this line
         'end_date': end_date  # Add this line
     }
-
     return render(request, 'debts/earnings.html', context)
 
 
@@ -988,6 +1017,8 @@ def earnings_print(request):
     orthos = Ortho.objects.none()
     periodontologys = Periodontology.objects.none()
     prosthodonticss = Prosthodontics.objects.none()
+    surgerys = Surgery.objects.none()
+    preventives = Preventive.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -1007,6 +1038,8 @@ def earnings_print(request):
         orthos = Ortho.objects.filter(date_range_filter & doctor_filter & Q(visits_id__isnull=True))
         periodontologys = Periodontology.objects.filter(date_range_filter & doctor_filter)
         prosthodonticss = Prosthodontics.objects.filter(date_range_filter & doctor_filter)
+        surgerys = Surgery.objects.filter(date_range_filter & doctor_filter)
+        preventives = Preventive.objects.filter(date_range_filter & doctor_filter)
 
     search_results = []
 
@@ -1030,6 +1063,10 @@ def earnings_print(request):
         search_results.append(('Periodontology', periodontologys))
     if prosthodonticss.exists():
         search_results.append(('Prosthodontics', prosthodonticss))
+    if surgerys.exists():
+        search_results.append(('Surgery', surgerys))
+    if preventives.exists():
+        search_results.append(('Preventive', preventives))
 
     total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_filling = fillings.aggregate(center_share=Sum('center_share'))['center_share'] or 0
@@ -1041,6 +1078,8 @@ def earnings_print(request):
     total_ortho = orthos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_periodontology = periodontologys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
     total_prosthodontics = prosthodonticss.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_surgery = surgerys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_preventive = preventives.aggregate(center_share=Sum('center_share'))['center_share'] or 0
 
     total_exo1 = exos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_filling1 = fillings.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
@@ -1052,7 +1091,34 @@ def earnings_print(request):
     total_ortho1 = orthos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
     total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_surgery1 = surgerys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_preventive1 = preventives.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
 
+    total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_pedo2 = pedos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_crown2 = crowns.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_veneer2 = veneers.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_oralSurgery2 = oralSurgery.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_endo2 = endos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho2 = orthos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_surgery2 = surgerys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_preventive2 = preventives.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
+    total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
+    total_pedo3 = pedos.aggregate(price=Sum('price'))['price'] or 0
+    total_crown3 = crowns.aggregate(price=Sum('price'))['price'] or 0
+    total_veneer3 = veneers.aggregate(price=Sum('price'))['price'] or 0
+    total_oralSurgery3 = oralSurgery.aggregate(price=Sum('price'))['price'] or 0
+    total_endo3 = endos.aggregate(price=Sum('price'))['price'] or 0
+    total_ortho3 = orthos.aggregate(price=Sum('price'))['price'] or 0
+    total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
+    total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
+    total_surgery3 = surgerys.aggregate(price=Sum('price'))['price'] or 0
+    total_preventive3 = preventives.aggregate(price=Sum('price'))['price'] or 0
     # Calculate total paid for each type
     paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
@@ -1064,16 +1130,24 @@ def earnings_print(request):
     paid_ortho = orthos.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_periodontology = periodontologys.aggregate(paid=Sum('paid'))['paid'] or 0
     paid_prosthodontics = prosthodonticss.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_surgery = surgerys.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_preventive = preventives.aggregate(paid=Sum('paid'))['paid'] or 0
     total_price_t = sum(
         [total_exo, total_filling, total_pedo, total_crown, total_veneer, total_oralSurgery, total_endo, total_ortho,
-         total_periodontology, total_prosthodontics])
+         total_periodontology, total_prosthodontics, total_surgery, total_preventive])
     total_price_t1 = sum(
         [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
-         total_ortho1, total_periodontology1, total_prosthodontics1])
+         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1, total_preventive1])
+    total_price_t2 = sum(
+        [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
+         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2, total_preventive2])
+    total_price_t3 = sum(
+        [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
+         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3, total_preventive3])
     total_paid_t = sum(
         [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
-         paid_periodontology, paid_prosthodontics])
-    remaining = total_price_t - total_paid_t
+         paid_periodontology, paid_prosthodontics, paid_surgery, paid_preventive])
+    remaining = total_price_t2 - total_paid_t
 
     context = {
         'form': form,
@@ -1088,6 +1162,8 @@ def earnings_print(request):
         'total_ortho': total_ortho,
         'total_periodontology': total_periodontology,
         'total_prosthodontics': total_prosthodontics,
+        'total_surgery': total_surgery,
+        'total_preventive': total_preventive,
         'total_exo1': total_exo1,
         'total_filling1': total_filling1,
         'total_pedo1': total_pedo1,
@@ -1098,6 +1174,32 @@ def earnings_print(request):
         'total_ortho1': total_ortho1,
         'total_periodontology1': total_periodontology1,
         'total_prosthodontics1': total_prosthodontics1,
+        'total_surgery1': total_surgery1,
+        'total_preventive1': total_preventive1,
+        'total_exo2': total_exo2,
+        'total_filling2': total_filling2,
+        'total_pedo2': total_pedo2,
+        'total_crown2': total_crown2,
+        'total_veneer2': total_veneer2,
+        'total_oralSurgery2': total_oralSurgery2,
+        'total_endo2': total_endo2,
+        'total_ortho2': total_ortho2,
+        'total_periodontology2': total_periodontology2,
+        'total_prosthodontics2': total_prosthodontics2,
+        'total_surgery2': total_surgery2,
+        'total_preventive2': total_preventive2,
+        'total_exo3': total_exo3,
+        'total_filling3': total_filling3,
+        'total_pedo3': total_pedo3,
+        'total_crown3': total_crown3,
+        'total_veneer3': total_veneer3,
+        'total_oralSurgery3': total_oralSurgery3,
+        'total_endo3': total_endo3,
+        'total_ortho3': total_ortho3,
+        'total_periodontology3': total_periodontology3,
+        'total_prosthodontics3': total_prosthodontics3,
+        'total_surgery3': total_surgery3,
+        'total_preventive3': total_preventive3,
         'paid_exo': paid_exo,
         'paid_filling': paid_filling,
         'paid_pedo': paid_pedo,
@@ -1108,8 +1210,12 @@ def earnings_print(request):
         'paid_ortho': paid_ortho,
         'paid_periodontology': paid_periodontology,
         'paid_prosthodontics': paid_prosthodontics,
+        'paid_surgery': paid_surgery,
+        'paid_preventive': paid_preventive,
         'total_price_t': total_price_t,
         'total_price_t1': total_price_t1,
+        'total_price_t2': total_price_t2,
+        'total_price_t3': total_price_t3,
         'total_paid_t': total_paid_t,
         'remaining': remaining,
         'start_date': start_date,  # Add this line
@@ -5248,7 +5354,8 @@ def print_exo_debt(request, id):
     debt9 = Veneer.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
     debt10 = Pedo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
     debt11 = Surgery.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9,debt10,debt11)
+    debt12 = Preventive.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
+    combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9,debt10,debt11,debt12)
     debtss = PaymentHistory.objects.filter(idReception1=id)
 
     # Calculate the total remaining amount for idReception
@@ -5274,6 +5381,8 @@ def print_exo_debt(request, id):
 
     total_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
 
+    total_preventive = Preventive.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
     paid_exo = Exo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
     paid_filling = Filling.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
@@ -5295,9 +5404,10 @@ def print_exo_debt(request, id):
     paid_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
     paid_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+    paid_preventive = Preventive.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
 
-    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics + total_pedo+ total_surgery)
-    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_pedo + paid_surgery)
+    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics + total_pedo+ total_surgery+ total_preventive)
+    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_pedo + paid_surgery+ paid_preventive)
     total_remaining = total_price - total_paid
 
     context = {
@@ -5314,6 +5424,7 @@ def print_exo_debt(request, id):
         'debt9': debt9,
         'debt10': debt10,
         'debt11': debt11,
+        'debt12': debt12,
         'debtss': debtss,
         'combined_debts': combined_debts,
         'total_remaining': total_remaining,
@@ -5330,6 +5441,7 @@ def print_exo_debt(request, id):
         'total_periodontology': total_periodontology,  # Add total_salary to the context
         'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
         'total_surgery': total_surgery,  # Add total_salary to the context
+        'total_preventive': total_preventive,  # Add total_salary to the context
         'paid_exo': paid_exo,  # Add total_salary to the context
         'paid_filling': paid_filling,  # Add total_salary to the context
         'paid_pedo': paid_filling,  # Add total_salary to the context
@@ -5341,6 +5453,7 @@ def print_exo_debt(request, id):
         'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
         'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
         'paid_surgery': paid_surgery,
+        'paid_preventive': paid_preventive,
     }
     return render(request, 'debts/print_exo_debt.html', context)
 
@@ -7999,3 +8112,505 @@ def print_surgery_debt(request, id):
     }
 
     return render(request, 'debts/print_surgery_debt.html', context)
+
+@login_required
+def preventive_reception(request):
+    user = request.user
+    try:
+        if user.role == 'admin':
+            appointments = Reception1.objects.all().order_by('-id')
+        else:
+            doctor = Doctors.objects.get(user=user)
+            appointments = Reception1.objects.filter(doctor=doctor).order_by('-id')
+    except Doctors.DoesNotExist:
+        appointments = Reception1.objects.none()
+
+    p = Paginator(appointments, 25)
+    page = request.GET.get('page')
+    appointments = p.get_page(page)
+    nums = "a" * appointments.paginator.num_pages
+
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+
+    return render(request, 'preventive/preventive_reception.html', {'appointments': appointments, 'nums': nums})
+
+
+def search_preventive(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception1.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception1.objects.all()
+        return render(request, 'preventive/search_preventive.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'preventive/search_preventive.html', {})
+
+@login_required
+def preventive(request, id):
+    user = request.user
+
+    try:
+        # Check if the user is an admin
+        if user.role == 'admin':
+            reception = get_object_or_404(Reception1, id=id)
+        else:
+            # Get the doctor instance associated with the logged-in user
+            doctor = Doctors.objects.get(user=user)
+            # Get the reception instance and ensure it belongs to the logged-in doctor
+            reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+        if request.method == 'POST':
+            form = PreventiveForm(request.POST, request.FILES)
+            if form.is_valid():
+                oral_surgery = form.save(commit=False)
+                oral_surgery.idReception1_id = id
+
+                price = form.cleaned_data['price']
+                oral_surgery.name = reception.name
+                oral_surgery.phone = reception.phone
+                oral_surgery.gender = reception.gender
+                oral_surgery.date_of_birth = reception.date_of_birth
+                oral_surgery.educational_id = reception.educational_id
+                oral_surgery.idReception_id = reception.idReception_id
+                oral_surgery.doctor_id = reception.doctor_id
+
+                try:
+                    doctor = Doctors.objects.get(id=reception.doctor_id)
+                    proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                    proportion_center = Decimal(doctor.proportion_center) / 100
+                except (ObjectDoesNotExist, InvalidOperation):
+                    proportion_doctor = Decimal('0')
+                    proportion_center = Decimal('0')
+
+                discount_option = form.cleaned_data['discount_option']
+                price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+                # Adjust the price if price_lab is not null
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+
+                print(f"Original price: {price}")
+                print(f"Price of lab: {price_lab}")
+                print(f"Adjusted price: {adjusted_price}")
+
+                if discount_option == 'Without Discount':
+                    doctor_share = adjusted_price * proportion_doctor
+                    center_share = adjusted_price * proportion_center
+                    total_price = price
+                elif discount_option == 'None':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price
+                    total_price = center_share
+                elif discount_option == 'With Discount':
+                    doctor_share = Decimal('0')
+                    center_share = adjusted_price * proportion_center
+                    total_price = center_share + price_lab
+                elif discount_option == 'Full Discount':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor)
+                    center_share = Decimal('0')
+                    total_price = price_lab
+                elif discount_option == 'No Pay':
+                    doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                    center_share = Decimal('0')
+                    total_price = center_share
+                else:
+                    doctor_share = Decimal('0')
+                    center_share = Decimal('0')
+                    total_price = Decimal('0')
+
+                print(f"Doctor share: {doctor_share}")
+                print(f"Center share: {center_share}")
+                print(f"Total price before saving: {total_price}")
+
+                # Assign Decimal values to model fields
+                oral_surgery.doctor_share = doctor_share.quantize(Decimal('0.01'))
+                oral_surgery.center_share = center_share.quantize(Decimal('0.01'))
+                oral_surgery.price_lab = price_lab_decimal.quantize(Decimal('0.01'))
+                oral_surgery.total_price = total_price.quantize(Decimal('0.01'))  # Save total_price as Decimal
+
+                # Debugging statement to confirm the assignment
+                print(f"Total price after quantize: {oral_surgery.total_price}")
+
+                oral_surgery.save()
+
+                photos = request.FILES.getlist('exo_images')
+                for photo in photos:
+                    Photo.objects.create(preventive_instance=oral_surgery, image=photo)
+
+                return redirect('preventive', id=id)
+            else:
+                form = PreventiveForm(initial={
+                    'idReception1_id': id,
+                    'name': reception.name,
+                    'phone': reception.phone,
+                    'gender': reception.gender,
+                    'date_of_birth': reception.date_of_birth,
+                    'educational_id': reception.educational_id,
+                    'idReception_id': reception.idReception_id,
+                    'doctor_id': reception.doctor_id
+                })
+        else:
+            form = PreventiveForm(initial={
+                'idReception1_id': id,
+                'name': reception.name,
+                'phone': reception.phone,
+                'gender': reception.gender,
+                'date_of_birth': reception.date_of_birth,
+                'educational_id': reception.educational_id,
+                'idReception_id': reception.idReception_id,
+                'doctor_id': reception.doctor_id
+            })
+
+        appointments = Reception1.objects.all().order_by('-id')
+        exooes = Preventive.objects.filter(idReception1=id)
+        photos_list = []
+
+        exoo = exooes.first()
+        photos = exoo.photo_set.all() if exoo else None
+
+        medicine = Medicin.objects.filter(idReception=id).first()
+
+        for exoo in exooes:
+            if exoo.ur:
+                exoo.ur = exoo.ur.replace("'", "")
+            if exoo.ul:
+                exoo.ul = exoo.ul.replace("'", "")
+            if exoo.lr:
+                exoo.lr = exoo.lr.replace("'", "")
+            if exoo.ll:
+                exoo.ll = exoo.ll.replace("'", "")
+            exoo.total_price = exoo.total_price
+            exoo.save()
+            photos = exoo.photo_set.all()
+            photos_list.append(photos)
+
+        formatted_total_prices = ["{:,}".format(exoo.total_price) if exoo.total_price is not None else None for exoo in exooes]
+        formatted_prices = ["{:,}".format(exoo.price) if exoo.price is not None else None for exoo in exooes]
+
+        return render(request, 'preventive/preventive.html', {
+            'form': form,
+            'appointments': appointments,
+            'medicine': medicine,
+            'exooes': exooes,
+            'id': id,
+            'photos': photos,
+            'photos_list': photos_list,
+            'formatted_total_prices': formatted_total_prices,
+            'reception': reception,
+            'formatted_prices': formatted_prices
+        })
+    except Doctors.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'You are not authorized to access this page.')
+        return redirect('home')
+    except Reception1.DoesNotExist:
+        # Redirect to an error page or show a message
+        messages.error(request, 'Reception does not exist or you do not have permission to access it.')
+        return redirect('home')
+
+
+def preventive_edit(request, id):
+    exoo = get_object_or_404(Preventive, id=id)
+    photos = Photo.objects.filter(preventive_instance=exoo)
+
+    if request.method == 'POST':
+        form = PreventiveForm(request.POST, request.FILES, instance=exoo)
+        if form.is_valid():
+            exoo = form.save(commit=False)
+            price = form.cleaned_data['price']
+
+            try:
+                doctor = Doctors.objects.get(id=exoo.doctor_id)
+                proportion_doctor = Decimal(doctor.proportion_doctor) / 100
+                proportion_center = Decimal(doctor.proportion_center) / 100
+            except (ObjectDoesNotExist, InvalidOperation):
+                proportion_doctor = Decimal('0')
+                proportion_center = Decimal('0')
+
+            discount_option = form.cleaned_data['discount_option']
+            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+
+            try:
+                price_lab_decimal = Decimal(price_lab)
+                adjusted_price = price - price_lab_decimal
+            except InvalidOperation:
+                adjusted_price = price
+
+            if discount_option == 'Without Discount':
+                doctor_share = adjusted_price * proportion_doctor
+                center_share = adjusted_price * proportion_center
+                total_price = price
+            elif discount_option == 'None':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price
+                total_price = center_share
+            elif discount_option == 'With Discount':
+                doctor_share = Decimal('0')
+                center_share = adjusted_price * proportion_center
+                total_price = center_share + price_lab
+            elif discount_option == 'Full Discount':
+                doctor_share = -1 * (adjusted_price * proportion_doctor)
+                center_share = Decimal('0')
+                total_price = price_lab
+            elif discount_option == 'No Pay':
+                doctor_share = -1 * (adjusted_price * proportion_doctor) - price_lab
+                center_share = Decimal('0')
+                total_price = center_share
+            else:
+                doctor_share = Decimal('0')
+                center_share = Decimal('0')
+                total_price = Decimal('0')
+
+            exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
+            exoo.center_share = center_share.quantize(Decimal('0.01'))
+            exoo.total_price = total_price.quantize(Decimal('0.01'))
+            exoo.save()
+
+            photos = request.FILES.getlist('exo_images')
+            for photo in photos:
+                Photo.objects.create(preventive_instance=exoo, image=photo)
+
+            return redirect('preventive', id=exoo.idReception1_id)
+    else:
+        form = PreventiveForm(instance=exoo)
+
+    labs = Lab.objects.all()
+    return render(request, 'preventive/preventive_edit.html', {'form': form, 'id': id, 'exoo': exoo, 'photos': photos, 'labs': labs})
+
+
+def remove_photo_preventive(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    preventive_instance = photo.preventive_instance
+    photo.delete()
+    return redirect('preventive_edit', id=preventive_instance.id)
+
+
+def delete_preventive(request, id):
+    # Get the drug related to the Reception
+    exo = get_object_or_404(Preventive, id=id)
+
+    # Store the idReception before deleting the drug
+    idReception = exo.idReception1_id
+
+    # Delete the drug
+    exo.delete()
+
+    # Redirect to the 'drugs' view with the same idReception
+    return redirect('preventive', id=idReception)
+
+
+def print_preventive_debt1(request, id):
+    try:
+        preventive_instance = Preventive.objects.get(id=id)
+    except Preventive.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    debts = PaymentHistory.objects.filter(preventive_instance=preventive_instance)
+
+    # Calculate the total remaining amount for the crown
+    total_paid = debts.aggregate(Sum('paid_amount'))['paid_amount__sum'] or 0
+    total_price = preventive_instance.total_price
+    total_remaining = total_price - total_paid
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+        'total_price': total_price,
+        'total_paid': total_paid,
+        'patient_name': preventive_instance.name,
+        'patient_phone': preventive_instance.phone,
+    }
+
+    return render(request, 'debts/print_preventive_debt1.html', context)
+
+
+def add_debt_preventive(request, id):
+    try:
+        preventive_instance = Preventive.objects.get(id=id)
+    except Preventive.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(preventive_instance=preventive_instance)
+    previous_date = preventive_instance.date
+    previous_paid = preventive_instance.paid
+    total_price = preventive_instance.total_price
+
+    if request.method == 'POST':
+        paid = Decimal(request.POST.get('paid', '0'))
+        date_str = request.POST.get('date')
+        date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+        if preventive_instance.paid + paid >= total_price:
+            preventive_instance.paid = total_price
+        else:
+            preventive_instance.paid += paid  # Increment the paid amount
+
+        preventive_instance.save()
+
+        # Store the previous date from the form in PaymentHistory
+        payment_history = PaymentHistory(preventive_instance=preventive_instance, previous_date=date, paid_amount=paid,
+                                         idReception1=preventive_instance.idReception1, idReception=preventive_instance.idReception, name=preventive_instance.name,
+                                         phone=preventive_instance.phone, price=preventive_instance.total_price)
+        payment_history.save()
+
+        return redirect(reverse('search-debts') + f'?query={request.GET.get("query")}')
+    else:
+        remaining_amount = total_price - previous_paid
+
+        return render(request, 'debts/add_debt_preventive.html', {
+            'id': id,
+            'preventive_instance': preventive_instance,
+            'previous_dates': previous_dates,
+            'previous_paid': previous_paid,
+            'remaining_amount': remaining_amount
+        })
+
+
+def add_debt_preventive1(request, id):
+    try:
+        preventive_instance = Preventive.objects.get(id=id)
+    except Preventive.DoesNotExist:
+        return HttpResponse("Crown instance not found")
+
+    previous_dates = PaymentHistory.objects.filter(preventive_instance=preventive_instance)
+    previous_date = preventive_instance.date
+    previous_paid = preventive_instance.paid
+    total_price = preventive_instance.total_price
+
+    if request.method == 'POST':
+        paid = request.POST.get('paid', '0')
+        print("Received Paid Value:", paid)  # Debug line: print received value
+
+        try:
+            paid = Decimal(paid)  # Convert to Decimal
+
+            if preventive_instance.paid + paid >= total_price:
+                preventive_instance.paid = total_price
+            else:
+                preventive_instance.paid += paid  # Increment the paid amount (both are Decimal now)
+
+            preventive_instance.save()
+
+            # Store the previous date from the form in PaymentHistory
+            date_str = request.POST.get('date')
+            date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else None
+
+            payment_history = PaymentHistory(
+                preventive_instance=preventive_instance,
+                previous_date=date,
+                paid_amount=paid,
+                idReception=preventive_instance.idReception,
+                idReception1=preventive_instance.idReception1,
+                name=preventive_instance.name,
+                phone=preventive_instance.phone,
+                price=preventive_instance.total_price
+            )
+            payment_history.save()
+
+            return redirect(reverse(
+                'all_debts') + f'?start_date={request.GET.get("start_date")}&end_date={request.GET.get("end_date")}')
+
+        except Exception as e:
+            print("Conversion Error:", e)  # Debug line: print any conversion errors
+            # Handle the error appropriately or log it for further investigation
+
+    # If it's not a POST request or if an error occurred, render the form
+    remaining_amount = total_price - previous_paid
+    return render(request, 'debts/add_debt_preventive.html', {
+        'id': id,
+        'preventive_instance': preventive_instance,
+        'previous_dates': previous_dates,
+        'previous_paid': previous_paid,
+        'remaining_amount': remaining_amount
+    })
+
+def print_preventive_debt(request, id):
+    debts = PaymentHistory.objects.filter(idReception1=id)
+
+    # Calculate the total remaining amount for idReception
+    total_exo = Exo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_filling = Filling.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_crown = Crown.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_veneer = Veneer.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_endo = Endo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_ortho = Ortho.objects.filter(idReception1=id).aggregate(total_price=Sum('price'))['total_price'] or 0
+
+    total_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))[
+                               'total_price'] or 0
+    total_preventive = Preventive.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))[
+                        'total_price'] or 0
+
+    paid_exo = Exo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_filling = Filling.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_crown = Crown.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_veneer = Veneer.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_oralSurgery = OralSurgery.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_endo = Endo.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_ortho = Ortho.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_periodontology = Periodontology.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_prosthodontics = Prosthodontics.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))['total_paid'] or 0
+
+    paid_surgery = Surgery.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))[
+                              'total_paid'] or 0
+    paid_preventive = Preventive.objects.filter(idReception1=id).aggregate(total_paid=Sum('paid'))[
+                       'total_paid'] or 0
+
+    total_price = (total_exo + total_filling + total_crown + total_veneer + total_oralSurgery + total_endo + total_ortho + total_periodontology + total_prosthodontics+ total_surgery+ total_preventive)
+    total_paid = (paid_exo + paid_filling + paid_crown + paid_veneer + paid_oralSurgery + paid_endo + paid_ortho + paid_periodontology + paid_prosthodontics+ paid_surgery+ paid_preventive)
+    total_remaining = total_price - total_paid
+
+
+
+    context = {
+        'debts': debts,
+        'total_remaining': total_remaining,
+        'total_price': total_price,
+        'total_exo': total_exo,  # Add total_salary to the context
+        'total_filling': total_filling,  # Add total_salary to the context
+        'total_crown': total_crown,  # Add total_salary to the context
+        'total_veneer': total_veneer,  # Add total_salary to the context
+        'total_oralSurgery': total_oralSurgery,  # Add total_salary to the context
+        'total_endo': total_endo,  # Add total_salary to the context
+        'total_ortho': total_ortho,  # Add total_salary to the context
+        'total_periodontology': total_periodontology,  # Add total_salary to the context
+        'total_prosthodontics': total_prosthodontics,  # Add total_salary to the context
+        'total_surgery': total_surgery,  # Add total_salary to the context
+        'total_preventive': total_preventive,  # Add total_salary to the context
+        'paid_exo': paid_exo,  # Add total_salary to the context
+        'paid_filling': paid_filling,  # Add total_salary to the context
+        'paid_crown': paid_crown,  # Add paid_salary to the context
+        'paid_veneer': paid_veneer,  # Add paid_salary to the context
+        'paid_oralSurgery': paid_oralSurgery,  # Add paid_salary to the context
+        'paid_endo': paid_endo,  # Add paid_salary to the context
+        'paid_ortho': paid_ortho,  # Add paid_salary to the context
+        'paid_periodontology': paid_periodontology,  # Add paid_salary to the context
+        'paid_prosthodontics': paid_prosthodontics,  # Add paid_salary to the context
+        'paid_surgery': paid_surgery,  # Add paid_salary to the context
+        'paid_preventive': paid_preventive,  # Add paid_salary to the context
+
+    }
+
+    return render(request, 'debts/print_preventive_debt.html', context)

@@ -244,6 +244,16 @@ urlpatterns = [
     path('add_debt_surgery/<int:id>', views.add_debt_surgery, name='add_debt_surgery'),
     path('add_debt_surgery1/<int:id>', views.add_debt_surgery1, name='add_debt_surgery1'),
 
+    path('preventive/<int:id>', views.preventive, name='preventive'),
+    path('preventive/preventive_reception.html', views.preventive_reception, name='preventive-reception'),
+    path('preventive_edit/<int:id>', views.preventive_edit, name='preventive_edit'),
+    path('remove_photo_preventive/<int:photo_id>/', views.remove_photo_preventive, name='remove_photo_preventive'),
+    path('search_preventive', views.search_preventive, name='search-preventive'),
+    path('delete_preventive/<int:id>', views.delete_preventive, name='delete-preventive'),
+    path('print_preventive_debt1/<int:id>', views.print_preventive_debt1, name='print_preventive_debt1'),
+    path('add_debt_preventive/<int:id>', views.add_debt_preventive, name='add_debt_preventive'),
+    path('add_debt_preventive1/<int:id>', views.add_debt_preventive1, name='add_debt_preventive1'),
+
 
 
 

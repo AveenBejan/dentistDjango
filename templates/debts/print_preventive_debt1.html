@@ -1,0 +1,89 @@
+{% load static %}
+
+{% block content %}
+{% load custom_filters %}
+<br/>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+</style>
+<div class="container body">
+    <div class="right_col" role="main" style="width: 100%">
+<p align="center"
+   style="font-size:16px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
+
+    <br/>COSMOLIGHT DENTAL CENTER<!--<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
+    ددانا<br/>B.D.S/M.SC.Ortho</br>عطلة العيادة الخميس والجمعة </p>-->
+<hr class="border border-primary border-3 opacity-40">
+        <p style="text-align: right;" ><img src="{% static 'website/images/img.jpg'  %}"
+                                             alt="..." class="img-circle profile_img"> &nbsp; &nbsp;<img src="{% static 'website/images/bar.png'  %}"
+                                             alt="..." class="img-circle profile_img"></p>
+        <br/>
+        <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
+<hr class="border border-primary border-3 opacity-40">
+<div class="col-8">
+    <div class="row">
+
+
+        <h4 style="text-align:center;">Payment Invoice For Preventive Patient </h4>
+        <div style="font-weight: bold;">
+
+            {% if patient_name %}
+            <p>Patient Name: {{ patient_name }}</p>
+            {% else %}
+            <p>No patient name available</p>
+            {% endif %}
+            {% if patient_phone %}
+            <p>Patient Name: {{ patient_phone }}</p>
+            {% else %}
+            <p>No patient name available</p>
+            {% endif %}
+        </div>
+        <div class="col-2">
+        <table class="table table-hover">
+            <thead style="background-color:#555; color:#fff;">
+            <tr>
+
+                <th style="text-align:center;" scope="col">#</th>
+                <th style="text-align:center;" scope="col">Previous Date</th>
+                <th style="text-align:center;" scope="col">Paid</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for debt in debts %}
+            <tr style="color: {% if debt.total_price != debt.paid %}red{% else %}black{% endif %}">
+                <td style="text-align:center;">{{ debt.id }}</td>
+                <td style="text-align:center;">{{ debt.previous_date }}</td>
+                <td style="text-align:center;">{{ debt.paid_amount|format_with_commas }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        </div>
+   <div class="col-2" style="max-width:40.333333%">
+                <h4 style="text-align: justify; background-color:#fff; color:#000">Total IQD Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+                <h4 style="text-align: justify; background-color:#fff; color:#000">Total Paid Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+                <h4 style="text-align: justify; background-color:#fff; color:#000">Remaining Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+</div>
+
+    </div>
+</div>
+
+
+  <hr class="border border-primary border-3 opacity-40">
+<!--
+
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--></h4>
+مع
+        التمنيات بالشفاء العاجل
+    </div></div></body>
+
+{% endblock %}

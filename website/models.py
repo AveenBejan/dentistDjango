@@ -719,6 +719,34 @@ class Surgery(models.Model):
     exo_images = models.ImageField(null=True, blank=True,upload_to='')
 
 
+class Preventive(models.Model):
+    idReception = models.ForeignKey(Reception, on_delete=models.CASCADE, blank=True)
+    idReception1 = models.ForeignKey(Reception1, on_delete=models.CASCADE, blank=True, null=True)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE, blank=True, null=True)
+    educational = models.ForeignKey(Educational, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField('Name',max_length=120,null=False)
+    phone = models.CharField('Phone', max_length=120,null=False)
+    gender = models.CharField('Gender', max_length=20,null=False)
+    date_of_birth = models.CharField('Gender', max_length=20,null=False)
+    ur = models.CharField('Name',max_length=120, blank=True,null=True)
+    ul = models.CharField('Name', max_length=120, blank=True,null=True)
+    lr = models.CharField('Name', max_length=120, blank=True,null=True)
+    ll = models.CharField('Name', max_length=120, blank=True,null=True)
+    price = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    discount_option = models.CharField('Gender', max_length=20,null=True)
+    price_lab = models.DecimalField('price', max_digits=8, decimal_places=0, blank=True,null=True)
+    lab_name = models.CharField('Name', max_length=120, blank=True,null=True)
+    doctor_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    center_share = models.DecimalField('price',max_digits=8,decimal_places=0,null=True)
+    total_price = models.DecimalField('total_price', max_digits=8, decimal_places=0, null=True)
+    paid = models.DecimalField('paid', max_digits=8, decimal_places=0, null=True)
+    date = models.DateField(blank=True,null=True)
+    note = models.CharField('Name', max_length=120, blank=True,null=True)
+    regdate = models.DateTimeField('Regdate', auto_now_add=True,editable=False)
+    exo_images = models.ImageField(null=True, blank=True,upload_to='')
+    type_preventive = models.CharField('Gender', max_length=20, null=True)
+
+
 class Photo(models.Model):
     exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE,null=True)
     crown_instance = models.ForeignKey(Crown, on_delete=models.CASCADE,null=True)
@@ -732,6 +760,7 @@ class Photo(models.Model):
     prosthodontics_instance = models.ForeignKey(Prosthodontics, on_delete=models.CASCADE, null=True)
     xrays_instance = models.ForeignKey(Xrays, on_delete=models.CASCADE, null=True)
     surgery_instance = models.ForeignKey(Surgery, on_delete=models.CASCADE, null=True)
+    preventive_instance = models.ForeignKey(Preventive, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
 
     def __str__(self):
@@ -819,6 +848,7 @@ class PaymentHistory(models.Model):
     prosthodontics_instance = models.ForeignKey(Prosthodontics, on_delete=models.CASCADE, blank=True, null=True)
     xrays_instance = models.ForeignKey(Xrays, on_delete=models.CASCADE, blank=True, null=True)
     surgery_instance = models.ForeignKey(Surgery, on_delete=models.CASCADE, null=True)
+    preventive_instance = models.ForeignKey(Preventive, on_delete=models.CASCADE, null=True)
     exo_instance = models.ForeignKey(Exo, on_delete=models.CASCADE, blank=True, null=True)
     previous_date = models.DateField(null=True)
     paid_amount = models.DecimalField('paid', max_digits=20, decimal_places=0,null=True)

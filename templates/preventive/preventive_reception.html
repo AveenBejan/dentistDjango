@@ -1,0 +1,98 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block title %} Contact Page{% endblock %}
+{% block content %}
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main" style="padding:60px;">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand"></a>
+            {%if user.is_authenticated%}
+            <form class="form-inline" method="POST" action="{% url 'search-preventive' %}">
+                {% csrf_token %}
+                <input class="form-control mr-sm-4" type="search" placeholder="Search For Patient" aria-label="Search"
+                       name="searched">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            {% endif %}
+        </nav>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <br/>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Search For Exo Patient</li>
+                        </ol>
+                    </nav>
+                    <div class="row d-flex mb-5 contact-info">
+                        <div class="col-md-12 mb-4">
+<h1>Appointments for Dr. {{ request.user.doctors.doctor_name }}</h1>
+                            <table class="table table-hover">
+                                <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+                                <tr>
+
+                                    <th scope="col">#</th>
+                                    <th scope="col">Full Name</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Date of Birth</th>
+                                    <th scope="col">Doctor Name</th>
+                                    <th scope="col">Date of Appointment</th>
+                                    <th scope="col">Days</th>
+                                    <th scope="col">Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for appointment in appointments %}
+                                <tr>
+                                    <td scope="row">{{appointment.id}}</td>
+                                      <td scope="row"><a href="{% url 'preventive' appointment.id %}">{{ appointment.name }}</a></td>
+                                    </td>
+                                    <td scope="row">{{appointment.phone}}</td>
+                                    <td scope="row">{{appointment.gender}}</td>
+                                    <td scope="row">{{appointment.date_of_birth}}</td>
+                                    <td scope="row">{{appointment.doctor}}</td>
+                                    <td scope="row">{{appointment.app_data}}</td>
+                                    <td scope="row">{{appointment.days}}</td>
+                                    <td scope="row">{{appointment.time|slice:"1:-1" }}</td>
+
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if appointments.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{appointments.previous_page_number}}">Previous</a>
+                    </li>
+                    {% endif %}
+                    <!--
+                       <li class="page-item"><a class="page-link" href="#">Page{{venues.number}} of
+                           {{venues.paginator.num_pages}}</a></li>-->
+                    {% for i in nums %}
+                    <li class="page-item"><a class="page-link"
+                                             href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                    {% endfor%}
+
+                    {% if appointments.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{appointments.next_page_number}}">Next</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page={{appointments.paginator.num_pages}}">Last
+                        &raquo</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock %}
