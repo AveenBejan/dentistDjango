@@ -2290,10 +2290,11 @@ def oral_edit(request, id):
             orall.center_share = center_share.quantize(Decimal('0.01'))
             orall.total_price = total_price.quantize(Decimal('0.01'))
 
-            # Assign the lab_name value properly
-            lab_name = form.cleaned_data.get('lab_name')
-            if lab_name:
-                orall.lab_name = lab_name  # Assuming lab_name is already a string
+            # Handle lab_name separately
+            selected_lab = form.cleaned_data['lab_name']
+            if selected_lab:
+                orall.lab = selected_lab  # Set the foreign key to the selected Lab
+                orall.lab_name = selected_lab.lab_name  # Save the lab_name as well
             orall.save()
 
             photos = request.FILES.getlist('oral_images')
@@ -6742,8 +6743,12 @@ def endo_edit(request, id):
         if form.is_valid():
             # Extract no_prepare and price from form cleaned data
             price = form.cleaned_data['price']
+            date = form.cleaned_data['date']
+            second_visit = form.cleaned_data('second_visit')
             # Update the Endo instance with the new values
             orall.price = price
+            orall.date = date
+            orall.second_visit = second_visit
 
             # Get the form data
             form_data = form.cleaned_data
@@ -6835,6 +6840,7 @@ def endo_edit(request, id):
         components_third = orall.components_third if orall.components_third is not None else None
         fourth_visit = orall.fourth_visit if orall.fourth_visit is not None else None
         components_fourth = orall.components_fourth if orall.components_fourth is not None else None
+        date = orall.date if orall.date is not None else None
 
         # Remove first and last characters from certain fields
         ur = orall.ur[1:-1] if orall.ur else None
@@ -6852,11 +6858,17 @@ def endo_edit(request, id):
             'components_third': components_third,
             'fourth_visit': fourth_visit,
             'components_fourth': components_fourth,
+            'date': date,
             'ur': ur,
             'ul': ul,
             'lr': lr,
             'll': ll,
             'canal': canal,
+        })
+        print("Initial form data:", {
+            'second_visit': form.initial.get('second_visit'),
+            'third_visit': form.initial.get('third_visit'),
+            'fourth_visit': form.initial.get('fourth_visit')
         })
     labs = Lab.objects.all()
     return render(request, 'conservation/endo/update_endo.html', {'form': form, 'orall': orall, 'labs': labs})

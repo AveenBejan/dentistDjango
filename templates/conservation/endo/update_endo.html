@@ -399,79 +399,57 @@
                     </div>
                                   <div class="col-md-3 mb-3">
                                                     <label style="font-weight:bold">Filling Type</label>
-                                                    <select name="filling_type" class="form-select" required>
+                                                   <select name="filling_type" class="form-select" required>
     <option value="">Choose from here</option>
-    <option value="Amalgam" {% if form.instance.filling_type == 'Amalgam' %}selected{% endif %}>Amalgam</option>
-    <option value="Compisit" {% if form.instance.filling_type == 'Compisit' %}selected{% endif %}>Compisit</option>
-    <option value="Glass cement" {% if form.instance.filling_type == 'Glass cement' %}selected{% endif %}>Glass cement</option>
-    <option value="Temporary filing" {% if form.instance.filling_type == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
+    <option value="Amalgam" {% if form.filling_type.value == 'Amalgam' %}selected{% endif %}>Amalgam</option>
+    <option value="Compisit" {% if form.filling_type.value == 'Compisit' %}selected{% endif %}>Compisit</option>
+    <option value="Glass cement" {% if form.filling_type.value == 'Glass cement' %}selected{% endif %}>Glass cement</option>
+    <option value="Temporary filing" {% if form.filling_type.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
 </select>
                                   </div>
                                  <div class="col-md-3 mb-3">
                                      <label>Date of Filling</label>
 
-                                 <input type="date" name="date"  class="form-control" value="{{ form.initial.date }}">
+                                 <input type="text" name="date" class="datepicker" value="{{ form.date.value }}">
                                  </div>
                      </div>
                              <div class="form-group">
                                  <div class="col">
-                                 <br/>
-                                <h6 style="font-weight: bold;">Date Of First Visit  **</h6>
-                                   <input type="text" name="first_visit" id="first_visit" value="{{ form.initial.first_visit }}" readonly>
-                                     <div class="form-check form-check-inline">
-                                         <input type="checkbox"
-                                                class="form-check-input"
-                                                name="components_first" value="Access Opining" {% if "Access Opining" in form.initial.components_first %}checked{% endif %}>
-                                         <label class="form-check-label">Access Opining</label>
-                                     </div>
-
-                                     <div class="form-check form-check-inline">
-                                         <input type="checkbox"
-                                                class="form-check-input"
-                                                name="components_first"
-                                                value="Instrumentation" {% if "Instrumentation" in form.initial.components_first %}checked{% endif %}>
-                                         <label class="form-check-label">Instrumentation</label>
-                                     </div>
-                                      <div class="form-check form-check-inline">
-                                         <input type="checkbox"
-                                                class="form-check-input"
-                                                name="components_first"
-                                                value="Opturation" {% if "Opturation" in form.initial.components_first %}checked{% endif %}>
-                                         <label class="form-check-label">Opturation</label>
-                                     </div>
-                                 </div>
+        <h6 style="font-weight: bold;">Date Of First Visit **</h6>
+        <input type="text" name="first_visit" id="first_visit" value="{{ form.first_visit.value }}" readonly>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" name="components_first" value="Access Opining" {% if 'Access Opining' in form.components_first.value %}checked{% endif %}>
+            <label class="form-check-label">Access Opining</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" name="components_first" value="Instrumentation" {% if 'Instrumentation' in form.components_first.value %}checked{% endif %}>
+            <label class="form-check-label">Instrumentation</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" name="components_first" value="Opturation" {% if 'Opturation' in form.components_first.value %}checked{% endif %}>
+            <label class="form-check-label">Opturation</label>
+        </div>
+    </div>
                              </div>
 
 
                              <div class="form-group">
                                  <div class="col">
-                                 <br/>
-                                <h6 style="font-weight: bold;">Date Of Second Visit</h6>
-                                     <input type="text" name="second_visit" id="second_visit" value="{{ form.initial.second_visit }}" readonly>
-                                     <div class="form-check form-check-inline">
-                                         <input type="checkbox"
-                                                class="form-check-input"
-                                                name="components_second"
-                                                value="Access Opining"
-                                                {% if "Access Opining" in form.initial.components_second %}checked{% endif %}>
-                                         <label class="form-check-label">Access Opining</label>
-                                     </div>
-
-                                     <div class="form-check form-check-inline">
-                                         <input type="checkbox"
-                                                class="form-check-input"
-                                                name="components_second"
-                                                value="Instrumentation" {% if "Instrumentation" in form.initial.components_second %}checked{% endif %}>
-                                         <label class="form-check-label">Instrumentation</label>
-                                     </div>
-                                      <div class="form-check form-check-inline">
-                                         <input type="checkbox"
-                                                class="form-check-input"
-                                                name="components_second"
-                                                value="Opturation" {% if "Opturation" in form.initial.components_second %}checked{% endif %}>
-                                         <label class="form-check-label">Opturation</label>
-                                     </div>
-                                 </div>
+        <h6 style="font-weight: bold;">Date Of second Visit **</h6>
+        <input type="text" name="second_visit" id="second_visit" value="{{ form.initial.second_visit.value }}" readonly>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" name="components_second" value="Access Opining" {% if 'Access Opining' in form.components_second.value %}checked{% endif %}>
+            <label class="form-check-label">Access Opining</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" name="components_second" value="Instrumentation" {% if 'Instrumentation' in form.components_second.value %}checked{% endif %}>
+            <label class="form-check-label">Instrumentation</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" name="components_second" value="Opturation" {% if 'Opturation' in form.components_second.value %}checked{% endif %}>
+            <label class="form-check-label">Opturation</label>
+        </div>
+    </div>
                              </div>
                         <br/><br/>
                              <div class="form-group">
