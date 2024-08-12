@@ -410,13 +410,13 @@
                                  <div class="col-md-3 mb-3">
                                      <label>Date of Filling</label>
 
-                                 <input type="text" name="date" class="datepicker" value="{{ form.date.value }}">
+                                 <input type="text" name="date" id="date" class="datepicker" value="{{ form.initial.date|date:" Y-m-d" }}">
                                  </div>
                      </div>
                              <div class="form-group">
                                  <div class="col">
         <h6 style="font-weight: bold;">Date Of First Visit **</h6>
-        <input type="text" name="first_visit" id="first_visit" value="{{ form.first_visit.value }}" readonly>
+        <input type="text" class="datepicker" name="first_visit" id="first_visit" {% if form.initial.first_visit %}readonly{% endif %} value="{% if form.initial.first_visit %}{{ form.initial.first_visit|date:" Y-m-d" }}{% endif %}">
         <div class="form-check form-check-inline">
             <input type="checkbox" class="form-check-input" name="components_first" value="Access Opining" {% if 'Access Opining' in form.components_first.value %}checked{% endif %}>
             <label class="form-check-label">Access Opining</label>
@@ -436,7 +436,7 @@
                              <div class="form-group">
                                  <div class="col">
         <h6 style="font-weight: bold;">Date Of second Visit **</h6>
-        <input type="text" name="second_visit" id="second_visit" value="{{ form.initial.second_visit.value }}" readonly>
+        <input type="text" class="datepicker" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:" Y-m-d" }}{% else %}{% endif %}">
         <div class="form-check form-check-inline">
             <input type="checkbox" class="form-check-input" name="components_second" value="Access Opining" {% if 'Access Opining' in form.components_second.value %}checked{% endif %}>
             <label class="form-check-label">Access Opining</label>
@@ -560,6 +560,15 @@ $(document).ready(function() {
 });
 </script>
 <script>
+    $( function() {
+  $( "#first_visit" ).datepicker();
+  $( "#secondVisitValue" ).datepicker();
+  $( "#third_visit" ).datepicker();
+  $( "#fourth_visit" ).datepicker();
+  $( "#date" ).datepicker();
+} );
+</script>
+<script>
     // Define the toggleVisitField function first
     function toggleVisitField(visitField, enable) {
         visitField.disabled = !enable;
@@ -573,6 +582,7 @@ $(document).ready(function() {
         var secondVisitField = document.getElementById("second_visit");
         var thirdVisitField = document.getElementById("third_visit");
         var fourthVisitField = document.getElementById("fourth_visit");
+        var fifthVisitField = document.getElementById("fifth_visit");
 
         // Function to make an input field readonly if it has a value
         function makeReadonlyIfValueExists(inputField) {
@@ -585,6 +595,7 @@ $(document).ready(function() {
         makeReadonlyIfValueExists(secondVisitField);
         makeReadonlyIfValueExists(thirdVisitField);
         makeReadonlyIfValueExists(fourthVisitField);
+        makeReadonlyIfValueExists(fifthVisitField);
 
         // Initially, check if there is a date in the first visit
         if (firstVisitField.value !== "") {
@@ -594,6 +605,7 @@ $(document).ready(function() {
             toggleVisitField(secondVisitField, false);
             toggleVisitField(thirdVisitField, false);
             toggleVisitField(fourthVisitField, false);
+            toggleVisitField(fifthVisitField, false);
         }
 
         // Add event listeners to enable/disable fields based on the previous visit
@@ -602,10 +614,12 @@ $(document).ready(function() {
                 toggleVisitField(secondVisitField, true);
                 toggleVisitField(thirdVisitField, false);
                 toggleVisitField(fourthVisitField, false);
+                toggleVisitField(fifthVisitField, false);
             } else {
                 toggleVisitField(secondVisitField, false);
                 toggleVisitField(thirdVisitField, false);
                 toggleVisitField(fourthVisitField, false);
+                toggleVisitField(fifthVisitField, false);
             }
         });
 
@@ -622,15 +636,7 @@ $(document).ready(function() {
         });
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $( function() {
-  $( "#first_visit" ).datepicker();
-  $( "#second_visit" ).datepicker();
-  $( "#third_visit" ).datepicker();
-  $( "#fourth_visit" ).datepicker();
-} );
-</script>
+
 <script>
 document.getElementById('endo-form').addEventListener('submit', function(event) {
     const priceLab = parseFloat(document.getElementById('price_lab').value);

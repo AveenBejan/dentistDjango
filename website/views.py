@@ -6737,31 +6737,22 @@ def search_endo(request):
 
 def endo_edit(request, id):
     orall = get_object_or_404(Endo, id=id)
+    photos = Photo.objects.filter(endo_instance=orall)
 
     if request.method == 'POST':
         form = EndoForm(request.POST, request.FILES, instance=orall)
         if form.is_valid():
-            # Extract no_prepare and price from form cleaned data
+            print("Form is valid")
             price = form.cleaned_data['price']
-            date = form.cleaned_data['date']
-            second_visit = form.cleaned_data('second_visit')
-            # Update the Endo instance with the new values
-            orall.price = price
-            orall.date = date
-            orall.second_visit = second_visit
-
-            # Get the form data
             form_data = form.cleaned_data
 
-            # Remove single quotes in certain fields
+            # Sanitize the fields by removing single quotes
             for field in ['ur', 'ul', 'lr', 'll']:
                 form_data[field] = form_data[field].replace("'", "") if form_data[field] else None
 
-            # Update the 'Endo' instance with the cleaned form data
             for field, value in form_data.items():
                 setattr(orall, field, value)
 
-            # Save the updated 'Endo' instance
             try:
                 doctor = Doctors.objects.get(id=orall.doctor_id)
                 proportion_doctor = Decimal(doctor.proportion_doctor) / 100
@@ -6771,18 +6762,16 @@ def endo_edit(request, id):
                 proportion_center = Decimal('0')
 
             discount_option = form.cleaned_data['discount_option']
-            price_lab = form.cleaned_data.get('price_lab') or Decimal('0')
+            price_lab = form.cleaned_data.get('price_lab')
 
-            # Adjust the price if price_lab is not null
-            try:
-                price_lab_decimal = Decimal(price_lab)
-                adjusted_price = price - price_lab_decimal
-            except InvalidOperation:
+            if price_lab is not None:
+                try:
+                    price_lab_decimal = Decimal(price_lab)
+                    adjusted_price = price - price_lab_decimal
+                except InvalidOperation:
+                    adjusted_price = price
+            else:
                 adjusted_price = price
-
-            print(f"Original price: {price}")
-            print(f"Price of lab: {price_lab}")
-            print(f"Adjusted price: {adjusted_price}")
 
             if discount_option == 'Without Discount':
                 doctor_share = adjusted_price * proportion_doctor
@@ -6809,27 +6798,25 @@ def endo_edit(request, id):
                 center_share = Decimal('0')
                 total_price = Decimal('0')
 
-            print(f"Doctor share: {doctor_share}")
-            print(f"Center share: {center_share}")
-            print(f"Total price before saving: {total_price}")
-
-            # Assign Decimal values to model fields
             orall.doctor_share = doctor_share.quantize(Decimal('0.01'))
             orall.center_share = center_share.quantize(Decimal('0.01'))
             orall.total_price = total_price.quantize(Decimal('0.01'))
-            orall.price_lab = price_lab_decimal  # Save price_lab as Decimal
+
+            # Handle lab_name separately
             selected_lab = form.cleaned_data['lab_name']
             if selected_lab:
                 orall.lab = selected_lab  # Set the foreign key to the selected Lab
                 orall.lab_name = selected_lab.lab_name  # Save the lab_name as well
             orall.save()
 
-            # Handle uploaded photos
-            photos = request.FILES.getlist('exo_images')
+            photos = request.FILES.getlist('oral_images')
             for photo in photos:
                 Photo.objects.create(endo_instance=orall, image=photo)
 
-            return redirect('add-endo', id=orall.idReception1_id)  # Redirect to a success view after saving
+            return redirect('add-endo', id=orall.idReception1_id)
+        else:
+            print("Form is not valid")
+            print(form.errors)
 
     else:
         first_visit = orall.first_visit if orall.first_visit is not None else None
