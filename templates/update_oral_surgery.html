@@ -734,6 +734,7 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
         <option value="None" {% if form.instance.discount_option == 'None' %}selected{% endif %}>None (where no proportion for doctors just salary)</option>
         <option value="Without Discount" {% if form.instance.discount_option == 'Without Discount' %}selected{% endif %}>Without Discount</option>
         <option value="With Discount" {% if form.instance.discount_option == 'With Discount' %}selected{% endif %}>With Discount</option>
+        <option value="Full Discount" {% if form.instance.discount_option == 'Full Discount' %}selected{% endif %}>Full Discount</option>
         <option value="No Pay" {% if form.instance.discount_option == 'No Pay' %}selected{% endif %}>No Pay</option>
     </select>
 </div>
