@@ -369,6 +369,7 @@ class Endo(models.Model):
     filling_type = models.CharField('filling_type', max_length=120, blank=True, null=False)
 
 
+
 class Medicine1(models.Model):
     name_medicine = models.CharField(max_length=120)
 

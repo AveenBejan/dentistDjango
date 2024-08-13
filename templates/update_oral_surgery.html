@@ -771,6 +771,10 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
 
                         <div class="form-row">
                             <div class="col">
+                            <h6 style="font-weight: bold;">Date Of Operation </h6><input type="text" name="fifth_visit" id="fifth_visit" class="datepicker" {% if form.initial.fifth_visit %}readonly{% endif %}
+                             value="{% if form.initial.fifth_visit %}{{ form.initial.fifth_visit|date:"Y-m-d" }}{% endif %}">
+                            </div>
+                            <div class="col">
                                  <br/>
                                 <h6 style="font-weight: bold;">Date Of Suture</h6><input type="text" class="datepicker" name="first_visit" id="first_visit" {% if form.initial.first_visit %}readonly{% endif %} value="{% if form.initial.first_visit %}{{ form.initial.first_visit|date:" Y-m-d" }}{% endif %}">
                             </div>
@@ -789,10 +793,7 @@ style="font-weight:bold;" value="{{ form.initial.lengthur7 }}"><br>-->
                                 <br/><br/>
                             </div>
 
-                            <div class="col">
-                            <h6 style="font-weight: bold;">Date Of Opturation </h6><input type="text" name="fifth_visit" id="fifth_visit" class="datepicker" {% if form.initial.fifth_visit %}readonly{% endif %}
-                             value="{% if form.initial.fifth_visit %}{{ form.initial.fifth_visit|date:"Y-m-d" }}{% endif %}">
-                            </div>
+
 
                         </div>
                         <br/><br/><br/><br/>
