@@ -399,7 +399,7 @@
                     </div>
 
                      </div>
-                             <div class="form-group">
+
                                  <div class="col-md-3 mb-3">
                                                     <label style="font-weight:bold">Filling Type</label>
                                                    <select name="filling_type" class="form-select" >
@@ -410,6 +410,7 @@
     <option value="Temporary filing" {% if form.filling_type.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
 </select>
                                   </div>
+                             <div class="form-group">
                                  <div class="col">
         <h6 style="font-weight: bold;">Date Of First Visit **</h6>
         <input type="text" class="datepicker" name="first_visit" id="first_visit" {% if form.initial.first_visit %}readonly{% endif %} value="{% if form.initial.first_visit %}{{ form.initial.first_visit|date:" Y-m-d" }}{% endif %}">
@@ -429,7 +430,7 @@
                              </div>
 
 
-                             <div class="form-group">
+
                                  <div class="col-md-3 mb-3">
                                                     <label style="font-weight:bold">Filling Type</label>
                                                    <select name="filling_type1" class="form-select" >
@@ -440,6 +441,7 @@
     <option value="Temporary filing" {% if form.filling_type1.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
 </select>
                                   </div>
+                              <div class="form-group">
                                  <div class="col">
         <h6 style="font-weight: bold;">Date Of second Visit **</h6>
         <input type="text" class="datepicker" name="second_visit" id="secondVisitValue" {% if form.initial.second_visit %}readonly{% endif %} value="{% if form.initial.second_visit %}{{ form.initial.second_visit|date:" Y-m-d" }}{% else %}{% endif %}">
