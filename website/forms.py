@@ -1079,7 +1079,7 @@ class EndoForm(forms.ModelForm):
     class Meta:
         model = Endo
         fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length',
-                  'price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','discount_option','lab_name',
+                  'price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','filling_type1','filling_type2','filling_type3','discount_option','lab_name',
                   'price_lab')
         labels = {
             'idReception': '',
@@ -1107,6 +1107,9 @@ class EndoForm(forms.ModelForm):
             'fourth_visit': '',
             'components_fourth': '',
             'filling_type': '',
+            'filling_type1': '',
+            'filling_type2': '',
+            'filling_type3': '',
             'discount_option': '',
             'lab_name': '',
             'price_lab': '',
@@ -1134,7 +1137,6 @@ class EndoForm(forms.ModelForm):
             'lab_name': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter barcode'}),
             'paid': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'paid'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
-            'date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'second_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'components_second': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_second'}),
             'third_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
@@ -1142,6 +1144,9 @@ class EndoForm(forms.ModelForm):
             'fourth_visit': forms.DateInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'components_fourth': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_fourth'}),
             'filling_type': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
+            'filling_type1': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
+            'filling_type2': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
+            'filling_type3': forms.Select(attrs={'class': 'form-control', 'placeholder': 'filling_type'}),
         }
 
 

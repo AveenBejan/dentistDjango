@@ -397,21 +397,7 @@
                             <input type="text" name="note" value="{{ form.initial.note }}" class="form-control">
                         </div>
                     </div>
-                                  <div class="col-md-3 mb-3">
-                                                    <label style="font-weight:bold">Filling Type</label>
-                                                   <select name="filling_type" class="form-select" required>
-    <option value="">Choose from here</option>
-    <option value="Amalgam" {% if form.filling_type.value == 'Amalgam' %}selected{% endif %}>Amalgam</option>
-    <option value="Compisit" {% if form.filling_type.value == 'Compisit' %}selected{% endif %}>Compisit</option>
-    <option value="Glass cement" {% if form.filling_type.value == 'Glass cement' %}selected{% endif %}>Glass cement</option>
-    <option value="Temporary filing" {% if form.filling_type.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
-</select>
-                                  </div>
-                                 <div class="col-md-3 mb-3">
-                                     <label>Date of Filling</label>
 
-                                 <input type="text" name="date" id="date" class="datepicker" value="{{ form.initial.date|date:" Y-m-d" }}">
-                                 </div>
                      </div>
                              <div class="form-group">
                                  <div class="col">
@@ -429,6 +415,16 @@
             <input type="checkbox" class="form-check-input" name="components_first" value="Opturation" {% if 'Opturation' in form.components_first.value %}checked{% endif %}>
             <label class="form-check-label">Opturation</label>
         </div>
+                                     <div class="col-md-3 mb-3">
+                                                    <label style="font-weight:bold">Filling Type</label>
+                                                   <select name="filling_type" class="form-select" >
+    <option value="">Choose from here</option>
+    <option value="Amalgam" {% if form.filling_type.value == 'Amalgam' %}selected{% endif %}>Amalgam</option>
+    <option value="Compisit" {% if form.filling_type.value == 'Compisit' %}selected{% endif %}>Compisit</option>
+    <option value="Glass cement" {% if form.filling_type.value == 'Glass cement' %}selected{% endif %}>Glass cement</option>
+    <option value="Temporary filing" {% if form.filling_type.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
+</select>
+                                  </div>
     </div>
                              </div>
 
@@ -449,6 +445,16 @@
             <input type="checkbox" class="form-check-input" name="components_second" value="Opturation" {% if 'Opturation' in form.components_second.value %}checked{% endif %}>
             <label class="form-check-label">Opturation</label>
         </div>
+                                     <div class="col-md-3 mb-3">
+                                                    <label style="font-weight:bold">Filling Type</label>
+                                                   <select name="filling_type1" class="form-select" >
+    <option value="">Choose from here</option>
+    <option value="Amalgam" {% if form.filling_type1.value == 'Amalgam' %}selected{% endif %}>Amalgam</option>
+    <option value="Compisit" {% if form.filling_type1.value == 'Compisit' %}selected{% endif %}>Compisit</option>
+    <option value="Glass cement" {% if form.filling_type1.value == 'Glass cement' %}selected{% endif %}>Glass cement</option>
+    <option value="Temporary filing" {% if form.filling_type1.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
+</select>
+                                  </div>
     </div>
                              </div>
                         <br/><br/>
@@ -478,9 +484,19 @@
                                    value="Opturation" {% if "Opturation" in form.initial.components_third %}checked{% endif %}>
                             <label class="form-check-label">Opturation</label>
                         </div>
-                             </div>
+                             <div class="col-md-3 mb-3">
+                                                    <label style="font-weight:bold">Filling Type</label>
+                                                   <select name="filling_type2" class="form-select" >
+    <option value="">Choose from here</option>
+    <option value="Amalgam" {% if form.filling_type2.value == 'Amalgam' %}selected{% endif %}>Amalgam</option>
+    <option value="Compisit" {% if form.filling_type2.value == 'Compisit' %}selected{% endif %}>Compisit</option>
+    <option value="Glass cement" {% if form.filling_type2.value == 'Glass cement' %}selected{% endif %}>Glass cement</option>
+    <option value="Temporary filing" {% if form.filling_type2.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
+</select>
+                                  </div>
                              </div>
 
+<br/><br/>
                            <div class="form-group">
                          <div class="col">
                                 <br/>
@@ -509,6 +525,16 @@
                                    value="Opturation" {% if "Opturation" in form.initial.components_fourth %}checked{% endif %}>
                             <label class="form-check-label">Opturation</label>
                         </div>
+                             <div class="col-md-3 mb-3">
+                                                    <label style="font-weight:bold">Filling Type</label>
+                                                   <select name="filling_type3" class="form-select" >
+    <option value="">Choose from here</option>
+    <option value="Amalgam" {% if form.filling_type3.value == 'Amalgam' %}selected{% endif %}>Amalgam</option>
+    <option value="Compisit" {% if form.filling_type3.value == 'Compisit' %}selected{% endif %}>Compisit</option>
+    <option value="Glass cement" {% if form.filling_type3.value == 'Glass cement' %}selected{% endif %}>Glass cement</option>
+    <option value="Temporary filing" {% if form.filling_type3.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
+</select>
+                                  </div>
                                   <div class="row">
 
                                             </div>

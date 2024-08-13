@@ -138,12 +138,16 @@
                                                         <tr>
                                                             <th style="text-align: center;"  scope="col">First Visit</th>
                                                             <th style="text-align: center;"  scope="col">Com.first</th>
+                                                            <th style="text-align: center;"  scope="col">T.F.First</th>
                                                             <th style="text-align: center;" scope="col">Second Visit</th>
                                                             <th style="text-align: center;" scope="col">Com.Second</th>
+                                                            <th style="text-align: center;" scope="col">T.F.Second</th>
                                                             <th style="text-align: center;" scope="col">Third Visit</th>
                                                             <th style="text-align: center;" scope="col">Com.Third</th>
+                                                            <th style="text-align: center;" scope="col">T.F.Third</th>
                                                             <th style="text-align: center;" scope="col">Fourth Visit</th>
                                                             <th style="text-align: center;" scope="col">Com.Fourth</th>
+                                                            <th style="text-align: center;" scope="col">T.F.Fourth</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -151,13 +155,17 @@
                                                         <tr>
 
                                                             <td style="text-align: center;" scope="row">{{ orall.first_visit }}</td>
-                                                            <td style="text-align: center;" scope="row">{{ orall.components_first }}
+                                                            <td style="text-align: center;" scope="row">{{ orall.components_first }}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.filling_type }}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.second_visit }}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.components_second}}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.filling_type1}}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.third_visit }}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.components_third}}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.filling_type2}}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.fourth_visit }}</td>
                                                             <td style="text-align: center;" scope="row">{{ orall.components_fourth}}</td>
+                                                            <td style="text-align: center;" scope="row">{{ orall.filling_type3}}</td>
 
                                                         </tr>
                                                         {% endfor %}
@@ -579,7 +587,6 @@
                                                                    required>
                                                         </div>
                                                         <div class="col-md-3 mb-3">
-                                                            <label for="discount_option">Discount Option</label>
                                                             <select id="discount_option" name="discount_option"
                                                                     class="form-select" required>
                                                                 <option value="" disabled selected>Select Discount Option

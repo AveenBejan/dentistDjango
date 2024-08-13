@@ -367,6 +367,9 @@ class Endo(models.Model):
     fourth_visit = models.DateField(blank=True, null=True)
     components_fourth = models.CharField('components_fourth', max_length=120, blank=True, null=True)
     filling_type = models.CharField('filling_type', max_length=120, blank=True, null=False)
+    filling_type1 = models.CharField('filling_type', max_length=120, blank=True, null=False)
+    filling_type2 = models.CharField('filling_type', max_length=120, blank=True, null=False)
+    filling_type3 = models.CharField('filling_type', max_length=120, blank=True, null=False)
 
 
 
