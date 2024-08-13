@@ -12,7 +12,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Update Information</li>
+                                <li class="breadcrumb-item active" aria-current="page">Update Preventive Information</li>
                             </ol>
                         </nav>
                         <BR/><BR/><BR/>
@@ -310,9 +310,7 @@
                                         Notes</h4>
                                 </div>
                                 <div class="card-body">
-                                        <input type="text" name="price" id="price" value="{{ form.initial.price }}"
-                                               class="form-control"
-                                               placeholder="Price:" required>
+
 <div class="col-md-3 mb-3">
     <label for="discount_option">Discount Option</label>
     <select id="discount_option" name="discount_option" class="form-control">
@@ -355,19 +353,30 @@
                                     <input type="hidden" name="paid" value="{{ form.initial.paid }}"
                                            class="form-control"
                                            placeholder="paid:">
-
+                                    <div class="col-md-3 mb-3">
+                                    <label>Price</label>
+                                        <input type="text" name="price" id="price" value="{{ form.initial.price }}"
+                                               class="form-control"
+                                               placeholder="Price:" required>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+<label>Notes</label>
                                         <input type="text" name="note" value="{{ form.initial.note }}"
                                                class="form-control"
                                                placeholder="Notes:" required>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                    <label>Update Photo</label>
                                         <input type="file" name="exo_images"
                                                class="form-control"
                                                multiple>
+                                    </div>
                                     <br/>
 
                                 </div>
                                 <br/>
                                 <div class="alert alert-secondary" role="alert" align="center">
-                                    <input type="submit" value="Update Preventive" class="btn btn-info">
+                                    <input type="submit" value="Update Preventive Information" class="btn btn-info">
                                 </div>
 
                             </div>

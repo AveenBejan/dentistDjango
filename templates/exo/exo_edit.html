@@ -307,9 +307,10 @@
                             <div class="card text-left">
                                 <div class="card-header">
                                     <h4 style="font-size: 22px; text-align:center;">Exo
-                                        Notes</h4>
+                                        Update Information</h4>
                                 </div>
                                 <div class="card-body">
+                                    <label for="id_lab_name">Price</label>
                                         <input type="text" name="price" id="price" value="{{ form.initial.price }}"
                                                class="form-control"
                                                placeholder="Price:" required>
@@ -344,13 +345,16 @@
                                class="form-control" value="{{ form.initial.price_lab }}"
                                placeholder="Price of Lab">
                     </div>
+                                    <div class="col-md-3 mb-3">
+                        <label for="id_lab_name">Notes</label>
+                                        <input type="text" name="note" value="{{ form.initial.note }}"
+                                               class="form-control"
+                                               placeholder="Notes:" required>
+                    </div>
                                     <input type="hidden" name="paid" value="{{ form.initial.paid }}"
                                            class="form-control"
                                            placeholder="paid:">
 
-                                        <input type="text" name="note" value="{{ form.initial.note }}"
-                                               class="form-control"
-                                               placeholder="Notes:" required>
                                         <input type="file" name="exo_images"
                                                class="form-control"
                                                multiple>
@@ -377,7 +381,7 @@
                                 </div>
                                 <br/>
                                 <div class="alert alert-secondary" role="alert" align="center">
-                                    <input type="submit" value="Update Exo" class="btn btn-info">
+                                    <input type="submit" value="Exo Update " class="btn btn-info">
                                 </div>
 
                             </div>

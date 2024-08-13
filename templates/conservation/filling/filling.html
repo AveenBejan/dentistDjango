@@ -64,20 +64,20 @@ textarea {
                                 <th style="text-align: center;" scope="col">Appointment Date</th>
                                 <th style="text-align: center;" scope="col">Day Name</th>
                                 <th style="text-align: center;" scope="col">Time</th>
-                                <th style="text-align: center;" scope="col">Filling Type</th>
-                                <th style="text-align: center;" scope="col">Upper Right</th>
-                                <th style="text-align: center;" scope="col">Upper Left</th>
-                                <th style="text-align: center;" scope="col">Lower Right</th>
-                                <th style="text-align: center;" scope="col">Lower Left</th>
-                                <th scope="col" style="text-align: center;">Discount Type</th>
-                                <th scope="col" style="text-align: center;">Price</th>
-                                <th scope="col" style="text-align: center;">Patient Paid</th>
-                                <th scope="col" style="text-align: center;">Doctor Dis.</th>
-                                <th scope="col" style="text-align: center;">Center Dis.</th>
-                                <th scope="col" style="text-align: center;">Lab Name</th>
-                                <th scope="col" style="text-align: center;">Lab Price</th>
-                                <th style="text-align: center;" scope="col">Notes</th>
-                                <th style="text-align: center;" scope="col">Exo Photo</th>
+                                <th style="text-align: center;" scope="col" class="hideable">Filling Type</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Upper Right</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Upper Left</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Lower Right</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Lower Left</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Discount Type</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Price</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Patient Paid</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Doctor Dis.</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Center Dis.</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Lab Name</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Lab Price</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Notes</th>
+                                 <th style="text-align: center;" scope="col" class="hideable">Exo Photo</th>
                                 <th scope="col"  style="text-align: center;">Action</th>
                                 <th scope="col"  style="text-align: center;">Show Data</th>
                             </tr>
@@ -90,20 +90,20 @@ textarea {
                                 <td style="text-align: center;" scope="row">{{ fill.idReception.app_data }}</td>
                                 <td style="text-align: center;" scope="row">{{ fill.idReception.days }}</td>
                                 <td style="text-align: center;" scope="row">{{ fill.idReception.time|slice:"1:-1" }}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.filling_type}}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.ur|slice:"1:-1" }}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.ul|slice:"1:-1"}}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.lr|slice:"1:-1"}}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.ll|slice:"1:-1"}}</td>
-                                <td style="text-align: center;" scope="row">{{fill.discount_option}}</td>
-                                <td style="text-align: center;" scope="row">
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.filling_type}}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.ur|slice:"1:-1" }}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.ul|slice:"1:-1"}}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.lr|slice:"1:-1"}}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.ll|slice:"1:-1"}}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.discount_option}}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">
                                     {% if fill.price is not None %}
                                     {{ fill.price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
-                                <td style="text-align: center;" scope="row">
+                                <td  style="text-align: center;" scope="row"class="hideable">
                                     {% if fill.total_price is not None %}
                                     {{ fill.total_price|format_with_commas }}
                                     {% else %}
@@ -111,12 +111,12 @@ textarea {
                                     {% endif %}
                                 </td>
 
-                                <td style="text-align: center;" scope="row">{{ fill.doctor_share|format_with_commas }}</td>
-                                <td style="text-align: center;" scope="row">{{ fill.center_share|format_with_commas }}</td>
-                                <td style="text-align: center;" scope="row">{{ fill.lab_name }}</td>
-                                <td style="text-align: center;" scope="row">{{ fill.price_lab|format_with_commas }}</td>
-                                <td  style="text-align: center;" scope="row">{{fill.note}}</td>
-                                <td  style="text-align: center;" scope="row">
+                                <td  style="text-align: center;" scope="row"class="hideable">{{ fill.doctor_share|format_with_commas }}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{ fill.center_share|format_with_commas }}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{ fill.lab_name }}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{ fill.price_lab|format_with_commas }}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">{{fill.note}}</td>
+                                <td  style="text-align: center;" scope="row"class="hideable">
                                     {% for photos in photos_list %}
                                     {% if forloop.counter0 == forloop.parentloop.counter0 %}
                                     {% for photo in photos %}
@@ -1537,17 +1537,19 @@ textarea {
                                                 </div>
                                             </div>
 
+
                                                    <input type="hidden" id="paid" name="paid" value="0"
                                                           class="form-control"
                                                           placeholder="Paid:" required>
-                                                   <div class="col">
 
+                                                   <div class="col">
+<br/>
                                                        <input type="text" name="price" value=""
                                                               class="form-control" id="price"
                                                               placeholder="Price:" required>
                                                    </div>
                                                     <div class="col-md-3 mb-3">
-    <label for="discount_option">Discount Option</label>
+<br/>
     <select id="discount_option" name="discount_option" class="form-select" required>
         <option value="" disabled selected>Select Discount Option</option>
         <option value="None">None (where no proportion for doctors just salary)</option>
@@ -1558,9 +1560,11 @@ textarea {
     </select>
 </div>
                                                     <div class="col-md-3 mb-3">
+                                                        <br/>
                                                         {{ form.lab_name }}
                                                     </div>
                                                     <div class="col-md-3 mb-3">
+                                                        <br/>
                                                         <input type="text" name="price_lab" id="price_lab"
                                                                class="form-control"
                                                                placeholder="Price of Lab:">
@@ -1580,7 +1584,7 @@ textarea {
                                             </div>
                                             <textarea name="note" placeholder="Notes" rows="3" cols="85" id="note"></textarea>
                                             <div class="card-footer text-center">
-                                                <input type="submit" value="Apply"
+                                                <input type="submit" value="Add New Filling"
                                                        class="btn btn-primary">
                                             </div>
 
@@ -1717,6 +1721,25 @@ checkboxesLL.forEach(checkbox => {
         } else {
             priceLabInput.removeAttribute('required');
         }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
+            console.log("Content: ", content);  // Debugging: Print content
+
+            // Check if the content is "None" or "[None]"
+            if (content === "None" || content === "[None]") {
+                $(this).hide();
+
+                // Hide the corresponding <th> element if <td> or <th> is hidden
+                if ($(this).is('td')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
     });
 </script>
 {% endblock %}

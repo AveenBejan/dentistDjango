@@ -43,22 +43,22 @@
                                 <th scope="col" style="text-align: center;">Appointment Date</th>
                                 <th scope="col" style="text-align: center;">Day Name</th>
                                 <th scope="col" style="text-align: center;">Time</th>
-                                <th scope="col" class="hideable">Upper Right</th>
-                                <th scope="col" class="hideable">Upper Left</th>
-                                <th scope="col" class="hideable">Lower Right</th>
-                                <th scope="col" class="hideable">Lower Left</th>
-                                <th scope="col" style="text-align: center;">Discount Type</th>
-                                <th scope="col" style="text-align: center;">Price</th>
-                                <th scope="col" style="text-align: center;">Patient Paid</th>
-                                <th scope="col" style="text-align: center;">Doctor Dis.</th>
-                                <th scope="col" style="text-align: center;">Center Dis.</th>
-                                <th scope="col" style="text-align: center;">Lab Name</th>
-                                <th scope="col" style="text-align: center;">Lab Price</th>
-                                <th scope="col" class="hideable">Notes</th>
-                                <th scope="col" class="hideable">Exo by Surgery</th>
-                                <th scope="col" class="hideable">Simple Exo</th>
-                                <th scope="col" class="hideable">Complicated</th>
-                                <th scope="col" class="hideable">Exo Photo</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Upper Right</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Upper Left</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Lower Right</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Lower Left</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Discount Type</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Price</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Patient Paid</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Doctor Dis.</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Center Dis.</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Lab Name</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Lab Price</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Exo by Surgery</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Simple Exo</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Complicated</th>
+                                <th scope="col" style="text-align: center;" class="hideable">Exo Photo</th>
                                 <th scope="col"  style="text-align: center;">Action</th>
                                 <th scope="col"  style="text-align: center;">Show Data</th>
                             </tr>
@@ -76,15 +76,15 @@
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.ul|slice:"1:-1"}}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.lr|slice:"1:-1"}}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.ll|slice:"1:-1"}}</td>
-                                <td style="text-align: center;" scope="row">{{exoo.discount_option}}</td>
-                                <td style="text-align: center;" scope="row">
+                                <td style="text-align: center;" scope="row" class="hideable">{{ exoo.discount_option }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">
                                     {% if exoo.price is not None %}
                                     {{ exoo.price|format_with_commas }}
                                     {% else %}
                                     None
                                     {% endif %}
                                 </td>
-                                <td style="text-align: center;" scope="row">
+                                <td style="text-align: center;" scope="row" class="hideable">
                                     {% if exoo.total_price is not None %}
                                     {{ exoo.total_price|format_with_commas }}
                                     {% else %}
@@ -92,10 +92,10 @@
                                     {% endif %}
                                 </td>
 
-                                <td style="text-align: center;" scope="row">{{ exoo.doctor_share|format_with_commas }}</td>
-                                <td style="text-align: center;" scope="row">{{ exoo.center_share|format_with_commas }}</td>
-                                <td style="text-align: center;" scope="row">{{ exoo.lab_name }}</td>
-                                <td style="text-align: center;" scope="row">{{ exoo.price_lab|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ exoo.doctor_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ exoo.center_share|format_with_commas }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ exoo.lab_name }}</td>
+                                <td style="text-align: center;" scope="row" class="hideable">{{ exoo.price_lab|format_with_commas }}</td>
                                 <td style="text-align: center;" scope="row"  class="hideable">{{exoo.note}}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.exoby|slice:"1:-1"}}</td>
                                 <td style="text-align: center;" scope="row" class="hideable">{{exoo.simpleexo|slice:"1:-1"}}</td>
@@ -474,7 +474,7 @@
                                                                placeholder="Price:" required>
                                                     </div>
                                                 <div class="col-md-3 mb-3">
-    <label for="discount_option">Discount Option</label>
+
     <select id="discount_option" name="discount_option" class="form-select" required>
         <option value="" disabled selected>Select Discount Option</option>
         <option value="None">None (where no proportion for doctors just salary)</option>
@@ -601,6 +601,25 @@ $(document).ready(function() {
         } else {
             priceLabInput.removeAttribute('required');
         }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.hideable').each(function() {
+            var content = $(this).text().trim();
+            console.log("Content: ", content);  // Debugging: Print content
+
+            // Check if the content is "None" or "[None]"
+            if (content === "None" || content === "[None]") {
+                $(this).hide();
+
+                // Hide the corresponding <th> element if <td> or <th> is hidden
+                if ($(this).is('td')) {
+                    var index = $(this).index();
+                    $('table th:eq(' + index + ')').hide();
+                }
+            }
+        });
     });
 </script>
 
