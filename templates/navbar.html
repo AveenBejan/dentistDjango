@@ -229,22 +229,22 @@
                </li>
                     {% endif %}
 
-                     <li><a><i class="fa fa-home"></i> Accounts <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                         {% if user.is_authenticated %}
-                           {% if user.role == 'admin' %}
-                         <li><a target="main" href="{% url 'signup' %}">Register</a></li>
-                         <li><a href="{% url 'feedback_view' %}" target="main">feedback_view</a></li>
+                    <li><a><i class="fa fa-home"></i> Accounts <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {% if user.is_authenticated %}
+                            {% if user.role == 'admin' %}
+                            <li><a target="main" href="{% url 'signup' %}">Register</a></li>
+                            <li><a href="{% url 'feedback_view' %}" target="main">feedback_view</a></li>
 
-                           {% endif %}
-                         <li><a target="main" href="{% url 'logout' %}">LogOut</a></li>
-                         {% else %}
-                         <li><a target="main" href="{% url 'login' %}">Login</a></li>
-                         <li><a href="contact.html" target="main">Contact Us</a></li>
+                            {% endif %}
+                            <li><a target="main" href="{% url 'logout' %}">LogOut</a></li>
+                            {% else %}
+                            <li><a target="main" href="{% url 'login' %}">Login</a></li>
+                            <li><a href="contact.html" target="main">Contact Us</a></li>
 
-                         {% endif %}
-                     </ul>
-                 </li>
+                            {% endif %}
+                        </ul>
+                    </li>
 
 
                 <!--{% if user.role == 'admin' or user.role == 'doctor' %}

@@ -81,51 +81,69 @@ function deleteRows(){
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add Drugs</li>
+            <li class="breadcrumb-item active" aria-current="page">Add Drugs / Patient Information</li>
         </ol>
     </nav>
-    <div class="d-flex bd-highlight mb-3">
-        <div class="p-2 bd-highlight">{{ form.initial.idReception }}</div>
-        <div class="p-2 bd-highlight">{{ form.initial.name }}</div>
-        <div class="p-2 bd-highlight">{{ form.initial.phone }}</div>
-        <div class="p-2 bd-highlight">{{ form.initial.gender }}</div>
-        <div class="p-2 bd-highlight">{{ form.initial.date_of_birth }}</div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <div class="p-2 bd-highlight"><a href="{% url 'upload' %}"><button type="button" class="btn btn-danger">For More Information About The Drugs Click on this Link</button></a></div>
+
+    <div class="col-12">
+    <table class="table table-hover">
+        <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
+        <tr>
+            <th scope="col" style="text-align: center;">#</th>
+            <th scope="col" style="text-align: center;">Doctor Name</th>
+            <th scope="col" style="text-align: center;">Appointment Date</th>
+            <th scope="col" style="text-align: center;">Day Name</th>
+            <th scope="col" style="text-align: center;">Time</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="text-align: center;" scope="row">{{ form.initial.idReception }}</td>
+            <td style="text-align: center;" scope="row">{{ form.initial.name}}</td>
+            <td style="text-align: center;" scope="row">{{ form.initial.phone }}</td>
+            <td style="text-align: center;" scope="row">{{ form.initial.gender}}</td>
+            <td style="text-align: center;" scope="row">{{ form.initial.date_of_birth }}</td>
+            <td><a href="{% url 'upload' %}"><button type="button" class="btn btn-danger">For More Information About The Drugs Click on this Link</button></a></td>
+        </tr>
+        </tbody>
+    </table>
     </div>
+    <div class="col-12">
 
     <table class="table table-hover">
-        <thead style="background-color:#73ccf0; color:#fff;">
+        <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
         <tr>
 
-            <th scope="col">#</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Date of Birth</th>
-            <th scope="col">Drugs Name</th>
-            <th scope="col">Doze</th>
-            <th scope="col">Type</th>
-            <th scope="col">Times</th>
-            <th scope="col">Tablet</th>
-            <th scope="col">Dispense</th>
-            <th scope="col" colspan="2" style="text-align:center;">Other</th>
+            <th scope="col" style="text-align: center;">#</th>
+            <th scope="col" style="text-align: center;">Full Name</th>
+            <th scope="col" style="text-align: center;">Phone Number</th>
+            <th scope="col" style="text-align: center;">Gender</th>
+            <th scope="col" style="text-align: center;">Date of Birth</th>
+            <th scope="col" style="text-align: center;">Drugs Name</th>
+            <th scope="col" style="text-align: center;">Doze</th>
+            <th scope="col" style="text-align: center;">Type</th>
+            <th scope="col" style="text-align: center;">Times</th>
+            <th scope="col" style="text-align: center;">Tablet</th>
+            <th scope="col" style="text-align: center;">Dispense</th>
+            <th scope="col" style="text-align:center;">Print</th>
+            <th scope="col" style="text-align:center;">Delete</th>
         </tr>
         </thead>
         <tbody>
         {% for medicin in medicines %}
         <tr>
-            <td scope="row">{{ medicin.id }}</td>
-            <td scope="row">{{ medicin.name }}</td>
-            <td scope="row">{{ medicin.phone }}</td>
-            <td scope="row">{{ medicin.gender }}</td>
-            <td scope="row">{{ medicin.date_of_birth }}</td>
-            <td scope="row" align="center">{{ medicin.name_medicine }}</td>
-            <td scope="row" align="center">{{ medicin.doze }}</td>
-            <td scope="row" align="center">{{ medicin.type }}</td>
-            <td scope="row" align="center">{{ medicin.times }}</td>
-            <td scope="row" align="center">{{ medicin.tablet }}</td>
-            <td scope="row" align="center">{{ medicin.dispense }}</td>
+           <td  style="text-align: center;" scope="row">{{ medicin.id }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.name }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.phone }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.gender }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.date_of_birth }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.name_medicine }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.doze }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.type }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.times }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.tablet }}</td>
+            <td  style="text-align: center;" scope="row">{{ medicin.dispense }}</td>
             <td>
                 {% if medicin.id %}
                 <a href="{% url 'print-drugs'  medicin.idReception1_id  %}" style="display: inline;"
@@ -139,6 +157,7 @@ function deleteRows(){
         {% endfor %}
         </tbody>
     </table>
+    </div>
 </div>
 </div>
 <br/>
@@ -146,8 +165,8 @@ function deleteRows(){
 
     <form method="POST" novalidate enctype="multipart/form-data" class="form-inline" id="product_form" r>
         {% csrf_token %}
-         <input type="text" name="idReception" value="{{ form.initial.idReception}}" class="form-control">
-        <input type="text" name="idReception1" value="{{ form.initial.idReception1}}" class="form-control">
+         <input type="hidden" name="idReception" value="{{ form.initial.idReception}}" class="form-control">
+        <input type="hidden" name="idReception1" value="{{ form.initial.idReception1_id}}" class="form-control">
         <input type="hidden" name="name" value="{{ form.initial.name }}"
                class="form-control">
         <input type="hidden" name="phone" value="{{ form.initial.phone }}"
