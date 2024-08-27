@@ -350,16 +350,16 @@
                                                     </div>
                                                 </div></div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-2">
                             <label>work_length:</label>
                             <input type="text" name="work_length" value="{{ form.initial.work_length }}"
                                    class="form-control">
                         </div>
-                        <div class="col">
+                        <div class="col-2">
                             <label>Price:</label>
                             <input type="text" name="price" id="price" value="{{ form.initial.price }}" class="form-control">
                         </div>
-           <div class="col-md-3 mb-3">
+           <div class="col-md-2 mb-3">
     <label for="discount_option">Discount Option</label>
     <select id="discount_option" name="discount_option" class="form-control">
         <option value="" {% if not form.instance.discount_option %}selected{% endif %}>Select Discount Option *</option>
@@ -370,7 +370,7 @@
         <option value="No Pay" {% if form.instance.discount_option == 'No Pay' %}selected{% endif %}>No Pay</option>
     </select>
 </div>
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-2 mb-3">
                                         <label for="id_lab_name">Lab Name</label>
                                        <select id="id_lab_name" name="lab_name" class="form-control">
     <option value="" {% if not form.instance.lab_name %}selected{% endif %}>Select Lab</option>
@@ -381,7 +381,7 @@
     {% endfor %}
 </select>
                                     </div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-2 mb-3">
                         <LABEL>Price Lab</LABEL>
                         <input type="text" name="price_lab" id="price_lab"
                                class="form-control" value="{{ form.initial.price_lab }}"
@@ -392,7 +392,7 @@
                             <input type="text" name="paid" value="{{ form.initial.paid }}" class="form-control">
                         </div>
 
-                        <div class="col">
+                        <div class="col-4">
                             <label>Note:</label>
                             <input type="text" name="note" value="{{ form.initial.note }}" class="form-control">
                         </div>
@@ -534,6 +534,7 @@
     <option value="Temporary filing" {% if form.filling_type3.value == 'Temporary filing' %}selected{% endif %}>Temporary filing</option>
 </select>
                                   </div>
+                             <br/>
 
 <div class="col-4">
 
