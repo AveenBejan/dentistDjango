@@ -30,7 +30,7 @@
     <div class="row">
 
 
-        <h5 style="text-align:center; font-size:14px;">Payment Invoice For Exo Patient </h5>
+        <h5 style="text-align:center; font-size:14px;">Exo Payment </h5>
         <div style="font-weight: bold;">
 
             {% if patient_name %}
@@ -68,9 +68,9 @@
         </table>
         </div>
    <div class="col-2" style="max-width:40.333333%">
-                <h5 style="text-align: justify; font-size:14px; background-color:#fff; color:#000">Total Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h5>
-                <h5 style="text-align: justify; font-size:14px; background-color:#fff; color:#000">Total Paid Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h5>
-                <h5 style="text-align: justify; font-size:14px; background-color:#fff; color:#000">Remaining Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h5>
+                <h5 style="text-align: left; font-size:14px; background-color:#fff; color:#000">Total :&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h5>
+                <h5 style="text-align: left; font-size:14px; background-color:#fff; color:#000">Total Paid :&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h5>
+                <h5 style="text-align: left; font-size:14px; background-color:#fff; color:#000">Remaining :&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h5>
 </div>
 
     </div>
