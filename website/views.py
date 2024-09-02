@@ -5,7 +5,7 @@ from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
     ImplantForm,GaveAppointmentForm,DebtsForm,PaymentHistoryForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,\
-    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm,XraysForm,SurgeryForm,PreventiveForm
+    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm,XraysForm,SurgeryForm,PreventiveForm,SearchFormModel
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,\
     UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive
@@ -754,6 +754,251 @@ def all_debts(request):
     }
 
     return render(request, 'debts/all_debts.html', context)
+
+
+def all_model(request):
+    form = SearchFormModel(request.GET or None)  # Instantiate the form
+
+    selected_model = None
+    queryset = None
+
+    # Initialize all variables to empty querysets
+    exos = Exo.objects.none()
+    fillings = Filling.objects.none()
+    pedos = Pedo.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
+    periodontologys = Periodontology.objects.none()
+    prosthodonticss = Prosthodontics.objects.none()
+    surgerys = Surgery.objects.none()
+    preventives = Preventive.objects.none()
+
+    if request.method == 'GET' and form.is_valid():
+        selected_model = form.cleaned_data.get('model_choice')
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    if start_date and end_date:
+        start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
+        end_datetime = end_datetime + timedelta(days=1)
+
+        date_range_filter = Q(regdate__range=(start_datetime, end_datetime))
+
+        search_results = []
+
+        if selected_model == 'Exo':
+            exos = Exo.objects.filter(date_range_filter)
+            if exos.exists():
+                search_results.append(('Exo', exos))
+        elif selected_model == 'Filling':
+            fillings = Filling.objects.filter(date_range_filter)
+            if fillings.exists():
+                search_results.append(('Filling', fillings))
+        elif selected_model == 'Pedo':
+            pedos = Pedo.objects.filter(date_range_filter)
+            if pedos.exists():
+                search_results.append(('Pedo', pedos))
+        elif selected_model == 'Crown':
+            crowns = Crown.objects.filter(date_range_filter)
+            if crowns.exists():
+                search_results.append(('Crown', crowns))
+        elif selected_model == 'Veneer':
+            veneers = Veneer.objects.filter(date_range_filter)
+            if veneers.exists():
+                search_results.append(('Veneer', veneers))
+        elif selected_model == 'OralSurgery':
+            oralSurgery = OralSurgery.objects.filter(date_range_filter)
+            if oralSurgery.exists():
+                search_results.append(('OralSurgery', oralSurgery))
+        elif selected_model == 'Endo':
+            endos = Endo.objects.filter(date_range_filter)
+            if endos.exists():
+                search_results.append(('Endo', endos))
+        elif selected_model == 'Ortho':
+            orthos = Ortho.objects.filter(date_range_filter & Q(visits_id__isnull=True))
+            if orthos.exists():
+                search_results.append(('Ortho', orthos))
+        elif selected_model == 'Periodontology':
+            periodontologys = Periodontology.objects.filter(date_range_filter)
+            if periodontologys.exists():
+                search_results.append(('Periodontology', periodontologys))
+        elif selected_model == 'Prosthodontics':
+            prosthodonticss = Prosthodontics.objects.filter(date_range_filter)
+            if prosthodonticss.exists():
+                search_results.append(('Prosthodontics', prosthodonticss))
+        elif selected_model == 'Surgery':
+            surgerys = Surgery.objects.filter(date_range_filter)
+            if surgerys.exists():
+                search_results.append(('Surgery', surgerys))
+        elif selected_model == 'Preventive':
+            preventives = Preventive.objects.filter(date_range_filter)
+            if preventives.exists():
+                search_results.append(('Preventive', preventives))
+
+    else:
+        search_results = []
+
+    # Calculate totals
+    total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_filling = fillings.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_pedo = pedos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_crown = crowns.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_veneer = veneers.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_oralSurgery = oralSurgery.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_endo = endos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_ortho = orthos.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_periodontology = periodontologys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_prosthodontics = prosthodonticss.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_surgery = surgerys.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+    total_preventive = preventives.aggregate(center_share=Sum('center_share'))['center_share'] or 0
+
+    total_exo1 = exos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_filling1 = fillings.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_pedo1 = pedos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_crown1 = crowns.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_veneer1 = veneers.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_oralSurgery1 = oralSurgery.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_endo1 = endos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_ortho1 = orthos.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_periodontology1 = periodontologys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_prosthodontics1 = prosthodonticss.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_surgery1 = surgerys.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+    total_preventive1 = preventives.aggregate(doctor_share=Sum('doctor_share'))['doctor_share'] or 0
+
+    total_exo2 = exos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_filling2 = fillings.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_pedo2 = pedos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_crown2 = crowns.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_veneer2 = veneers.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_oralSurgery2 = oralSurgery.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_endo2 = endos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_ortho2 = orthos.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_periodontology2 = periodontologys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_prosthodontics2 = prosthodonticss.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_surgery2 = surgerys.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+    total_preventive2 = preventives.aggregate(total_price=Sum('total_price'))['total_price'] or 0
+
+    total_exo3 = exos.aggregate(price=Sum('price'))['price'] or 0
+    total_filling3 = fillings.aggregate(price=Sum('price'))['price'] or 0
+    total_pedo3 = pedos.aggregate(price=Sum('price'))['price'] or 0
+    total_crown3 = crowns.aggregate(price=Sum('price'))['price'] or 0
+    total_veneer3 = veneers.aggregate(price=Sum('price'))['price'] or 0
+    total_oralSurgery3 = oralSurgery.aggregate(price=Sum('price'))['price'] or 0
+    total_endo3 = endos.aggregate(price=Sum('price'))['price'] or 0
+    total_ortho3 = orthos.aggregate(price=Sum('price'))['price'] or 0
+    total_periodontology3 = periodontologys.aggregate(price=Sum('price'))['price'] or 0
+    total_prosthodontics3 = prosthodonticss.aggregate(price=Sum('price'))['price'] or 0
+    total_surgery3 = surgerys.aggregate(price=Sum('price'))['price'] or 0
+    total_preventive3 = preventives.aggregate(price=Sum('price'))['price'] or 0
+    # Calculate total paid for each type
+    paid_exo = exos.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_filling = fillings.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_pedo = pedos.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_crown = crowns.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_veneer = veneers.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_oralSurgery = oralSurgery.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_endo = endos.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_ortho = orthos.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_periodontology = periodontologys.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_prosthodontics = prosthodonticss.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_surgery = surgerys.aggregate(paid=Sum('paid'))['paid'] or 0
+    paid_preventive = preventives.aggregate(paid=Sum('paid'))['paid'] or 0
+    total_price_t = sum(
+        [total_exo, total_filling, total_pedo, total_crown, total_veneer, total_oralSurgery, total_endo, total_ortho,
+         total_periodontology, total_prosthodontics, total_surgery, total_preventive])
+    total_price_t1 = sum(
+        [total_exo1, total_filling1, total_pedo1, total_crown1, total_veneer1, total_oralSurgery1, total_endo1,
+         total_ortho1, total_periodontology1, total_prosthodontics1, total_surgery1, total_preventive1])
+    total_price_t2 = sum(
+        [total_exo2, total_filling2, total_pedo2, total_crown2, total_veneer2, total_oralSurgery2, total_endo2,
+         total_ortho2, total_periodontology2, total_prosthodontics2, total_surgery2, total_preventive2])
+    total_price_t3 = sum(
+        [total_exo3, total_filling3, total_pedo3, total_crown3, total_veneer3, total_oralSurgery3, total_endo3,
+         total_ortho3, total_periodontology3, total_prosthodontics3, total_surgery3, total_preventive3])
+    total_paid_t = sum(
+        [paid_exo, paid_filling, paid_pedo, paid_crown, paid_veneer, paid_oralSurgery, paid_endo, paid_ortho,
+         paid_periodontology, paid_prosthodontics, paid_surgery, paid_preventive])
+    remaining = total_price_t2 - total_paid_t
+
+    context = {
+        'form': form,
+        'search_results': search_results,
+        'total_exo': total_exo,
+        'total_filling': total_filling,
+        'total_pedo': total_pedo,
+        'total_crown': total_crown,
+        'total_veneer': total_veneer,
+        'total_oralSurgery': total_oralSurgery,
+        'total_endo': total_endo,
+        'total_ortho': total_ortho,
+        'total_periodontology': total_periodontology,
+        'total_prosthodontics': total_prosthodontics,
+        'total_surgery': total_surgery,
+        'total_preventive': total_preventive,
+        'total_exo1': total_exo1,
+        'total_filling1': total_filling1,
+        'total_pedo1': total_pedo1,
+        'total_crown1': total_crown1,
+        'total_veneer1': total_veneer1,
+        'total_oralSurgery1': total_oralSurgery1,
+        'total_endo1': total_endo1,
+        'total_ortho1': total_ortho1,
+        'total_periodontology1': total_periodontology1,
+        'total_prosthodontics1': total_prosthodontics1,
+        'total_surgery1': total_surgery1,
+        'total_preventive1': total_preventive1,
+        'total_exo2': total_exo2,
+        'total_filling2': total_filling2,
+        'total_pedo2': total_pedo2,
+        'total_crown2': total_crown2,
+        'total_veneer2': total_veneer2,
+        'total_oralSurgery2': total_oralSurgery2,
+        'total_endo2': total_endo2,
+        'total_ortho2': total_ortho2,
+        'total_periodontology2': total_periodontology2,
+        'total_prosthodontics2': total_prosthodontics2,
+        'total_surgery2': total_surgery2,
+        'total_preventive2': total_preventive2,
+        'total_exo3': total_exo3,
+        'total_filling3': total_filling3,
+        'total_pedo3': total_pedo3,
+        'total_crown3': total_crown3,
+        'total_veneer3': total_veneer3,
+        'total_oralSurgery3': total_oralSurgery3,
+        'total_endo3': total_endo3,
+        'total_ortho3': total_ortho3,
+        'total_periodontology3': total_periodontology3,
+        'total_prosthodontics3': total_prosthodontics3,
+        'total_surgery3': total_surgery3,
+        'total_preventive3': total_preventive3,
+        'paid_exo': paid_exo,
+        'paid_filling': paid_filling,
+        'paid_pedo': paid_pedo,
+        'paid_crown': paid_crown,
+        'paid_veneer': paid_veneer,
+        'paid_oralSurgery': paid_oralSurgery,
+        'paid_endo': paid_endo,
+        'paid_ortho': paid_ortho,
+        'paid_periodontology': paid_periodontology,
+        'paid_prosthodontics': paid_prosthodontics,
+        'paid_surgery': paid_surgery,
+        'paid_preventive': paid_preventive,
+        'total_price_t': total_price_t,
+        'total_price_t1': total_price_t1,
+        'total_price_t2': total_price_t2,
+        'total_price_t3': total_price_t3,
+        'total_paid_t': total_paid_t,
+        'remaining': remaining,
+        'start_date': start_date,  # Add this line
+        'end_date': end_date  # Add this line
+    }
+
+    return render(request, 'debts/all_model.html', context)
 
 
 def earnings(request):

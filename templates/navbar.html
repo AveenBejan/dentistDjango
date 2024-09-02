@@ -200,8 +200,9 @@
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' or user.role == 'user' %}
                         <!--<li><a  href="{% url 'search' %}">Patient Search History</a></li>-->
-                        <li><a  href="{% url 'search-debts' %}">Patient's Search</a></li>
-                        <li><a  href="{% url 'all_debts' %}"> All Patient's Search</a></li>
+                        <li><a  href="{% url 'search-debts' %}">Search By Patient name and Dates</a></li>
+                        <li><a  href="{% url 'all_debts' %}">Search  For All Patients</a></li>
+                        <li><a  href="{% url 'all_model' %}">Search By Sections</a></li>
                             <!--<li><a  href="{% url 'search-debts-history' %}">Patient History Debts</a></li>
                             <li><a  href="{% url 'all-total' %}">Total Report</a></li>-->
                             <li><a  href="{% url 'earnings' %}">Doctor's earnings</a></li>

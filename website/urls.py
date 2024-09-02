@@ -203,6 +203,7 @@ urlpatterns = [
     path('add_salary/<int:id>', views.add_salary, name='add-salary'),
     path('salary_reception', views.salary_reception, name='salary_reception'),
     path('update_employ/<int:id>', views.update_employ, name='update-employ'),
+    path('all_model', views.all_model, name='all_model'),
 
 
     path('add_outcome', views.add_outcome, name='add-outcome'),

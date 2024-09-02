@@ -1566,3 +1566,19 @@ class XraysForm(forms.ModelForm):
             'type_xrays': forms.Select(attrs={'class': 'form-control', 'placeholder': 'type_xrays'}),
         }
 
+
+MODEL_CHOICES = [
+    ('exo', 'Exo'),
+    ('implant', 'Implant'),
+    ('endo', 'Endo'),
+    ('filling', 'Filling'),
+    ('veneer', 'Veneer'),
+    ('crown', 'Crown'),
+    # Add other models here
+]
+
+
+class SearchFormModel(forms.Form):
+    start_date = forms.DateField(required=False)
+    end_date = forms.DateField(required=False)
+    model_choice = forms.ChoiceField(choices=MODEL_CHOICES, required=False)  # Add this field

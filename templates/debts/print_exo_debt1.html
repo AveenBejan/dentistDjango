@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load custom_filters %}
-<br/>
+
 <style>
     table {
         border-collapse: collapse;
@@ -24,14 +24,13 @@
         <p style="text-align: right;" ><img src="{% static 'website/images/img.jpg'  %}"
                                              alt="..." class="img-circle profile_img"> &nbsp; &nbsp;<img src="{% static 'website/images/bar.png'  %}"
                                              alt="..." class="img-circle profile_img"></p>
-        <br/>
         <h4 style="font-weight:bold;">https://cosmolightgroup.org</h4>
 <hr class="border border-primary border-3 opacity-40">
 <div class="col-8">
     <div class="row">
 
 
-        <h4 style="text-align:center;">Payment Invoice For Exo Patient </h4>
+        <h5 style="text-align:center;">Payment Invoice For Exo Patient </h5>
         <div style="font-weight: bold;">
 
             {% if patient_name %}
@@ -69,9 +68,9 @@
         </table>
         </div>
    <div class="col-2" style="max-width:40.333333%">
-                <h4 style="text-align: justify; background-color:#fff; color:#000">Total IQD Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h4>
-                <h4 style="text-align: justify; background-color:#fff; color:#000">Total Paid Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h4>
-                <h4 style="text-align: justify; background-color:#fff; color:#000">Remaining Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h4>
+                <h5 style="text-align: justify; background-color:#fff; color:#000">Total IQD Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_price|format_with_commas }}&nbsp;&nbsp;IQD</h5>
+                <h5 style="text-align: justify; background-color:#fff; color:#000">Total Paid Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_paid|format_with_commas }}&nbsp;&nbsp;IQD</h5>
+                <h5 style="text-align: justify; background-color:#fff; color:#000">Remaining Amount:&nbsp;&nbsp;&nbsp;&nbsp;{{ total_remaining|format_with_commas }}&nbsp;&nbsp;IQD</h5>
 </div>
 
     </div>
