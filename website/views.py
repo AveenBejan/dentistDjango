@@ -301,6 +301,7 @@ def search_debts(request):
     pedos = Pedo.objects.none()
     surgerys = Surgery.objects.none()
     preventives = Preventive.objects.none()
+    xrayss = Xrays.objects.none()
 
     if query:
         exos = Exo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
@@ -316,6 +317,7 @@ def search_debts(request):
         pedos = Pedo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         surgerys = Surgery.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
         preventives = Preventive.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        xrayss = Xrays.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
 
     search_results = []
 
@@ -341,6 +343,10 @@ def search_debts(request):
         search_results.append(('Pedo', pedos))
     if preventives.exists():
             search_results.append(('Preventive', preventives))
+    if surgerys.exists():
+            search_results.append(('Surgery', surgerys))
+    if xrayss.exists():
+            search_results.append(('Xrays', xrayss))
     context = {
         'query': query,
         'search_results': search_results,
@@ -549,6 +555,7 @@ def all_debts(request):
     prosthodonticss = Prosthodontics.objects.none()
     surgerys = Surgery.objects.none()
     preventives = Preventive.objects.none()
+    xrayss = Xrays.objects.none()
 
     if start_date and end_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
@@ -570,6 +577,7 @@ def all_debts(request):
         prosthodonticss = Prosthodontics.objects.filter(date_range_filter & doctor_filter)
         surgerys = Surgery.objects.filter(date_range_filter & doctor_filter)
         preventives = Preventive.objects.filter(date_range_filter & doctor_filter)
+        xrayss = Xrays.objects.filter(date_range_filter & doctor_filter)
 
     search_results = []
 
@@ -597,6 +605,8 @@ def all_debts(request):
             search_results.append(('Surgery', surgerys))
     if preventives.exists():
             search_results.append(('Preventive', preventives))
+    if xrayss.exists():
+            search_results.append(('Xrays', xrayss))
 
 
     total_exo = exos.aggregate(center_share=Sum('center_share'))['center_share'] or 0

@@ -416,6 +416,16 @@
 
         <th scope="col" style="text-align: center;" >Add Debts</th>
         <th scope="col" style="text-align: center;" >Print Invoice</th>
+        {% elif model_name == 'Xrays' %}
+                <th scope="col" style="text-align: center;">#</th>
+                <th scope="col" style="text-align: center;">Name</th>
+                <th scope="col" style="text-align: center;">Phone Number</th>
+                <!--<th scope="col" style="text-align: center;" class="hideable">Type</th>
+                <th scope="col" style="text-align: center;" class="hideable">Notes</th>
+                <th scope="col" style="text-align: center;" >Price</th>-->
+                <th style="text-align: center;" scope="col">Total Price</th>
+                <th scope="col" style="text-align: center;">Final Price</th>
+                <th scope="col" style="text-align: center;" class="hideable">paid</th>
         {% endif %}
         <!-- ... other header columns ... -->
     </tr>
@@ -672,6 +682,15 @@
             <a href="{% url 'print_preventive_debt1'  result.id  %}" style="display: inline;"
                class="btn btn-info">Print Invoice</a>
         </td>
+        {% elif model_name == 'Xrays' %}
+                <td style="text-align: center;" scope="row" align="center"> {{ result.id }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.name }}</td>
+                <td style="text-align: center;" scope="row" align="center"> {{ result.phone }}</td>
+                <!--<td style="text-align: center;" scope="row">{{ result.type }}</td>
+                <td style="text-align: center;">{{ result.price|format_with_commas }}</td>-->
+                <td style="text-align: center;">{{ result.price|format_with_commas }}</td>
+                <td style="text-align: center;">{{ result.total_price|format_with_commas }}</td>
+                <td style="text-align: center;" scope="row">{{ result.paid|format_with_commas }}</td>
         {% endif %}
         <!-- ... other fields ... -->
     </tr>
