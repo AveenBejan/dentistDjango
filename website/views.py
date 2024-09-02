@@ -5598,21 +5598,21 @@ def add_debt1(request, id):
 
 
 def print_exo_debt(request, id):
-    debts = PaymentHistory.objects.filter(idReception1=id).values('id', 'previous_date', 'paid_amount')
-    debt1 = Exo.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    debt2 = Crown.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    debt3 = Filling.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
-    debt4 = Endo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
-    debt5 = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).values_list('id', 'paid', 'total_price')
-    debt6 = OralSurgery.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
-    debt7 = Prosthodontics.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
-    debt8 = Periodontology.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    debt9 = Veneer.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
-    debt10 = Pedo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price')
-    debt11 = Surgery.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
-    debt12 = Preventive.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price')
+    debts = PaymentHistory.objects.filter(idReception1=id).values('id', 'previous_date', 'paid_amount', 'name', 'phone')
+    debt1 = Exo.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price', 'name', 'phone')
+    debt2 = Crown.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price', 'name', 'phone')
+    debt3 = Filling.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price', 'name', 'phone')
+    debt4 = Endo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price', 'name', 'phone')
+    debt5 = Ortho.objects.filter(idReception1=id, visits_id__isnull=True).values_list('id', 'paid', 'total_price', 'name', 'phone')
+    debt6 = OralSurgery.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price', 'name', 'phone')
+    debt7 = Prosthodontics.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price', 'name', 'phone')
+    debt8 = Periodontology.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price', 'name', 'phone')
+    debt9 = Veneer.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price', 'name', 'phone')
+    debt10 = Pedo.objects.filter(idReception1=id).values_list('id', 'paid',  'total_price', 'name', 'phone')
+    debt11 = Surgery.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price', 'name', 'phone')
+    debt12 = Preventive.objects.filter(idReception1=id).values_list('id', 'paid', 'total_price', 'name', 'phone')
     combined_debts = debts.union(debt1, debt2, debt3, debt4, debt5, debt6, debt7, debt8, debt9,debt10,debt11,debt12)
-    debtss = PaymentHistory.objects.filter(idReception1=id)
+    debtss = PaymentHistory.objects.filter(idReception1=id).values('id', 'previous_date', 'paid_amount', 'name', 'phone')
 
     # Calculate the total remaining amount for idReception
     total_exo = Exo.objects.filter(idReception1=id).aggregate(total_price=Sum('total_price'))['total_price'] or 0
