@@ -255,6 +255,8 @@ urlpatterns = [
     path('add_debt_preventive/<int:id>', views.add_debt_preventive, name='add_debt_preventive'),
     path('add_debt_preventive1/<int:id>', views.add_debt_preventive1, name='add_debt_preventive1'),
 
+    path('barcode/', views.barcode_view, name='barcode_view'),
+
 
 
 

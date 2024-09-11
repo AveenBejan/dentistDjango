@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate and View Barcode</title>
+    <style>
+        @media print {
+            .print-button, .form-container, h1 {
+                display: none; /* Hide elements that you don't want to print */
+            }
+            .barcode-image {
+                width: 400px; /* Larger size for printing */
+                height: 70px; /* Maintain aspect ratio */
+            }
+        }
+        .barcode-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .barcode-image {
+            width: 150px; /* Default size for screen */
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate Barcode</h1>
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="barcode">Barcode Automatic Generation):</label>
+            <input type="hidden" id="barcode" name="barcode">
+            <button type="submit">Generate</button>
+        </form>
+    </div>
+
+    {% if barcode %}
+        <div class="barcode-container">
+            {% if barcode.barcode_image %}
+                <img src="{{ barcode.barcode_image.url }}" alt="Barcode Image" class="barcode-image">
+                <br>
+                <button class="print-button" onclick="window.print()">Print Barcode</button>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>

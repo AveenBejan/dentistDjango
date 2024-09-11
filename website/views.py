@@ -40,6 +40,42 @@ from datetime import datetime, timedelta
 from django.db.models import Sum, F, Q, Value, IntegerField
 from django.db.models.functions import Coalesce
 from decimal import Decimal, InvalidOperation
+import barcode
+from barcode.writer import ImageWriter
+from django.http import HttpResponse
+from io import BytesIO
+from .models import GeneratedBarcode
+import uuid
+
+def barcode_view(request):
+    barcode_instance = None
+
+    if request.method == 'POST':
+        barcode_str = request.POST.get('barcode')
+
+        if barcode_str:
+            # Create or get the existing barcode instance
+            barcode_instance, created = GeneratedBarcode.objects.get_or_create(barcode=barcode_str)
+
+            # If it is newly created, save the barcode image
+            if created:
+                barcode_instance.save()
+        else:
+            # Generate a unique barcode string
+            barcode_str = generate_unique_barcode()
+            # Create a new barcode instance
+            barcode_instance, created = GeneratedBarcode.objects.get_or_create(barcode=barcode_str)
+            if created:
+                barcode_instance.save()
+
+    # If a barcode was found or created, show its details; otherwise, just show the form
+    return render(request, 'store/barcode_view.html', {'barcode': barcode_instance})
+
+
+def generate_unique_barcode():
+    # Generate a unique barcode string using UUID
+    unique_id = uuid.uuid4().hex[:12].upper()  # Create a unique string with length 12
+    return unique_id
 
 
 def custom_login(request):

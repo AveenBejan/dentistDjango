@@ -2,6 +2,11 @@
 from django.db import models
 from django.conf import settings
 from accounts.models import CustomUser # Import the CustomUser model from the account app
+import barcode
+from barcode.writer import ImageWriter
+from django.db import models
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 
 class WebsiteFeedback(models.Model):
@@ -861,5 +866,30 @@ class PaymentHistory(models.Model):
     phone = models.CharField('Phone', max_length=120, blank=True, null=True)
 
 
+class GeneratedBarcode(models.Model):
+    barcode = models.CharField(max_length=120, unique=True)  # Ensure the barcode field is unique
+    created_at = models.DateTimeField(auto_now_add=True)
+    barcode_image = models.ImageField(upload_to='barcodes/', blank=True, null=True)
+
+    def __str__(self):
+        return self.barcode
+
+    def generate_barcode_image(self):
+        BARCODE_CLASS = barcode.get_barcode_class('code128')
+        barcode_obj = BARCODE_CLASS(self.barcode, writer=ImageWriter())
+
+        # Save the barcode image to a BytesIO stream
+        buffer = BytesIO()
+        barcode_obj.write(buffer)
+        buffer.seek(0)
+
+        return buffer.getvalue()
+
+    def save(self, *args, **kwargs):
+        if not self.barcode_image:
+            # Generate and save barcode image
+            image_content = self.generate_barcode_image()
+            self.barcode_image.save(f'{self.barcode}.png', ContentFile(image_content))
+        super(GeneratedBarcode, self).save(*args, **kwargs)
 
 
