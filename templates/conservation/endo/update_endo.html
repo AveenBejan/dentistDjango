@@ -309,52 +309,61 @@
 
                          <div class="card">
                              <div class="card-body">
-                                     <div class="form-row">
+                                     <div class="row">
 
-                                                <div class="col">
-                                                    <label class="form-check-label">No of Canal</label>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="1"  {% if "1" in form.initial.canal %}checked{% endif %}>
-                                                        <label class="form-check-label">1</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="2" {% if "2" in form.initial.canal %}checked{% endif %}>
-                                                        <label class="form-check-label">2</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="3"  {% if "3" in form.initial.canal %}checked{% endif %}>
-                                                        <label class="form-check-label">3</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="4"  {% if "4" in form.initial.canal %}checked{% endif %}>
-                                                        <label class="form-check-label">4</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="5"  {% if "5" in form.initial.canal %}checked{% endif %}>
-                                                        <label class="form-check-label">5</label>
-                                                    </div>
-                                                </div></div>
-                    <div class="row">
-                        <div class="col-2">
+                                         <div class="col-4">
+
+
+                                             <input type="checkbox" class="form-check-input" name="canal_b" value="B" {% if "B" in form.initial.canal_b %}checked{% endif %}>
+                                             <label class="form-check-label">B</label>
+                                             <label>work_length:</label>
+                                             <input type="text" name="work_length_b"
+                                                    value="{{ form.initial.work_length_b}}" class="">
+                                         </div>
+                                         <div class="col-4">
+                                             <input type="checkbox" class="form-check-input" name="canal_p" value="P" {% if "P" in form.initial.canal_p %}checked{% endif %}>
+                                             <label class="form-check-label">P</label>
+                                             <label>work_length:</label>
+                                             <input type="text" name="work_length_p" value="{{ form.initial.work_length_p }}" class="">
+                                         </div>
+                                          <div class="col-4">
+                                                        <input type="checkbox" class="form-check-input" name="canal_mb" value="MB"  {% if "MB" in form.initial.canal_mb %}checked{% endif %}>
+                                                        <label class="form-check-label">MB</label>
                             <label>work_length:</label>
-                            <input type="text" name="work_length" value="{{ form.initial.work_length }}"
-                                   class="form-control">
+                            <input type="text" name="work_length_mb" value="{{ form.initial.work_length_mb }}" class="">
                         </div>
+                                                     <div class="col-4">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal_db"
+                                                               value="DB"  {% if "DB" in form.initial.canal_db %}checked{% endif %}>
+                                                        <label class="form-check-label">DB</label>
+
+                            <label>work_length:</label>
+                            <input type="text" name="work_length_db" value="{{ form.initial.work_length_db }}"
+                                   class="">
+                        </div>
+                                                     <div class="col-4">
+                                                        <input type="checkbox"
+                                                               class="form-check-input"
+                                                               name="canal_p1"
+                                                               value="P1"  {% if "P1" in form.initial.canal_p1 %}checked{% endif %}>
+                                                        <label class="form-check-label">P1</label>
+
+                            <label>work_length:</label>
+                            <input type="text" name="work_length_p1" value="{{ form.initial.work_length_p1 }}"
+                                   class="">
+                        </div>
+                                                    <div class="col-4">
+                                                        <input type="checkbox"
+                                                               class="form-check-input" name="canal_acc" value="ACC"  {% if "ACC" in form.initial.canal_acc %}checked{% endif %}>
+                                                        <label class="form-check-label">ACC</label>
+                            <label>work_length:</label>
+                            <input type="text" name="work_length_acc" value="{{ form.initial.work_length_acc }}"
+                                   class="">
+                        </div>
+<br/><br/><br/>
+                    <div class="row">
                         <div class="col-2">
                             <label>Price:</label>
                             <input type="text" name="price" id="price" value="{{ form.initial.price }}" class="form-control">

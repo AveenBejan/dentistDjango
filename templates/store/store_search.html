@@ -41,26 +41,21 @@
                     <th scope="col" style="text-align: center;">Barcode</th>
                     <th scope="col" style="text-align: center;">Material Name</th>
                     <th scope="col" style="text-align: center;">Quantity</th>
-                    <th scope="col" style="text-align: center;">Shelf Number:</th>
-
-                    <th scope="col" style="text-align: center;">Expire Date</th>
-                    <th scope="col" style="text-align: center;">Expire Date</th>
+                    <th scope="col" style="text-align: center;">Quantity Out</th>
+                    <th scope="col" style="text-align: center;">Dr.Name</th>
+                    <th scope="col" style="text-align: center;">Out Date</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td style="text-align: center;">{{ store_instance.id }}</td>
                     <td style="text-align: center;">{{ store_instance.barcode }}</td>
-                    <td style="text-align: center;">{{ store_instance.material_name }}</td>
+                    <td style="text-align: center;">{{ store_instance.material_out }}</td>
+                    <td style="text-align: center;">{{ store_instance.quantity_in }}</td>
                     <td style="text-align: center;">{{ store_instance.quantity }}</td>
-                    <td style="text-align: center;">{{ store_instance.shelf_Num }}</td>
+                    <td style="text-align: center;">{{ store_instance.doctor }}</td>
+                    <td style="text-align: center;">{{ store_instance.output_date }}</td>
 
-                    <td style="text-align: center;">{{ store_instance.expire_date }}</td>
-                    {% if alerts %}
-                    {% for alert in alerts %}
-                    <td style="text-align: center;">{{ alert }}</td>
-                    {% endfor %}
-                    {% endif %}
 
                 </tr>
                 </tbody>

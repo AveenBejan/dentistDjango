@@ -24,9 +24,9 @@
 
         {% for drug in drugs %}
         {% if user.is_authenticated %}
-         <h3><p style="font-size:16px;">Username&nbsp;- &nbsp;{{ drug.user.username }}</p></h3>
+        <!-- <h3><p style="font-size:16px;">Username&nbsp;- &nbsp;{{ drug.user.username }}</p></h3>
         <h3><p style="font-size:16px;">Password&nbsp;- &nbsp;{{ drug.user.custom_password }}</p></h3>
-        {% endif %}
+        {% endif %}-->
 
         <h3><p style="font-size:16px;">Patient Name:&nbsp;- &nbsp;{{ drug.name }}</p></h3>
         <h3><p style="font-size:16px;">Patient Phone Number:&nbsp;- &nbsp;{{ drug.phone }}</p></h3>

@@ -15,6 +15,8 @@ urlpatterns = [
     path('doctors.html', views.doctors, name='doctors'),
     path('exo_reception.html', views.reception, name='reception'),
     path('all-reception', views.all_reception, name='all-reception'),
+    path('make_appoint.html', views.make_appoint, name='make_appoint'),
+    path('search_make.html', views.search_make, name='search-make'),
 
     path('user_all', views.user_all, name='user_all'),
     path('custom_login', views.custom_login, name='custom_login'),
@@ -256,6 +258,8 @@ urlpatterns = [
     path('add_debt_preventive1/<int:id>', views.add_debt_preventive1, name='add_debt_preventive1'),
 
     path('barcode/', views.barcode_view, name='barcode_view'),
+    path('diagnosis/<int:id>', views.diagnosis, name='diagnosis'),
+    path('diagnosis/diagnosis_reception.html', views.diagnosis_reception, name='diagnosis-reception'),
 
 
 

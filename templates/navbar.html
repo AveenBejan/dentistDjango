@@ -35,7 +35,10 @@
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
                       <li><a  href="{% url 'all-reception' %}">Reception Info</a></li>
                       <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
-                       <li><a  href="{% url 'all_customer' %}">Customer</a></li>
+                        <li><a  href="{% url 'make_appoint' %}">Booked An Appointment</a></li>
+                        <li><a  href="{% url 'all_debts' %}">Add Debts</a></li>
+                        <li><a  href="{% url 'add-outcome' %}">Add OutCome</a></li>
+                       <!--<li><a  href="{% url 'all_customer' %}">Customer</a></li>-->
 
 
                         {% else %}
@@ -48,6 +51,17 @@
                 </li>
                 {% endif %}
                     {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' or user.role == 'patient'  %}
+                     <li><a><i class="fa fa-home"></i> Diagnosis <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        {% if user.role == 'admin' or user.role == 'doctor' %}
+                        <li><a  href="{% url 'diagnosis-reception' %}">Diagnosis</a></li>
+                        {% else %}
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Exo</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Implant</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Period Ontology</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
               <li><a><i class="fa fa-home"></i> My Appointments <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
@@ -184,7 +198,7 @@
                         <li><a  href="{% url 'lab' %}">Add New Lab</a></li>
                         <li><a  href="{% url 'educational' %}">Add Students</a></li>
                         <li><a  href="{% url 'add-new-employ' %}">Add Employee</a></li>
-                        <li><a  href="{% url 'add-outcome' %}">Add OutCome</a></li>
+
                          {% else %}
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add Doctor</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Add New Drugs</a></li>

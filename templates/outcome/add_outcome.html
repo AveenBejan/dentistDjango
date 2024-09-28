@@ -6,8 +6,7 @@
 <body class="nav-md">
 <div class="container body">
     <div class="right_col" role="main">
-<div class="row"
-     style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
+<div class="row" style="padding-left: 60px;  padding-right: 60px; background: #fff; align-content: center; color: white; border-radius: 10px">
     <div class="col-8">
         <div class="accordion" id="accordionExample">
             <nav aria-label="breadcrumb">
@@ -32,7 +31,7 @@
                          aria-labelledby="headingTwo"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="filling-form">
                                 {% csrf_token %}
                                 <input type="text" name="invoice_num"
                                        class="form-control" placeholder="invoice_num">
@@ -44,12 +43,14 @@
                                     <option value="ايجار">ايجار</option>
                                     <option value="كهرباء">كهرباء</option>
                                     <option value="ماء">ماء</option>
+                                    <option value="المواد">المواد</option>
+                                    <option value="النثرية">النثرية</option>
 
                                 </select>
 
                                 <input type="text" name="description" placeholder="description"
                                        class="form-control">
-                                <input type="text" name="price" placeholder="price" class="form-control">
+                                <input type="text" name="price" placeholder="price" id="price" class="form-control">
 
                                 <br/>
                                 <div class="form-group" style="text-align: center;">
@@ -100,6 +101,26 @@
 </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#filling-form').submit(function() {
+        // Remove commas from the price value before submission
+        var priceInput = $('#price');
+        var numericPriceValue = priceInput.val().replace(/,/g, '');
+        priceInput.val(numericPriceValue);
+
+    });
+
+    $('#price, #price_lab').on('input', function() {
+        // Remove non-numeric characters except dots (keeping decimals)
+        var numericValue = $(this).val().replace(/[^0-9.]/g, '');
+        // Format with commas for thousands separators
+        var formattedValue = parseFloat(numericValue).toLocaleString('en-US');
+        $(this).val(formattedValue);
+    });
+});
+</script>
 </body>
 
 {% endblock %}

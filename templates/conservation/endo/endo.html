@@ -3,10 +3,18 @@
 {% block content %}
 {% load custom_filters %}
 <html lang="en">
+
 <head>
     <title>{% block title %}Dental Clinic {% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      .hidden {
+    display: none;
+}
+
+    </style>
 </head>
 <br/>
 <body class="nav-md">
@@ -284,38 +292,63 @@
                                                             <label class="form-check-label">UR3</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio"
-                                                                   class="form-check-input"
-                                                                   name="ur" id="ur"
-                                                                   value="UR4">
-                                                            <label class="form-check-label">UR4</label>
+                                                            <input type="radio" class="form-check-input" name="ur"
+                                                                   value="UR4" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p" id="ur">
+                                                            <label class="form-check-label" for="ur">UR4</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="radio" class="form-check-input" name="ur"
+                                                                   value="UR5" id="ur" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
+                                                            <label class="form-check-label" for="ur">UL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ur" id="ur"
-                                                                   value="UR5">
-                                                            <label class="form-check-label">UR5</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input type="radio"
-                                                                   class="form-check-input"
-                                                                   name="ur" id="ur"
-                                                                   value="UR6">
+                                                                   value="UR6"
+                                                            data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">UR6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ur" id="ur"
-                                                                   value="UR7">
+                                                                   value="UR7"
+                                                            data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">UR7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ur" id="ur"
-                                                                   value="UR8">
+                                                                   value="UR8"
+                                                            data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">UR8</label>
                                                         </div>
 
@@ -353,42 +386,72 @@
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ul" id="ul"
-                                                                   value="UL4">
+                                                                   value="UL4" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
                                                             <label class="form-check-label">UL4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ul" id="ul"
-                                                                   value="UL5">
+                                                                   value="UL5" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
                                                             <label class="form-check-label">UL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ul" id="ul"
-                                                                   value="UL6">
+                                                                   value="UL6"
+                                                                   data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">UL6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ul" id="ul"
-                                                                   value="UL7">
+                                                                   value="UL7"
+                                                            data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">UL7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ul" id="ul"
-                                                                   value="UL8">
+                                                                   value="UL8"
+                                                            data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">UL8</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <br/>
+
+
+
                                         <div class="row">
                                             <div class="col-sm-6" dir="rtl">
                                                 <div class="card-header" style="text-align:center; font-size:16px; font-weight: bold;">
@@ -421,35 +484,60 @@
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="lr" id="lr"
-                                                                   value="LR4">
+                                                                   value="LR4" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
                                                             <label class="form-check-label">LR4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="lr" id="lr"
-                                                                   value="LR5">
+                                                                   value="LR5" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
                                                             <label class="form-check-label">LR5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="lr" id="lr"
-                                                                   value="LR6">
+                                                                   value="LR6" data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">LR6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="lr" id="lr"
-                                                                   value="LR7">
+                                                                   value="LR7" data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">LR7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="lr" id="lr"
-                                                                   value="LR8">
+                                                                   value="LR8" data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">LR8</label>
                                                         </div>
 
@@ -487,35 +575,60 @@
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ll" id="ll"
-                                                                   value="LL4">
+                                                                   value="LL4" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
                                                             <label class="form-check-label">LL4</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ll" id="ll"
-                                                                   value="LL5">
+                                                                   value="LL5" data-diameter1="canal_b"
+                                                                   data-diameter2="canal_p" data-length1="work_length_b"
+                                                                   data-length2="work_length_p">
                                                             <label class="form-check-label">LL5</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ll" id="ll"
-                                                                   value="LL6">
+                                                                   value="LL6"  data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">LL6</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ll" id="ll"
-                                                                   value="LL7">
+                                                                   value="LL7" data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">LL7</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio"
                                                                    class="form-check-input"
                                                                    name="ll" id="ll"
-                                                                   value="LL8">
+                                                                   value="LL8" data-diameter3="canal_mb"
+                                                                   data-length3="work_length_mb"
+                                                                   data-diameter4="canal_db"
+                                                                   data-length4="work_length_db"
+                                                                   data-diameter5="canal_p1"
+                                                                   data-length5="work_length_p1"
+                                                                   data-diameter6="canal_acc"
+                                                                   data-length6="work_length_acc">
                                                             <label class="form-check-label">LL8</label>
                                                         </div>
 
@@ -529,42 +642,50 @@
                                             <div class="card-body">
 <div class="form-row">
                                                 <div class="col">
-                                                    <label class="form-check-label">No of Canal</label>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="1">
-                                                        <label class="form-check-label">1</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="2">
-                                                        <label class="form-check-label">2</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="3">
-                                                        <label class="form-check-label">3</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="4">
-                                                        <label class="form-check-label">4</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio"
-                                                               class="form-check-input"
-                                                               name="canal"
-                                                               value="5">
-                                                        <label class="form-check-label">5</label>
-                                                    </div>
+<!-- Hidden Inputs and Labels -->
+                                        <label class="hidden" for="canal_b">Canal B</label>
+                                        <input type="checkbox" class="hidden" name="canal_b" id="canal_b" value="B">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <label class="hidden" for="work_length_b">Work Length</label>
+                                        <input type="text" class="hidden" name="work_length_b" id="work_length_b" placeholder="">
+                                         <br/>
+                                        <label class="hidden" for="canal_p">Canal P</label>
+                                        <input type="checkbox" class="hidden" name="canal_p" id="canal_p" value="P">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label class="hidden" for="work_length_p">Work Length</label>
+                                        <input type="text" class="hidden" name="work_length_p" id="work_length_p" placeholder="">
+<br/>
+                                        <label class="hidden" for="canal_mb">Canal MB</label>
+                                        <input type="checkbox" class="hidden" name="canal_mb" id="canal_mb" value="MB">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="hidden" for="work_length_mb">Work Length MB</label>
+                                        <input type="text" class="hidden" name="work_length_mb" id="work_length_mb" placeholder="">
+
+                                        <br/>
+
+                                        <!-- Canal DB and Work Length DB -->
+                                        <label class="hidden" for="canal_db">Canal DB</label>
+                                        <input type="checkbox" class="hidden" name="canal_db" id="canal_db" value="DB">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="hidden" for="work_length_db">Work Length DB</label>
+                                        <input type="text" class="hidden" name="work_length_db" id="work_length_db" placeholder="">
+
+                                        <br/>
+
+                                        <!-- Canal P1 and Work Length P1 -->
+                                        <label class="hidden" for="canal_p1">Canal P1</label>
+                                        <input type="checkbox" class="hidden" name="canal_p1" id="canal_p1" value="P1">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="hidden" for="work_length_p1">Work Length P1</label>
+                                        <input type="text" class="hidden" name="work_length_p1" id="work_length_p1" placeholder="">
+
+                                        <br/>
+
+                                        <!-- Canal ACC and Work Length ACC -->
+                                        <label class="hidden" for="canal_acc">Canal ACC</label>
+                                        <input type="checkbox" class="hidden" name="canal_acc" id="canal_acc"
+                                               value="ACC">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="hidden" for="work_length_acc">Work Length ACC</label>
+                                        <input type="text" class="hidden" name="work_length_acc" id="work_length_acc" placeholder="">
 
                                                     <div class="form-row">
                                                         <input type="hidden" id="paid" name="paid" value="0"
@@ -573,12 +694,7 @@
                                                     </div>
                                                     <br/>
                                                     <div class="form-row">
-                                                        <div class="col-2">
-                                                            <input type="text" class="form-control" name="work_length"
-                                                                   required
-                                                                   placeholder="work_length" style="font-weight:bold;"
-                                                                   value="">
-                                                        </div>
+
                                                         <div class="col-2">
                                                             <input type="text" name="price" id="price" value=""
                                                                    class="form-control"
@@ -666,21 +782,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<script>
-  const radioButtons = document.querySelectorAll('input[type="radio"]:not([name="canal"])');
 
-  radioButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const radioButtonsExceptCanal = document.querySelectorAll('input[type="radio"]:not([name="canal"])');
-
-      radioButtonsExceptCanal.forEach(otherButton => {
-        if (otherButton !== button) {
-          otherButton.checked = false;
-        }
-      });
-    });
-  });
-</script>
 
 <script>
     document.getElementById('endo-form').addEventListener('submit', function(event) {
@@ -730,4 +832,104 @@ $(document).ready(function() {
         });
     });
 </script>
+<script>
+// Function to handle changes in the radio buttons and show corresponding inputs and labels
+function handleRadioChange(...radioGroups) {
+    radioGroups.forEach(radios => {
+        radios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Get all diameters and lengths from data attributes
+                const diameter1 = this.getAttribute('data-diameter1');
+                const diameter2 = this.getAttribute('data-diameter2');
+                const diameter3 = this.getAttribute('data-diameter3');
+                const diameter4 = this.getAttribute('data-diameter4');
+                const diameter5 = this.getAttribute('data-diameter5');
+                const diameter6 = this.getAttribute('data-diameter6');
+
+                const length1 = this.getAttribute('data-length1');
+                const length2 = this.getAttribute('data-length2');
+                const length3 = this.getAttribute('data-length3');
+                const length4 = this.getAttribute('data-length4');
+                const length5 = this.getAttribute('data-length5');
+                const length6 = this.getAttribute('data-length6');
+
+                // First, hide all inputs and labels related to the current group
+                radios.forEach(r => {
+                    const diaAttributes = ['data-diameter1', 'data-diameter2', 'data-diameter3', 'data-diameter4', 'data-diameter5', 'data-diameter6'];
+                    const lenAttributes = ['data-length1', 'data-length2', 'data-length3', 'data-length4', 'data-length5', 'data-length6'];
+
+                    // Loop through diameter and length attributes and hide corresponding inputs and labels
+                    diaAttributes.forEach(attr => {
+                        const dia = r.getAttribute(attr);
+                        if (dia) {
+                            const diaInput = document.querySelector(`input[name="${dia}"]`);
+                            const diaLabel = document.querySelector(`label[for="${dia}"]`);
+                            if (diaInput) diaInput.classList.add('hidden');
+                            if (diaLabel) diaLabel.classList.add('hidden');
+                        }
+                    });
+
+                    lenAttributes.forEach(attr => {
+                        const len = r.getAttribute(attr);
+                        if (len) {
+                            const lenInput = document.querySelector(`input[name="${len}"]`);
+                            const lenLabel = document.querySelector(`label[for="${len}"]`);
+                            if (lenInput) lenInput.classList.add('hidden');
+                            if (lenLabel) lenLabel.classList.add('hidden');
+                        }
+                    });
+                });
+
+                // Now, show inputs and labels for the selected radio button
+                const diameters = [diameter1, diameter2, diameter3, diameter4, diameter5, diameter6];
+                const lengths = [length1, length2, length3, length4, length5, length6];
+
+                diameters.forEach(dia => {
+                    if (dia) {
+                        const diaInput = document.querySelector(`input[name="${dia}"]`);
+                        const diaLabel = document.querySelector(`label[for="${dia}"]`);
+                        if (diaInput) diaInput.classList.remove('hidden');
+                        if (diaLabel) diaLabel.classList.remove('hidden');
+                    }
+                });
+
+                lengths.forEach(len => {
+                    if (len) {
+                        const lenInput = document.querySelector(`input[name="${len}"]`);
+                        const lenLabel = document.querySelector(`label[for="${len}"]`);
+                        if (lenInput) lenInput.classList.remove('hidden');
+                        if (lenLabel) lenLabel.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    });
+}
+
+// Apply the change handler to both UR and UL radio buttons
+const radiosUR = document.querySelectorAll('input[name="ur"]');
+const radiosUL = document.querySelectorAll('input[name="ul"]');
+const radiosLR = document.querySelectorAll('input[name="lr"]');
+const radiosLL = document.querySelectorAll('input[name="ll"]');
+
+handleRadioChange(radiosUR, radiosUL,radiosLR, radiosLL);
+</script>
+
+<script>
+  // Select all radio buttons
+  const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+  // Add event listeners to each radio button
+  radioButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // When a button is clicked, uncheck all others
+      radioButtons.forEach(otherButton => {
+        if (otherButton !== button) {
+          otherButton.checked = false; // Uncheck the other buttons
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock %}

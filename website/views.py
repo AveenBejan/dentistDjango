@@ -5,10 +5,11 @@ from django.conf import settings
 from .forms import ContactForm, AppointmentForm,DentistDetailsForm,ReceptionForm,OralSurgeryForm,OrthoForm,ExoForm,\
     MedicinForm,PhotoForm,DrugForm,CrownForm,Medicine1Form,VeneerForm,FillingForm,DrugFormSet,DoctorsForm,SearchForm,\
     ImplantForm,GaveAppointmentForm,DebtsForm,PaymentHistoryForm,BasicInfoForm,SalaryForm,OutcomeForm, EndoForm,VisitsForm,EducationalForm,\
-    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,MaterialOutputForm,XraysForm,SurgeryForm,PreventiveForm,SearchFormModel
+    SearchForm1,PeriodontologyForm,ProsthodonticsForm,UploadFileForm,ReceptionForm1,PedoForm,StoreForm,MaterialForm,LabForm,\
+    MaterialOutputForm,XraysForm,SurgeryForm,PreventiveForm,SearchFormModel,DiagnosisForm
 from .models import Appointment1,DentistDetails,Reception,OralSurgery,Ortho,Exo,Medicin,\
     Photo,Drug,Medicine1,Crown,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts,BasicInfo,Salary,Outcome,Endo,Visits,Educational,Periodontology,Prosthodontics,\
-    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive
+    UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive,Diagnosis
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -46,6 +47,85 @@ from django.http import HttpResponse
 from io import BytesIO
 from .models import GeneratedBarcode
 import uuid
+
+@login_required
+def diagnosis_reception(request):
+    user = request.user
+    try:
+        if user.role == 'admin':
+            appointments = Reception1.objects.all().order_by('-id')
+        else:
+            doctor = Doctors.objects.get(user=user)
+            appointments = Reception1.objects.filter(doctor=doctor).order_by('-id')
+    except Doctors.DoesNotExist:
+        appointments = Reception1.objects.none()
+
+    p = Paginator(appointments, 25)
+    page = request.GET.get('page')
+    appointments = p.get_page(page)
+    nums = "a" * appointments.paginator.num_pages
+
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+
+    return render(request, 'diagnosis/diagnosis_reception.html', {'appointments': appointments, 'nums': nums})
+
+
+@login_required
+def diagnosis(request, id):
+    user = request.user
+
+    # Check if the user is an admin or the doctor associated with the reception
+    if user.role == 'admin':
+        reception = get_object_or_404(Reception1, id=id)
+    else:
+        doctor = Doctors.objects.get(user=user)
+        reception = get_object_or_404(Reception1, id=id, doctor=doctor)
+
+    if request.method == 'POST':
+        form = DiagnosisForm(request.POST, request.FILES)
+        if form.is_valid():
+            diagnosis_instance = form.save(commit=False)
+            diagnosis_instance.idReception1_id = id
+
+            # Set additional fields from reception
+            diagnosis_instance.idReception_id = reception.idReception_id
+            diagnosis_instance.name = reception.name
+            diagnosis_instance.phone = reception.phone
+            diagnosis_instance.gender = reception.gender
+            diagnosis_instance.date_of_birth = reception.date_of_birth
+            diagnosis_instance.educational_id = reception.educational_id
+            diagnosis_instance.doctor_id = reception.doctor_id
+
+            # Calculate total price (if needed)
+            price = form.cleaned_data.get('price')
+            if price:
+                price = Decimal(price)  # Convert price to Decimal if needed
+
+            # Save the Diagnosis instance
+            diagnosis_instance.save()
+
+            # Redirect to the diagnosis view
+            return redirect('diagnosis', id=id)
+        else:
+            print(form.errors)  # Output form errors for debugging
+    else:
+        # Initialize form with data from the Reception object
+        initial_data = {
+            'idReception1_id': id,
+            'idReception_id': reception.idReception_id,
+            'name': reception.name,
+            'phone': reception.phone,
+            'gender': reception.gender,
+            'date_of_birth': reception.date_of_birth,
+            'educational_id': reception.educational_id,
+            'doctor_id': reception.doctor_id
+        }
+        form = DiagnosisForm(initial=initial_data)
+
+    return render(request, 'diagnosis/diagnosis.html', {'form': form})
+
 
 def barcode_view(request):
     barcode_instance = None
@@ -2016,8 +2096,21 @@ def reception(request):
         if appointment.time:
             appointment.time = appointment.time.replace("'", "")
         cleaned_appointments.append(appointment)
+        # Get current time
+    current_time = datetime.now()
+    gaves = Reception1.objects.all().order_by('-id')
 
-    return render(request, 'home.html', {'form': form, 'appointments': appointments})
+    # Retrieve 'gave' records within the last 24 hours
+    gaves = Reception1.objects.filter(app_data__gte=current_time - timedelta(hours=360)).order_by('-id')
+
+    # Clean 'gave' data if needed
+    for gave in gaves:
+        if gave.days:
+            gave.days = gave.days.replace("'", "")
+        if gave.time:
+            gave.time = gave.time.replace("'", "")
+    return render(request, 'home.html', {'form': form, 'appointments': appointments, 'gaves': gaves})
+
 
 
 def search_doctor(request):
@@ -2307,6 +2400,7 @@ def all_gave(request):
             gave.time = gave.time.replace("'", "")
 
     return render(request, 'all_gave.html', {'gaves': gaves})
+
 
 
 @login_required
@@ -3274,6 +3368,29 @@ def exo_reception(request):
             appointment.time = appointment.time.replace("'", "")
 
     return render(request, 'exo/exo_reception.html', {'appointments': appointments, 'nums': nums})
+
+
+def make_appoint(request):
+    user = request.user
+    try:
+        if user.role == 'admin':
+            appointments = Reception1.objects.all().order_by('-id')
+        else:
+            doctor = Doctors.objects.get(user=user)
+            appointments = Reception1.objects.filter(doctor=doctor).order_by('-id')
+    except Doctors.DoesNotExist:
+        appointments = Reception1.objects.none()
+
+    p = Paginator(appointments, 25)
+    page = request.GET.get('page')
+    appointments = p.get_page(page)
+    nums = "a" * appointments.paginator.num_pages
+
+    for appointment in appointments:
+        if appointment.time:
+            appointment.time = appointment.time.replace("'", "")
+
+    return render(request, 'make_appoint.html', {'appointments': appointments, 'nums': nums})
 
 
 def prosthodontics_reception(request):
@@ -4293,6 +4410,17 @@ def search_exo(request):
         return render(request, 'exo/search_exo.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
     else:
         return render(request, 'exo/search_exo.html', {})
+
+
+def search_make(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        orals = Reception1.objects.filter(Q(name__icontains=searched) | Q(phone__icontains=searched))
+        receptions = Reception1.objects.all()
+        return render(request, 'search_make.html', {'searched': searched, 'orals': orals, 'receptions': receptions})
+    else:
+        return render(request, 'search_make.html', {})
+
 
 
 def search_prosthodontics(request):
@@ -6948,8 +7076,7 @@ def add_endo(request, id):
             orall.lr = orall.lr.replace("'", "")
         if orall.ll:
             orall.ll = orall.ll.replace("'", "")
-        if orall.canal:
-            orall.canal = orall.canal.replace("'", "")
+
         if orall.components_first:
             orall.components_first = orall.components_first.replace("'", "")
         if orall.components_second:
@@ -7125,7 +7252,7 @@ def endo_edit(request, id):
         ul = orall.ul[1:-1] if orall.ul else None
         lr = orall.lr[1:-1] if orall.lr else None
         ll = orall.ll[1:-1] if orall.ll else None
-        canal = orall.canal[1:-1] if orall.canal else None
+
 
         form = EndoForm(instance=orall, initial={
             'first_visit': first_visit,
@@ -7141,7 +7268,7 @@ def endo_edit(request, id):
             'ul': ul,
             'lr': lr,
             'll': ll,
-            'canal': canal,
+
         })
         print("Initial form data:", {
             'second_visit': form.initial.get('second_visit'),
@@ -7491,26 +7618,19 @@ def store_search(request):
 
         # Query the Store model for the given barcode
         try:
-            store_instance = Store.objects.get(barcode=barcode)
-
-            # Check expiry date condition
-            current_date = datetime.now().date()
-            expire_date = store_instance.expire_date
-
-            if expire_date is not None and (expire_date - current_date) < timedelta(days=30):
-                alerts.append(f'Alert: Expiry date for barcode {barcode} is less than one month.')
-
+            store_instance = MaterialOutput.objects.get(barcode=barcode)
             # Check quantity condition
             quantity_remaining = int(store_instance.quantity)  # Convert to integer
 
             if quantity_remaining <= 3:
                 alerts.append(f'Alert: Quantity remaining for barcode {barcode} is less than or equal to 3.')
 
-        except Store.DoesNotExist:
+        except MaterialOutput.DoesNotExist:
             alerts.append(f'No store item found with barcode {barcode}.')
             store_instance = None
 
     return render(request, 'store/store_search.html', {'store_instance': store_instance, 'alerts': alerts})
+
 
 @login_required
 def add_material_output(request):

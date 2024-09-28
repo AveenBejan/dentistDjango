@@ -1,46 +1,111 @@
-
 {% load static %}
 
 {% block content %}
-<br/>
-<br/><br/>
+<style>
+    .print-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .left-text, .right-text {
+        width: 25%; /* Adjust the width as needed */
+    }
+
+    .logo {
+        text-align: center;
+        width: 50%; /* The logo container will take up the middle space */
+    }
+
+    .logo img {
+        max-width: 200px; /* Adjust the logo size */
+    }
+
+    /* Print-specific styles */
+    @media print {
+        .print-container {
+            padding: 0;
+        }
+        /* You can add other print-specific styling here */
+    }
+
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f8f9fa; /* Optional: Change the background color */
+        padding: 1px;
+        text-align: center;
+    }
+
+    #footer h4 {
+        margin: 0;
+    }
+
+</style>
 <body class="nav-md">
-<div class="container body">
-    <div class="right_col" role="main">
-<p align="center"
-   style="font-size:20px; color:#900; font-weight:bold; background-image: url({% static 'website/images/bb.jpg'  %}); background-repeat:no-repeat;">
-    نوژدار
-    <br/>دلخاز فخري ئاميدي<br/>نوزدارى و نشته کە ریا ده ڤ وددانا <br/>تایبه تمه ندى راستکریا
-    ددانا<br/>B.D.S/M.SC.Ortho</br>
-    <br/>عطلة العيادة الخميس والجمعة </p>
-<hr class="border border-primary border-3 opacity-40">
+<div class="print-container">
+    <!-- Left text -->
+    <div class="left-text" style="text-align:center; color:red;font-size:18px; font-weight:bold">
+        Dr.
+        <br/>Dilxaz Fakhri <br/>
+        B.D.S M.Sc.Ortho <br/>
+        Dental Ortho
 
+    </div>
 
-<h4 style="font-size:16px; font-weight:bold" align="left">
-    &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{drugs.0.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- Logo in the middle -->
+    <div class="logo">
+        <img src="{% static 'website/images/jj1.png' %}" alt="Logo"/>
+        <br/>
+        <p> عطلة العيادة الخميس والجمعة</p>
+    </div>
 
-    <label dir="ltr">Date: {{drugs.0.regdate}}</label>
-
-    <br/>&nbsp;&nbsp;<label>Date :</label>{{drugs.0.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <label dir="ltr">Gender: {{drugs.0.gender}}</label>&nbsp;</h4>
-<div class="col-8">
-    <div class="card-body">
-
-        <h3 STYLE="color:red;">RX</h3>
-        {% for drug in drugs %}
-
-        <h3><p>&nbsp;- &nbsp;{{ drug.name_medicine }} &nbsp;&nbsp;{{ drug.doze }}&nbsp;&nbsp;{{ drug.type }} &nbsp;&nbsp;{{ drug.tablet }} &nbsp;&nbsp;{{ drug.times }} &nbsp;&nbsp;{{ drug.dispense }}</p></h3>
-
-        {% endfor %}
+    <!-- Right text -->
+    <div class="right-text" style="text-align:center; color:red;font-size:18px; font-weight:bold">
+        Dr.
+        <br/>Abdulhameed Aldabagh <br/>
+        B.D.S M.Sc.PHD-OS <br/>
+        Dental Implant
     </div>
 </div>
-    </div></div></body>
 
-        <footer id="footer">
-            <hr class="border border-primary border-3 opacity-40">
-            <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
-                التمنيات بالشفاء العاجل</h4>
-        </footer>
-        {% endblock %}
+<div class="container body">
+    <div class="right_col" role="main">
+
+        <hr class="border border-primary border-3 opacity-40">
+
+
+        <h4 style="font-size:16px; font-weight:bold" align="left">
+            &nbsp;&nbsp;<label>Patient Name :&nbsp;</label>{{drugs.0.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <label dir="ltr">Date: {{ drugs.0.regdate|date:"Y-m-d" }}</label>
+
+            <br/>&nbsp;&nbsp;<label>Date :</label>{{drugs.0.date_of_birth}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label dir="ltr">Gender: {{drugs.0.gender}}</label>&nbsp;</h4>
+        <div class="col-8">
+            <div class="card-body">
+
+                <h3 STYLE="color:red;">RX</h3>
+                {% for drug in drugs %}
+
+                <h3><p>&nbsp;- &nbsp;{{ drug.name_medicine }} &nbsp;&nbsp;{{ drug.doze }}&nbsp;&nbsp;{{ drug.type }}
+                    &nbsp;&nbsp;{{ drug.tablet }} &nbsp;&nbsp;{{ drug.times }} &nbsp;&nbsp;{{ drug.dispense }}</p></h3>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<footer id="footer">
+    <hr class="border border-primary border-3 opacity-40">
+    <h4 style="display:inline; font-size:14px" align="left">دهوك -جاددا ماسيك/ به رامبه ري ياريكا برا 0750&nbsp;555&nbsp;5555&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مع
+        التمنيات بالشفاء العاجل</h4>
+</footer>
+
+{% endblock %}

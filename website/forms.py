@@ -2,8 +2,57 @@ from django import forms
 from django.forms import ModelForm
 from .models import Contact, Appointment1,DentistDetails,Reception,OralSurgery, Ortho,Exo,Medicin,Photo,Drug,\
     Crown,Medicine1,Veneer,Filling,Doctors,Implant,GaveAppointment,Debts, BasicInfo,Salary,Outcome,Endo,\
-    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive
+    Visits,Educational,Periodontology,Prosthodontics,UploadedFile,WebsiteFeedback,PaymentHistory,Reception1,Pedo,Store,Material,Lab,MaterialOutput,Xrays,Surgery,Preventive,Diagnosis
 from django.forms import formset_factory
+
+
+class DiagnosisForm(forms.ModelForm):
+
+    class Meta:
+        model = Diagnosis
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth',
+                  'ur1', 'ul1', 'lr1', 'll1',
+                  'ur2', 'ul2', 'lr2', 'll2',
+                  'ur3', 'ul3', 'lr3', 'll3',
+                  'ur4', 'ul4', 'lr4', 'll4',
+                  'ur5', 'ul5', 'lr5', 'll5',
+                  'ur6', 'ul6', 'lr6', 'll6',
+                  'ur7', 'ul7', 'lr7', 'll7',
+                  'ur8', 'ul8', 'lr8', 'll8',
+                  'ur9', 'ul9', 'lr9', 'll9',
+                  'ur10', 'ul10', 'lr10', 'll10',
+                  'ur11', 'ul11', 'lr11', 'll11',
+                  'ur12', 'ul12', 'lr12', 'll12','price','note')
+        labels = {
+            'idReception1': '',
+            'idReception': '',
+            'name': '',
+            'phone': '',
+            'gender': '',
+            'date_of_birth': '',
+            'ur1': '',
+            'ul1': '',
+            'lr1': '',
+            'll1': '',
+            'price': '',
+            'note': '',
+
+        }
+        widgets = {
+            'idReception1': forms.Select(attrs={'class': 'form-control'}),
+            'idReception': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'phone'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'gender'}),
+            'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
+            'ur1': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
+            'ul1': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
+            'lr1': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'lr'}),
+            'll1': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
+            'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
+            'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+
+        }
 
 
 class WebsiteFeedbackForm(forms.ModelForm):
@@ -1078,8 +1127,8 @@ class EndoForm(forms.ModelForm):
 
     class Meta:
         model = Endo
-        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal','work_length',
-                  'price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','filling_type1','filling_type2','filling_type3','discount_option','lab_name',
+        fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal_b','work_length_b','canal_p','work_length_p',
+                  'canal_mb','work_length_mb','canal_db','work_length_db','canal_p1','work_length_p1','canal_acc','work_length_acc','price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','filling_type1','filling_type2','filling_type3','discount_option','lab_name',
                   'price_lab')
         labels = {
             'idReception': '',
@@ -1094,8 +1143,6 @@ class EndoForm(forms.ModelForm):
             'ul': '',
             'lr': '',
             'll': '',
-            'canal': '',
-            'work_length': '',
             'price': '',
             'paid': '',
             'note': '',
@@ -1126,8 +1173,10 @@ class EndoForm(forms.ModelForm):
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'date_of_birth'}),
             'first_visit': forms.DateInput(attrs={'class': 'form-control'}),
             'components_first': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'components_first'}),
-            'canal': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'canal'}),
-            'work_length': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'work_length'}),
+            'canal_b': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'canal'}),
+            'canal_p': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'canal'}),
+            'work_length_b': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'work_length'}),
+            'work_length_p': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'work_length'}),
             'ur': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
             'ul': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ul'}),
             'lr': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
