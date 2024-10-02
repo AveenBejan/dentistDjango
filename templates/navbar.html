@@ -33,10 +33,10 @@
                         <li><a  href="{% url 'user_all' %}">Patient Appoint</a></li>
                         {% endif %}
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
-                      <li><a  href="{% url 'all-reception' %}">Reception Info</a></li>
+                      <li><a  href="{% url 'all-reception' %}">Information Editing</a></li>
                       <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
                         <li><a  href="{% url 'make_appoint' %}">Booked An Appointment</a></li>
-                        <li><a  href="{% url 'all_debts' %}">Add Debts</a></li>
+                        <li><a  href="{% url 'all_debts_recp' %}">Add Debts</a></li>
                         <li><a  href="{% url 'add-outcome' %}">Add OutCome</a></li>
                        <!--<li><a  href="{% url 'all_customer' %}">Customer</a></li>-->
 

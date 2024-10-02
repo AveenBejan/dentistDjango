@@ -37,6 +37,7 @@
                         <th scope="col">Date of Appointment</th>
                         <th scope="col">Days</th>
                         <th scope="col">Time</th>
+                        <th scope="col">Note</th>
                         <th scope="col" colspan="">Update</th>
                         <th scope="col" colspan="">Delete</th>
 
@@ -54,6 +55,7 @@
                         <td scope="row">{{ appointment.app_data }}</td>
                         <td scope="row">{{appointment.days}}</td>
                         <td scope="row">{{appointment.time|slice:"1:-1"}}</td>
+                        <td scope="row">{{appointment.note}}</td>
                         <td><a href="{% url 'update-reception' appointment.id %}" style="display: inline;"><span class="btn btn-warning">Update</span></a></td>
                         <td><a href="{% url 'delete-reception'  appointment.id  %}" style="display: inline;"><span class="btn btn-danger">Delete</span></a></td>
                         <!-- <th scope="col" colspan="">Send Reminder</th><td><a href="{% url 'send_appointment_reminders' %}">Send Reminder</a></td>-->

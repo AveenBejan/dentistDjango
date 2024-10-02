@@ -1939,3 +1939,30 @@ def exo(request, id):
             exoo.doctor_share = doctor_share.quantize(Decimal('0.01'))
             exoo.center_share = center_share.quantize(Decimal('0.01'))
             exoo.total_price = total_price.quantize(Decimal('0.01'))
+
+
+            this code for select only one checkbox in home.html for time
+            	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+    // JavaScript function to handle checkbox click event
+    function handleCheckboxClick(checkbox) {
+        // Check if the user is logged in (you need to implement this logic)
+        var isLoggedIn = checkUserLoginStatus(); // Implement this function
+
+        if (!isLoggedIn) {
+            // If not logged in, allow only one checkbox to be checked
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i] !== checkbox) {
+                    checkboxes[i].checked = false; // Uncheck other checkboxes
+                }
+            }
+        }
+    }
+
+    // Implement a function to check user login status
+    function checkUserLoginStatus() {
+        // You need to implement this logic
+        // Return true if the user is logged in, false otherwise
+    }
+</script>

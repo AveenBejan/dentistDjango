@@ -14,7 +14,7 @@ class DiagnosisForm(forms.ModelForm):
                   'ur1', 'ul1', 'lr1', 'll1',
                   'ur2', 'ul2', 'lr2', 'll2',
                   'ur3', 'ul3', 'lr3', 'll3',
-                  'ur4', 'ul4', 'lr4', 'll4',
+                  'type',
                   'ur5', 'ul5', 'lr5', 'll5',
                   'ur6', 'ul6', 'lr6', 'll6',
                   'ur7', 'ul7', 'lr7', 'll7',
@@ -22,7 +22,8 @@ class DiagnosisForm(forms.ModelForm):
                   'ur9', 'ul9', 'lr9', 'll9',
                   'ur10', 'ul10', 'lr10', 'll10',
                   'ur11', 'ul11', 'lr11', 'll11',
-                  'ur12', 'ul12', 'lr12', 'll12','price','note')
+                  'ur12', 'ul12', 'lr12', 'll12','price',
+                  'note1','note2','note3','note4','note5','note6','note6','note7','note8','note9','note10','note11','note12')
         labels = {
             'idReception1': '',
             'idReception': '',
@@ -51,6 +52,7 @@ class DiagnosisForm(forms.ModelForm):
             'll1': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'll'}),
             'price': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'price'}),
             'note': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'note'}),
+            'type': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'placeholder': 'ur'}),
 
         }
 
@@ -253,7 +255,7 @@ class ReceptionForm(forms.ModelForm):
 
     class Meta:
         model = Reception
-        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time','user')
+        fields = ('name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time','user','note')
         labels = {
             'name': 'Full Name',
             'phone': 'Phone Number',
@@ -280,7 +282,7 @@ class ReceptionForm(forms.ModelForm):
 class ReceptionForm1(forms.ModelForm):
     class Meta:
         model = Reception1
-        fields = ('idReception','name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time','user')
+        fields = ('idReception','name', 'phone', 'gender', 'date_of_birth', 'doctor','educational','app_data','days', 'time','user','note')
         labels = {
             'idReception': 'idReception',
             'name': 'Full Name',
@@ -1128,7 +1130,7 @@ class EndoForm(forms.ModelForm):
     class Meta:
         model = Endo
         fields = ('idReception','idReception1', 'name', 'phone', 'gender', 'date_of_birth','first_visit', 'components_first', 'ur', 'ul','lr', 'll','canal_b','work_length_b','canal_p','work_length_p',
-                  'canal_mb','work_length_mb','canal_db','work_length_db','canal_p1','work_length_p1','canal_acc','work_length_acc','price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','filling_type1','filling_type2','filling_type3','discount_option','lab_name',
+                  'canal_mb','work_length_mb','canal_db','work_length_db','canal_p1','work_length_p1','canal_acc','work_length_acc','work_length_7','price', 'paid','date', 'note', 'exo_images', 'second_visit','components_second','third_visit', 'components_third', 'fourth_visit','components_fourth','filling_type','filling_type1','filling_type2','filling_type3','discount_option','lab_name',
                   'price_lab')
         labels = {
             'idReception': '',

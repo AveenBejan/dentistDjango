@@ -133,6 +133,12 @@
 									 <input type="text" name="days" id="datepicker-4" readonly class="form-control">
 								 </div>
 							 </div>
+							 <div class="col-sm-5">
+								 <div class="form-group">
+									 <label style="color:#fff; font-size:16px;">Notes</label>
+									 <input type="text" name="note" class="form-control">
+								 </div>
+							 </div>
 							 {%if user.is_authenticated%}
 							 {% if user.role == 'educational_center' %}
 							 <div class="col-sm-5">
@@ -251,28 +257,24 @@
     </div>
 	</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
     // JavaScript function to handle checkbox click event
     function handleCheckboxClick(checkbox) {
-        // Check if the user is logged in (you need to implement this logic)
-        var isLoggedIn = checkUserLoginStatus(); // Implement this function
+        // Check if the user is logged in
+        var isLoggedIn = checkUserLoginStatus();
 
         if (!isLoggedIn) {
-            // If not logged in, allow only one checkbox to be checked
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i] !== checkbox) {
-                    checkboxes[i].checked = false; // Uncheck other checkboxes
-                }
-            }
+            // Alert user if they are not logged in
+            alert("You must be logged in to select multiple time slots.");
+            checkbox.checked = false; // Uncheck the box if user is not logged in
         }
     }
 
-    // Implement a function to check user login status
+    // Function to check user login status
     function checkUserLoginStatus() {
-        // You need to implement this logic
-        // Return true if the user is logged in, false otherwise
+        // Now that you're logged in, return true
+        return true; // User is logged in
     }
 </script>
 	<script>

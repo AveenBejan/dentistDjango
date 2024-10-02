@@ -199,6 +199,7 @@ urlpatterns = [
     path('add_debt_prosthodontics/<int:id>', views.add_debt_prosthodontics, name='add-debt-prosthodontics'),
 
     path('all_debts', views.all_debts, name='all_debts'),
+    path('all_debts_recp', views.all_debts_recp, name='all_debts_recp'),
     path('all_debts1', views.all_debts1, name='all_debts1'),
     path('add_new_employ', views.add_new_employ, name='add-new-employ'),
     path('delete_employ/<int:id>', views.delete_employ, name='delete-employ'),
@@ -260,6 +261,7 @@ urlpatterns = [
     path('barcode/', views.barcode_view, name='barcode_view'),
     path('diagnosis/<int:id>', views.diagnosis, name='diagnosis'),
     path('diagnosis/diagnosis_reception.html', views.diagnosis_reception, name='diagnosis-reception'),
+    path('search_diagnosis', views.search_diagnosis, name='search-diagnosis'),
 
 
 
