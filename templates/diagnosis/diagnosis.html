@@ -6,9 +6,20 @@
 
 <div class="container body">
     <div class="right_col" role="main">
-<div class="alert alert-info" role="alert">
-  The Diagnostic Process - Improving Diagnosis in Health Care
-</div>
+ <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                            style="text-align: justify; background-color:#17a2b8; color:#fff">
+
+                          <p><br/><span style="font-weight: bold; font-size:16px;">Full Name:  {{ form.initial.name }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="font-weight: bold; font-size:16px;">Phone Number:  {{ form.initial.phone }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="font-weight: bold; font-size:16px;">Gender:  {{ form.initial.gender }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="font-weight: bold; font-size:16px;">Date of Birth:  {{ form.initial.date_of_birth }} </span>
+                </p>
+                    </button>
+                </h2>
+
+
 
         <div class="accordion accordion-flush" id="accordionFlushExample">
               <form method="POST" enctype="multipart/form-data" id="diag-form">

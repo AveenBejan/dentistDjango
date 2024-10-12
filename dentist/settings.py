@@ -88,6 +88,16 @@ DATABASES = {
 
     )
 }
+DATABASES = {
+
+    'default': dj_database_url.config(
+
+        default='mysql://ra3088zq3xlw0y1h:j3sxqn9j5qidrgnh@eanl4i1omny740jw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/cnjogdf58wagvdjv',
+        engine='django.db.backends.mysql'
+
+
+    )
+}
 
 
 

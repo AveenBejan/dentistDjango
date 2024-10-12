@@ -35,7 +35,7 @@
                         {% if user.role == 'admin' or user.role == 'user' or user.role == 'doctor' or user.role == 'patient' %}
                       <li><a  href="{% url 'all-reception' %}">Information Editing</a></li>
                       <li><a  href="{% url 'all-gave' %}">All Booked Appointment</a></li>
-                        <li><a  href="{% url 'make_appoint' %}">Booked An Appointment</a></li>
+                        <li><a  href="{% url 'make_appoint' %}">Add Appointment</a></li>
                         <li><a  href="{% url 'all_debts_recp' %}">Add Debts</a></li>
                         <li><a  href="{% url 'add-outcome' %}">Add OutCome</a></li>
                        <!--<li><a  href="{% url 'all_customer' %}">Customer</a></li>-->
@@ -58,7 +58,7 @@
                         {% else %}
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Exo</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Implant</a></li>
-                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Period Ontology</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Periodontology</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -86,11 +86,11 @@
                         <li><a  href="{% url 'exo-reception' %}">Exo</a></li>
                         <li><a  href="{% url 'surgery-reception' %}">Oral Surgery</a></li>
                         <li><a  href="{% url 'oral-reception' %}">Implant</a></li>
-                        <li><a  href="{% url 'periodontology-reception' %}">Period Ontology</a></li>
+                        <li><a  href="{% url 'periodontology-reception' %}">Periodontology</a></li>
                         {% else %}
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Exo</a></li>
                         <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Implant</a></li>
-                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Period Ontology</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Periodontology</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -118,12 +118,12 @@
                 <li><a><i class="fa fa-home"></i> PoP <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' %}
-                        <li><a  href="{% url 'ortho-reception' %}">Ortho</a></li>
-                        <li><a  href="{% url 'pedo-reception' %}">Pedo</a></li>
+                        <li><a  href="{% url 'ortho-reception' %}">Orthodontics</a></li>
+                        <li><a  href="{% url 'pedo-reception' %}">Pedodontics</a></li>
                         <li><a  href="{% url 'preventive-reception' %}">Preventive</a></li>
                         {% else %}
-                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Ortho</a></li>
-                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Pedo</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Orthodontics</a></li>
+                        <li><a  href="" onclick="alert('Please upgrade to the pro version to access this feature. Contact us for more information')">Pedodontics</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -216,8 +216,9 @@
                     <ul class="nav child_menu">
                         {% if user.role == 'admin' or user.role == 'doctor' or user.role == 'user' %}
                         <!--<li><a  href="{% url 'search' %}">Patient Search History</a></li>-->
-                        <li><a  href="{% url 'search-debts' %}">Search By Patient name </a></li>
-                        <li><a  href="{% url 'all_debts' %}">Search For All Patients By Dates</a></li>
+                        <li><a  href="{% url 'search-debts' %}">Search Name </a></li>
+                        <li><a  href="{% url 'search-debts' %}">Search Phone No. </a></li>
+                        <li><a  href="{% url 'all_debts' %}">Search Dates</a></li>
                        <!-- <li><a  href="{% url 'all_model' %}">Search By Sections</a></li>
                             <li><a  href="{% url 'search-debts-history' %}">Patient History Debts</a></li>
                             <li><a  href="{% url 'all-total' %}">Total Report</a></li>-->

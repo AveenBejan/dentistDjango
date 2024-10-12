@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 {% load static %}
 {% block content %}
+{% load custom_filters %}
 <br/>
 <br/>
 <body class="nav-md">
@@ -40,6 +41,7 @@
                                 <select name="type" placeholder="type"
                                         class="form-control">
                                     <option selected disabled>Select type</option>
+                                    <option value="سعر المختبر">سعر المختبر</option>
                                     <option value="ايجار">ايجار</option>
                                     <option value="كهرباء">كهرباء</option>
                                     <option value="ماء">ماء</option>
@@ -88,7 +90,7 @@
                 <td scope="row">{{appointment.invoice_date}}</td>
                 <td scope="row">{{appointment.type}}</td>
                  <td scope="row">{{appointment.description}}</td>
-                 <td scope="row">{{appointment.price}}</td>
+                 <td scope="row">{{appointment.price|format_with_commas}}</td>
                 <td scope="row">{{appointment.regdate}}</td>
                 <td><a href="{% url 'delete-outcome' appointment.id %}" style="display: inline;"><span
                          class="btn btn-outline-danger">Delete</span></a></td>
