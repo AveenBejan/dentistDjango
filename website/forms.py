@@ -352,6 +352,7 @@ class DrugForm(forms.ModelForm):
         ('Capsule', 'Capsule'),
         ('Drop', 'Drop'),
         ('Injection', 'Injection'),
+        ('Jel', 'Jel'),
     ]
     DISPENSE_CHOICES = [
         ('', 'Select Dispense'),
