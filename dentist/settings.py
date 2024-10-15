@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_ufsej!t40n@64mak(7)w(d%&3(gx2(+yg9oel&r5i0gyhqu#*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,16 +78,6 @@ WSGI_APPLICATION = 'dentist.wsgi.application'
 
 
 
-DATABASES = {
-
-    'default': dj_database_url.config(
-
-        default='mysql://ra3088zq3xlw0y1h:j3sxqn9j5qidrgnh@eanl4i1omny740jw.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/cnjogdf58wagvdjv',
-        engine='django.db.backends.mysql'
-
-
-    )
-}
 DATABASES = {
 
     'default': dj_database_url.config(
