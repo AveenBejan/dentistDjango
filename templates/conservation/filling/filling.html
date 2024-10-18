@@ -1543,13 +1543,17 @@ textarea {
                                                           placeholder="Paid:" required>
 
                                                    <div class="col">
+
 <br/>
+     <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price:</label>
                                                        <input type="text" name="price" value=""
                                                               class="form-control" id="price"
-                                                              placeholder="Price:" required>
+                                                              placeholder="" required>
                                                    </div>
                                                     <div class="col-md-3 mb-3">
+
 <br/>
+                                                         <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Discount Option:</label>
     <select id="discount_option" name="discount_option" class="form-select" required>
         <option value="" disabled selected>Select Discount Option</option>
         <option value="None">None (where no proportion for doctors just salary)</option>
@@ -1561,13 +1565,15 @@ textarea {
 </div>
                                                     <div class="col-md-3 mb-3">
                                                         <br/>
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Lab Name:</label>
                                                         {{ form.lab_name }}
                                                     </div>
                                                     <div class="col-md-3 mb-3">
                                                         <br/>
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price of Lab:</label>
                                                         <input type="text" name="price_lab" id="price_lab"
                                                                class="form-control"
-                                                               placeholder="Price of Lab:">
+                                                               placeholder="">
                                                     </div>
                                                </div>
                                                <br/>

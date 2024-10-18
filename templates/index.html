@@ -920,9 +920,11 @@
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Implant</label>
                                                         {{ form.implant }}
                                                     </div>
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Shade</label>
 
                                                         <select name="shade" class="form-control" required="required">
                                                             <option value="">Select Shade</option>
@@ -940,32 +942,37 @@
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">No. Of Implant</label>
                                                         <input type="text" class="form-control" name="no_Implant"
-                                                               placeholder="No. Of Implant" value="" required
+                                                               placeholder="" value="" required
                                                                style="font-weight:bold;">
                                                     </div>
                                                        <input type="hidden" id="paid" name="paid" value="0"
                                                           class="form-control"
                                                           placeholder="Paid:" required>
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Color</label>
                                                         <input type="text" class="form-control" name="color"
-                                                               placeholder="Color" required style="font-weight:bold;">
+                                                               placeholder="" required style="font-weight:bold;">
 
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
                                                         <div class="col">
+                                                             <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">No of Unite:</label>
                                                         <input type="text" class="form-control" name="no_unite"
-                                                               placeholder="No of Unite:" required
+                                                               placeholder="" required
                                                                style="font-weight:bold;">
                                                     </div>
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price:</label>
                                                         <input type="text" name="price"  id="price" value="" class="form-control"
-                                                               placeholder="Price:" style="font-weight:bold;" required>
+                                                               placeholder="" style="font-weight:bold;" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
                                                         <div class="col">
+                                                            <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Discount Option</label>
     <select id="discount_option" name="discount_option" class="form-select" required>
         <option value="" disabled selected>Select Discount Option</option>
         <option value="None">None (where no proportion for doctors just salary)</option>
@@ -976,17 +983,20 @@
     </select>
 </div>
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Lab</label>
                                                         {{ form.lab_name }}
                                                     </div>
                                                     <div class="col">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price of Lab:</label>
                                                         <input type="text" name="price_lab" id="price_lab"
                                                                class="form-control"
-                                                               placeholder="Price of Lab:">
+                                                               placeholder="">
                                                     </div>
 
                                                 <div class="form-group">
+                                                    <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Notes:</label>
                                                     <input type="text" name="note" value="" class="form-control"
-                                                           placeholder="Notes:" style="font-weight:bold;">
+                                                           placeholder="" style="font-weight:bold;">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">

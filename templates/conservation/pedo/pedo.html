@@ -388,10 +388,11 @@ textarea {
 
                                                     <select name="filling_type" class="form-select" required>
                                                         <option value="">Select Pedo Type</option>
-                                                        <option value="PolPotic">PolPotic</option>
+                                                        <option value="Pulpotech">Pulpotech</option>
                                                         <option value="Compisit">Compisit</option>
                                                         <option value="Glass cement">Glass cement</option>
                                                         <option value="Temporary filing">Temporary filing</option>
+                                                        <option value="Exo">Exo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1070,12 +1071,14 @@ textarea {
                                                           placeholder="Paid:" required>
                                                    <div class="col">
  <br/>
+                                                       <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price:</label>
                                                        <input type="text" name="price" value=""
                                                               class="form-control" id="price"
-                                                              placeholder="Price:" required>
+                                                              placeholder="" required>
                                                    </div>
                                                    <div class="col-md-3 mb-3">
                                                        <br/>
+                                                       <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Discount Option:</label>
     <select id="discount_option" name="discount_option" class="form-select" required>
         <option value="" disabled selected>Select Discount Option</option>
         <option value="None">None (where no proportion for doctors just salary)</option>
@@ -1087,13 +1090,15 @@ textarea {
 </div>
                                                     <div class="col-md-3 mb-3">
                                                          <br/>
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Lab Name:</label>
                                                         {{ form.lab_name }}
                                                     </div>
                                                     <div class="col-md-3 mb-3">
                                                          <br/>
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price of Lab:</label>
                                                         <input type="text" name="price_lab" id="price_lab"
                                                                class="form-control"
-                                                               placeholder="Price of Lab:">
+                                                               placeholder="">
                                                     </div>
                                                </div>
                                                <br/>

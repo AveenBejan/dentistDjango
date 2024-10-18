@@ -18,13 +18,7 @@
               <div class="menu_section">
                 <ul class="nav side-menu">
 
-                <!--
-                {% if user.is_authenticated %}
-                <li class="nav-item"><a href="{% url 'about' %}" class="nav-link"  style="color: #ffffff;">About</a></li>
-                <li class="nav-item"><a href="{% url 'services' %}" class="nav-link" style="color: #ffffff;">Services</a></li>
-                <li class="nav-item"><a href="contact.html" class="nav-link" style="color: #ffffff;">Contact</a></li>
-                {% endif %}
-                -->
+
                 {% if user.role == 'admin' or user.role == 'doctor'  or user.role == 'user' or user.role == 'educational_center' or user.role == 'patient'  %}
                 <li><a><i class="fa fa-home"></i> Reception <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -159,7 +153,7 @@
                         {% if user.role == 'admin' or user.role == 'doctor' %}
                        <li><a  href="{% url 'exo-reception1' %}">Add Drug Prescription</a></li>
                         {% if user.role == 'admin' %}
-                       <li><a  href="{% url 'upload' %}">upload pdf file</a></li>
+
                         <!--<a  href="">Add Drags</a>-->
                         {% endif %}
                         {% else %}
@@ -219,6 +213,7 @@
                         <li><a  href="{% url 'search-debts' %}">Search Name </a></li>
                         <li><a  href="{% url 'search-debts' %}">Search Phone No. </a></li>
                         <li><a  href="{% url 'all_debts' %}">Search Dates</a></li>
+                        <li><a  href="{% url 'casses_progress' %}">Search Cases Progress</a></li>
                        <!-- <li><a  href="{% url 'all_model' %}">Search By Sections</a></li>
                             <li><a  href="{% url 'search-debts-history' %}">Patient History Debts</a></li>
                             <li><a  href="{% url 'all-total' %}">Total Report</a></li>-->

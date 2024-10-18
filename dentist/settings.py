@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_ufsej!t40n@64mak(7)w(d%&3(gx2(+yg9oel&r5i0gyhqu#*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'website.context_processors.appointment_context',
             ],
         },
     },
@@ -88,6 +89,7 @@ DATABASES = {
 
     )
 }
+
 
 
 
@@ -156,4 +158,4 @@ LOGIN_REDIRECT_URL ='home'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Set session cookie age to 30 minutes (1800 seconds)
-SESSION_COOKIE_AGE = 1800  # 30 minutes in seconds
+SESSION_COOKIE_AGE = 3240000  # 30 minutes in seconds

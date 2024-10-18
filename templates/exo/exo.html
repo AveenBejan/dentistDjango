@@ -469,11 +469,13 @@
                                             <div class="card-body">
                                                 <div class="form-row">
                                                     <div class="col-md-3 mb-3">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price</label>
                                                         <input type="text" name="price" id="price"
                                                                class="form-control"
-                                                               placeholder="Price:" required>
+                                                                required>
                                                     </div>
                                                 <div class="col-md-3 mb-3">
+                                                    <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Select Discount Option</label>
 
     <select id="discount_option" name="discount_option" class="form-select" required>
         <option value="" disabled selected>Select Discount Option</option>
@@ -485,17 +487,19 @@
     </select>
 </div>
                                                     <div class="col-md-3 mb-3">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Lab Name</label>
                                                         {{ form.lab_name }}
                                                     </div>
                                                     <div class="col-md-3 mb-3">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Price Lab</label>
                                                         <input type="text" name="price_lab" id="price_lab"
                                                                class="form-control"
-                                                               placeholder="Price of Lab:">
+                                                              >
                                                     </div>
                                                     <div class="col-md-3 mb-3">
+                                                        <label for="{{ form.prefix }}-" style="text-align: left; display: block; font-size: 16px;">Notes</label>
                                                         <input type="text" name="note" value=""
-                                                               class="form-control"
-                                                               placeholder="Notes:">
+                                                               class="form-control">
 
                                                     </div>
                                                 </div>

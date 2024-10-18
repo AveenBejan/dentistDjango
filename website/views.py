@@ -47,6 +47,7 @@ from django.http import HttpResponse
 from io import BytesIO
 from .models import GeneratedBarcode
 import uuid
+import random
 
 @login_required
 def diagnosis_reception(request):
@@ -469,6 +470,73 @@ def search_debts(request):
     }
 
     return render(request, 'finance/search_debts.html', context)
+
+def casses_progress(request):
+    query = request.GET.get('query', '').lower()  # Get the value of the 'query' parameter from the GET request
+    exos = Exo.objects.none()  # Initialize as an empty queryset
+    fillings = Filling.objects.none()
+    crowns = Crown.objects.none()
+    veneers = Veneer.objects.none()
+    oralSurgery = OralSurgery.objects.none()
+    endos = Endo.objects.none()
+    orthos = Ortho.objects.none()
+    prosthodonticss = Prosthodontics.objects.none()
+    periodontologys = Periodontology.objects.none()
+    pedos = Pedo.objects.none()
+    surgerys = Surgery.objects.none()
+    preventives = Preventive.objects.none()
+    xrayss = Xrays.objects.none()
+
+    if query:
+        exos = Exo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+
+        fillings = Filling.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        crowns = Crown.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        veneers = Veneer.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        oralSurgery = OralSurgery.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        endos = Endo.objects.filter(Q(name=query) | Q(name__istartswith=query),idReception__in=Reception1.objects.values('idReception'))
+        orthos = Ortho.objects.filter(Q(name=query) | Q(name__istartswith=query),idReception__in=Reception1.objects.values('idReception'),visits_id__isnull=True)
+        prosthodonticss = Prosthodontics.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        periodontologys = Periodontology.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        pedos = Pedo.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        surgerys = Surgery.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        preventives = Preventive.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+        xrayss = Xrays.objects.filter(Q(name__istartswith=query) | Q(phone=query),idReception__in=Reception1.objects.values('idReception'))
+
+    search_results = []
+
+    if exos.exists():
+        search_results.append(('Exo', exos))
+    if fillings.exists():
+        search_results.append(('Filling', fillings))
+    if crowns.exists():
+        search_results.append(('Crown', crowns))
+    if veneers.exists():
+        search_results.append(('Veneer', veneers))
+    if oralSurgery.exists():
+        search_results.append(('OralSurgery', oralSurgery))
+    if endos.exists():
+        search_results.append(('Endo', endos))
+    if orthos.exists():
+        search_results.append(('Ortho', orthos))
+    if prosthodonticss.exists():
+        search_results.append(('Prosthodontics', prosthodonticss))
+    if periodontologys.exists():
+        search_results.append(('Periodontology', periodontologys))
+    if pedos.exists():
+        search_results.append(('Pedo', pedos))
+    if preventives.exists():
+            search_results.append(('Preventive', preventives))
+    if surgerys.exists():
+            search_results.append(('Surgery', surgerys))
+    if xrayss.exists():
+            search_results.append(('Xrays', xrayss))
+    context = {
+        'query': query,
+        'search_results': search_results,
+    }
+
+    return render(request, 'finance/cases_progress.html', context)
 
 
 def search_debts_history(request):
@@ -2345,6 +2413,7 @@ def reception(request):
     # Retrieve 'gave' records within the last 24 hours
     gaves = Reception1.objects.filter(app_data__gte=current_time - timedelta(hours=360)).order_by('-id')
 
+
     # Clean 'gave' data if needed
     for gave in gaves:
         if gave.days:
@@ -2353,6 +2422,29 @@ def reception(request):
             gave.time = gave.time.replace("'", "")
     return render(request, 'home.html', {'form': form, 'appointments': appointments, 'gaves': gaves})
 
+
+def appointment_booked(request):
+    # Retrieve 'gave' records within the last 24 hours
+    current_time = datetime.now()
+    gaves1 = Reception1.objects.filter(app_data__gte=current_time - timedelta(hours=360)).order_by('-id')
+    week_days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    # List of potential colors
+    color_choices = ['#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#A833FF']
+
+    # Assign random colors to each time entry
+    for gave in gaves1:
+        if gave.time:
+            times = gave.time.strip("[]").split(",")  # Assuming times are comma-separated
+            gave.time_colors = [(time.strip(), random.choice(color_choices)) for time in
+                                times]  # Random color for each time
+
+    # Clean 'gave' data if needed
+    for gave in gaves1:
+        if gave.days:
+            gave.days = gave.days.replace("'", "")
+        if gave.time:
+            gave.time = gave.time.replace("'", "")
+    return render(request, 'appointment_booked.html', {'gaves1': gaves1, 'week_days': week_days})
 
 
 def search_doctor(request):

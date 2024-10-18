@@ -16,47 +16,15 @@
       background-position: center center;
       height: 450px;">
 <BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/>
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Show Booked Appointments</button>
 
-    <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                {% if gaves %}
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
-                <table class="table table-hover">
-                    <thead style="text-align: justify; background-color:#17a2b8; color:#fff">
-					<h2 style="text-align: center; color:#000"># of Booked Appointments</h2>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Dr. Name</th>
-							<th scope="col">Day Name</th>
-                            <th scope="col">App. Date</th>
-
-                            <th scope="col">Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for gave in gaves %}
-						<tr>
-							<td class="count" style="width:50px;">{{ forloop.counter }}</td>
-							<td style="background-color: #f8d7da;">{{ gave.doctor }}</td>  <!-- Example: light red -->
-							<td style="background-color: #d4edda;">{{ gave.days }}</td>   <!-- Example: light green -->
-							<td style="background-color: #d1ecf1;">{{ gave.app_data }}</td><!-- Example: light blue -->
-							<td style="background-color: #99caf0;">{{ gave.time|slice:"1:-1" }}</td><!-- Example: white -->
-						</tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <p>No associated ID Reception data found.</p>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+</div>
     </div>
+</div>
     <br/>
 
 	 <div class="col-10">
