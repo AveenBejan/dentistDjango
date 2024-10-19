@@ -26,3 +26,7 @@ def format_with_commas(value):
         return formatted_value if '.' in formatted_value else "{:,.0f}".format(value)
     except (TypeError, ValueError):
         return value
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

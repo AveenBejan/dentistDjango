@@ -2424,10 +2424,18 @@ def reception(request):
 
 
 def appointment_booked(request):
-    # Retrieve 'gave' records within the last 24 hours
+    # Get the current time
     current_time = datetime.now()
-    gaves1 = Reception1.objects.filter(app_data__gte=current_time - timedelta(hours=360)).order_by('-id')
-    week_days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+    # Calculate the end time for the next 15 days
+    end_time = current_time + timedelta(days=15)
+
+    # Retrieve 'gave' records for the next 15 days
+    gaves1 = Reception1.objects.filter(app_data__gte=current_time, app_data__lte=end_time).order_by('-id')
+
+    # Define the week days
+    week_days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
     # List of potential colors
     color_choices = ['#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#A833FF']
 
@@ -2435,8 +2443,8 @@ def appointment_booked(request):
     for gave in gaves1:
         if gave.time:
             times = gave.time.strip("[]").split(",")  # Assuming times are comma-separated
-            gave.time_colors = [(time.strip(), random.choice(color_choices)) for time in
-                                times]  # Random color for each time
+            # Assign a random color from color_choices for each time
+            gave.time_colors = [(time.strip(), random.choice(color_choices)) for time in times]
 
     # Clean 'gave' data if needed
     for gave in gaves1:
@@ -2444,6 +2452,8 @@ def appointment_booked(request):
             gave.days = gave.days.replace("'", "")
         if gave.time:
             gave.time = gave.time.replace("'", "")
+
+    # Render the template with the filtered data
     return render(request, 'appointment_booked.html', {'gaves1': gaves1, 'week_days': week_days})
 
 
