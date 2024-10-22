@@ -34,10 +34,13 @@ def appointment_context(request):
         if gave.time:
             gave.time = gave.time.replace("'", "")
 
-    # Render the template with the filtered data
+    # Prepare data structure for appointments per day
+    days_with_appointments = {day: [] for day in week_days}  # Initialize with empty lists
+    for gave in gaves1:
+        if gave.days in week_days:  # Ensure we're matching valid weekdays
+            days_with_appointments[gave.days].append(gave)
 
-    # Return context data for template rendering
     return {
-        'gaves1': gaves1,
-        'week_days': week_days,
+        'days_with_appointments': days_with_appointments,
+        'week_days': week_days
     }

@@ -2453,8 +2453,16 @@ def appointment_booked(request):
         if gave.time:
             gave.time = gave.time.replace("'", "")
 
+    # Prepare data structure for appointments per day
+    days_with_appointments = {day: [] for day in week_days}  # Initialize with empty lists
+    for gave in gaves1:
+        if gave.days in week_days:  # Ensure we're matching valid weekdays
+            days_with_appointments[gave.days].append(gave)
     # Render the template with the filtered data
-    return render(request, 'appointment_booked.html', {'gaves1': gaves1, 'week_days': week_days})
+    return render(request, 'appointment_booked.html', {
+        'days_with_appointments': days_with_appointments,
+        'week_days': week_days
+    })
 
 
 def search_doctor(request):

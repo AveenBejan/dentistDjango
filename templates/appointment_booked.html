@@ -1,6 +1,7 @@
 {% extends 'base.html'  %}
 
 {% load static %}
+{% load custom_filters %}
 {% block content %}
 
 <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -12,54 +13,56 @@
      aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            {% if gaves1 %}
-            <table class="table table-hover">
-                <thead style="text-align: center; background-color:#17a2b8; color:#fff">
-                <h2 style="text-align: center; color:#000">Booked Appointments for the Week</h2>
-                <tr>
-                    <th style="text-align: center;" scope="col" class="hideable">Day</th>
-                    <th style="text-align: center;" scope="col" class="hideable">Doctor</th>
-                    <th style="text-align: center;" scope="col" class="hideable">Booked Date</th>
-                    <th style="text-align: center;" scope="col" class="hideable">Booked Times</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for day in week_days %}
-                <tr>
-                    <td style="text-align: center;" scope="row">{{ day }}</td>
-                    <td style="text-align: center;" scope="row">
-                        {% for gave in gaves1 %}
-                        {% if gave.days == day %}
-                        {{ gave.doctor }}<br/>
-                        {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td style="text-align: center;" scope="row">
-                        {% for gave in gaves1 %}
-                        {% if gave.days == day %}
-                        {{ gave.app_data|date:"F d, Y" }}<br/>
-                        {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td style="text-align: center;" scope="row">
-                        {% for gave in gaves1 %}
-                        {% if gave.days == day %}
-                        {% for time, color in gave.time_colors %}
-                        <span style="color: {{ color }}">{{ time }}</span>{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                        {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p>No associated ID Reception data found.</p>
-            {% endif %}
+           <div class="modal-content">
 
-        </div>
+<table class="table table-hover">
+    <thead style="text-align: center; background-color:#17a2b8; color:#fff">
+        <tr>
+            <th style="text-align: center;" scope="col">Day</th>
+            <th style="text-align: center;" scope="col">Name</th>
+            <th style="text-align: center;" scope="col">Booked Date</th>
+            <th style="text-align: center;" scope="col">Booked Times</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for day in week_days %}
+            {% with day_appointments=days_with_appointments|get_item:day %}
+                <tr>
+                    <td>{{ day }}</td>
+                    {% if day_appointments %}
+                        <td>
+                            {% for gave in day_appointments %}
+                                {{ gave.name }} <br/>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for gave in day_appointments %}
+                                {{ gave.app_data }} <br/>
+                            {% endfor %}
+                        </td>
+            <td style="text-align: center;" scope="row">
+    {% for gave in day_appointments %}
+        {% for time, color in gave.time_colors %}
+             <p style="color: {{ color }}; display: inline;">
+                {{ time }}{% if not forloop.last %}, {% endif %}
+            </p>
+        {% endfor %}
+        {% if not forloop.parent.last %}
+            <br/>
+        {% endif %}
+    {% endfor %}
+</td>
+                    {% else %}
+                        <td colspan="3">No appointments</td>
+                    {% endif %}
+                </tr>
+            {% endwith %}
+        {% endfor %}
+    </tbody>
+</table>
+            </div>
     </div>
+</div>
 </div>
 
 {% endblock %}
